@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-12-12T11:07:00Z" product-name="vinou">
+		<header/>
+		<body>
+			<trans-unit id="list.quantity">
+				<source>Quantity</source>
+			</trans-unit>
+			<trans-unit id="list.details">
+				<source>Details</source>
+			</trans-unit>
+
+			<trans-unit id="detail.back">
+				<source>Back</source>
+			</trans-unit>
+
+			<trans-unit id="basket.table.position">
+				<source>Index</source>
+			</trans-unit>
+			<trans-unit id="basket.table.product">
+				<source>Product</source>
+			</trans-unit>
+			<trans-unit id="basket.table.quantity">
+				<source>Quantity</source>
+			</trans-unit>
+			<trans-unit id="basket.table.pricenet">
+				<source>Net</source>
+			</trans-unit>
+			<trans-unit id="basket.table.pricegross">
+				<source>Gross</source>
+			</trans-unit>
+			<trans-unit id="basket.sum.net">
+				<source>Total (net)</source>
+			</trans-unit>
+			<trans-unit id="basket.sum.tax">
+				<source>Tax</source>
+			</trans-unit>
+			<trans-unit id="basket.sum.gross">
+				<source>Total (gross)</source>
+			</trans-unit>
+			<trans-unit id="basket.empty">
+				<source>Your Shopping-Card is currently empty</source>
+			</trans-unit>
+			<trans-unit id="basket.clearall">
+				<source>Empty Shopping-Card</source>
+			</trans-unit>
+			<trans-unit id="basket.order">
+				<source>Order now</source>
+			</trans-unit>
+
+			<trans-unit id="order.net">
+				<source>Total (Net)</source>
+			</trans-unit>
+			<trans-unit id="order.tax">
+				<source>Tax</source>
+			</trans-unit>
+			<trans-unit id="order.gross">
+				<source>Total (Gross)</source>
+			</trans-unit>
+			<trans-unit id="order.billing">
+				<source>Billing address</source>
+			</trans-unit>
+			<trans-unit id="order.delivery">
+				<source>Delivery address</source>
+			</trans-unit>
+			<trans-unit id="order.salutation">
+				<source>Salutation</source>
+			</trans-unit>
+			<trans-unit id="order.salutation.empty">
+				<source>Please choose</source>
+			</trans-unit>
+			<trans-unit id="order.salutation.mr">
+				<source>Mr.</source>
+			</trans-unit>
+			<trans-unit id="order.salutation.mrs">
+				<source>Mrs.</source>
+			</trans-unit>
+			<trans-unit id="order.salutation.company">
+				<source>Company</source>
+			</trans-unit>
+			<trans-unit id="order.firstname">
+				<source>Firstname</source>
+			</trans-unit>
+			<trans-unit id="order.lastname">
+				<source>Lastname</source>
+			</trans-unit>
+			<trans-unit id="order.company">
+				<source>Company</source>
+			</trans-unit>
+			<trans-unit id="order.address">
+				<source>Address</source>
+			</trans-unit>
+			<trans-unit id="order.zip">
+				<source>Zip</source>
+			</trans-unit>
+			<trans-unit id="order.city">
+				<source>City</source>
+			</trans-unit>
+			<trans-unit id="order.country">
+				<source>Country</source>
+			</trans-unit>
+			<trans-unit id="order.country.empty">
+				<source>Please Choose</source>
+			</trans-unit>
+			<trans-unit id="order.country.germany">
+				<source>Germany</source>
+			</trans-unit>
+			<trans-unit id="order.country.austria">
+				<source>Austria</source>
+			</trans-unit>
+			<trans-unit id="order.country.france">
+				<source>France</source>
+			</trans-unit>
+			<trans-unit id="order.country.england">
+				<source>England</source>
+			</trans-unit>
+			<trans-unit id="order.country.luxembourg">
+				<source>Luxembourg</source>
+			</trans-unit>
+			<trans-unit id="order.country.netherlands">
+				<source>Netherlands</source>
+			</trans-unit>
+			<trans-unit id="order.country.denmark">
+				<source>Denmark</source>
+			</trans-unit>
+			<trans-unit id="order.country.norway">
+				<source>Norway</source>
+			</trans-unit>
+			<trans-unit id="order.country.sweden">
+				<source>Sweden</source>
+			</trans-unit>
+			<trans-unit id="order.country.finnland">
+				<source>Finnland</source>
+			</trans-unit>
+			<trans-unit id="order.email">
+				<source>E-Mail</source>
+			</trans-unit>
+			<trans-unit id="order.phone">
+				<source>Phone</source>
+			</trans-unit>
+
+			<trans-unit id="order.account.owner">
+				<source>Owner</source>
+			</trans-unit>
+			<trans-unit id="order.account.iban">
+				<source>IBAN</source>
+			</trans-unit>
+			<trans-unit id="order.account.bic">
+				<source>BIC</source>
+			</trans-unit>
+			<trans-unit id="order.account.swift">
+				<source>Swift</source>
+			</trans-unit>
+			<trans-unit id="order.account.bank">
+				<source>Name of the creditinstitut</source>
+			</trans-unit>
+
+			<trans-unit id="payment.prepaid">
+				<source>Prepaid</source>
+			</trans-unit>
+			<trans-unit id="payment.paypal">
+				<source>PayPal</source>
+			</trans-unit>
+			<trans-unit id="payment.bill">
+				<source>Bill</source>
+			</trans-unit>
+			<trans-unit id="payment.debiting">
+				<source>Direct Debit</source>
+			</trans-unit>
+
+			<trans-unit id="mail.createorder.subject">
+				<source>Your order</source>
+			</trans-unit>
+			<trans-unit id="mail.acceptorder.subject">
+				<source>Your order confirmation</source>
+			</trans-unit>
+			<trans-unit id="mail.createnotification.subject">
+				<source>Order created</source>
+			</trans-unit>
+			<trans-unit id="mail.paymentnotification.subject">
+				<source>Order payed</source>
+			</trans-unit>
+			<trans-unit id="mail.paymentnotification.subjectprepaid">
+				<source>Prepaid order</source>
+			</trans-unit>
+			
+			<trans-unit id="flexform_products.general">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.mode">
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.mode.list">
+				<source>List all Products</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.mode.basket">
+				<source>Basket</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.mode.order">
+				<source>Order</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.mode.finish">
+				<source>Finish Order</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.mode.detail">
+				<source>Show Product Details</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.storagePid">
+				<source>Storage Page</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.detailPid">
+				<source>Product Detail Page</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.backPid">
+				<source>Back to Page</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.basketPid">
+				<source>Basket-Page</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.orderPid">
+				<source>Page to finish Order</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.finishPid">
+				<source>Page after Payment</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.template">
+				<source>Layout</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.templateLayout">
+				<source>Template</source>
+			</trans-unit>
+
+			<trans-unit id="message.title.error">
+				<source>Error</source>
+			</trans-unit>
+			<trans-unit id="message.title.success">
+				<source>Success</source>
+			</trans-unit>
+			<trans-unit id="message.content.noCop">
+				<source>You had to accept and read the conditions of purchase</source>
+			</trans-unit>
+			<trans-unit id="message.content.noBilling">
+				<source>Your session is expired, please retry your order</source>
+			</trans-unit>
+			<trans-unit id="message.content.noorder">
+				<source>No order can be found, seems that the payment was payed</source>
+			</trans-unit>
+			<trans-unit id="message.content.paypalnotcreated">
+				<source>PayPal payment could not be initiated, please contact the shopowner</source>
+			</trans-unit>
+			<trans-unit id="message.content.paypalprocess">
+				<source>There was a problem during the PayPal process, please try again later.</source>
+			</trans-unit>
+			<trans-unit id="message.content.paypalprocess">
+				<source>Paypal Process terminated, please try again later.</source>
+			</trans-unit>
+			
+		</body>
+	</file>
+</xliff>

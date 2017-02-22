@@ -1,0 +1,458 @@
+<f:layout name="Wines" />
+
+<f:section name="main">
+	<div class="product-order">
+		<f:switch expression="{mode}">
+			<f:case value="delivery">
+				<f:flashMessages class="code_message" />
+				<f:form
+					action="order"
+					name="field"
+					enctype="multipart/form-data">
+					<f:form.hidden name="nextStep" value="payment"/>
+					<div class="formheader">
+						<h4><f:translate key="order.delivery"/></h4>
+						<f:form.submit value="Weiter" class="next" />
+					</div>
+
+					<fieldset>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.salutation"/>{f:if(condition:required.delivery.salutation,then:' {required.mandatorySign}')}:</label>
+							<f:form.select name="delivery[salutation]" options="{
+								mr:'{f:translate(key:\'order.salutation.mr\')}',
+								mrs:'{f:translate(key:\'order.salutation.mrs\')}',
+								company:'{f:translate(key:\'order.salutation.company\')}'
+							}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.firstname"/>{f:if(condition:required.delivery.firstname,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield 
+								name="delivery[firstname]"
+								required="{f:if(condition:required.delivery.firstname,then:'TRUE',else:'FALSE')}"
+								value="{delivery.firstname}"/>
+						</div>
+						<div class="formfield width-50">
+							<label><f:translate key="order.lastname"/>{f:if(condition:required.delivery.lastname,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield
+								name="delivery[lastname]"
+								required="{f:if(condition:required.delivery.lastname,then:'TRUE',else:'FALSE')}"
+								value="{delivery.lastname}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.company"/>{f:if(condition:required.delivery.company,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield
+								name="delivery[company]"
+								required="{f:if(condition:required.delivery.company,then:'TRUE',else:'FALSE')}"
+								value="{delivery.company}"/>
+						</div>
+						<div class="formfield width-50">
+							<label><f:translate key="order.address"/>{f:if(condition:required.delivery.address,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield
+								name="delivery[address]"
+								required="{f:if(condition:required.delivery.address,then:'TRUE',else:'FALSE')}"
+								value="{delivery.address}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.zip"/>{f:if(condition:required.delivery.zip,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield
+								name="delivery[zip]"
+								required="{f:if(condition:required.delivery.zip,then:'TRUE',else:'FALSE')}"
+								value="{delivery.zip}"/>
+						</div>
+						<div class="formfield width-50">
+							<label><f:translate key="order.city"/>{f:if(condition:required.delivery.city,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield
+								name="delivery[city]"
+								required="{f:if(condition:required.delivery.city,then:'TRUE',else:'FALSE')}"
+								value="{delivery.city}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.country"/>{f:if(condition:required.delivery.country,then:' {required.mandatorySign}')}:</label>
+							<f:form.select name="delivery[country]" options="{
+								germany:'{f:translate(key:\'order.country.germany\')}',
+								austria:'{f:translate(key:\'order.country.austria\')}',
+								denmark:'{f:translate(key:\'order.country.denmark\')}',
+								england:'{f:translate(key:\'order.country.england\')}',
+								finnland:'{f:translate(key:\'order.country.finnland\')}',
+								france:'{f:translate(key:\'order.country.france\')}',
+								luxembourg:'{f:translate(key:\'order.country.luxembourg\')}',
+								netherlands:'{f:translate(key:\'order.country.netherlands\')}',
+								norway:'{f:translate(key:\'order.country.norway\')}',
+								sweden:'{f:translate(key:\'order.country.sweden\')}'
+							}" />
+						</div>
+						<div class="formfield controls">
+							<f:link.action action="order" arguments="{back:'billing'}" class="back regular-button">Zurück</f:link.action>
+							<f:form.submit value="Weiter" class="next" />
+						</div>
+					</fieldset>
+				</f:form>
+			</f:case>
+			<f:case value="payment">
+				<h4>Zahlungsart wählen</h4>
+				<f:form
+					action="order"
+					name="field"
+					enctype="multipart/form-data">
+					<f:form.hidden name="nextStep" value="summary"/>
+					<fieldset>
+						<div class="formfield">
+							<f:for each="{payment}" as="method" key="label">
+								<div class="radioItem">
+									<f:if condition="{method.selected}">	
+										<f:then>
+											<f:form.radio name="paymentMethod" value="{label}" id="payment_{label}" checked="TRUE"/>
+											<label for="payment_{label}">
+												<span class="status"></span><f:translate key="payment.{label}"/>
+											</label>
+										</f:then>
+										<f:else>
+											<f:form.radio name="paymentMethod" value="{label}" id="payment_{label}"/>
+											<label for="payment_{label}">
+												<span class="status"></span><f:translate key="payment.{label}"/>
+											</label>
+										</f:else>
+									</f:if>
+								</div>
+							</f:for>
+						</div>
+						<div class="formfield controls">
+							<f:if condition="{delivery}">
+								<f:then><f:link.action action="order" arguments="{back:'delivery'}" class="back regular-button">Zurück</f:link.action></f:then>
+								<f:else><f:link.action action="order" arguments="{back:'billing'}" class="back regular-button">Zurück</f:link.action></f:else>
+							</f:if>
+							<f:form.submit value="Weiter" class="next" />
+						</div>
+					</fieldset>
+				</f:form>
+			</f:case>
+			<f:case value="account">
+				<h4>Kontoinformationen hinterlegen</h4>
+				<f:form
+					action="order"
+					name="field"
+					enctype="multipart/form-data">
+					<f:form.hidden name="nextStep" value="summary"/>
+					<fieldset>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.account.owner"/>:</label>
+							<f:form.textfield 
+								name="account[owner]"
+								required="TRUE"
+								value="{account.owner}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.account.iban"/>:</label>
+							<f:form.textfield 
+								name="account[iban]"
+								required="TRUE"
+								value="{account.iban}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.account.bic"/>:</label>
+							<f:form.textfield 
+								name="account[bic]"
+								required="TRUE"
+								value="{account.bic}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.account.swift"/>:</label>
+							<f:form.textfield 
+								name="account[swift]"
+								required="FALSE"
+								value="{account.swift}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.account.bank"/>:</label>
+							<f:form.textfield 
+								name="account[bank]"
+								required="TRUE"
+								value="{account.bank}"/>
+						</div>
+						<div class="formfield controls">
+							<f:link.action action="order" arguments="{back:'payment'}" class="back regular-button">Zurück</f:link.action>
+							<f:form.submit value="Weiter" class="next" />
+						</div>
+					</fieldset>
+				</f:form>
+			</f:case>
+			<f:case value="summary">
+				<h4>Bestellzusammenfassung</h4>
+				<div class="regularColSet" data-cols="2" data-split="5050">
+					<div class="col">
+						<p class="addressblock">
+							<strong>Rechnungsadresse:</strong><br/>
+							<f:translate key="order.salutation.{billing.salutation}"/><br/>
+							{billing.firstname} {billing.lastname}<br/>
+							{f:if(condition:billing.company,then:'{billing.company}<br/>')}
+							{billing.address}<br/>
+							{billing.zip} {billing.city}<br/>
+							<f:if condition="{billing.country}">
+								<f:then>
+									<f:translate key="order.country.{billing.country}"/><br/>
+								</f:then>
+							</f:if>
+							<br/>
+						</p>
+					</div>
+					<div class="col">
+						<p class="addressblock"><strong>Lieferadresse:</strong><br/>
+							<f:if condition="{delivery}">
+								<f:then>
+									<f:translate key="order.salutation.{delivery.salutation}"/><br/>
+									{delivery.firstname} {delivery.lastname}<br/>
+									{f:if(condition:delivery.company,then:'{delivery.company}<br/>')}
+									{delivery.address}<br/>
+									{delivery.zip} {delivery.city}<br/>
+									<f:if condition="{delivery.country}">
+										<f:then>
+											<f:translate key="order.country.{delivery.country}"/><br/>
+										</f:then>
+									</f:if>
+								</f:then>
+								<f:else>
+									<f:translate key="order.salutation.{billing.salutation}"/><br/>
+									{billing.firstname} {billing.lastname}<br/>
+									{f:if(condition:billing.company,then:'{billing.company}<br/>')}
+									{billing.address}<br/>
+									{billing.zip} {billing.city}<br/>
+									<f:if condition="{billing.country}">
+										<f:then>
+											<f:translate key="order.country.{billing.country}"/><br/>
+										</f:then>
+									</f:if>
+								</f:else>
+							</f:if>
+							<br/>
+						</p>
+					</div>
+				</div>
+				<div class="regularColSet" data-cols="2" data-split="5050">
+					<div class="col">
+						<p class="addressblock">
+							<strong>Kontaktdaten:</strong><br/>
+							<i class="fa fa-envelope"></i> {billing.email}<br/>
+							<f:if condition="{billing.phone}">
+								<f:then>
+									<i class="fa fa-phone"></i> {billing.phone}<br/>
+								</f:then>
+							</f:if>
+						</p>
+					</div>
+					<div class="col">
+						<p class="addressblock">
+							<strong>Zahlungsart:</strong> <f:translate key="payment.{paymentMethod}"/><br/>
+							<f:switch expression="{paymentMethod}">
+								<f:case value="debiting">
+									<p>
+										<f:translate key="order.account.owner"/>: {account.owner}<br/>
+										<f:translate key="order.account.bank"/>: {account.bank}<br/>
+										<f:translate key="order.account.bic"/>: {account.bic}<br/>
+										<f:translate key="order.account.iban"/>: {account.iban}<br/>
+										<f:translate key="order.account.swift"/>: {account.swift}<br/>
+									</p>
+								</f:case>
+							</f:switch>
+						</p>
+						<f:if condition="{payment -> f:count()}<2">
+							<f:then>
+								<p class="hint">Zur Zeit sind nur Zahlungen per <f:translate key="payment.{paymentMethod}"/> möglich.</p>
+							</f:then>
+						</f:if>
+					</div>
+				</div>
+				<div class="summary">
+					<p><strong>Artikel in Ihrer Bestellung:</strong></p>
+					<table border="0" cellpadding="0" cellspacing="0" class="alternatedtable">
+						<thead>
+							<tr>
+								<th><f:translate key="basket.table.position"/></th>
+								<th><f:translate key="basket.table.product"/></th>
+								<th><f:translate key="basket.table.quantity"/></th>
+								<th class="align-right"><f:translate key="basket.table.pricenet"/></th>
+								<th class="align-right"><f:translate key="basket.table.pricegross"/></th>
+							</tr>
+						</thead>
+						<tbody>
+							<f:for each="{items}" as="position">
+								<tr>
+									<td>{position.index}</td>
+									<td>{position.product.title}</td>
+									<td>{position.quantity}</td>
+									<td class="price align-right"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{position.net}</f:format.currency></td>
+									<td class="price align-right"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{position.gross}</f:format.currency></td>
+								</tr>
+							</f:for>
+							<tr>
+								<td colspan="4"><strong><f:translate key="basket.sum.net"/></strong></td>
+								<td class="price align-right"><strong><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{basket.net}</f:format.currency></strong></td>
+							</tr>
+							<tr>
+								<td colspan="4"><f:translate key="basket.sum.tax"/></td>
+								<td class="price align-right"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{basket.tax}</f:format.currency></td>
+							</tr>
+							<tr>
+								<td colspan="4"><strong><f:translate key="basket.sum.gross"/></strong></td>
+								<td class="price align-right"><strong><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{basket.gross}</f:format.currency></strong></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<f:flashMessages class="code_message" />
+				<f:form
+					action="order"
+					name="field"
+					enctype="multipart/form-data">
+					<f:form.hidden name="nextStep" value="createOrder"/>
+					<f:if condition="{delivery}">
+						<f:then><f:form.hidden name="deliveryAdress" value="yes"/></f:then>
+					</f:if>
+					<fieldset>
+						<div class="formfield">
+							<f:form.checkbox
+								name="conditionsOfPurchase"
+								id="conditionsOfPurchase"
+								value="yes"/>
+
+							<f:if condition="{settings.mail.attachements.generalBusinessTerms}==''">
+								<f:then>
+									<label for="conditionsOfPurchase"><span class="status"></span>Ich habe die Allgemeinen Geschäftsbedingungen gelesen und akzeptiere diese!</label>
+								</f:then>
+								<f:else>
+									<label for="conditionsOfPurchase"><span class="status"></span>Ich habe die <a href="{settings.mail.attachements.generalBusinessTerms}" target="_blank">Allgemeinen Geschäftsbedingungen</a> gelesen und akzeptiere diese!</label>
+								</f:else>
+							</f:if>
+						</div>
+						<div class="formfield controls">
+							<f:switch expression="{paymentMethod}">
+								<f:case value="debiting">
+									<f:link.action action="order" arguments="{back:'account'}" class="back regular-button">Zurück</f:link.action>
+								</f:case>
+								<f:case default="TRUE">
+									<f:link.action action="order" arguments="{back:'payment'}" class="back regular-button">Zurück</f:link.action>
+								</f:case>
+							</f:switch>
+							<f:form.submit value="Kostenpflichtig Bestellen" class="next" />
+						</div>
+					</fieldset>
+				</f:form>
+			</f:case>
+			<f:case default="TRUE">
+				<f:flashMessages class="code_message" />
+				<f:form
+					action="order"
+					name="field"
+					enctype="multipart/form-data">
+					<f:form.hidden name="nextStep" value="payment"/>
+					<div class="formheader">
+						<h4><f:translate key="order.billing"/></h4>
+						<f:form.submit value="Weiter" class="next" />
+					</div>
+
+					<fieldset>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.salutation"/>{f:if(condition:required.billing.salutation,then:' {required.mandatorySign}')}:</label>
+							<f:form.select name="billing[salutation]" options="{
+								mr:'{f:translate(key:\'order.salutation.mr\')}',
+								mrs:'{f:translate(key:\'order.salutation.mrs\')}',
+								company:'{f:translate(key:\'order.salutation.company\')}'
+							}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.firstname"/>{f:if(condition:required.billing.firstname,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield 
+								name="billing[firstname]"
+								required="{f:if(condition:required.billing.firstname,then:'TRUE',else:'FALSE')}"
+								value="{billing.firstname}"/>
+						</div>
+						<div class="formfield width-50">
+							<label><f:translate key="order.lastname"/>{f:if(condition:required.billing.lastname,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield
+								name="billing[lastname]"
+								required="{f:if(condition:required.billing.lastname,then:'TRUE',else:'FALSE')}"
+								value="{billing.lastname}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.company"/>{f:if(condition:required.billing.company,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield
+								name="billing[company]"
+								required="{f:if(condition:required.billing.company,then:'TRUE',else:'FALSE')}"
+								value="{billing.company}"/>
+						</div>
+						<div class="formfield width-50">
+							<label><f:translate key="order.address"/>{f:if(condition:required.billing.address,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield
+								name="billing[address]"
+								required="{f:if(condition:required.billing.address,then:'TRUE',else:'FALSE')}"
+								value="{billing.address}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.zip"/>{f:if(condition:required.billing.zip,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield
+								name="billing[zip]"
+								required="{f:if(condition:required.billing.zip,then:'TRUE',else:'FALSE')}"
+								value="{billing.zip}"/>
+						</div>
+						<div class="formfield width-50">
+							<label><f:translate key="order.city"/>{f:if(condition:required.billing.city,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield
+								name="billing[city]"
+								required="{f:if(condition:required.billing.city,then:'TRUE',else:'FALSE')}"
+								value="{billing.city}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.country"/>{f:if(condition:required.billing.country,then:' {required.mandatorySign}')}:</label>
+							<f:form.select name="billing[country]" options="{
+								germany:'{f:translate(key:\'order.country.germany\')}',
+								austria:'{f:translate(key:\'order.country.austria\')}',
+								denmark:'{f:translate(key:\'order.country.denmark\')}',
+								england:'{f:translate(key:\'order.country.england\')}',
+								finnland:'{f:translate(key:\'order.country.finnland\')}',
+								france:'{f:translate(key:\'order.country.france\')}',
+								luxembourg:'{f:translate(key:\'order.country.luxembourg\')}',
+								netherlands:'{f:translate(key:\'order.country.netherlands\')}',
+								norway:'{f:translate(key:\'order.country.norway\')}',
+								sweden:'{f:translate(key:\'order.country.sweden\')}'
+							}" />
+						</div>
+						<div class="formfield width-50">
+							<label><f:translate key="order.email"/>{f:if(condition:required.billing.email,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield
+								name="billing[email]"
+								required="{f:if(condition:required.billing.email,then:'TRUE',else:'FALSE')}"
+								value="{billing.email}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<label><f:translate key="order.phone"/>{f:if(condition:required.billing.phone,then:' {required.mandatorySign}')}:</label>
+							<f:form.textfield
+								name="billing[phone]"
+								required="{f:if(condition:required.billing.phone,then:'TRUE',else:'FALSE')}"
+								value="{billing.phone}"/>
+						</div>
+						<div class="formfield width-50-clear">
+							<f:if condition="{delivery}">
+								<f:then>
+									<f:form.checkbox
+										name="deliveryAdress"
+										id="deliveryAdress"
+										value="yes"
+										checked="TRUE"/>
+								</f:then>
+								<f:else>
+									<f:form.checkbox
+										name="deliveryAdress"
+										id="deliveryAdress"
+										value="yes"/>
+								</f:else>
+							</f:if>
+							<label for="deliveryAdress"><span class="status"></span>Abweichende Lieferadresse</label>
+						</div>
+						<div class="formfield">
+							<f:form.submit value="Weiter" class="next" />
+						</div>
+					</fieldset>
+				</f:form>
+			</f:case>
+		</f:switch>
+	</div>
+</f:section>

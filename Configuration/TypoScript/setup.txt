@@ -1,0 +1,46 @@
+plugin.tx_vinou_wines {
+	view {
+		templateRootPaths {
+			0 = EXT:vinou/Resources/Private/Templates/
+			1 = {$plugin.tx_vinou_wines.view.templateRootPath}
+		}
+		partialRootPaths {
+			0 = EXT:vinou/Resources/Private/Partials/
+			1 = {$plugin.tx_vinou_wines.view.partialRootPath}
+		}
+		layoutRootPaths {
+			0 = EXT:vinou/Resources/Private/Layouts/
+			1 = {$plugin.tx_vinou_wines.view.layoutRootPath}
+		}
+	}
+
+	settings {
+		billing {
+			required = firstname,lastname,address,zip,city,email
+		}
+		delivery {
+			required = firstname,lastname,address,zip,city
+		}
+		mail {
+			senderName = Shopname
+			senderEmail = noreply@yourshop.com
+			adminName = Admin
+			adminEmail = admin@yourshop.com
+			attachements {
+				generalBusinessTerms = 
+				cancellationPolicy =
+			}
+		}
+		payment {
+			methods = prepaid,paypal,debiting,bill
+			default = prepaid
+		}
+		mandatorySign = *
+	}
+
+	persistence {
+		storagePid = 1
+	}
+}
+
+module.tx_vinou_wines < plugin.tx_vinou_wines

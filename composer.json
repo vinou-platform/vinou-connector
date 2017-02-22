@@ -1,0 +1,37 @@
+{
+    "name": "interfrog/vinou",
+    "type": "typo3-cms-extension",
+    "description": "Extension that provides a connection for vinou.de and display wines and winelists via fluid templates",
+    "keywords": [
+        "TYPO3",
+        "extension",
+        "vinou"
+    ],
+    "homepage": "http://interfrog.de",
+    "authors": [{
+        "name": "Interfrog Produktion GmbH",
+        "role": "Developer",
+        "homepage": "http://interfrog.de"
+    }],
+    "license": [
+        "GPL-2.0+"
+    ],
+    "require": {
+        "typo3/cms-core": ">=7.6.0,<8.0"
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Interfrog\\Vinou\\": "Classes"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".Build/Web"
+        }
+    }
+}

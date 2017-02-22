@@ -1,0 +1,61 @@
+<f:layout name="Wines" />
+
+<f:section name="main">
+
+	<f:flashMessages class="code_message" />
+	<div class="product-basket">
+		<f:if condition="{items->f:count()}>0">
+			<f:then>
+				<table border="0" cellpadding="0" cellspacing="0" class="alternatedtable">
+					<thead>
+						<tr>
+							<th><f:translate key="basket.table.position"/></th>
+							<th><f:translate key="basket.table.product"/></th>
+							<th><f:translate key="basket.table.quantity"/></th>
+							<th class="align-right"><f:translate key="basket.table.pricenet"/></th>
+							<th class="align-right"><f:translate key="basket.table.pricegross"/></th>
+						</tr>
+					</thead>
+					<tbody>
+						<f:for each="{items}" as="position">
+							<tr>
+								<td>{position.index}</td>
+								<td>
+									<f:if condition="{settings.detailPid}">
+										<f:then>
+											<f:link.action action="detail" pageUid="{settings.detailPid}" arguments="{product:position.product.uid,backPid:currentPid}">{position.product.title}</f:link.action>
+										</f:then>
+										<f:else>
+											{position.product.title}
+										</f:else>
+									</f:if>
+									<f:link.action action="basket" arguments="{delete:position.uid}"><i class="fa fa-trash-o" aria-hidden="true"></i></f:link.action>
+								</td>
+								<td>{position.quantity}</td>
+								<td class="price align-right"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{position.net}</f:format.currency></td>
+								<td class="price align-right"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{position.gross}</f:format.currency></td>
+							</tr>
+						</f:for>
+						<tr>
+							<td colspan="4"><strong><f:translate key="basket.sum.net"/></strong></td>
+							<td class="price align-right"><strong><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{basket.net}</f:format.currency></strong></td>
+						</tr>
+						<tr>
+							<td colspan="4"><f:translate key="basket.sum.tax"/></td>
+							<td class="price align-right"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{basket.tax}</f:format.currency></td>
+						</tr>
+						<tr>
+							<td colspan="4"><strong><f:translate key="basket.sum.gross"/></strong></td>
+							<td class="price align-right"><strong><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{basket.gross}</f:format.currency></strong></td>
+						</tr>
+					</tbody>
+				</table>
+				<f:link.action action="basket" arguments="{delete:'all'}" class="clearall regular-button"><i class="fa fa-trash-o" aria-hidden="true"></i> <f:translate key="basket.clearall"/></f:link.action>
+				<f:link.action action="order" class="order regular-button" pageUid="{settings.orderPid}"><i class="fa fa-shopping-cart" aria-hidden="true"></i> <f:translate key="basket.order"/></f:link.action>
+			</f:then>
+			<f:else>
+				<p><f:translate key="basket.empty"/></p>
+			</f:else>
+		</f:if>
+	</div>
+</f:section>

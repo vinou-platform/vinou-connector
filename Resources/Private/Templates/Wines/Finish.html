@@ -1,0 +1,21 @@
+{namespace if=Interfrog\Vinou\ViewHelpers}
+<f:layout name="Wines" />
+
+<f:section name="main">
+	<f:flashMessages class="code_message" />
+	<h3>Bestellung abgeschlossen</h3>
+	<f:switch expression="{paymentMethod}">
+		<f:case value="paypal">
+			<p>Wir haben Ihre Paypal Zahlung erhalten. Sie erhalten Ihre Ware in Kürze.</p>
+		</f:case>
+		<f:case value="debiting">
+			<p>Wir haben Ihre Bestellung erhalten. Nach der Abbuchhung erhalten sie eine separate Kaufbestätigung und die Ware in Kürze.</p>
+		</f:case>
+		<f:case value="bill">
+			<p>Wir haben Ihre Bestellung erhalten. Wir werden Ihnen die Waren inklusive Rechnung schnellstmöglich zusenden.</p>
+		</f:case>
+		<f:case default="TRUE">
+			<p>Vielen Dank für Ihre Bestellung. Sie erhalten schnellstmöglich weitere Informationen zur Zahlung und Zusendung.</p>
+		</f:case>
+	</f:switch>
+</f:section>
