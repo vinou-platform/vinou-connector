@@ -1,0 +1,3 @@
+@function calcWidth($colCount, $margin){
+  @return (100 - (($colCount - 1) * $margin)) / $colCount;
+}

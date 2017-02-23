@@ -1,0 +1,106 @@
+@import "../Lib/functions";
+@import "../Lib/mixins";
+
+$LightGrey: rgb(200,200,200);
+$Grey: rgb(125,125,125);
+$DarkGrey: rgb(66,66,66);
+$BgGrey: rgb(246,246,246);
+
+$VinouRed: rgb(102,8,8);
+$VinouOrange: rgb(219,90,20);
+
+$MaxColumnsForList: 6;
+$ColumnsGutter: 4%;
+
+h1 {
+	text-align: center;
+}
+
+a.vinouButton {
+	color: white;
+	background-color: $VinouRed;
+	display: inline-block;
+	padding: 0.5em 2em;
+	margin: 1em 0px;
+	transition: all 0.4s ease-in-out;
+
+	&:hover {
+		background-color: darken($VinouRed,10%);
+	}
+}
+
+.vinouWineList.regular {
+	.item {
+		float: left;
+		margin: 0px $ColumnsGutter $ColumnsGutter 0px;
+		box-sizing: border-box;
+		min-height: 10px;
+		transition: all 200ms ease-out;
+		text-align: center;
+
+		img {
+			display: block;
+			margin: 0px auto 1.5em auto;
+			max-width: 100%;
+			height: auto;
+		}
+	}
+	@include clearafter();
+}
+
+
+@for $i from 2 through $MaxColumnsForList {
+	.vinouWineList.regular {
+		&[data-count="#{$i}"] > .item {
+			width: calcWidth($i,$ColumnsGutter);
+
+			&:nth-of-type(#{$i}n+1) {
+				clear: left;
+			}
+
+			&:nth-of-type(#{$i}n+#{$i}) {
+				margin-right: 0px;
+			}
+		}
+	}
+}
+
+.vinouWineDetails {
+	.overview {
+		display: table;
+		width: 100%;
+		table-layout: fixed;
+
+		.image, .description {
+			display: table-cell;
+			position: relative;
+			vertical-align: middle;
+		}
+
+		.image {
+			width: 33.333333%;
+			text-align:center;
+
+			img {
+				display: block;
+				margin: 0px auto;
+			}
+		}
+
+		.description {
+			width: 66.666666%;
+		}
+	}
+
+	.wineFacts {
+		margin: 0px 0px 1.5em 0px;
+		.label,.value {
+			padding-bottom: 0.5em;
+		}
+
+		.label {
+			font-weight: bold;
+			padding-right: 1em;
+		}
+	}
+}

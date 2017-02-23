@@ -8,7 +8,7 @@ use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \Interfrog\Vinou\Utility\PaypalUtility;
 
-class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
 	 * extKey
@@ -42,7 +42,9 @@ class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 * @inject
 	 */
-	protected $configurationManager; 
+	protected $configurationManager;
+
+	protected $api; 
 
 	protected $errors = [];
 	protected $messages = [];
@@ -92,6 +94,18 @@ class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 
 		$this->getPaymentMethods();
 		$this->paypalToken = PaypalUtility::getPaypalToken($this->extConf['clientId'],$this->extConf['secret'],$this->extConf['mode']);
+
+		$dev = false;
+	    if ($this->extConf['vinouMode'] == 'dev') {
+	      $dev = true;
+	    }
+
+	    $this->api = new \Interfrog\Vinou\Utility\Api(
+	      $this->extConf['token'],
+	      $this->extConf['authId'],
+	      $dev
+	    );
+
 	}
 
 	/**
@@ -140,28 +154,37 @@ class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 */
 	public function listAction() {
 		$this->initialize();
-		$products = $this->productsRepository->findAll();
-		$this->view->assign('products', $products);
+
+		switch ($this->settings['listMode']) {
+			case 'category':
+				$wines = $this->api->getWinesByCategory($this->settings['category']);
+				break;
+		}
+
+		$this->view->assign('wines', $wines);
 		$this->view->assign('settings', $this->settings);
 	}
 
 	/**
 	 * action detail
 	 *
-	 * @param \Interfrog\Vinou\Domain\Model\Products $product
-	 * @dontvalidate $product
+	 * @param int $wine
 	 * @return void
 	 */
-	public function detailAction(\Interfrog\Vinou\Domain\Model\Products $product = NULL) {
+	public function detailAction($wine = NULL) {
 		$this->initialize();
-		if (!is_object($product)) {
-			if (is_numeric($this->settings['detail']['product'])) {
-				$product = $this->productsRepository->findByUid($this->settings['detail']['product']);
-			} elseif ($this->settings['detail']['theme'] == '[this]') {
-				$product = $this->product;
-			}
+		if ($this->request->hasArgument('wine')) {
+			$wineId = $this->request->getArgument('wine');
+			$wine = $this->api->getWine($wineId);
+
 		}
-		$this->view->assign('product', $product);
+
+		$wine['facts'] = [];
+		foreach (explode(',',$this->settings['detail']['facts']) as $fact) {
+			$wine['facts'][$fact] = $wine[$fact];
+		}
+
+		$this->view->assign('wine', $wine);
 		$this->view->assign('backPid', $this->backPid);
 		$this->view->assign('settings', $this->settings);
 	}

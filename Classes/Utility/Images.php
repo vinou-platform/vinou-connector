@@ -20,20 +20,14 @@ class Images {
 	    return $return;     
 	}
 
-	public static function cacheExternalImage($imagesrc,$width = 300) {
+	public static function storeApiImage($imagesrc,$localFolder) {
 		$fileName = array_values(array_slice(explode('/',$imagesrc), -1))[0];
-		$localsrc = $_SERVER["DOCUMENT_ROOT"].'/Cache/ApiImages/Source/'.$fileName;
-		$resizesrc = $_SERVER["DOCUMENT_ROOT"].'/Cache/ApiImages/Resized/'.$width.'/'.$fileName;
-		if(!file_exists('./'.$localsrc)){
+		$localFile = $localFolder.$fileName;
+		if(!file_exists($localFile)){
 			$image = self::getExternalImage('https://api.vinou.de'.$imagesrc); 
-			file_put_contents('./'.$localsrc,$image);
+			file_put_contents($localFile,$image);
 		}
-		if(!file_exists('./'.$resizesrc)){
-			$image = new \Eventviva\ImageResize('./'.$localsrc);
-			$image->resizeToWidth($width);
-			$image->save('./'.$resizesrc);
-		}
-		return $resizesrc;
+		return $fileName;
 	}
 
 }

@@ -3,6 +3,10 @@
 	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-12-12T11:07:00Z" product-name="vinou">
 		<header/>
 		<body>
+			<trans-unit id="list.more">
+				<source>Read More</source>
+				<target>Mehr erfahren</target>
+			</trans-unit>
 			<trans-unit id="list.quantity">
 				<source>Quantity</source>
 				<target>Menge</target>
@@ -12,6 +16,58 @@
 				<target>Weitere Informationen</target>
 			</trans-unit>
 
+			<trans-unit id="detail.articlenumber">
+				<source>articlenumber</source>
+				<target>Artikelnummer</target>
+			</trans-unit>
+			<trans-unit id="detail.tastes_id">
+				<source>taste</source>
+				<target>Geschmack</target>
+			</trans-unit>
+			<trans-unit id="detail.vintage">
+				<source>vintage</source>
+				<target>Jahrgang</target>
+			</trans-unit>
+			<trans-unit id="detail.alcohol">
+				<source>alcohol</source>
+				<target>Alkoholgehalt</target>
+			</trans-unit>
+			<trans-unit id="detail.sweetness">
+				<source>sweetness</source>
+				<target>Restsüße</target>
+			</trans-unit>
+			<trans-unit id="detail.acid">
+				<source>acid</source>
+				<target>Säuregehalt</target>
+			</trans-unit>
+			<trans-unit id="detail.bottlesize">
+				<source>bottlesize</source>
+				<target>Flaschengröße</target>
+			</trans-unit>
+			<trans-unit id="detail.drinktemperature">
+				<source>drinktemperature</source>
+				<target>Trinktemperatur</target>
+			</trans-unit>
+			<trans-unit id="detail.winetypes">
+				<source>winetype</source>
+				<target>Rebsorte</target>
+			</trans-unit>
+			<trans-unit id="detail.price">
+				<source>price</source>
+				<target>Preis</target>
+			</trans-unit>
+			<trans-unit id="detail.place">
+				<source>place</source>
+				<target>Lage</target>
+			</trans-unit>
+			<trans-unit id="detail.type">
+				<source>type</source>
+				<target>Typ</target>
+			</trans-unit>
+			<trans-unit id="detail.region">
+				<source>region</source>
+				<target>Weinregion</target>
+			</trans-unit>
 			<trans-unit id="detail.back">
 				<source>Back</source>
 				<target>Zurück</target>
@@ -242,63 +298,103 @@
 				<target>Vorkassebestellung eingeleitet - Zahlung prüfen</target>
 			</trans-unit>
 			
-			<trans-unit id="flexform_products.general">
+			<trans-unit id="flexform_wines.general">
 				<source>Settings</source>
 				<target>Einstellungen</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.mode">
+			<trans-unit id="flexform_wines.mode">
 				<source>Mode</source>
 				<target>Modus</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.mode.list">
+			<trans-unit id="flexform_wines.mode.list">
 				<source>List all Products</source>
 				<target>Listenansicht</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.mode.basket">
+			<trans-unit id="flexform_wines.mode.basket">
 				<source>Basket</source>
 				<target>Warenkorb</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.mode.order">
+			<trans-unit id="flexform_wines.mode.order">
 				<source>Order</source>
 				<target>Kasse</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.mode.finish">
+			<trans-unit id="flexform_wines.mode.finish">
 				<source>Finish Order</source>
 				<target>Bestellung abschließen</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.mode.detail">
-				<source>Show Product Details</source>
-				<target>Produktdetails</target>
+			<trans-unit id="flexform_wines.mode.detail">
+				<source>Show Wine Details</source>
+				<target>Winedetails</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.storagePid">
+			<trans-unit id="flexform_wines.listmode">
+				<source>Listmode</source>
+				<target>List-Modus</target>
+			</trans-unit>
+			<trans-unit id="flexform_wines.listmode.empty">
+				<source>-- Please Choose --</source>
+				<target>-- Bitte wählen --</target>
+			</trans-unit>
+			<trans-unit id="flexform_wines.listmode.category">
+				<source>By Category</source>
+				<target>Kategorien</target>
+			</trans-unit>
+			<trans-unit id="flexform_wines.listmode.type">
+				<source>By Type</source>
+				<target>Weintyp</target>
+			</trans-unit>
+			<trans-unit id="flexform_wines.category">
+				<source>Category</source>
+				<target>Kategorie</target>
+			</trans-unit>
+			<trans-unit id="flexform_wines.category.empty">
+				<source>-- Please Choose --</source>
+				<target>-- Bitte wählen --</target>
+			</trans-unit>
+			<trans-unit id="flexform_wines.type">
+				<source>Wine Type</source>
+				<target>Weintyp</target>
+			</trans-unit>
+			<trans-unit id="flexform_wines.type.empty">
+				<source>-- Please Choose --</source>
+				<target>-- Bitte wählen --</target>
+			</trans-unit>
+			<trans-unit id="flexform_wines.itemsPerRow">
+				<source>Items in one Row</source>
+				<target>Anzahl Produkte in einer Zeile</target>
+			</trans-unit>
+			<trans-unit id="flexform_wines.storagePid">
 				<source>Storage Page</source>
 				<target>Speicherort</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.detailPid">
+			<trans-unit id="flexform_wines.detailPid">
 				<source>Product Detail Page</source>
 				<target>Detailseite</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.backPid">
+			<trans-unit id="flexform_wines.backPid">
 				<source>Back to Page</source>
 				<target>Zurück zu Seite</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.basketPid">
+			<trans-unit id="flexform_wines.basketPid">
 				<source>Basket-Page</source>
 				<target>Warenkorb-Seite</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.orderPid">
+			<trans-unit id="flexform_wines.orderPid">
 				<source>Page to finish Order</source>
 				<target>Kasse</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.finishPid">
+			<trans-unit id="flexform_wines.finishPid">
 				<source>Page after Payment</source>
 				<target>Seite nach Payment</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.template">
+			<trans-unit id="flexform_wines.template">
 				<source>Layout</source>
 				<target>Layout</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.templateLayout">
+			<trans-unit id="flexform_wines.template.default">
+				<source>Default</source>
+				<target>Standard</target>
+			</trans-unit>
+			<trans-unit id="flexform_wines.templateLayout">
 				<source>Template</source>
 				<target>Vorlage wählen</target>
 			</trans-unit>

@@ -15,6 +15,36 @@ plugin.tx_vinou_wines {
 	}
 
 	settings {
+		list {
+			regular {
+				image {
+					maxWidth = 100
+					maxHeight = 200
+				}
+				text {
+					crop = 150
+					append = ...
+				}
+			}
+			slider {
+				image {
+					maxWidth = 150
+					maxHeight = 400
+				}
+				text {
+					crop = 100
+					append = ...
+				}
+			}
+		}
+
+		detail {
+			facts = articlenumber,tastes_id,vintage,alcohol,sweetness,acid,bottlesize,drinktemperature,winetypes,price,place,type,region
+			image {
+				maxWidth = 200
+				maxHeight = 600
+			}
+		}
 		billing {
 			required = firstname,lastname,address,zip,city,email
 		}
@@ -22,10 +52,10 @@ plugin.tx_vinou_wines {
 			required = firstname,lastname,address,zip,city
 		}
 		mail {
-			senderName = Shopname
-			senderEmail = noreply@yourshop.com
+			senderName = Vinou Wines
+			senderEmail = noreply@domain.com
 			adminName = Admin
-			adminEmail = admin@yourshop.com
+			adminEmail = admin@domain.com
 			attachements {
 				generalBusinessTerms = 
 				cancellationPolicy =
@@ -44,3 +74,16 @@ plugin.tx_vinou_wines {
 }
 
 module.tx_vinou_wines < plugin.tx_vinou_wines
+
+page {
+	includeCSS {
+		slickCSS = EXT:vinou/Vendor/slick/slick.css
+		fontawesome = EXT:vinou/Vendor/fontawesome/css/font-awesome.min.css
+		vinouCSS = EXT:vinou/Resources/Public/Styles/main.css
+	}
+	includeJSFooterlibs {
+		jquery = EXT:vinou/Vendor/jquery/jquery.1.11.1.js
+		slick = EXT:vinou/Vendor/slick/slick.min.js
+		initVinou = EXT:vinou/Resources/Public/Scripts/init.js
+	}
+}

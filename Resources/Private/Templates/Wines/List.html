@@ -1,41 +1,20 @@
 <f:layout name="Wines" />
 
 <f:section name="main">
-	<div class="products-square-list">
-		<f:for each="{products}" as="product">
-			<div class="square">
-				<div class="imageWrap">
-					<f:if condition="{settings.detailPid}">
-						<f:then>
-							<f:link.action action="detail" pageUid="{settings.detailPid}" arguments="{product:product.uid}" class="image" style="background-image: url({f:uri.image(src:'{product.preview.0.uid}',treatIdAsReference:'1',maxWidth:'400')});">
-							</f:link.action>
-						</f:then>
-						<f:else>
-							<div class="image" style="background-image: url({f:uri.image(src:'{product.preview.0.uid}',treatIdAsReference:'1',maxWidth:'400')});">
-							</div>
-						</f:else>
-					</f:if>
-					
-				</div>
-				<div class="textbox">
-					<h3>{product.title}</h3>
-					<span class="price"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{product.price}</f:format.currency></span>
-					<f:if condition="{settings.basketPid}">
-						<f:then>
-							<f:form action="basket" pageUid="{settings.basketPid}">
-								<f:form.hidden name="product" value="{product.uid}" />
-								<f:form.textfield name="quantity" type="number" placeholder="{f:translate(key:'list.quantity')}" required="TRUE"/>
-								<f:form.button type="submit" name="submit"><i class="fa fa-shopping-cart" aria-hidden="true"></i></f:form.button>
-							</f:form>
-						</f:then>
-					</f:if>
-					<f:if condition="{settings.detailPid}">
-						<f:then>
-							<f:link.action action="detail" pageUid="{settings.detailPid}" arguments="{product:product.uid}"><f:translate key="list.details"/></f:link.action>
-						</f:then>
-					</f:if>
-				</div>
+	<f:switch expression="{settings.templateLayout}">
+		<f:case value="listSlider">
+			<div class="vinouWineList slider">
+				<f:for each="{wines}" as="wine">
+					<f:render partial="List/SlideItem" arguments="{wine: wine,settings:settings}" />
+				</f:for>
 			</div>
-		</f:for>
-	</div>
+		</f:case>
+		<f:case default="TRUE">
+			<div class="vinouWineList regular" data-count="{f:if(condition:'{settings.itemsPerRow}',then:'{settings.itemsPerRow}',else:'5')}">
+				<f:for each="{wines}" as="wine">
+					<f:render partial="List/Item" arguments="{wine: wine,settings:settings}" />
+				</f:for>
+			</div>
+		</f:case>
+	</f:switch>
 </f:section>

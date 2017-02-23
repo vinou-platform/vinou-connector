@@ -1,37 +1,31 @@
+{namespace vin=Interfrog\Vinou\ViewHelpers}
 <f:layout name="Wines" />
 
 <f:section name="main">
-	<div class="product-details">
-		<f:if condition="{product.images ->f:count()}>0">
-			<f:then>
-				<div class="image">
-					<a href="{f:uri.image(src:'{product.images.0.uid}', treatIdAsReference:1, maxWidth:'1000', maxHeight:'1000')}" title="{product.images.0.title}" class="{settings.detail.media.image.lightbox.class}" rel="{settings.detail.media.image.lightbox.rel}">
-						<f:image src="{product.images.0.uid}" treatIdAsReference="1" title="{product.images.0.title}" alt="{product.images.0.alternative}" maxWidth="700" maxHeight="350c" />
-					</a>
-				</div>
-			</f:then>
-		</f:if>
-		<h3>{product.title}</h3>
-		<f:if condition="{product.teaser}">
-			<f:then>
-				<p><strong>{product.teaser}</strong></p>
-			</f:then>
-		</f:if>
-		<f:format.html parseFuncTSPath="lib.parseFunc_RTE">{product.description}</f:format.html>
-		<span class="price"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{product.price}</f:format.currency></span>
-		<f:if condition="{settings.basketPid}">
-			<f:then>
-				<f:form action="basket" pageUid="{settings.basketPid}">
-					<f:form.hidden name="product" value="{product.uid}" />
-					<f:form.textfield name="quantity" type="number" placeholder="Menge"/>
-					<f:form.button type="submit" name="submit"><i class="fa fa-shopping-cart" aria-hidden="true"></i></f:form.button>
-				</f:form>
-			</f:then>
-		</f:if>
-		<f:if condition="{backPid}">
-			<f:then>
-				<f:link.page pageUid="{backPid}"><f:translate key="detail.back"/></f:link.page>
-			</f:then>
-		</f:if>
+	<div class="vinouWineDetails">
+		<h1>{wine.name}</h1>
+		<f:debug>{wine.facts}</f:debug>
+		<div class="overview">
+			<div class="image">
+				<f:image src="{vin:CacheApiImage(image:wine.image,tstamp:wine.chstamp)}" maxWidth="{settings.detail.image.maxWidth}" maxHeight="{settings.detail.image.maxHeight}"/>
+			</div>
+			<div class="description">
+				<table border="0" cellspacing="0" cellpadding="0" class="wineFacts">
+					<f:for each="{wine.facts}" as="value" key="label">
+						<f:render partial="Detail/Fact" arguments="{label:label,value:value}" />
+					</f:for>
+				</table>
+				<f:if condition="{wine.description}">
+					<f:then>
+						<p>{wine.description -> f:format.nl2br()}</p>
+					</f:then>
+				</f:if>
+				<f:if condition="{backPid}">
+					<f:then>
+						<f:link.page pageUid="{backPid}" class="vinouButton back"><f:translate key="detail.back"/></f:link.page>
+					</f:then>
+				</f:if>
+			</div>
+		</div>
 	</div>
 </f:section>

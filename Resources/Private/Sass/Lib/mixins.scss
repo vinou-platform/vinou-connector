@@ -1,0 +1,34 @@
+@mixin fontawesome() {
+	display: inline-block;
+	font-family: 'FontAwesome';
+	line-height: 1em;
+	font-weight: normal;
+	font-size: inherit;
+	font-style: normal;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+@mixin clearafter() {
+	&:after {
+		content: " ";
+		display: block;
+		clear: both;
+		width: 100%;
+		height: 0px;
+		overflow: hidden;
+	}
+}
+
+@mixin breakpoint($min) {
+    @media only screen and (min-width: $min) { @content ; }
+}
+
+@mixin breakpointMinMax($min,$max) {
+    @media only screen and (min-width: $min) and (max-width: $max) { @content ; }
+}
+
+@mixin breakpointMax($max) {
+    @media only screen and (max-width: $max) { @content ; }
+}
