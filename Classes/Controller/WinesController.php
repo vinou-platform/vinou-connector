@@ -187,7 +187,9 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		if ($this->request->hasArgument('wine')) {
 			$wineId = $this->request->getArgument('wine');
 			$wine = $this->api->getWine($wineId);
+			$wine['expertise'] = $this->api->getExpertise($wineId);
 		}
+
 
 		$this->view->assign('wine', $this->localizeWine($wine));
 		$this->view->assign('backPid', $this->backPid);

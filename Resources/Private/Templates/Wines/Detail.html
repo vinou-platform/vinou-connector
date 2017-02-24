@@ -124,11 +124,14 @@
 						<p>{wine.description -> f:format.nl2br()}</p>
 					</f:then>
 				</f:if>
+				<p>
+				<a href="{vin:CacheApiPdf(pdf:wine.expertise,tstamp:wine.chstamp,id:wine.id)}" target="_blank" class="vinouButton">Expertise</a>
 				<f:if condition="{backPid}">
 					<f:then>
 						<f:link.page pageUid="{backPid}" class="vinouButton back"><f:translate key="detail.back"/></f:link.page>
 					</f:then>
 				</f:if>
+				</p>
 			</div>
 		</div>
 	</div>

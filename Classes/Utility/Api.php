@@ -56,6 +56,12 @@ class Api {
 		return $result['wines'];
 	}
 
+	public function getExpertise($id) {
+		$postData = ['id' => $id];
+		$result = $this->curlApiRoute('/service/wines/getExpertise',$postData);
+		return $result['pdf'];
+	}
+
 	public function getCategory($id) {
 		$postData = ['id' => $id];
 		$result = $this->curlApiRoute('/service/categories/get',$postData);
