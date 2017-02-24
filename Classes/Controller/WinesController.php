@@ -46,6 +46,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 	protected $api;
 	protected $llPath = 'Resources/Private/Language/';
+	protected $translations;
 
 	protected $errors = [];
 	protected $messages = [];
@@ -107,6 +108,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	      $this->extConf['authId'],
 	      $dev
 	    );
+	    $this->translations = new \Interfrog\Vinou\Utility\Translation();
 
 	}
 
@@ -166,6 +168,10 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 				break;
 		}
 
+		foreach ($wines as $index => $wine) {
+			$wines[$index] = $this->localizeWine($wine);
+		}
+
 		$this->view->assign('wines', $wines);
 		$this->view->assign('settings', $this->settings);
 	}
@@ -183,32 +189,42 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			$wine = $this->api->getWine($wineId);
 		}
 
+		$this->view->assign('wine', $this->localizeWine($wine));
+		$this->view->assign('backPid', $this->backPid);
+		$this->view->assign('settings', $this->settings);
+	}
+
+	/**
+	 *
+	 * localize wine
+	 *
+	 * @param array $wine
+	 * @return array
+	 */
+	private function localizeWine($wine = NULL) {
 		foreach ($wine as $property => $value) {
 			switch ($property) {
 				case 'grapetypes':
 					$grapetypes = [];
 					foreach ($value as $grapetype) {
-						$grapetypes[$grapetype] = \Interfrog\Vinou\Utility\Translation::getGrapeType($grapetype,$this->llPath);
+						$grapetypes[$grapetype] = $this->translations->grapetypes[$grapetype];
 					}
 					$wine[$property] = $grapetypes;
 					break;
 				case 'type':
-					$wine[$property] = \Interfrog\Vinou\Utility\Translation::getType($value,$this->llPath);
+					$wine[$property] = $this->translations->winetypes[$value];
 					break;
 				case 'tastes_id':
-					$wine[$property] = \Interfrog\Vinou\Utility\Translation::getTaste($value,$this->llPath);
+					$wine[$property] = $this->translations->tastes[$value];
 					break;
 				case 'region':
-					$wine[$property] = \Interfrog\Vinou\Utility\Translation::getRegion($value,$this->llPath);
+					$wine[$property] = $this->translations->regions[$value];
 					break;
+				default:
+					$wine[$property] = $value;
 			}
 		}
-
-		
-
-		$this->view->assign('wine', $wine);
-		$this->view->assign('backPid', $this->backPid);
-		$this->view->assign('settings', $this->settings);
+		return $wine;
 	}
 
 	/**
