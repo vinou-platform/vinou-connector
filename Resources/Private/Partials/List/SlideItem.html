@@ -1,17 +1,22 @@
 {namespace vin=Interfrog\Vinou\ViewHelpers}
 <div class="item">
-	<div class="image">
-		<f:image src="{vin:CacheApiImage(image:wine.image,tstamp:wine.chstamp)}" maxWidth="{settings.list.slider.image.maxWidth}" maxHeight="{settings.list.slider.image.maxHeight}"/>
-	</div>
-	<div class="overlay">
-		<h2>{wine.name}</h2>
-		<f:if condition="{settings.list.slider.text.crop}">
-			<f:then>
-				<p><f:format.crop maxCharacters="{settings.list.slider.text.crop}" append="{settings.list.slider.text.append}">{wine.description}</f:format.crop></p>
-			</f:then>
-			<f:else>
-				<p>{wine.description}</p>
-			</f:else>
-		</f:if>
+	<div class="inner">
+		<div class="image">
+			<f:image src="{vin:CacheApiImage(image:wine.image,tstamp:wine.chstamp)}" maxWidth="{settings.list.slider.image.maxWidth}" maxHeight="{settings.list.slider.image.maxHeight}"/>
+		</div>
+		<div class="description">
+			<h2>{wine.name}</h2>
+			<f:if condition="{settings.list.slider.text.crop}">
+				<f:then>
+					<p><f:format.crop maxCharacters="{settings.list.slider.text.crop}" append="{settings.list.slider.text.append}">{wine.description}</f:format.crop></p>
+				</f:then>
+				<f:else>
+					<p>{wine.description}</p>
+				</f:else>
+			</f:if>
+			<f:link.action action="detail" pageUid="{settings.detailPid}" arguments="{wine:wine.id}" class="vinouButton more">
+				<f:translate key="LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:list.more"/>
+			</f:link.action>
+		</div>
 	</div>
 </div>

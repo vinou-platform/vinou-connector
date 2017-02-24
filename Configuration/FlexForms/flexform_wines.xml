@@ -101,7 +101,7 @@
                             <config>
                                 <type>select</type>
                                 <eval>int,required</eval>
-                                <itemsProcFunc>Interfrog\Vinou\Hooks\WinesFlexForm->user_templateLayout</itemsProcFunc>
+                                <itemsProcFunc>Interfrog\Vinou\Hooks\WinesFlexForm->vinouTypes</itemsProcFunc>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.type.empty</numIndex>

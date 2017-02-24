@@ -39,7 +39,7 @@ plugin.tx_vinou_wines {
 		}
 
 		detail {
-			facts = articlenumber,tastes_id,vintage,alcohol,sweetness,acid,bottlesize,drinktemperature,winetypes,price,place,type,region
+			facts = articlenumber,type,grapetypes,tastes_id,vintage,alcohol,sweetness,acid,bottlesize,drinktemperature,price,place,region
 			image {
 				maxWidth = 200
 				maxHeight = 600

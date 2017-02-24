@@ -1,0 +1,18 @@
+{
+	"de":{
+		"red":"Rotwein",
+		"white":"Weißwein",
+		"rose":"Rosé",
+		"sparkling":"Sekt",
+		"destilate":"Destillat",
+		"general":"Sonstiges"
+	},
+	"en":{
+		"red":"Redwine",
+		"white":"Whitewine",
+		"rose":"Rosé",
+		"sparkling":"Champagne",
+		"destilate":"Destillate",
+		"general":"Others"
+	}
+}

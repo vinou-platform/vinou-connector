@@ -37,8 +37,8 @@
 			<trans-unit id="detail.drinktemperature">
 				<source>drinktemperature</source>
 			</trans-unit>
-			<trans-unit id="detail.winetypes">
-				<source>winetype</source>
+			<trans-unit id="detail.grapetypes">
+				<source>grape type</source>
 			</trans-unit>
 			<trans-unit id="detail.price">
 				<source>price</source>

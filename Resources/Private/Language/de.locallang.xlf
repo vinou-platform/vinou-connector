@@ -48,8 +48,8 @@
 				<source>drinktemperature</source>
 				<target>Trinktemperatur</target>
 			</trans-unit>
-			<trans-unit id="detail.winetypes">
-				<source>winetype</source>
+			<trans-unit id="detail.grapetypes">
+				<source>grape types</source>
 				<target>Rebsorte</target>
 			</trans-unit>
 			<trans-unit id="detail.price">

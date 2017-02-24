@@ -44,7 +44,8 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 */
 	protected $configurationManager;
 
-	protected $api; 
+	protected $api;
+	protected $llPath = 'Resources/Private/Language/';
 
 	protected $errors = [];
 	protected $messages = [];
@@ -70,6 +71,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
 		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+		$this->llPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey).$this->llPath;
 
 		$settings = $this->configurationManager->getConfiguration(
 			\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
@@ -159,6 +161,9 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			case 'category':
 				$wines = $this->api->getWinesByCategory($this->settings['category']);
 				break;
+			case 'type':
+				$wines = $this->api->getWinesByType($this->settings['type']);
+				break;
 		}
 
 		$this->view->assign('wines', $wines);
@@ -176,13 +181,30 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		if ($this->request->hasArgument('wine')) {
 			$wineId = $this->request->getArgument('wine');
 			$wine = $this->api->getWine($wineId);
-
 		}
 
-		$wine['facts'] = [];
-		foreach (explode(',',$this->settings['detail']['facts']) as $fact) {
-			$wine['facts'][$fact] = $wine[$fact];
+		foreach ($wine as $property => $value) {
+			switch ($property) {
+				case 'grapetypes':
+					$grapetypes = [];
+					foreach ($value as $grapetype) {
+						$grapetypes[$grapetype] = \Interfrog\Vinou\Utility\Translation::getGrapeType($grapetype,$this->llPath);
+					}
+					$wine[$property] = $grapetypes;
+					break;
+				case 'type':
+					$wine[$property] = \Interfrog\Vinou\Utility\Translation::getType($value,$this->llPath);
+					break;
+				case 'tastes_id':
+					$wine[$property] = \Interfrog\Vinou\Utility\Translation::getTaste($value,$this->llPath);
+					break;
+				case 'region':
+					$wine[$property] = \Interfrog\Vinou\Utility\Translation::getRegion($value,$this->llPath);
+					break;
+			}
 		}
+
+		
 
 		$this->view->assign('wine', $wine);
 		$this->view->assign('backPid', $this->backPid);

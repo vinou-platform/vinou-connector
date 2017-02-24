@@ -30,7 +30,7 @@ class Api {
             'Origin: '.$_SERVER['SERVER_NAME']                                                                       
         ));                                                                                                                   
         $result = curl_exec($ch);
-    	return (array)json_decode($result);
+    	return json_decode($result,true);
 	}
 
 	public function getWine($id) {
@@ -48,7 +48,7 @@ class Api {
 	public function getWinesByType($type) {
 		$postData = ['type' => $type];
 		$result = $this->curlApiRoute('/service/wines/getByType',$postData);
-		return $result;
+		return $result['wines'];
 	}
 
 	public function getWinesAll() {

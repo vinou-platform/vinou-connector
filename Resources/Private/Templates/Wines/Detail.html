@@ -4,16 +4,120 @@
 <f:section name="main">
 	<div class="vinouWineDetails">
 		<h1>{wine.name}</h1>
-		<f:debug>{wine.facts}</f:debug>
 		<div class="overview">
 			<div class="image">
 				<f:image src="{vin:CacheApiImage(image:wine.image,tstamp:wine.chstamp)}" maxWidth="{settings.detail.image.maxWidth}" maxHeight="{settings.detail.image.maxHeight}"/>
 			</div>
 			<div class="description">
 				<table border="0" cellspacing="0" cellpadding="0" class="wineFacts">
-					<f:for each="{wine.facts}" as="value" key="label">
-						<f:render partial="Detail/Fact" arguments="{label:label,value:value}" />
-					</f:for>
+					<f:if condition="{wine.articlenumber}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.articlenumber"/></td>
+								<td class="value">{wine.articlenumber}</td>
+							</tr>
+						</f:then>
+					</f:if>
+					<f:if condition="{wine.type}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.type"/></td>
+								<td class="value">{wine.type}</td>
+							</tr>
+						</f:then>
+					</f:if>
+					<f:if condition="{wine.grapetypes}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.grapetypes"/></td>
+								<td class="value">
+									<f:for each="{wine.grapetypes}" as="grapetype" iteration="index">
+										{grapetype}{f:if(condition:'{index.isLast}',then:'',else:', ')}
+									</f:for>
+								</td>
+							</tr>
+						</f:then>
+					</f:if>
+					<f:if condition="{wine.tastes_id}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.tastes_id"/></td>
+								<td class="value">{wine.tastes_id}</td>
+							</tr>
+						</f:then>
+					</f:if>
+					<f:if condition="{wine.vintage}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.vintage"/></td>
+								<td class="value">{wine.vintage}</td>
+							</tr>
+						</f:then>
+					</f:if>
+					<f:if condition="{wine.alcohol}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.alcohol"/></td>
+								<td class="value">{wine.alcohol -> f:format.number(decimalSeparator:',',decimals:'1')} Vol. %</td>
+							</tr>
+						</f:then>
+					</f:if>
+					<f:if condition="{wine.sweetness}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.sweetness"/></td>
+								<td class="value">{wine.sweetness -> f:format.number(decimalSeparator:',',decimals:'1')} g/l</td>
+							</tr>
+						</f:then>
+					</f:if>
+					<f:if condition="{wine.acid}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.acid"/></td>
+								<td class="value">{wine.acid -> f:format.number(decimalSeparator:',',decimals:'1')} g/l</td>
+							</tr>
+						</f:then>
+					</f:if>
+					<f:if condition="{wine.bottlesize}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.bottlesize"/></td>
+								<td class="value">{wine.bottlesize -> f:format.number(decimalSeparator:',')} l</td>
+							</tr>
+						</f:then>
+					</f:if>
+					<f:if condition="{wine.drinktemperature}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.drinktemperature"/></td>
+								<td class="value">{wine.drinktemperature} °C</td>
+							</tr>
+						</f:then>
+					</f:if>
+					<f:if condition="{wine.price}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.price"/></td>
+								<td class="value">{wine.price -> f:format.number(decimalSeparator:',',decimals:'2')} €</td>
+							</tr>
+						</f:then>
+					</f:if>
+					<f:if condition="{wine.place}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.place"/></td>
+								<td class="value">{wine.place}</td>
+							</tr>
+						</f:then>
+					</f:if>
+					<f:if condition="{wine.region}">
+						<f:then>
+							<tr>
+								<td class="label"><f:translate key="detail.region"/></td>
+								<td class="value">{wine.region}</td>
+							</tr>
+						</f:then>
+					</f:if>
 				</table>
 				<f:if condition="{wine.description}">
 					<f:then>
