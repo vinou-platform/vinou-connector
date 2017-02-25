@@ -3,6 +3,8 @@ namespace Interfrog\Vinou\Utility;
 
 class Images {
 
+	CONST APIURL = 'https://api.vinou.de';
+
 	public static function getExternalImage($url) {         
 	    $headers[] = 'Accept: image/gif, image/x-bitmap, image/jpeg, image/pjpeg';              
 	    $headers[] = 'Connection: Keep-Alive';         
@@ -20,11 +22,18 @@ class Images {
 	    return $return;     
 	}
 
-	public static function storeApiImage($imagesrc,$localFolder) {
+	public static function storeApiImage($imagesrc,$localFolder,$chstamp = NULL) {
 		$fileName = array_values(array_slice(explode('/',$imagesrc), -1))[0];
 		$localFile = $localFolder.$fileName;
+
+		$chdate = new \DateTime($chstamp);
+		$changeStamp = $chdate->getTimestamp();
+
 		if(!file_exists($localFile)){
-			$image = self::getExternalImage('https://api.vinou.de'.$imagesrc); 
+			$image = self::getExternalImage(self::APIURL.$imagesrc); 
+			file_put_contents($localFile,$image);
+		} else if (!is_null($chstamp) && $changeStamp > filemtime($localFile)) {
+			$image = self::getExternalImage(self::APIURL.$imagesrc); 
 			file_put_contents($localFile,$image);
 		}
 		return $fileName;

@@ -3,30 +3,32 @@ namespace Interfrog\Vinou\Utility;
 
 class Pdf {
 
-	public static function getExternalPDF($url) {         
-	    $headers[] = 'Accept: image/gif, image/x-bitmap, image/jpeg, image/pjpeg';              
-	    $headers[] = 'Connection: Keep-Alive';         
-	    $headers[] = 'Content-type: application/x-www-form-urlencoded;charset=UTF-8';         
-	    $user_agent = 'php';         
-	    $process = curl_init($url);         
-	    curl_setopt($process, CURLOPT_HTTPHEADER, $headers);         
-	    curl_setopt($process, CURLOPT_HEADER, 0);         
-	    curl_setopt($process, CURLOPT_USERAGENT, $user_agent); //check here         
-	    curl_setopt($process, CURLOPT_TIMEOUT, 30);         
-	    curl_setopt($process, CURLOPT_RETURNTRANSFER, 1);         
-	    curl_setopt($process, CURLOPT_FOLLOWLOCATION, 1);         
-	    $return = curl_exec($process);         
-	    curl_close($process);         
-	    return $return;     
+	CONST APIURL = 'https://api.vinou.de';
+
+	public static function getExternalPDF($src,$target) {       
+	    set_time_limit(0);
+		$fp = fopen ($target, 'w+');
+		$process = curl_init(str_replace(" ","%20",$src));
+		curl_setopt($process, CURLOPT_TIMEOUT, 50);
+		curl_setopt($process, CURLOPT_FILE, $fp);
+		curl_setopt($process, CURLOPT_FOLLOWLOCATION, true);
+		$return = curl_exec($process);
+		curl_close($process);
+		return $return;
 	}
 
-	public static function storeApiPDF($src,$localFolder,$prefix = '') {
+	public static function storeApiPDF($src,$localFolder,$prefix = '',$chstamp = NULL) {
 		$fileName = array_values(array_slice(explode('/',$src), -1))[0];
 		$convertedFileName = self::convertFileName($prefix.$fileName);
 		$localFile = $localFolder.$convertedFileName;
+
+		$chdate = new \DateTime($chstamp);
+		$changeStamp = $chdate->getTimestamp();
+
 		if(!file_exists($localFile)){
-			$pdf = self::getExternalPDF('https://api.vinou.de'.$src); 
-			file_put_contents($localFile,$pdf);
+			$result = self::getExternalPDF(self::APIURL.$src,$localFile);
+		} else if (!is_null($chstamp) && $changeStamp > filemtime($localFile)) {
+			$result = self::getExternalPDF(self::APIURL.$src,$localFile);
 		}
 		return $convertedFileName;
 	}

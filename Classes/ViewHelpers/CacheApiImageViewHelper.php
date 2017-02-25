@@ -6,8 +6,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 class CacheApiImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
-	protected $apiUrl = 'https://api.vinou.de';
-	protected $localDir = 'typo3temp/vinou/';
+	const LOCALDIR = 'typo3temp/vinou/';
 
     /**
      * @param string $image
@@ -16,12 +15,12 @@ class CacheApiImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
      */
 	public function render($image,$tstamp) {
 
-		$absLocalDir = GeneralUtility::getFileAbsFileName($this->localDir);
+		$absLocalDir = GeneralUtility::getFileAbsFileName(self::LOCALDIR);
         if(!is_dir($absLocalDir)){
             mkdir($absLocalDir, 0777, true);
         }
-        $fileName = \Interfrog\Vinou\Utility\Images::storeApiImage($image,$absLocalDir);
+        $fileName = \Interfrog\Vinou\Utility\Images::storeApiImage($image,$absLocalDir,$tstamp);
 
-		return $this->localDir.$fileName;
+		return self::LOCALDIR.$fileName;
 	}
 }

@@ -46,6 +46,8 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 	protected $api;
 	protected $llPath = 'Resources/Private/Language/';
+	protected $localDir = 'typo3temp/vinou/';
+	protected $absLocalDir = '';
 	protected $translations;
 
 	protected $errors = [];
@@ -87,6 +89,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		isset($this->settings['basketPid']) ? $this->basketPid = $this->settings['basketPid'] : $this->basketPid = NULL;
 		isset($this->settings['orderPid']) ? $this->orderPid = $this->settings['orderPid'] : $this->orderPid = $GLOBALS['TSFE']->id;
 		isset($this->settings['finishPid']) ? $this->finishPid = $this->settings['finishPid'] : $this->finishPid = $GLOBALS['TSFE']->id;
+		$this->settings['cacheExpertise'] = (bool)$this->extConf['cacheExpertise'];
 
 		$this->sender = [
 			$this->settings['mail']['senderEmail'] => $this->settings['mail']['senderName']
@@ -108,6 +111,11 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	      $this->extConf['authId'],
 	      $dev
 	    );
+
+		$this->absLocalDir = GeneralUtility::getFileAbsFileName($this->localDir);
+		if(!is_dir($this->absLocalDir)){
+			mkdir($this->absLocalDir, 0777, true);
+		}
 	    $this->translations = new \Interfrog\Vinou\Utility\Translation();
 
 	}
@@ -187,11 +195,22 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		if ($this->request->hasArgument('wine')) {
 			$wineId = $this->request->getArgument('wine');
 			$wine = $this->api->getWine($wineId);
-			$wine['expertise'] = $this->api->getExpertise($wineId);
+			$this->view->assign('wine', $this->localizeWine($wine));
+
+			$pdfFile = $this->api->getExpertise($wineId);
+
+			$expertise = [
+				'src' => 'https://api.vinou.de'.$pdfFile
+			];
+
+			if ($this->settings['cacheExpertise']) {
+				$expertise['tempfile'] = $this->localDir.\Interfrog\Vinou\Utility\Pdf::storeApiPDF($pdfFile,$this->absLocalDir,$wine['id'].'-',$wine['chstamp']);
+			}
+
+			$this->view->assign('expertise', $expertise);
 		}
 
-
-		$this->view->assign('wine', $this->localizeWine($wine));
+		
 		$this->view->assign('backPid', $this->backPid);
 		$this->view->assign('settings', $this->settings);
 	}

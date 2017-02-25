@@ -6,8 +6,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 class CacheApiPdfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
-	protected $apiUrl = 'https://api.vinou.de';
-	protected $localDir = 'typo3temp/vinou/';
+	const LOCALDIR = 'typo3temp/vinou/';
 
     /**
      * @param string $pdf
@@ -17,12 +16,12 @@ class CacheApiPdfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
      */
 	public function render($pdf,$tstamp,$id) {
 
-		$absLocalDir = GeneralUtility::getFileAbsFileName($this->localDir);
+		$absLocalDir = GeneralUtility::getFileAbsFileName(self::LOCALDIR);
         if(!is_dir($absLocalDir)){
             mkdir($absLocalDir, 0777, true);
         }
-        $fileName = \Interfrog\Vinou\Utility\Pdf::storeApiPDF($pdf,$absLocalDir,$id.'-');
+        $fileName = \Interfrog\Vinou\Utility\Pdf::storeApiPDF($pdf,$absLocalDir,$id.'-',$tstamp);
 
-		return $this->localDir.$fileName;
+		return self::LOCALDIR.$fileName;
 	}
 }
