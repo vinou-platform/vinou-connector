@@ -20,8 +20,8 @@ class CacheApiImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
             mkdir($absLocalDir, 0777, true);
         }
 
-        $cacheFileProcess = \Interfrog\Vinou\Utility\Images::storeApiImage($image,$absLocalDir,$tstamp);
-        $fileName = $cacheFileProcess['fileName'];
+        $cacheImageProcess = \Interfrog\Vinou\Utility\Images::storeApiImage($image,$absLocalDir,$tstamp);
+        $fileName = $cacheImageProcess['fileName'];
 
 		return self::LOCALDIR.$fileName;
 	}

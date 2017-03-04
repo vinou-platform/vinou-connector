@@ -38,10 +38,9 @@ class Pdf {
 
 		$chdate = new \DateTime($chstamp);
 		$changeStamp = $chdate->getTimestamp();
-		$fetched = FALSE;
 		$returnArr = [
 			'fileName' => $convertedFileName,
-			'fileFetched' => $exists,
+			'fileFetched' => FALSE,
 			'requestStatus' => 'no request done'
 		];
 

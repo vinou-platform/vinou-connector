@@ -21,8 +21,8 @@ class CacheApiPdfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
             mkdir($absLocalDir, 0777, true);
         }
 
-        $cacheFileProcess = \Interfrog\Vinou\Utility\Pdf::storeApiPDF($pdf,$absLocalDir,$id.'-',$tstamp);
-        $fileName = $cacheFileProcess['fileName'];
+        $cachePDFProcess = \Interfrog\Vinou\Utility\Pdf::storeApiPDF($pdf,$absLocalDir,$id.'-',$tstamp);
+        $fileName = $cachePDFProcess['fileName'];
 
 		return self::LOCALDIR.$fileName;
 	}

@@ -82,6 +82,7 @@ class CacheExpertiseTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
         $this->reportData['imported'] = 0;
 
         $allWines = $this->api->getWinesAll();
+        $startAgain = FALSE;
         for ($i=0; $i < count($allWines); $i++) {
 
             $expertise = $allWines[$i]['expertisePDF'];
@@ -92,13 +93,18 @@ class CacheExpertiseTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
                 $cachePDFProcess = Pdf::storeApiPDF($recreatedExpertise,$this->absoluteTempDirectory,$allWines[$i]['id'].'-',$allWines[$i]['chstamp']);
             }
 
-            if (!$cachePDFProcess['fileExists']) {
+            if ($cachePDFProcess['fileFetched']) {
                 $this->reportData['imported']++;
             }
 
             if ($this->reportData['imported'] == $this->itemsPerTask) {
+                $startAgain = TRUE;
                 break;
             }
+        }
+
+        if ($startAgain) {
+            // THINGS TO DO IF MORE IMAGES MUST BE FETCHED
         }
 
         return true;

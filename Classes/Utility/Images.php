@@ -17,10 +17,11 @@ class Images {
 	    curl_setopt($process, CURLOPT_TIMEOUT, 30);         
 	    curl_setopt($process, CURLOPT_RETURNTRANSFER, 1);         
 	    curl_setopt($process, CURLOPT_FOLLOWLOCATION, 1);         
-	    $rawImage = curl_exec($process);         
+	    $rawImage = curl_exec($process);
+	    $httpStatus = curl_getinfo($process, CURLINFO_HTTP_CODE);
 	    curl_close($process);  
 	    file_put_contents($targetFile,$rawImage);       
-	    return $return;     
+	    return $httpStatus;     
 	}
 
 	public static function storeApiImage($imagesrc,$localFolder,$chstamp = NULL) {
@@ -30,19 +31,20 @@ class Images {
 
 		$chdate = new \DateTime($chstamp);
 		$changeStamp = $chdate->getTimestamp();
-
-		if(!file_exists($localFile)){
-			$image = self::getExternalImage(self::APIURL.$imagesrc,$localFile);
-			$exists = FALSE;
-		} else if (!is_null($chstamp) && $changeStamp > filemtime($localFile)) {
-			$image = self::getExternalImage(self::APIURL.$imagesrc,$localFile);
-			$exists = FALSE;
-		}
-
 		$returnArr = [
 			'fileName' => $fileName,
-			'fileExists' => $exists
+			'fileFetched' => FALSE,
+			'requestStatus' => 'no request done'
 		];
+
+		if(!file_exists($localFile)){
+			$returnArr['requestStatus'] = self::getExternalImage(self::APIURL.$imagesrc,$localFile);
+			$returnArr['fileFetched'] = TRUE;
+		} else if (!is_null($chstamp) && $changeStamp > filemtime($localFile)) {
+			$returnArr['requestStatus'] = self::getExternalImage(self::APIURL.$imagesrc,$localFile);
+			$returnArr['fileFetched'] = TRUE;
+		}
+
 		return $returnArr;
 	}
 

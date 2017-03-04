@@ -82,21 +82,21 @@ class CacheImagesTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
         $this->reportData['imported'] = 0;
 
         $allWines = $this->api->getWinesAll();
-        $needMore = FALSE;
+        $startAgain = FALSE;
         for ($i=0; $i < count($allWines); $i++) {
             
             $cacheImageProcess = Images::storeApiImage($allWines[$i]['image'],$this->absoluteTempDirectory,$allWines[$i]['chstamp']);
-            if (!$cacheImageProcess['fileExists']) {
+            if ($cacheImageProcess['fileFetched']) {
                 $this->reportData['imported']++;
             }
 
             if ($this->reportData['imported'] == $this->itemsPerTask) {
-                $needMore = TRUE;
+                $startAgain = TRUE;
                 break;
             }
         }
 
-        if ($needMore) {
+        if ($startAgain) {
             // THINGS TO DO IF MORE IMAGES MUST BE FETCHED
         }
 
