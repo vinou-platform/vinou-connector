@@ -1,9 +1,14 @@
-# General
+# Caching
 
-# cat=General/enable/1; type=boolean; label=Cache Expertise in local folder
+# cat=Caching/enable/1; type=boolean; label=Cache Expertise in local folder
 cacheExpertise = 1
 
-# cat=General/enable/2; type=boolean; label=Send all mails also as HTML Mail
+# cat=Caching/enable/2; type=string; label=Caching Folder
+cachingFolder = typo3temp/vinou
+
+# Mail
+
+# cat=Mail/enable/1; type=boolean; label=Send all mails also as HTML Mail
 sendHtmlMail = 0
 
 # Vinou

@@ -326,6 +326,28 @@
 			<trans-unit id="message.content.paypalprocess">
 				<source>Paypal Process terminated, please try again later.</source>
 			</trans-unit>
+
+			<trans-unit id="tasks.cacheapifiles.title">
+				<source>Cache Vinou-Api files</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheapifiles.description">
+				<source>Fetch wine images and expertis pdf from Vinou-API and store them into local temp folder</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheapifiles.field.receiver">
+				<source>email of receiver</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheapifiles.field.sendermail">
+				<source>sender email</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheapifiles.field.sendername">
+				<source>sender name</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheapifiles.field.ccreceiver">
+				<source>ccreceiver</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheapifiles.field.bccreceiver">
+				<source>bccreceiver</source>
+			</trans-unit>
 			
 		</body>
 	</file>

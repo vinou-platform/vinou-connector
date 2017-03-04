@@ -431,6 +431,35 @@
 				<source>Paypal Process terminated, please try again later.</source>
 				<target>Der Paypal Prozess wurde unerwartet abgebrochen, bitte versuchen sie es später erneut oder wenden Sie sich an uns.</target>
 			</trans-unit>
+
+			<trans-unit id="tasks.cacheapifiles.title">
+				<source>Cache Vinou-Api files</source>
+				<target>Cache Vinou-Api Dateien</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheapifiles.description">
+				<source>Fetch wine images and expertis pdf from Vinou-API and store them into local temp folder</source>
+				<target>Läd Bilder und PDF-Dateien aller Weine von der Vinou-API und speichert sie in temporärem Ordner. Abschließend wird ein Report gesendet</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheapifiles.field.receiver">
+				<source>email of receiver</source>
+				<target>E-Mail des Empfängers</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheapifiles.field.sendermail">
+				<source>sender email</source>
+				<target>Absender - E-Mail-Adresse</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheapifiles.field.sendername">
+				<source>sender name</source>
+				<target>Absender - Name</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheapifiles.field.ccreceiver">
+				<source>ccreceiver</source>
+				<target>CC</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheapifiles.field.bccreceiver">
+				<source>bccreceiver</source>
+				<target>BCC</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

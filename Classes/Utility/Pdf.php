@@ -8,7 +8,7 @@ class Pdf {
 	public static function getExternalPDF($src,$target) {       
 	    set_time_limit(0);
 		$fp = fopen ($target, 'w+');
-		$process = curl_init(str_replace(" ","%20",$src));
+		$process = curl_init(rawurlencode($src));
 		curl_setopt($process, CURLOPT_TIMEOUT, 50);
 		curl_setopt($process, CURLOPT_FILE, $fp);
 		curl_setopt($process, CURLOPT_FOLLOWLOCATION, true);
