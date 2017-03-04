@@ -3,7 +3,6 @@ namespace Interfrog\Vinou\Command;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Interfrog\Vinou\Utility\Api;
-use Interfrog\Vinou\Utility\Images;
 use Interfrog\Vinou\Utility\Pdf;
 
 /***************************************************************
@@ -37,7 +36,7 @@ use Interfrog\Vinou\Utility\Pdf;
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  *
  */
-class CacheApiFilesTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+class CacheExpertiseTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
     protected $extKey = 'vinou';
     protected $objectManager;
@@ -79,18 +78,28 @@ class CacheApiFilesTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     public function execute(){
         $this->init();
 
+        $this->reportData['itemsPerTask'] = $this->itemsPerTask;
         $this->reportData['imported'] = 0;
-        $this->reportData['errors'] = 0;
 
         $allWines = $this->api->getWinesAll();
-        foreach ($allWines as $index => $wine) {
-            $this->reportData['imported']++;
-            Images::storeApiImage($wine['image'],$this->absoluteTempDirectory,$wine['chstamp']);
-            //$expertise = $this->api->getExpertise($wine['id']);
-            //Pdf::storeApiPDF($expertise,$this->absoluteTempDirectory,$wine['id'].'-',$wine['chstamp']);
+        for ($i=0; $i < count($allWines); $i++) {
+
+            $expertise = $allWines[$i]['expertisePDF'];
+            $cachePDFProcess = Pdf::storeApiPDF($expertise,$this->absoluteTempDirectory,$allWines[$i]['id'].'-',$allWines[$i]['chstamp']);
+
+            if ($cachePDFProcess['requestStatus'] === 404) {
+                $recreatedExpertise = $this->api->getExpertise($allWines[$i]['id']);
+                $cachePDFProcess = Pdf::storeApiPDF($recreatedExpertise,$this->absoluteTempDirectory,$allWines[$i]['id'].'-',$allWines[$i]['chstamp']);
+            }
+
+            if (!$cachePDFProcess['fileExists']) {
+                $this->reportData['imported']++;
+            }
+
+            if ($this->reportData['imported'] == $this->itemsPerTask) {
+                break;
+            }
         }
-        
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->reportData);
 
         return true;
     }

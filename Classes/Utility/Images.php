@@ -5,7 +5,7 @@ class Images {
 
 	CONST APIURL = 'https://api.vinou.de';
 
-	public static function getExternalImage($url) {         
+	public static function getExternalImage($url,$targetFile) {         
 	    $headers[] = 'Accept: image/gif, image/x-bitmap, image/jpeg, image/pjpeg';              
 	    $headers[] = 'Connection: Keep-Alive';         
 	    $headers[] = 'Content-type: application/x-www-form-urlencoded;charset=UTF-8';         
@@ -17,26 +17,33 @@ class Images {
 	    curl_setopt($process, CURLOPT_TIMEOUT, 30);         
 	    curl_setopt($process, CURLOPT_RETURNTRANSFER, 1);         
 	    curl_setopt($process, CURLOPT_FOLLOWLOCATION, 1);         
-	    $return = curl_exec($process);         
-	    curl_close($process);         
+	    $rawImage = curl_exec($process);         
+	    curl_close($process);  
+	    file_put_contents($targetFile,$rawImage);       
 	    return $return;     
 	}
 
 	public static function storeApiImage($imagesrc,$localFolder,$chstamp = NULL) {
 		$fileName = array_values(array_slice(explode('/',$imagesrc), -1))[0];
 		$localFile = $localFolder.$fileName;
+		$exists = TRUE;
 
 		$chdate = new \DateTime($chstamp);
 		$changeStamp = $chdate->getTimestamp();
 
 		if(!file_exists($localFile)){
-			$image = self::getExternalImage(self::APIURL.$imagesrc); 
-			file_put_contents($localFile,$image);
+			$image = self::getExternalImage(self::APIURL.$imagesrc,$localFile);
+			$exists = FALSE;
 		} else if (!is_null($chstamp) && $changeStamp > filemtime($localFile)) {
-			$image = self::getExternalImage(self::APIURL.$imagesrc); 
-			file_put_contents($localFile,$image);
+			$image = self::getExternalImage(self::APIURL.$imagesrc,$localFile);
+			$exists = FALSE;
 		}
-		return $fileName;
+
+		$returnArr = [
+			'fileName' => $fileName,
+			'fileExists' => $exists
+		];
+		return $returnArr;
 	}
 
 }

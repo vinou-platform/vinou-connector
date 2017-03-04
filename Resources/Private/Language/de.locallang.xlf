@@ -432,31 +432,68 @@
 				<target>Der Paypal Prozess wurde unerwartet abgebrochen, bitte versuchen sie es später erneut oder wenden Sie sich an uns.</target>
 			</trans-unit>
 
-			<trans-unit id="tasks.cacheapifiles.title">
-				<source>Cache Vinou-Api files</source>
-				<target>Cache Vinou-Api Dateien</target>
+			<trans-unit id="tasks.cacheexpertise.title">
+				<source>Cache Vinou expertise</source>
+				<target>Cache Vinou Expertisen</target>
 			</trans-unit>
-			<trans-unit id="tasks.cacheapifiles.description">
-				<source>Fetch wine images and expertis pdf from Vinou-API and store them into local temp folder</source>
-				<target>Läd Bilder und PDF-Dateien aller Weine von der Vinou-API und speichert sie in temporärem Ordner. Abschließend wird ein Report gesendet</target>
+			<trans-unit id="tasks.cacheexpertise.description">
+				<source>Fetch expertise pdf from Vinou-API and store them into local temp folder</source>
+				<target>Läd Expertisen aller Weine von der Vinou-API und speichert sie in temporärem Ordner</target>
 			</trans-unit>
-			<trans-unit id="tasks.cacheapifiles.field.receiver">
+			<trans-unit id="tasks.cacheexpertise.field.itemsPerTask">
+				<source>Items per task run</source>
+				<target>Weine per Task-Ausführung</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheexpertise.field.receiver">
 				<source>email of receiver</source>
 				<target>E-Mail des Empfängers</target>
 			</trans-unit>
-			<trans-unit id="tasks.cacheapifiles.field.sendermail">
+			<trans-unit id="tasks.cacheexpertise.field.sendermail">
 				<source>sender email</source>
 				<target>Absender - E-Mail-Adresse</target>
 			</trans-unit>
-			<trans-unit id="tasks.cacheapifiles.field.sendername">
+			<trans-unit id="tasks.cacheexpertise.field.sendername">
 				<source>sender name</source>
 				<target>Absender - Name</target>
 			</trans-unit>
-			<trans-unit id="tasks.cacheapifiles.field.ccreceiver">
+			<trans-unit id="tasks.cacheexpertise.field.ccreceiver">
 				<source>ccreceiver</source>
 				<target>CC</target>
 			</trans-unit>
-			<trans-unit id="tasks.cacheapifiles.field.bccreceiver">
+			<trans-unit id="tasks.cacheexpertise.field.bccreceiver">
+				<source>bccreceiver</source>
+				<target>BCC</target>
+			</trans-unit>
+
+			<trans-unit id="tasks.cacheimages.title">
+				<source>Cache Vinou images</source>
+				<target>Cache Vinou Bilder</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.description">
+				<source>Fetch Images from Vinou-API and store them into local temp folder</source>
+				<target>Läd Bilder aller Weine von der Vinou-API und speichert sie in temporärem Ordner</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.field.itemsPerTask">
+				<source>Items per task run</source>
+				<target>Weine per Task-Ausführung</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.field.receiver">
+				<source>email of receiver</source>
+				<target>E-Mail des Empfängers</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.field.sendermail">
+				<source>sender email</source>
+				<target>Absender - E-Mail-Adresse</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.field.sendername">
+				<source>sender name</source>
+				<target>Absender - Name</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.field.ccreceiver">
+				<source>ccreceiver</source>
+				<target>CC</target>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.field.bccreceiver">
 				<source>bccreceiver</source>
 				<target>BCC</target>
 			</trans-unit>

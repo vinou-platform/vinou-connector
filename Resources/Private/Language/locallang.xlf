@@ -327,25 +327,53 @@
 				<source>Paypal Process terminated, please try again later.</source>
 			</trans-unit>
 
-			<trans-unit id="tasks.cacheapifiles.title">
-				<source>Cache Vinou-Api files</source>
+			<trans-unit id="tasks.cacheexpertise.title">
+				<source>Cache Vinou expertise</source>
 			</trans-unit>
-			<trans-unit id="tasks.cacheapifiles.description">
-				<source>Fetch wine images and expertis pdf from Vinou-API and store them into local temp folder</source>
+			<trans-unit id="tasks.cacheexpertise.description">
+				<source>Fetch expertise pdf from Vinou-API and store them into local temp folder</source>
 			</trans-unit>
-			<trans-unit id="tasks.cacheapifiles.field.receiver">
+			<trans-unit id="tasks.cacheexpertise.field.itemsPerTask">
+				<source>Items per task run</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheexpertise.field.receiver">
 				<source>email of receiver</source>
 			</trans-unit>
-			<trans-unit id="tasks.cacheapifiles.field.sendermail">
+			<trans-unit id="tasks.cacheexpertise.field.sendermail">
 				<source>sender email</source>
 			</trans-unit>
-			<trans-unit id="tasks.cacheapifiles.field.sendername">
+			<trans-unit id="tasks.cacheexpertise.field.sendername">
 				<source>sender name</source>
 			</trans-unit>
-			<trans-unit id="tasks.cacheapifiles.field.ccreceiver">
+			<trans-unit id="tasks.cacheexpertise.field.ccreceiver">
 				<source>ccreceiver</source>
 			</trans-unit>
-			<trans-unit id="tasks.cacheapifiles.field.bccreceiver">
+			<trans-unit id="tasks.cacheexpertise.field.bccreceiver">
+				<source>bccreceiver</source>
+			</trans-unit>
+
+			<trans-unit id="tasks.cacheimages.title">
+				<source>Cache Vinou images</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.description">
+				<source>Fetch Images from Vinou-API and store them into local temp folder</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.field.itemsPerTask">
+				<source>Items per task run</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.field.receiver">
+				<source>email of receiver</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.field.sendermail">
+				<source>sender email</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.field.sendername">
+				<source>sender name</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.field.ccreceiver">
+				<source>ccreceiver</source>
+			</trans-unit>
+			<trans-unit id="tasks.cacheimages.field.bccreceiver">
 				<source>bccreceiver</source>
 			</trans-unit>
 			

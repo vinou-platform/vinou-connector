@@ -197,14 +197,20 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			$wine = $this->api->getWine($wineId);
 			$this->view->assign('wine', $this->localizeWine($wine));
 
-			$pdfFile = $this->api->getExpertise($wineId);
-
 			$expertise = [
-				'src' => 'https://api.vinou.de'.$pdfFile
+				'src' => 'https://api.vinou.de'.$wine['expertisePDF']
 			];
 
 			if ($this->settings['cacheExpertise']) {
-				$expertise['tempfile'] = $this->localDir.\Interfrog\Vinou\Utility\Pdf::storeApiPDF($pdfFile,$this->absLocalDir,$wine['id'].'-',$wine['chstamp']);
+				$oldExpertise = $wine['expertisePDF'];
+            	$cachePDFProcess = \Interfrog\Vinou\Utility\Pdf::storeApiPDF($oldExpertise,$this->absLocalDir,$wine['id'].'-',$wine['chstamp']);
+
+            	if ($cachePDFProcess['requestStatus'] === 404) {
+	                $recreatedExpertise = $this->api->getExpertise($wine['id']);
+	                $cachePDFProcess = \Interfrog\Vinou\Utility\Pdf::storeApiPDF($recreatedExpertise,$this->absLocalDir,$wine['id'].'-',$wine['chstamp']);
+	            }
+
+				$expertise['tempfile'] = $this->localDir.$cachePDFProcess['fileName'];
 			}
 
 			$this->view->assign('expertise', $expertise);

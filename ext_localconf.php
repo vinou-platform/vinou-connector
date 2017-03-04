@@ -18,11 +18,18 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYP
 );
 
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Interfrog\\Vinou\\Command\\CacheApiFilesTask'] = array(
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Interfrog\\Vinou\\Command\\CacheExpertiseTask'] = array(
     'extension' => $_EXTKEY,
-    'title' => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tasks.cacheapifiles.title',
-    'description' => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tasks.cacheapifiles.description',
-    'additionalFields' => 'Interfrog\Vinou\Command\CacheApiFilesTaskAdditionalFieldProvider'
+    'title' => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tasks.cacheexpertise.title',
+    'description' => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tasks.cacheexpertise.description',
+    'additionalFields' => 'Interfrog\Vinou\Command\CacheExpertiseTaskAdditionalFieldProvider'
+);
+
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Interfrog\\Vinou\\Command\\CacheImagesTask'] = array(
+    'extension' => $_EXTKEY,
+    'title' => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tasks.cacheimages.title',
+    'description' => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tasks.cacheimages.description',
+    'additionalFields' => 'Interfrog\Vinou\Command\CacheImagesTaskAdditionalFieldProvider'
 );
 
 ?>

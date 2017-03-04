@@ -5,16 +5,30 @@ class Pdf {
 
 	CONST APIURL = 'https://api.vinou.de';
 
-	public static function getExternalPDF($src,$target) {       
+	public static function getExternalPDF($url,$targetFile) {       
 	    set_time_limit(0);
-		$fp = fopen ($target, 'w+');
-		$process = curl_init(rawurlencode($src));
+		$fp = fopen ($targetFile, 'w+');
+		$process = curl_init(rawurlencode(self::rawUrlEncodeApiPath($url)));
 		curl_setopt($process, CURLOPT_TIMEOUT, 50);
 		curl_setopt($process, CURLOPT_FILE, $fp);
 		curl_setopt($process, CURLOPT_FOLLOWLOCATION, true);
 		$return = curl_exec($process);
+		$httpStatus = curl_getinfo($process, CURLINFO_HTTP_CODE);
 		curl_close($process);
-		return $return;
+		return $httpStatus;
+	}
+
+	public static function getExternalPDFBinary($url,$targetFile) {
+	    $process = curl_init(self::rawUrlEncodeApiPath($url));   
+	    curl_setopt($process, CURLOPT_TIMEOUT, 30);
+	    curl_setopt($process, CURLOPT_HEADER, 0);
+	    curl_setopt($process, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($process, CURLOPT_BINARYTRANSFER,1);         
+	    $rawPDF = curl_exec($process);
+	    $httpStatus = curl_getinfo($process, CURLINFO_HTTP_CODE);
+	    curl_close($process);
+	    file_put_contents($targetFile,$rawPDF);         
+	    return $httpStatus;     
 	}
 
 	public static function storeApiPDF($src,$localFolder,$prefix = '',$chstamp = NULL) {
@@ -24,13 +38,30 @@ class Pdf {
 
 		$chdate = new \DateTime($chstamp);
 		$changeStamp = $chdate->getTimestamp();
+		$fetched = FALSE;
+		$returnArr = [
+			'fileName' => $convertedFileName,
+			'fileFetched' => $exists,
+			'requestStatus' => 'no request done'
+		];
 
 		if(!file_exists($localFile)){
-			$result = self::getExternalPDF(self::APIURL.$src,$localFile);
+			// $result = self::getExternalPDF(self::APIURL.$src,$localFile);
+			$returnArr['requestStatus'] = self::getExternalPDFBinary(self::APIURL.$src,$localFile);
+			$returnArr['fileFetched'] = TRUE;
 		} else if (!is_null($chstamp) && $changeStamp > filemtime($localFile)) {
-			$result = self::getExternalPDF(self::APIURL.$src,$localFile);
+			// $result = self::getExternalPDF(self::APIURL.$src,$localFile);
+			$returnArr['requestStatus'] = self::getExternalPDFBinary(self::APIURL.$src,$localFile);
+			$returnArr['fileFetched'] = TRUE;
 		}
-		return $convertedFileName;
+
+		return $returnArr;
+	}
+
+	public static function rawUrlEncodeApiPath($url) {
+		$urlExplode = explode('://', $url);
+	    $url = $urlExplode[0].'://'.implode('/', array_map('rawurlencode', explode('/', $urlExplode[1])));
+	    return $url;
 	}
 
 	public static function convertFileName($fileName) {
