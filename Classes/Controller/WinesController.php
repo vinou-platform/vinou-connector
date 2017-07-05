@@ -192,7 +192,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 						$wines[$index] = $this->localizeWine($wine);
 					}
 				}
-
+				$this->view->assign('category',$this->api->getCategory($this->settings['category']));
 				break;
 			case 'type':
 				$wines = $this->api->getWinesByType($this->settings['type']);
