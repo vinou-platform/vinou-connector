@@ -39,8 +39,7 @@ class Api {
 		return $result;
 	}
 
-	public function getWinesByCategory($id) {
-		$postData = ['id' => $id];
+	public function getWinesByCategory($postData) {
 		$result = $this->curlApiRoute('/service/wines/getByCategory',$postData);
 		return $result;
 	}

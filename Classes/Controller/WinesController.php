@@ -169,18 +169,42 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 		switch ($this->settings['listMode']) {
 			case 'category':
-				$wines = $this->api->getWinesByCategory($this->settings['category']);
+				$postData = [
+					'id' => $this->settings['category']
+				];
+				if (isset($this->settings['sortBy']) && !empty($this->settings['sortBy'])) {
+					$postData['sortBy'] = $this->settings['sortBy'];
+				}
+				if (isset($this->settings['sortDirection']) && !empty($this->settings['sortDirection'])) {
+					$postData['sortDirection'] = $this->settings['sortDirection'];
+				}
+				if (isset($this->settings['groupBy']) && !empty($this->settings['groupBy'])) {
+					$postData['groupBy'] = $this->settings['groupBy'];
+					$groups = $this->api->getWinesByCategory($postData);
+					foreach ($groups as $groupIndex => $group) {
+						foreach ($group as $index => $wine) {
+							$groups[$groupIndex][$index] = $this->localizeWine($wine);
+						}
+					}
+				} else {
+					$wines = $this->api->getWinesByCategory($postData);
+					foreach ($wines as $index => $wine) {
+						$wines[$index] = $this->localizeWine($wine);
+					}
+				}
+
 				break;
 			case 'type':
 				$wines = $this->api->getWinesByType($this->settings['type']);
+				foreach ($wines as $index => $wine) {
+					$wines[$index] = $this->localizeWine($wine);
+				}
 				break;
 		}
 
-		foreach ($wines as $index => $wine) {
-			$wines[$index] = $this->localizeWine($wine);
-		}
 
 		$this->view->assign('wines', $wines);
+		empty($groups) ?: $this->view->assign('groups', $groups);
 		$this->view->assign('settings', $this->settings);
 	}
 

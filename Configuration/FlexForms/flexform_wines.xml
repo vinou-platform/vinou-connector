@@ -90,6 +90,99 @@
                             </config>
                         </TCEforms>
                     </settings.category>
+                    <settings.sortBy>
+                        <TCEforms>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="1">FIELD:settings.listMode:=:category</numIndex>
+                                </OR>
+                            </displayCond>
+                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.sortBy</label>
+                            <config>
+                                <type>select</type>
+                                <items>
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.category.empty</numIndex>
+                                        <numIndex index="1"></numIndex>
+                                    </numIndex>
+                                    <numIndex index="1" type="array">
+                                        <numIndex index="0">articlenumber</numIndex>
+                                        <numIndex index="1">articlenumber</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2" type="array">
+                                        <numIndex index="0">id</numIndex>
+                                        <numIndex index="1">id</numIndex>
+                                    </numIndex>
+                                    <numIndex index="3" type="array">
+                                        <numIndex index="0">tastes_id</numIndex>
+                                        <numIndex index="1">tastes_id</numIndex>
+                                    </numIndex>
+                                    <numIndex index="4" type="array">
+                                        <numIndex index="0">price</numIndex>
+                                        <numIndex index="1">price</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.sortBy>
+                    <settings.sortDirection>
+                        <TCEforms>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="1">FIELD:settings.listMode:=:category</numIndex>
+                                </OR>
+                            </displayCond>
+                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.sortDirection</label>
+                            <config>
+                                <type>select</type>
+                                <items>
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">Aufsteigend</numIndex>
+                                        <numIndex index="1">ASC</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1" type="array">
+                                        <numIndex index="0">Absteigend</numIndex>
+                                        <numIndex index="1">DESC</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.sortDirection>
+                    <settings.groupBy>
+                        <TCEforms>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="1">FIELD:settings.listMode:=:category</numIndex>
+                                </OR>
+                            </displayCond>
+                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.groupBy</label>
+                            <config>
+                                <type>select</type>
+                                <items>
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.category.empty</numIndex>
+                                        <numIndex index="1"></numIndex>
+                                    </numIndex>
+                                    <numIndex index="1" type="array">
+                                        <numIndex index="0">articlenumber</numIndex>
+                                        <numIndex index="1">articlenumber</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2" type="array">
+                                        <numIndex index="0">id</numIndex>
+                                        <numIndex index="1">id</numIndex>
+                                    </numIndex>
+                                    <numIndex index="3" type="array">
+                                        <numIndex index="0">tastes_id</numIndex>
+                                        <numIndex index="1">tastes_id</numIndex>
+                                    </numIndex>
+                                    <numIndex index="4" type="array">
+                                        <numIndex index="0">type</numIndex>
+                                        <numIndex index="1">type</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.groupBy>
                     <settings.type>
                         <TCEforms>
                             <displayCond>

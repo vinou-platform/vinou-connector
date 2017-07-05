@@ -301,6 +301,15 @@
 			<trans-unit id="flexform_wines.templateLayout">
 				<source>Template</source>
 			</trans-unit>
+			<trans-unit id="flexform_wines.sortBy">
+				<source>Sort Property</source>
+			</trans-unit>
+			<trans-unit id="flexform_wines.sortDirection">
+				<source>Sort Direction</source>
+			</trans-unit>
+			<trans-unit id="flexform_wines.groupBy">
+				<source>Group By Property</source>
+			</trans-unit>
 
 			<trans-unit id="message.title.error">
 				<source>Error</source>

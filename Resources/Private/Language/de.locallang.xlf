@@ -398,6 +398,18 @@
 				<source>Template</source>
 				<target>Vorlage wählen</target>
 			</trans-unit>
+			<trans-unit id="flexform_wines.sortBy">
+				<source>Sort Property</source>
+				<target>Sortiert nach</target>
+			</trans-unit>
+			<trans-unit id="flexform_wines.sortDirection">
+				<source>Sort Direction</source>
+				<target>Sortierrichtung</target>
+			</trans-unit>
+			<trans-unit id="flexform_wines.groupBy">
+				<source>Group By Property</source>
+				<target>Groupiert Nach</target>
+			</trans-unit>
 
 			<trans-unit id="message.title.error">
 				<source>Error</source>

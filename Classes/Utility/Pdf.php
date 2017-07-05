@@ -31,7 +31,7 @@ class Pdf {
 	    return $httpStatus;     
 	}
 
-	public static function storeApiPDF($src,$localFolder,$prefix = '',$chstamp = NULL) {
+	public static function storeApiPDF($src,$localFolder,$prefix = '',$chstamp = NULL,$forceDownload = false) {
 		$fileName = array_values(array_slice(explode('/',$src), -1))[0];
 		$convertedFileName = self::convertFileName($prefix.$fileName);
 		$localFile = $localFolder.$convertedFileName;
@@ -50,6 +50,9 @@ class Pdf {
 			$returnArr['fileFetched'] = TRUE;
 		} else if (!is_null($chstamp) && $changeStamp > filemtime($localFile)) {
 			// $result = self::getExternalPDF(self::APIURL.$src,$localFile);
+			$returnArr['requestStatus'] = self::getExternalPDFBinary(self::APIURL.$src,$localFile);
+			$returnArr['fileFetched'] = TRUE;
+		} else if ($forceDownload) {
 			$returnArr['requestStatus'] = self::getExternalPDFBinary(self::APIURL.$src,$localFile);
 			$returnArr['fileFetched'] = TRUE;
 		}

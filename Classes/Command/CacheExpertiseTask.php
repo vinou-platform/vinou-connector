@@ -86,7 +86,13 @@ class CacheExpertiseTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
         for ($i=0; $i < count($allWines); $i++) {
 
             $expertise = $allWines[$i]['expertisePDF'];
-            $cachePDFProcess = Pdf::storeApiPDF($expertise,$this->absoluteTempDirectory,$allWines[$i]['id'].'-',$allWines[$i]['chstamp']);
+            $status = $allWines[$i]['expertiseStatus'];
+            if ($status != 'OK') {
+                $this->api->getExpertise($allWines[$i]['id']);
+                $cachePDFProcess = Pdf::storeApiPDF($expertise,$this->absoluteTempDirectory,$allWines[$i]['id'].'-',$allWines[$i]['chstamp'],true);
+            } else {
+                $cachePDFProcess = Pdf::storeApiPDF($expertise,$this->absoluteTempDirectory,$allWines[$i]['id'].'-',$allWines[$i]['chstamp']);
+            }
 
             if ($cachePDFProcess['requestStatus'] === 404) {
                 $recreatedExpertise = $this->api->getExpertise($allWines[$i]['id']);
