@@ -241,6 +241,7 @@
                             <config>
                                 <type>select</type>
                                 <itemsProcFunc>Interfrog\Vinou\Hooks\WinesFlexForm->user_templateLayout</itemsProcFunc>
+                                <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.template.default</numIndex>
