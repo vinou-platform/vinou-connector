@@ -118,6 +118,12 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		}
 	    $this->translations = new \Interfrog\Vinou\Utility\Translation();
 
+	    $loggedIn = FALSE;
+		if($GLOBALS['TSFE']->loginUser) {
+			$loggedIn = TRUE;
+		}
+		$this->view->assign('loggedIn', $loggedIn);
+
 	}
 
 	/**
