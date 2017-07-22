@@ -3,6 +3,25 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2016-12-12T11:07:00Z" product-name="vinou">
 		<header/>
 		<body>
+			<trans-unit id="be.wines.title">
+				<source>Wines</source>
+			</trans-unit>
+			<trans-unit id="be.wines.description">
+				<source>Display wines from Vinou as list or detail</source>
+			</trans-unit>
+			<trans-unit id="be.enquiry.title">
+				<source>Enquiry</source>
+			</trans-unit>
+			<trans-unit id="be.enquiry.description">
+				<source>Display an enquiry form an submit enquiry via mail</source>
+			</trans-unit>
+			<trans-unit id="be.shop.title">
+				<source>Shop</source>
+			</trans-unit>
+			<trans-unit id="be.shop.description">
+				<source>Show basket, orderform and finish action for vinou wines</source>
+			</trans-unit>
+
 			<trans-unit id="list.more">
 				<source>Read More</source>
 			</trans-unit>
@@ -235,15 +254,6 @@
 			<trans-unit id="flexform_wines.mode.list">
 				<source>List all Products</source>
 			</trans-unit>
-			<trans-unit id="flexform_wines.mode.basket">
-				<source>Basket</source>
-			</trans-unit>
-			<trans-unit id="flexform_wines.mode.order">
-				<source>Order</source>
-			</trans-unit>
-			<trans-unit id="flexform_wines.mode.finish">
-				<source>Finish Order</source>
-			</trans-unit>
 			<trans-unit id="flexform_wines.mode.detail">
 				<source>Show Wine Details</source>
 			</trans-unit>
@@ -265,6 +275,27 @@
 			<trans-unit id="flexform_wines.category.empty">
 				<source>-- Please Choose --</source>
 			</trans-unit>
+			<trans-unit id="flexform_wines.sortBy">
+				<source>Sort Property</source>
+			</trans-unit>
+			<trans-unit id="flexform_wines.sortBy.empty">
+				<source>-- Please Choose --</source>
+			</trans-unit>
+			<trans-unit id="flexform_wines.sortDirection">
+				<source>Sort Direction</source>
+			</trans-unit>
+			<trans-unit id="flexform_wines.sortDirection.asc">
+				<source>Ascending</source>
+			</trans-unit>
+			<trans-unit id="flexform_wines.sortDirection.desc">
+				<source>Descending</source>
+			</trans-unit>
+			<trans-unit id="flexform_wines.groupBy">
+				<source>Group By Property</source>
+			</trans-unit>
+			<trans-unit id="flexform_wines.groupBy.empty">
+				<source>-- Please Choose --</source>
+			</trans-unit>
 			<trans-unit id="flexform_wines.type">
 				<source>Wine Type</source>
 			</trans-unit>
@@ -274,23 +305,11 @@
 			<trans-unit id="flexform_wines.itemsPerRow">
 				<source>Items in one Row</source>
 			</trans-unit>
-			<trans-unit id="flexform_wines.storagePid">
-				<source>Storage Page</source>
-			</trans-unit>
 			<trans-unit id="flexform_wines.detailPid">
 				<source>Product Detail Page</source>
 			</trans-unit>
 			<trans-unit id="flexform_wines.backPid">
 				<source>Back to Page</source>
-			</trans-unit>
-			<trans-unit id="flexform_wines.basketPid">
-				<source>Basket-Page</source>
-			</trans-unit>
-			<trans-unit id="flexform_wines.orderPid">
-				<source>Page to finish Order</source>
-			</trans-unit>
-			<trans-unit id="flexform_wines.finishPid">
-				<source>Page after Payment</source>
 			</trans-unit>
 			<trans-unit id="flexform_wines.template">
 				<source>Layout</source>
@@ -301,14 +320,107 @@
 			<trans-unit id="flexform_wines.templateLayout">
 				<source>Template</source>
 			</trans-unit>
-			<trans-unit id="flexform_wines.sortBy">
+
+			<trans-unit id="flexform_enquiry.general">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.mode">
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.mode.form">
+				<source>Show request form</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.detailPid">
+				<source>Product Detail Page</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.finishPid">
+				<source>Landingpage after Submit</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.sortBy">
 				<source>Sort Property</source>
 			</trans-unit>
-			<trans-unit id="flexform_wines.sortDirection">
+			<trans-unit id="flexform_enquiry.sortBy.empty">
+				<source>-- Please Choose --</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.sortDirection">
 				<source>Sort Direction</source>
 			</trans-unit>
-			<trans-unit id="flexform_wines.groupBy">
-				<source>Group By Property</source>
+			<trans-unit id="flexform_enquiry.mailsettings">
+				<source>Mail-Settings</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.requestTo">
+				<source>Receiver Mail</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.requestCc">
+				<source>CC for request</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.requestBcc">
+				<source>BCC for request</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.copyToSender">
+				<source>Send copy to Sender</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.serverMail">
+				<source>Server mailadress</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.serverName">
+				<source>Server name</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.senderMailSubject">
+				<source>Subject for mail to sender</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.adminMailSubject">
+				<source>Subject for mail to admin</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.template">
+				<source>Layout</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.template.default">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="flexform_enquiry.templateLayout">
+				<source>Template</source>
+			</trans-unit>
+
+
+			<trans-unit id="flexform_shop.general">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.mode">
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.mode.basket">
+				<source>Basket</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.mode.order">
+				<source>Order</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.mode.finish">
+				<source>Finish Order</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.detailPid">
+				<source>Product Detail Page</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.backPid">
+				<source>Back to Page</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.basketPid">
+				<source>Basket-Page</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.orderPid">
+				<source>Page to finish Order</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.finishPid">
+				<source>Page after Payment</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.template">
+				<source>Layout</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.template.default">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.templateLayout">
+				<source>Template</source>
 			</trans-unit>
 
 			<trans-unit id="message.title.error">

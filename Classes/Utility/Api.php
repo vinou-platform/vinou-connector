@@ -50,8 +50,12 @@ class Api {
 		return $result['wines'];
 	}
 
-	public function getWinesAll() {
-		$result = $this->curlApiRoute('/service/wines/getAll');
+	public function getWinesAll($postData = NULL) {
+		if (is_null($postData)) {
+			$result = $this->curlApiRoute('/service/wines/getAll');
+		} else {
+			$result = $this->curlApiRoute('/service/wines/getAll',$postData);
+		}
 		return $result['wines'];
 	}
 

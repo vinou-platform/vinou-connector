@@ -10,3 +10,29 @@ plugin.tx_vinou_wines {
 		layoutRootPath = EXT:vinou/Resources/Private/Layouts/
 	}
 }
+
+plugin.tx_vinou_enquiry {
+	view {
+		# cat=tx_vinou_enquiry/file; type=string; label= Path to template root (FE)
+		templateRootPath = EXT:vinou/Resources/Private/Templates/
+
+		# cat=tx_vinou_enquiry/file; type=string; label= Path to template partials (FE)
+		partialRootPath = EXT:vinou/Resources/Private/Partials/
+
+		# cat=tx_vinou_enquiry/file; type=string; label= Path to template layouts (FE)
+		layoutRootPath = EXT:vinou/Resources/Private/Layouts/
+	}
+}
+
+plugin.tx_vinou_shop {
+	view {
+		# cat=tx_vinou_shop/file; type=string; label= Path to template root (FE)
+		templateRootPath = EXT:vinou/Resources/Private/Templates/
+
+		# cat=tx_vinou_shop/file; type=string; label= Path to template partials (FE)
+		partialRootPath = EXT:vinou/Resources/Private/Partials/
+
+		# cat=tx_vinou_shop/file; type=string; label= Path to template layouts (FE)
+		layoutRootPath = EXT:vinou/Resources/Private/Layouts/
+	}
+}

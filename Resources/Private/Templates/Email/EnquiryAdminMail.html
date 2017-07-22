@@ -1,0 +1,48 @@
+<html>
+
+<head>
+    <title>{title} {age}</title>
+</head>
+
+<body style="font-family: Arial;">
+	<p><b>Kundendaten:</b><br>
+		Name: {customer.firstname} {customer.lastname} <br>
+		Straße: {customer.address}<br>
+		PLZ/Ort: {customer.zip} {customer.city} <br>
+		Email: {customer.email}<br>
+		Tel: {customer.phone}<br>
+		Ich habe zum Zeitpunkt der Bestellung das 18. Lebensjahr vollendet: {f:if(condition:'{age}==1',then:'ja',else:'nein')}<br>
+	</p>
+	<p><b>Nachricht:</b><br>{customer.message}</p>
+	<p><b>Versandart:</b> {shipping}</p>
+	<table border="1" cellspacing="0" cellpadding="3">
+		<tr>
+			<td><b>Artikel</b></td>
+			<td><b>Nummer</b></td>
+			<td><b>Stückzahl</b></td>
+			<td><b>Preis</b></td>
+		</tr>
+		<f:for each="{wines}" as="wine">
+			<tr>
+				<td>{wine.name}</td>
+				<td>{wine.articlenumber}</td>
+				<td>{wine.quantity}</td>
+				<td>{wine.sum}</td>
+			</tr>
+		</f:for>
+		<tr>
+			<td colspan="3"><b>Gesamtsumme (Netto)</b></td>
+			<td>{net}</td>
+		</tr>
+		<tr>
+			<td colspan="3"><b>MwSt.</b></td>
+			<td>{tax}</td>
+		</tr>
+		<tr>
+			<td colspan="3"><b>Gesamtsumme (Brutto)</b></td>
+			<td>{gross}</td>
+		</tr>
+	</table>
+</body>
+
+</html>

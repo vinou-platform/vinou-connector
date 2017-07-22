@@ -75,6 +75,54 @@ plugin.tx_vinou_wines {
 
 module.tx_vinou_wines < plugin.tx_vinou_wines
 
+plugin.tx_vinou_enquiry {
+	view {
+		templateRootPaths {
+			0 = EXT:vinou/Resources/Private/Templates/
+			1 = {$plugin.tx_vinou_enquiry.view.templateRootPath}
+		}
+		partialRootPaths {
+			0 = EXT:vinou/Resources/Private/Partials/
+			1 = {$plugin.tx_vinou_enquiry.view.partialRootPath}
+		}
+		layoutRootPaths {
+			0 = EXT:vinou/Resources/Private/Layouts/
+			1 = {$plugin.tx_vinou_enquiry.view.layoutRootPath}
+		}
+	}
+}
+
+module.tx_vinou_enquiry < plugin.tx_vinou_enquiry
+
+plugin.tx_vinou_enquiry {
+	settings {
+		mail {
+			wineFields = name,articlenumber,quantity,price
+			senderMailTemplate = EXT:vinou/Resources/Private/Templates/Email/EnquirySenderMail.html
+			adminMailTemplate = EXT:vinou/Resources/Private/Templates/Email/EnquiryAdminMail.html
+		}
+	}
+}
+
+plugin.tx_vinou_shop {
+	view {
+		templateRootPaths {
+			0 = EXT:vinou/Resources/Private/Templates/
+			1 = {$plugin.tx_vinou_shop.view.templateRootPath}
+		}
+		partialRootPaths {
+			0 = EXT:vinou/Resources/Private/Partials/
+			1 = {$plugin.tx_vinou_shop.view.partialRootPath}
+		}
+		layoutRootPaths {
+			0 = EXT:vinou/Resources/Private/Layouts/
+			1 = {$plugin.tx_vinou_shop.view.layoutRootPath}
+		}
+	}
+}
+
+module.tx_vinou_shop < plugin.tx_vinou_shop
+
 page {
 	includeCSS {
 		slickCSS = EXT:vinou/Vendor/slick/slick.css

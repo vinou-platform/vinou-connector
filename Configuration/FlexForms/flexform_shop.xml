@@ -1,0 +1,140 @@
+<T3DataStructure>
+    <meta>
+    <langDisable>1</langDisable>
+    </meta>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.general</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <switchableControllerActions>
+                        <TCEforms>
+                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.mode</label>
+                            <onChange>reload</onChange>
+                            <config>
+                                <type>select</type>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.mode.basket</numIndex>
+                                        <numIndex index="1">Shop->basket;Shop->order;Shop->finish;</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.mode.order</numIndex>
+                                        <numIndex index="1">Shop->order;Shop->finish;Shop->basket;</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.mode.finish</numIndex>
+                                        <numIndex index="1">Shop->finish;Shop->basket;Shop->order;</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </switchableControllerActions>
+                    <settings.detailPid>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;</displayCond>
+                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.detailPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.detailPid>
+                    <settings.backPid>
+                        <TCEforms>
+                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.backPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.backPid>
+                    <settings.basketPid>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->basket;</displayCond>
+                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.basketPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.basketPid>
+                    <settings.orderPid>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;</displayCond>
+                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.orderPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.orderPid>
+                    <settings.finishPid>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->basket;</displayCond>
+                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.finishPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.finishPid>
+                </el>
+            </ROOT>
+        </sDEF>
+        <template>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.template</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <settings.templateLayout>
+                        <TCEforms>
+                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.templateLayout</label>
+                            <config>
+                                <type>select</type>
+                                <itemsProcFunc>Interfrog\Vinou\Hooks\WinesFlexForm->user_templateLayout</itemsProcFunc>
+                                <renderType>selectSingle</renderType>
+                                <items>
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.template.default</numIndex>
+                                        <numIndex index="1"></numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.templateLayout>
+                </el>
+            </ROOT>
+        </template>
+    </sheets>
+</T3DataStructure>
