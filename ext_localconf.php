@@ -42,6 +42,7 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYP
 	)
 );
 
+$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['cacheExpertise'] = 'EXT:'.$_EXTKEY.'/Classes/Utility/EidCacheExpertise.php';
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Interfrog\\Vinou\\Command\\CacheExpertiseTask'] = array(
     'extension' => $_EXTKEY,
