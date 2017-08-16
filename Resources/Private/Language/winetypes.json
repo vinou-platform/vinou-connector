@@ -4,6 +4,7 @@
 		"white":"Weißwein",
 		"rose":"Rosé",
 		"sparkling":"Sekt",
+		"secco":"Secco",
 		"destilate":"Destillat",
 		"general":"Sonstiges"
 	},
@@ -12,6 +13,7 @@
 		"white":"Whitewine",
 		"rose":"Rosé",
 		"sparkling":"Champagne",
+		"secco":"Secco",
 		"destilate":"Destillate",
 		"general":"Others"
 	}
