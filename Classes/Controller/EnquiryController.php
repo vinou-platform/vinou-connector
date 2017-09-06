@@ -180,7 +180,8 @@ class EnquiryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 			[$this->settings['serverMail'] => $this->settings['serverName']],
 			$this->settings['adminMailSubject'],
 			$this->settings['mail']['adminMailTemplate'],
-			$mailData
+			$mailData,
+			$args['customer']['email']
 		);
 
 		if ($customerMail && $adminMail) {
@@ -209,7 +210,7 @@ class EnquiryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	* @param array $attachement attachement to be passed to the Fluid view
 	* @return boolean TRUE on success, otherwise false
 	*/
-	protected function sendTemplateEmail($recipient, $sender, $subject, $templateFile, array $variables = array(), array $attachement = array()) {
+	protected function sendTemplateEmail($recipient, $sender, $subject, $templateFile, array $variables = array(), $replyTo = false, array $attachement = array()) {
 		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $emailView */
 		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		$message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
@@ -234,6 +235,9 @@ class EnquiryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                 $bcc = explode(',',$bcc);
             }
             $message->setBcc($bcc);
+        }
+        if ($replyTo) {
+        	$message->setReplyTo($replyTo);
         }
 
         $message->setBody($emailBody);
