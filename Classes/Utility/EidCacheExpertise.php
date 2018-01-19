@@ -62,7 +62,11 @@ class EidCacheExpertise {
             $wine = $this->api->getWine(GeneralUtility::_GET('wineID'));
             if ($this->extConf['cacheExpertise'] == 1) {
                 $cachePDFProcess = Pdf::storeApiPDF($wine['expertisePDF'],$this->absoluteTempDirectory.'/',$wine['id'].'-',$wine['chstamp'],true);
-                $redirectURL = '/'.$this->extConf['cachingFolder'].'/'.$cachePDFProcess['fileName'];
+                $localDir = $this->extConf['cachingFolder'];
+                if (substr($localDir, -1) != '/') {
+                    $localDir = $localDir . '/';
+                }
+                $redirectURL = '/'.$localDir.$cachePDFProcess['fileName'];
             } else {
                 $redirectURL = 'https://api.vinou.de'.$wine['expertisePDF'];
             }

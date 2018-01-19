@@ -14,7 +14,7 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYP
 	),
 	// non-cacheable actions
 	array(
-		'Wines' => '',
+		'Wines' => 'detail',
 	)
 );
 

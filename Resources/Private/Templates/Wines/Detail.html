@@ -125,14 +125,7 @@
 					</f:then>
 				</f:if>
 				<p>
-				<f:if condition="{settings.cacheExpertise}">
-					<f:then>
-						<a href="/{expertise.tempfile}" target="_blank" class="outlineButton">Expertise</a>
-					</f:then>
-					<f:else>
-						<a href="{expertise.src}" target="_blank" class="outlineButton">Expertise</a>
-					</f:else>
-				</f:if>
+				<a href="{wine.expertiseFile}" target="_blank" class="outlineButton">Expertise</a>
 				<f:if condition="{backPid}">
 					<f:then>
 						<f:link.page pageUid="{backPid}" class="vinouButton back"><f:translate key="detail.back"/></f:link.page>

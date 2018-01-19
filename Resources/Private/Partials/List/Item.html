@@ -10,6 +10,7 @@
 			<p>{wine.description}</p>
 		</f:else>
 	</f:if>
+	<a href="{wine.expertiseFile}" target="_blank" class="vinouButton">Expertise</a>
 	<f:link.action action="detail" pageUid="{settings.detailPid}" arguments="{wine:wine.id}" class="vinouButton more">
 		<f:translate key="LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:list.more"/>
 	</f:link.action>

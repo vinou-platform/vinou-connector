@@ -6,6 +6,7 @@ use \TYPO3\CMS\Extbase\Object\ObjectManager;
 use \TYPO3\CMS\Core\Utility\PathUtility;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 
 class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -87,7 +88,15 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	      $dev
 	    );
 
+	    if (isset($this->extConf['cachingFolder'])) {
+	    	$this->localDir = $this->extConf['cachingFolder'];
+            if (substr($this->localDir, -1) != '/') {
+                $this->localDir = $this->localDir . '/';
+            }
+	    }
 		$this->absLocalDir = GeneralUtility::getFileAbsFileName($this->localDir);
+
+
 		if(!is_dir($this->absLocalDir)){
 			mkdir($this->absLocalDir, 0777, true);
 		}
@@ -161,23 +170,8 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		if ($this->request->hasArgument('wine')) {
 			$wineId = $this->request->getArgument('wine');
 			$wine = $this->api->getWine($wineId);
+
 			$this->view->assign('wine', $this->localizeWine($wine));
-
-			$expertise = [
-				'src' => 'https://api.vinou.de'.$wine['expertisePDF']
-			];
-
-			if ($this->settings['cacheExpertise']) {
-				$oldExpertise = $wine['expertisePDF'];
-            	$cachePDFProcess = \Interfrog\Vinou\Utility\Pdf::storeApiPDF($oldExpertise,$this->absLocalDir,$wine['id'].'-',$wine['chstamp']);
-
-            	if ($cachePDFProcess['requestStatus'] === 404) {
-	                $recreatedExpertise = $this->api->getExpertise($wine['id']);
-	                $cachePDFProcess = \Interfrog\Vinou\Utility\Pdf::storeApiPDF($recreatedExpertise,$this->absLocalDir,$wine['id'].'-',$wine['chstamp']);
-	            }
-
-				$expertise['tempfile'] = $this->localDir.$cachePDFProcess['fileName'];
-			}
 
 			$this->view->assign('expertise', $expertise);
 		}
@@ -185,6 +179,38 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		
 		$this->view->assign('backPid', $this->backPid);
 		$this->view->assign('settings', $this->settings);
+	}
+
+	/**
+	 *
+	 * localize wine
+	 *
+	 * @param array $wine
+	 * @return string
+	 */
+	private function detectExpertise($wine) {
+		$src = "https://api.vinou.de".$wine['expertisePDF'];
+
+		if ($this->settings['cacheExpertise']) {
+			if ($wine['expertiseStatus']=='OK') {
+				$expertiseFile = $fileName = array_values(array_slice(explode('/',$wine['expertisePDF']), -1))[0];
+				$convertedFileName = \Interfrog\Vinou\Utility\Pdf::convertFileName($wine['id'].'-'.$fileName);
+				$localFile = $this->absLocalDir .$convertedFileName;
+
+				$dateTimeZone = new \DateTimeZone(date_default_timezone_get());
+				$timeOffset = $dateTimeZone->getOffset(new \DateTime("now",$dateTimeZone));
+
+				if(!file_exists($localFile) || strtotime($wine['chstamp'] . ' + ' . $timeOffset / 3600 .' hours') > filemtime($localFile)){
+					$src = '/?eID=cacheExpertise&wineID='.$wine['id'];
+				} else {
+					$src = '/'. $this->localDir . $convertedFileName;
+				}
+			} else {
+				$src = '/?eID=cacheExpertise&wineID='.$wine['id'];
+			}
+		}
+
+		return $src;
 	}
 
 	/**
@@ -217,6 +243,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 					$wine[$property] = $value;
 			}
 		}
+		$wine['expertiseFile'] = $this->detectExpertise($wine);
 		return $wine;
 	}
 
