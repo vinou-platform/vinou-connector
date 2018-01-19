@@ -11,7 +11,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'uploadfolder' => NULL,
 	'createDirs' => NULL,
 	'clearCacheOnLoad' => true,
-	'version' => '',
+	'version' => '1.0.0',
 	'constraints' => array(
 		'depends' => array(
 			'extbase' => '6.2',
@@ -22,5 +22,8 @@ $EM_CONF[$_EXTKEY] = array(
 		),
 		'suggests' => array(
 		),
+	),
+	'autoload' => array(
+		'psr-4' => array('Interfrog\\Vinou\\' => 'Classes')
 	),
 );
