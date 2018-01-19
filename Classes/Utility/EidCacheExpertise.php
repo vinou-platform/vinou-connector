@@ -66,7 +66,7 @@ class EidCacheExpertise {
                 if (substr($localDir, -1) != '/') {
                     $localDir = $localDir . '/';
                 }
-                $redirectURL = '/'.$localDir.$cachePDFProcess['fileName'];
+                $redirectURL = '/'.$localDir.$cachePDFProcess['fileName']. '?' .time();
             } else {
                 $redirectURL = 'https://api.vinou.de'.$wine['expertisePDF'];
             }

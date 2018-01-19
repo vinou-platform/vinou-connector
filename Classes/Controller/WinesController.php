@@ -203,7 +203,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 				if(!file_exists($localFile) || strtotime($wine['chstamp'] . ' + ' . $timeOffset / 3600 .' hours') > filemtime($localFile)){
 					$src = '/?eID=cacheExpertise&wineID='.$wine['id'];
 				} else {
-					$src = '/'. $this->localDir . $convertedFileName;
+					$src = '/'. $this->localDir . $convertedFileName. '?' .time();
 				}
 			} else {
 				$src = '/?eID=cacheExpertise&wineID='.$wine['id'];
