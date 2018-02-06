@@ -1,7 +1,7 @@
 {
     "name": "interfrog/vinou",
     "type": "typo3-cms-extension",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Extension that provides a connection for vinou.de and display wines and winelists via fluid templates",
     "keywords": [
         "TYPO3",
