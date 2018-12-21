@@ -1,6 +1,6 @@
 <?php
 
-namespace Interfrog\Vinou\Utility;
+namespace Vinou\VinouConnector\Utility;
 
 class IfTemplateLayoutUtility implements \TYPO3\CMS\Core\SingletonInterface {
 

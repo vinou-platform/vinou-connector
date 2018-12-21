@@ -1,5 +1,5 @@
 <?php
-namespace Interfrog\Vinou\Utility;
+namespace Vinou\VinouConnector\Utility;
 
 
 /**

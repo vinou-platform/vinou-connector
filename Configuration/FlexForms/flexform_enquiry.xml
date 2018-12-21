@@ -188,7 +188,7 @@
                             <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_enquiry.templateLayout</label>
                             <config>
                                 <type>select</type>
-                                <itemsProcFunc>Interfrog\Vinou\Hooks\WinesFlexForm->user_templateLayout</itemsProcFunc>
+                                <itemsProcFunc>Vinou\VinouConnector\Hooks\WinesFlexForm->user_templateLayout</itemsProcFunc>
                                 <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0" type="array">

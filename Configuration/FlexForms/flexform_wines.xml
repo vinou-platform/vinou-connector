@@ -60,7 +60,7 @@
                             <config>
                                 <type>select</type>
                                 <eval>int,required</eval>
-                                <itemsProcFunc>Interfrog\Vinou\Hooks\WinesFlexForm->vinouCategories</itemsProcFunc>
+                                <itemsProcFunc>Vinou\VinouConnector\Hooks\WinesFlexForm->vinouCategories</itemsProcFunc>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.category.empty</numIndex>
@@ -158,7 +158,7 @@
                             <config>
                                 <type>select</type>
                                 <eval>int,required</eval>
-                                <itemsProcFunc>Interfrog\Vinou\Hooks\WinesFlexForm->vinouTypes</itemsProcFunc>
+                                <itemsProcFunc>Vinou\VinouConnector\Hooks\WinesFlexForm->vinouTypes</itemsProcFunc>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.type.empty</numIndex>
@@ -225,7 +225,7 @@
                             <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.templateLayout</label>
                             <config>
                                 <type>select</type>
-                                <itemsProcFunc>Interfrog\Vinou\Hooks\WinesFlexForm->user_templateLayout</itemsProcFunc>
+                                <itemsProcFunc>Vinou\VinouConnector\Hooks\WinesFlexForm->user_templateLayout</itemsProcFunc>
                                 <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0" type="array">

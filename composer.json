@@ -1,24 +1,24 @@
 {
-    "name": "interfrog/vinou",
+    "name": "vinou/vinou-connector",
     "type": "typo3-cms-extension",
-    "version": "1.0.2",
+    "version": "2.0.0-dev",
     "description": "Extension that provides a connection for vinou.de and display wines and winelists via fluid templates",
     "keywords": [
         "TYPO3",
         "extension",
         "vinou"
     ],
-    "homepage": "http://interfrog.de",
+    "homepage": "https://www.vinou.de",
     "authors": [{
-        "name": "Interfrog Produktion GmbH",
+        "name": "Vinou GmbH",
         "role": "Developer",
-        "homepage": "http://interfrog.de"
+        "homepage": "https://www.vinou.de"
     }],
     "license": [
         "GPL-2.0+"
     ],
     "require": {
-        "typo3/cms-core": ">=7.6.0,<8.0"
+        "typo3/cms-core": ">=8.7.0,<9.0"
     },
     "config": {
         "vendor-dir": ".Build/vendor",
@@ -26,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Interfrog\\Vinou\\": "Classes"
+            "Vinou\\VinouConnector\\": "Classes"
         }
     },
     "extra": {

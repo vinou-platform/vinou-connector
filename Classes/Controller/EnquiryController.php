@@ -1,5 +1,5 @@
 <?php
-namespace Interfrog\Vinou\Controller;
+namespace Vinou\VinouConnector\Controller;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -96,7 +96,7 @@ class EnquiryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	      $dev = true;
 	    }
 
-	    $this->api = new \Interfrog\Vinou\Utility\Api(
+	    $this->api = new \Vinou\VinouConnector\Utility\Api(
 	      $this->extConf['token'],
 	      $this->extConf['authId'],
 	      $dev
@@ -106,7 +106,7 @@ class EnquiryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 		if(!is_dir($this->absLocalDir)){
 			mkdir($this->absLocalDir, 0777, true);
 		}
-	    $this->translations = new \Interfrog\Vinou\Utility\Translation();
+	    $this->translations = new \Vinou\VinouConnector\Utility\Translation();
 
 	    $loggedIn = FALSE;
 		if($GLOBALS['TSFE']->loginUser) {

@@ -17,18 +17,7 @@ sendHtmlMail = 0
 vinouMode = dev
 
 # cat=Vinou/enable/2; type=string; label=Developer-Auth-Id
-authId = 
+authId =
 
 # cat=Vinou/enable/3; type=string; label=Token
-token = 
-
-# Paypal
-
-# cat=Paypal/enable/1; type=options[sandbox,live]; label=App Mode
-paypalMode = sandbox
-
-# cat=Paypal/enable/2; type=string; label=Client-Id
-clientId = 
-
-# cat=Paypal/enable/3; type=string; label=Secret
-secret = 
+token =

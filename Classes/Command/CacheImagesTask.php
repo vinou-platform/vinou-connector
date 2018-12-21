@@ -1,14 +1,14 @@
 <?php 
-namespace Interfrog\Vinou\Command;
+namespace Vinou\VinouConnector\Command;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Interfrog\Vinou\Utility\Api;
-use Interfrog\Vinou\Utility\Images;
+use Vinou\VinouConnector\Utility\Api;
+use Vinou\VinouConnector\Utility\Images;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2017 Interfrog Produktion GmbH, a.buechner@division.ag
+ *  (c) 2018 Vinou GmbH, christian@vinou.de
  *
  *  All rights reserved
  *

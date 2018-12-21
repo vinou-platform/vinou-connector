@@ -1,10 +1,10 @@
 <?php
-namespace Interfrog\Vinou\Domain\Userfuncs;
+namespace Vinou\VinouConnector\Domain\Userfuncs;
 
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2016 Interfrog Produktion GmbH - Alexander Büchner
+ *  (c) 2018 Vinou GmbH, christian@vinou.de
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

@@ -1,5 +1,5 @@
 <?php
-namespace Interfrog\Vinou\ViewHelpers;
+namespace Vinou\VinouConnector\ViewHelpers;
 
 class UnserializeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 

@@ -1,5 +1,5 @@
 <?php
-namespace Interfrog\Vinou\Utility;
+namespace Vinou\VinouConnector\Utility;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -97,7 +97,7 @@ class EidCacheExpertise {
             $dev = true;
         }
 
-        $this->api = new \Interfrog\Vinou\Utility\Api(
+        $this->api = new \Vinou\VinouConnector\Utility\Api(
             $this->extConf['token'],
             $this->extConf['authId'],
             $dev
@@ -107,10 +107,10 @@ class EidCacheExpertise {
         if(!is_dir($this->absoluteTempDirectory)){
             mkdir($this->absoluteTempDirectory, 0777, true);
         }
-        $this->translations = new \Interfrog\Vinou\Utility\Translation();
+        $this->translations = new \Vinou\VinouConnector\Utility\Translation();
     }
 }
     global $TYPO3_CONF_VARS;
-    $eid = GeneralUtility::makeInstance('Interfrog\Vinou\Utility\EidCacheExpertise', $TYPO3_CONF_VARS);
+    $eid = GeneralUtility::makeInstance('Vinou\VinouConnector\Utility\EidCacheExpertise', $TYPO3_CONF_VARS);
     echo $eid->run();
 ?>

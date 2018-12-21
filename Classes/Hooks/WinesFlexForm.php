@@ -1,6 +1,6 @@
 <?php
 
-namespace Interfrog\Vinou\Hooks;
+namespace Vinou\VinouConnector\Hooks;
 
 class WinesFlexForm {
 
@@ -23,7 +23,7 @@ class WinesFlexForm {
       $dev = true;
     }
 
-    $this->api = new \Interfrog\Vinou\Utility\Api(
+    $this->api = new \Vinou\VinouConnector\Utility\Api(
       $this->extConf['token']['value'],
       $this->extConf['authId']['value'],
       $dev
@@ -35,7 +35,7 @@ class WinesFlexForm {
    * @param array $config
    */
   public function user_templateLayout(array &$config) {
-    $templateUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Interfrog\\Vinou\\Utility\\IfTemplateLayoutUtility');
+    $templateUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Vinou\\VinouConnector\\Utility\\IfTemplateLayoutUtility');
     $templateLayouts = $templateUtility->getAvailableTemplateLayouts($config['row']['pid']);
     foreach ($templateLayouts as $layout) {
       $additionalLayout = array(

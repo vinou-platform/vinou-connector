@@ -1,5 +1,5 @@
 <?php
-namespace Interfrog\Vinou\Controller;
+namespace Vinou\VinouConnector\Controller;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -82,7 +82,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	      $dev = true;
 	    }
 
-	    $this->api = new \Interfrog\Vinou\Utility\Api(
+	    $this->api = new \Vinou\VinouConnector\Utility\Api(
 	      $this->extConf['token'],
 	      $this->extConf['authId'],
 	      $dev
@@ -100,7 +100,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		if(!is_dir($this->absLocalDir)){
 			mkdir($this->absLocalDir, 0777, true);
 		}
-	    $this->translations = new \Interfrog\Vinou\Utility\Translation();
+	    $this->translations = new \Vinou\VinouConnector\Utility\Translation();
 
 	    $loggedIn = FALSE;
 		if($GLOBALS['TSFE']->loginUser) {
@@ -194,7 +194,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		if ($this->settings['cacheExpertise']) {
 			if ($wine['expertiseStatus']=='OK') {
 				$expertiseFile = $fileName = array_values(array_slice(explode('/',$wine['expertisePDF']), -1))[0];
-				$convertedFileName = \Interfrog\Vinou\Utility\Pdf::convertFileName($wine['id'].'-'.$fileName);
+				$convertedFileName = \Vinou\VinouConnector\Utility\Pdf::convertFileName($wine['id'].'-'.$fileName);
 				$localFile = $this->absLocalDir .$convertedFileName;
 
 				$dateTimeZone = new \DateTimeZone(date_default_timezone_get());

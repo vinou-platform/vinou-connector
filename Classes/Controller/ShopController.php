@@ -1,12 +1,12 @@
 <?php
-namespace Interfrog\Vinou\Controller;
+namespace Vinou\VinouConnector\Controller;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Object\ObjectManager;
 use \TYPO3\CMS\Core\Utility\PathUtility;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use \Interfrog\Vinou\Utility\PaypalUtility;
+use \Vinou\VinouConnector\Utility\PaypalUtility;
 
 class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -107,7 +107,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	      $dev = true;
 	    }
 
-	    $this->api = new \Interfrog\Vinou\Utility\Api(
+	    $this->api = new \Vinou\VinouConnector\Utility\Api(
 	      $this->extConf['token'],
 	      $this->extConf['authId'],
 	      $dev
@@ -117,7 +117,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if(!is_dir($this->absLocalDir)){
 			mkdir($this->absLocalDir, 0777, true);
 		}
-	    $this->translations = new \Interfrog\Vinou\Utility\Translation();
+	    $this->translations = new \Vinou\VinouConnector\Utility\Translation();
 
 	    $loggedIn = FALSE;
 		if($GLOBALS['TSFE']->loginUser) {
@@ -225,7 +225,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if ($this->request->hasArgument('product') && $this->request->hasArgument('quantity')) {
 
 			if (intval($this->request->getArgument('quantity')) > 0) {
-				$newBasketItem = new \Interfrog\Vinou\Domain\Model\Items;
+				$newBasketItem = new \Vinou\VinouConnector\Domain\Model\Items;
 				$newBasketItem->setBasket($basket);
 				$newBasketItem->setParenttype('basket');
 				$newBasketItem->setProduct($this->productsRepository->findByUid($this->request->getArgument('product')));
@@ -351,7 +351,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	private function createOrder($basketData) {
-		$newOrder = new \Interfrog\Vinou\Domain\Model\Orders;
+		$newOrder = new \Vinou\VinouConnector\Domain\Model\Orders;
 
 		$newOrder->setBasket($basketData['basketData']['basket']);
 		$newOrder->setNet(number_format($basketData['basketData']['net'],2));
@@ -472,7 +472,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		    if (!is_null($this->basketsRepository->findByFeUserId($feUserId))) {
 		    	return $this->basketsRepository->findByFeUserId($feUserId);
 		    } else {
-		    	$newBasket = new \Interfrog\Vinou\Domain\Model\Baskets;
+		    	$newBasket = new \Vinou\VinouConnector\Domain\Model\Baskets;
 		    	$newBasket->setFeUser($feUserId);
 		    	$this->basketsRepository->add($newBasket);
 		    	$this->persistenceManager->persistAll();
@@ -498,7 +498,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	private function createSessionBasket($sessionId) {
-		$newBasket = new \Interfrog\Vinou\Domain\Model\Baskets;
+		$newBasket = new \Vinou\VinouConnector\Domain\Model\Baskets;
 		$newBasket->setSession($sessionId);
 		$this->basketsRepository->add($newBasket);
 		$this->persistenceManager->persistAll();

@@ -1,5 +1,5 @@
 <?php
-namespace Interfrog\Vinou\Command;
+namespace Vinou\VinouConnector\Command;
 
 /*
  * This file is part of the TYPO3 CMS project.

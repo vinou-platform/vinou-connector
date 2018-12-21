@@ -1,5 +1,5 @@
 <?php
-namespace Interfrog\Vinou\ViewHelpers;
+namespace Vinou\VinouConnector\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -20,7 +20,7 @@ class CacheApiImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
             mkdir($absLocalDir, 0777, true);
         }
 
-        $cacheImageProcess = \Interfrog\Vinou\Utility\Images::storeApiImage($image,$absLocalDir,$tstamp);
+        $cacheImageProcess = \Vinou\VinouConnector\Utility\Images::storeApiImage($image,$absLocalDir,$tstamp);
         $fileName = $cacheImageProcess['fileName'];
 
 		return self::LOCALDIR.$fileName;
