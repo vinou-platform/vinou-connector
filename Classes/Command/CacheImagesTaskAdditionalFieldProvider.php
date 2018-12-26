@@ -41,7 +41,7 @@ class CacheImagesTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Add
     public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
     {
 
-        $extKey = 'vinou';
+        $extKey = 'vinou_connector';
 
         $fieldKeys = ['itemsPerTask','receiver','sendermail','sendername','ccreceiver','bccreceiver'];
 

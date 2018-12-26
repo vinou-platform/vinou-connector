@@ -29,11 +29,11 @@ class EidCacheExpertise {
      * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
      * @inject
      */
-    protected $persistenceManager; 
+    protected $persistenceManager;
 
     protected $api;
     protected $llPath = 'Resources/Private/Language/';
-    protected $localDir = 'typo3temp/vinou/';
+    protected $localDir = 'typo3temp/vinou_connector/';
     protected $absoluteTempDirectory = '';
     protected $translations;
 

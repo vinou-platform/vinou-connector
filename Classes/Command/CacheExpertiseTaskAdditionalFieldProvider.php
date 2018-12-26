@@ -41,7 +41,7 @@ class CacheExpertiseTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\
     public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $parentObject)
     {
 
-        $extKey = 'vinou';
+        $extKey = 'vinou_connector';
 
         $fieldKeys = ['itemsPerTask','receiver','sendermail','sendername','ccreceiver','bccreceiver'];
 

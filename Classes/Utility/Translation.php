@@ -13,7 +13,7 @@ class Translation {
 	public $grapetypes = [];
 	protected $countryCode = 'de';
 	protected $llPath = 'Resources/Private/Language/';
-	protected $extKey = 'vinou';
+	protected $extKey = 'vinou_connector';
 
 	public function __construct($countryCode = NULL) {
 		$this->llPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey).$this->llPath;

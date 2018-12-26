@@ -2,7 +2,7 @@
 
 namespace Vinou\VinouConnector\Utility;
 
-class IfTemplateLayoutUtility implements \TYPO3\CMS\Core\SingletonInterface {
+class TemplateLayoutUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Get available template layouts for a certain page

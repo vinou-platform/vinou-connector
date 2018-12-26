@@ -38,7 +38,7 @@ use Vinou\VinouConnector\Utility\Images;
  */
 class CacheImagesTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
-    protected $extKey = 'vinou';
+    protected $extKey = 'vinou_connector';
     protected $objectManager;
     protected $persistenceManager; 
     protected $extConf = NULL;

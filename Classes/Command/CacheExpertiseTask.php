@@ -38,7 +38,7 @@ use Vinou\VinouConnector\Utility\Pdf;
  */
 class CacheExpertiseTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
-    protected $extKey = 'vinou';
+    protected $extKey = 'vinou_connector';
     protected $objectManager;
     protected $persistenceManager; 
     protected $extConf = NULL;

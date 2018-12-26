@@ -6,7 +6,7 @@ class WinesFlexForm {
 
   protected $objectManager = NULL;
   protected $persistenceManager = NULL;
-  protected $extKey = 'vinou';
+  protected $extKey = 'vinou_connector';
   protected $extConf = NULL;
   protected $api = NULL;
   protected $llPath = 'Resources/Private/Language/';
@@ -35,7 +35,7 @@ class WinesFlexForm {
    * @param array $config
    */
   public function user_templateLayout(array &$config) {
-    $templateUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Vinou\\VinouConnector\\Utility\\IfTemplateLayoutUtility');
+    $templateUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Vinou\\VinouConnector\\Utility\\TemplateLayoutUtility');
     $templateLayouts = $templateUtility->getAvailableTemplateLayouts($config['row']['pid']);
     foreach ($templateLayouts as $layout) {
       $additionalLayout = array(

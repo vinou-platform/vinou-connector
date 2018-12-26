@@ -6,23 +6,23 @@
         <sDEF>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.general</sheetTitle>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.general</sheetTitle>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <switchableControllerActions>
                         <TCEforms>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.mode</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.mode</label>
                             <onChange>reload</onChange>
                             <config>
                                 <type>select</type>
                                 <items>
                                     <numIndex index="0">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.mode.list</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.mode.list</numIndex>
                                         <numIndex index="1">Wines->list;Wines->detail;</numIndex>
                                     </numIndex>
                                     <numIndex index="1">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.mode.detail</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.mode.detail</numIndex>
                                         <numIndex index="1">Wines->detail;Wines->list;</numIndex>
                                     </numIndex>
                                 </items>
@@ -32,21 +32,21 @@
                     <settings.listMode>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Wines->list;Wines->detail;</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.listmode</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.listmode</label>
                             <onChange>reload</onChange>
                             <config>
                                 <type>select</type>
                                 <items>
                                     <numIndex index="0">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.listmode.empty</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.listmode.empty</numIndex>
                                         <numIndex index="1"></numIndex>
                                     </numIndex>
                                     <numIndex index="1">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.listmode.category</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.listmode.category</numIndex>
                                         <numIndex index="1">category</numIndex>
                                     </numIndex>
                                     <numIndex index="2">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.listmode.type</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.listmode.type</numIndex>
                                         <numIndex index="1">type</numIndex>
                                     </numIndex>
                                 </items>
@@ -56,14 +56,14 @@
                     <settings.category>
                         <TCEforms>
                             <displayCond>FIELD:settings.listMode:=:category</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.category</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.category</label>
                             <config>
                                 <type>select</type>
                                 <eval>int,required</eval>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\WinesFlexForm->vinouCategories</itemsProcFunc>
                                 <items>
                                     <numIndex index="0" type="array">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.category.empty</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.category.empty</numIndex>
                                         <numIndex index="1"></numIndex>
                                     </numIndex>
                                 </items>
@@ -73,12 +73,12 @@
                     <settings.sortBy>
                         <TCEforms>
                             <displayCond>FIELD:settings.listMode:=:category</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.sortBy</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.sortBy</label>
                             <config>
                                 <type>select</type>
                                 <items>
                                     <numIndex index="0" type="array">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.sortBy.empty</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.sortBy.empty</numIndex>
                                         <numIndex index="1"></numIndex>
                                     </numIndex>
                                     <numIndex index="1" type="array">
@@ -104,16 +104,16 @@
                     <settings.sortDirection>
                         <TCEforms>
                             <displayCond>FIELD:settings.listMode:=:category</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.sortDirection</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.sortDirection</label>
                             <config>
                                 <type>select</type>
                                 <items>
                                     <numIndex index="0" type="array">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.sortDirection.asc</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.sortDirection.asc</numIndex>
                                         <numIndex index="1">ASC</numIndex>
                                     </numIndex>
                                     <numIndex index="1" type="array">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.sortDirection.desc</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.sortDirection.desc</numIndex>
                                         <numIndex index="1">DESC</numIndex>
                                     </numIndex>
                                 </items>
@@ -123,12 +123,12 @@
                     <settings.groupBy>
                         <TCEforms>
                             <displayCond>FIELD:settings.listMode:=:category</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.groupBy</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.groupBy</label>
                             <config>
                                 <type>select</type>
                                 <items>
                                     <numIndex index="0" type="array">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.groupBy.empty</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.groupBy.empty</numIndex>
                                         <numIndex index="1"></numIndex>
                                     </numIndex>
                                     <numIndex index="1" type="array">
@@ -154,14 +154,14 @@
                     <settings.type>
                         <TCEforms>
                             <displayCond>FIELD:settings.listMode:=:type</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.type</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.type</label>
                             <config>
                                 <type>select</type>
                                 <eval>int,required</eval>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\WinesFlexForm->vinouTypes</itemsProcFunc>
                                 <items>
                                     <numIndex index="0" type="array">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.type.empty</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.type.empty</numIndex>
                                         <numIndex index="1"></numIndex>
                                     </numIndex>
                                 </items>
@@ -171,7 +171,7 @@
                     <settings.itemsPerRow>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Wines->list;Wines->detail;</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.itemsPerRow</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.itemsPerRow</label>
                             <config>
                               <type>input</type>
                               <size>10</size>
@@ -183,7 +183,7 @@
                     <settings.detailPid>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Wines->list;Wines->detail;</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.detailPid</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.detailPid</label>
                             <config>
                                 <type>group</type>
                                 <internal_type>db</internal_type>
@@ -198,7 +198,7 @@
                     <settings.backPid>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Wines->detail;Wines->list;</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.backPid</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.backPid</label>
                             <config>
                                 <type>group</type>
                                 <internal_type>db</internal_type>
@@ -216,20 +216,20 @@
         <template>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.template</sheetTitle>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.template</sheetTitle>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <settings.templateLayout>
                         <TCEforms>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.templateLayout</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.templateLayout</label>
                             <config>
                                 <type>select</type>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\WinesFlexForm->user_templateLayout</itemsProcFunc>
                                 <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0" type="array">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_wines.template.default</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_wines.template.default</numIndex>
                                         <numIndex index="1"></numIndex>
                                     </numIndex>
                                 </items>

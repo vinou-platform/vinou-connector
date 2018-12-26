@@ -9,21 +9,21 @@ if (!defined('TYPO3_MODE')) {
 	$_EXTKEY,
 	'Wines',
 	'Vinou Weinliste',
-	'EXT:vinou/Resources/Public/Icons/wines.png'
+	'EXT:vinou_connector/Resources/Public/Icons/wines.png'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 	$_EXTKEY,
 	'Enquiry',
 	'Vinou Anfrageformular',
-	'EXT:vinou/Resources/Public/Icons/enquiry.png'
+	'EXT:vinou_connector/Resources/Public/Icons/enquiry.png'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 	$_EXTKEY,
 	'Shop',
 	'Vinou Shop',
-	'EXT:vinou/Resources/Public/Icons/shop.png'
+	'EXT:vinou_connector/Resources/Public/Icons/shop.png'
 );
 
 // Add Flexform for Plugin Products

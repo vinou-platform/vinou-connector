@@ -6,27 +6,27 @@
         <sDEF>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.general</sheetTitle>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.general</sheetTitle>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <switchableControllerActions>
                         <TCEforms>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.mode</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.mode</label>
                             <onChange>reload</onChange>
                             <config>
                                 <type>select</type>
                                 <items>
                                     <numIndex index="0">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.mode.basket</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.mode.basket</numIndex>
                                         <numIndex index="1">Shop->basket;Shop->order;Shop->finish;</numIndex>
                                     </numIndex>
                                     <numIndex index="1">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.mode.order</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.mode.order</numIndex>
                                         <numIndex index="1">Shop->order;Shop->finish;Shop->basket;</numIndex>
                                     </numIndex>
                                     <numIndex index="2">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.mode.finish</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.mode.finish</numIndex>
                                         <numIndex index="1">Shop->finish;Shop->basket;Shop->order;</numIndex>
                                     </numIndex>
                                 </items>
@@ -36,7 +36,7 @@
                     <settings.detailPid>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.detailPid</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.detailPid</label>
                             <config>
                                 <type>group</type>
                                 <internal_type>db</internal_type>
@@ -50,7 +50,7 @@
                     </settings.detailPid>
                     <settings.backPid>
                         <TCEforms>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.backPid</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.backPid</label>
                             <config>
                                 <type>group</type>
                                 <internal_type>db</internal_type>
@@ -65,7 +65,7 @@
                     <settings.basketPid>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->basket;</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.basketPid</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.basketPid</label>
                             <config>
                                 <type>group</type>
                                 <internal_type>db</internal_type>
@@ -80,7 +80,7 @@
                     <settings.orderPid>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.orderPid</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.orderPid</label>
                             <config>
                                 <type>group</type>
                                 <internal_type>db</internal_type>
@@ -95,7 +95,7 @@
                     <settings.finishPid>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->basket;</displayCond>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.finishPid</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.finishPid</label>
                             <config>
                                 <type>group</type>
                                 <internal_type>db</internal_type>
@@ -113,20 +113,20 @@
         <template>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.template</sheetTitle>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.template</sheetTitle>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <settings.templateLayout>
                         <TCEforms>
-                            <label>LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.templateLayout</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.templateLayout</label>
                             <config>
                                 <type>select</type>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\WinesFlexForm->user_templateLayout</itemsProcFunc>
                                 <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0" type="array">
-                                        <numIndex index="0">LLL:EXT:vinou/Resources/Private/Language/locallang.xlf:flexform_shop.template.default</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.template.default</numIndex>
                                         <numIndex index="1"></numIndex>
                                     </numIndex>
                                 </items>
