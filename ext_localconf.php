@@ -7,7 +7,7 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYP
 TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$_EXTKEY.'/Configuration/TSconfig/templateLayouts.ts">');
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'Interfrog.'.$_EXTKEY,
+	'Vinou.'.$_EXTKEY,
 	'Wines',
 	array(
 		'Wines' => 'list, detail',
@@ -19,7 +19,7 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYP
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'Interfrog.'.$_EXTKEY,
+	'Vinou.'.$_EXTKEY,
 	'Enquiry',
 	array(
 		'Enquiry' => 'form, submitRequest',
@@ -31,7 +31,7 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYP
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-	'Interfrog.'.$_EXTKEY,
+	'Vinou.'.$_EXTKEY,
 	'Shop',
 	array(
 		'Shop' => 'basket, order, finish',
