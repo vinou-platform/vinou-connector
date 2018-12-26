@@ -18,15 +18,8 @@
         "GPL-2.0+"
     ],
     "require": {
-        "typo3/cms-core": ">=8.7.0,<9.0",
-        "vinou/translations": "dev-master"
+        "typo3/cms-core": ">=8.7.0,<9.0"
     },
-    "repositories": [
-        {
-            "url": "git@git.vinou.de:libraries/translations.git",
-            "type": "vcs"
-        }
-    ],
     "config": {
         "vendor-dir": ".Build/vendor",
         "bin-dir": ".Build/bin"
