@@ -61,14 +61,10 @@ class EidCacheExpertise {
             $wine = $this->api->getExpertise(GeneralUtility::_GET('wineID'));
             $wine = $this->api->getWine(GeneralUtility::_GET('wineID'));
             if ($this->extConf['cacheExpertise'] == 1) {
-                $cachePDFProcess = Pdf::storeApiPDF($wine['expertisePDF'],$this->absoluteTempDirectory.'/',$wine['id'].'-',$wine['chstamp'],true);
-                $localDir = $this->extConf['cachingFolder'];
-                if (substr($localDir, -1) != '/') {
-                    $localDir = $localDir . '/';
-                }
-                $redirectURL = '/'.$localDir.$cachePDFProcess['fileName']. '?' .time();
+                $cachePDFProcess = Pdf::storeApiPDF($wine['expertisePdf'],$this->absoluteTempDirectory.'/',$wine['id'].'-',$wine['chstamp'],true);
+                $redirectURL = '/'.$this->extConf['cachingFolder'].'/'.$cachePDFProcess['fileName'];
             } else {
-                $redirectURL = 'https://api.vinou.de'.$wine['expertisePDF'];
+                $redirectURL = 'https://api.vinou.de'.$wine['expertisePdf'];
             }
             header('Location: '.$redirectURL);
         }
@@ -81,8 +77,8 @@ class EidCacheExpertise {
      * @param \array $TYPO3_CONF_VARS           The global $TYPO3_CONF_VARS array. Will be set internally in ->TYPO3_CONF_VARS
      */
     public function __construct($TYPO3_CONF_VARS) {
-        $this->extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf']['vinou']);
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $this->extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf']['vinou_connector']);
+        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
 
         header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');

@@ -6,7 +6,7 @@ class Images {
 	CONST APIURL = 'https://api.vinou.de';
 
 	public static function getExternalImage($url,$targetFile) {
-	    $headers[] = 'Accept: image/gif, image/x-bitmap, image/jpeg, image/pjpeg';
+	    $headers[] = 'Accept: image/gif, image/x-bitmap, image/jpeg, image/pjpeg, image/png, application/octet-stream';
 	    $headers[] = 'Connection: Keep-Alive';
 	    $headers[] = 'Content-type: application/x-www-form-urlencoded;charset=UTF-8';
 	    $user_agent = 'php';
@@ -25,7 +25,8 @@ class Images {
 	}
 
 	public static function storeApiImage($imagesrc,$localFolder,$chstamp = NULL) {
-		$fileName = array_values(array_slice(explode('/',$imagesrc), -1))[0];
+		$fileName = self::createOptimalFilename(array_values(array_slice(explode('/',$imagesrc), -1))[0]);
+
 		$localFile = $localFolder.$fileName;
 		$exists = TRUE;
 
@@ -37,15 +38,35 @@ class Images {
 			'requestStatus' => 'no request done'
 		];
 
+		$fileurl = self::APIURL.$imagesrc;
+		$fileurl = preg_replace('/\s+/', '%20', $fileurl);
+
 		if(!file_exists($localFile)){
-			$returnArr['requestStatus'] = self::getExternalImage(self::APIURL.$imagesrc,$localFile);
+			$returnArr['requestStatus'] = self::getExternalImage($fileurl,$localFile);
 			$returnArr['fileFetched'] = TRUE;
 		} else if (!is_null($chstamp) && $changeStamp > filemtime($localFile)) {
-			$returnArr['requestStatus'] = self::getExternalImage(self::APIURL.$imagesrc,$localFile);
+			$returnArr['requestStatus'] = self::getExternalImage($fileurl,$localFile);
 			$returnArr['fileFetched'] = TRUE;
 		}
 
 		return $returnArr;
+	}
+
+	public static function createOptimalFilename($fileName) {
+		$fileSeg = explode('.',$fileName);
+		$optimal = self::normalizeFileName($fileSeg[0]).'.'.$fileSeg[1];
+		return $optimal;
+	}
+
+	public static function normalizeFileName($fileName) {
+		$fileName = strtolower($fileName);
+		$fileName = str_replace('ä', 'ae', $fileName);
+		$fileName = str_replace('ö', 'oe', $fileName);
+		$fileName = str_replace('ü', 'ue', $fileName);
+		$fileName = preg_replace('/\s+/', '-', $fileName);
+		$fileName = preg_replace('#[^a-z0-9-]#i', '', $fileName);
+		$fileName = str_replace('--', '-', $fileName);
+		return $fileName;
 	}
 
 }

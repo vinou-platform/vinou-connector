@@ -5,7 +5,7 @@ class Pdf {
 
 	CONST APIURL = 'https://api.vinou.de';
 
-	public static function getExternalPDF($url,$targetFile) {       
+	public static function getExternalPDF($url,$targetFile) {
 	    set_time_limit(0);
 		$fp = fopen ($targetFile, 'w+');
 		$process = curl_init(rawurlencode(self::rawUrlEncodeApiPath($url)));
@@ -19,16 +19,16 @@ class Pdf {
 	}
 
 	public static function getExternalPDFBinary($url,$targetFile) {
-	    $process = curl_init(self::rawUrlEncodeApiPath($url));   
+	    $process = curl_init(self::rawUrlEncodeApiPath($url));
 	    curl_setopt($process, CURLOPT_TIMEOUT, 30);
 	    curl_setopt($process, CURLOPT_HEADER, 0);
 	    curl_setopt($process, CURLOPT_RETURNTRANSFER, 1);
-	    curl_setopt($process, CURLOPT_BINARYTRANSFER,1);         
+	    curl_setopt($process, CURLOPT_BINARYTRANSFER,1);
 	    $rawPDF = curl_exec($process);
 	    $httpStatus = curl_getinfo($process, CURLINFO_HTTP_CODE);
 	    curl_close($process);
-	    file_put_contents($targetFile,$rawPDF);         
-	    return $httpStatus;     
+	    file_put_contents($targetFile,$rawPDF);
+	    return $httpStatus;
 	}
 
 	public static function storeApiPDF($src,$localFolder,$prefix = '',$chstamp = NULL,$forceDownload = false) {

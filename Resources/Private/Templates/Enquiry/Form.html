@@ -1,8 +1,8 @@
 <f:layout name="Enquiry" />
 
 <f:section name="main">
-	<f:form action="submitRequest" controller="Enquiry" id="requestForm">
-		<fieldset id="wineList">
+	<f:form action="submitRequest" controller="Enquiry" id="request-form">
+		<fieldset id="wine-list">
 			<table border="0" cellspacing="0" cellpadding="0" width="100%">
 				<thead>
 					<tr>
@@ -17,8 +17,8 @@
 						<tr>
 							<td width="80" style="text-align: center">{wine.articlenumber}</td>
 							<td>{wine.name}</td>
-							<td width="80" style="text-align: center">{wine.price} €<br/><f:form.hidden name="wines[{wine.id}][price]" id="tx_vinou_enquiry[wines][{wine.id}][price]" value="{wine.price}" /></td>
-							<td width="80" style="text-align: center"><f:form.textfield name="wines[{wine.id}][quantity]" id="tx_vinou_enquiry[wines][{wine.id}][quantity]" size="5"/></td>
+							<td width="80" style="text-align: center">{wine.price} €<br/><f:form.hidden name="wines[{wine.id}][price]" id="tx_vinouconnector_enquiry[wines][{wine.id}][price]" value="{wine.price}" /></td>
+							<td width="80" style="text-align: center"><f:form.textfield name="wines[{wine.id}][quantity]" id="tx_vinouconnector_enquiry[wines][{wine.id}][quantity]" size="5"/></td>
 						</tr>
 					</f:for>
 				</tbody>
@@ -28,59 +28,59 @@
 		<fieldset id="summary">
 			<table border="0" cellspacing="0" cellpadding="0" width="100%">
 				<tr>
-					<td><label for="tx_vinou_enquiry[net]"><b>Summe (Netto)</b></label></td>
-					<td width="80"><f:form.textfield name="net" id="tx_vinou_enquiry[net]" readonly="TRUE" size="8"/>&nbsp;€</td>
+					<td><label for="tx_vinouconnector_enquiry[net]"><b>Summe (Netto)</b></label></td>
+					<td width="80"><f:form.textfield name="net" id="tx_vinouconnector_enquiry[net]" readonly="TRUE" size="8"/>&nbsp;€</td>
 				</tr>
 				<tr>
-					<td><label for="tx_vinou_enquiry[tax]">Mwst.</label></td>
-					<td width="80"><f:form.textfield name="tax" id="tx_vinou_enquiry[tax]" readonly="TRUE" size="8"/>&nbsp;€</td>
+					<td><label for="tx_vinouconnector_enquiry[tax]">Mwst.</label></td>
+					<td width="80"><f:form.textfield name="tax" id="tx_vinouconnector_enquiry[tax]" readonly="TRUE" size="8"/>&nbsp;€</td>
 				</tr>
 				<tr>
-					<td><label for="tx_vinou_enquiry[gross]"><b>Summe (Brutto)</b></label></td>
-					<td width="80"><f:form.textfield name="gross" id="tx_vinou_enquiry[gross]" readonly="TRUE" size="8"/>&nbsp;€</td>
+					<td><label for="tx_vinouconnector_enquiry[gross]"><b>Summe (Brutto)</b></label></td>
+					<td width="80"><f:form.textfield name="gross" id="tx_vinouconnector_enquiry[gross]" readonly="TRUE" size="8"/>&nbsp;€</td>
 				</tr>
 			</table>
 		</fieldset>
 		<hr/>
 		<fieldset id="customer" style="margin: 0px auto; display: inline-block;">
 			<div class="formfield" style="text-align: left">
-				<label for="tx_vinou_enquiry[customer][salutation]">Anrede</label><br>
-				<f:form.select name="customer[salutation]" id="tx_vinou_enquiry[customer][salutation]" size="1" options="{0:'Bitte wählen',1:'Herr',2:'Frau'}" />
+				<label for="tx_vinouconnector_enquiry[customer][salutation]">Anrede</label><br>
+				<f:form.select name="customer[salutation]" id="tx_vinouconnector_enquiry[customer][salutation]" size="1" options="{0:'Bitte wählen',1:'Herr',2:'Frau'}" />
 			</div>
 			<div class="formfield" style="text-align: left">
-				<label for="tx_vinou_enquiry[customer][firstname]">Vorname</label><br>
-				<f:form.textfield name="customer[firstname]" id="tx_vinou_enquiry[customer][firstname]" size="100"/>
+				<label for="tx_vinouconnector_enquiry[customer][firstname]">Vorname</label><br>
+				<f:form.textfield name="customer[firstname]" id="tx_vinouconnector_enquiry[customer][firstname]" size="100"/>
 			</div>
 			<div class="formfield" style="text-align: left">
-				<label for="tx_vinou_enquiry[customer][lastname]">Nachname</label><br>
-				<f:form.textfield name="customer[lastname]" id="tx_vinou_enquiry[customer][lastname]" size="100"/>
+				<label for="tx_vinouconnector_enquiry[customer][lastname]">Nachname</label><br>
+				<f:form.textfield name="customer[lastname]" id="tx_vinouconnector_enquiry[customer][lastname]" size="100"/>
 			</div>
 			<div class="formfield" style="text-align: left">
-				<label for="tx_vinou_enquiry[customer][address]">Adresse</label><br>
-				<f:form.textfield name="customer[address]" id="tx_vinou_enquiry[customer][address]" size="100"/>
+				<label for="tx_vinouconnector_enquiry[customer][address]">Adresse</label><br>
+				<f:form.textfield name="customer[address]" id="tx_vinouconnector_enquiry[customer][address]" size="100"/>
 			</div>
 			<div class="formfield" style="text-align: left">
-				<label for="tx_vinou_enquiry[customer][zip]">PLZ</label><br>
-				<f:form.textfield name="customer[zip]" id="tx_vinou_enquiry[customer][zip]" size="100"/>
+				<label for="tx_vinouconnector_enquiry[customer][zip]">PLZ</label><br>
+				<f:form.textfield name="customer[zip]" id="tx_vinouconnector_enquiry[customer][zip]" size="100"/>
 			</div>
 			<div class="formfield" style="text-align: left">
-				<label for="tx_vinou_enquiry[customer][city]">City</label><br>
-				<f:form.textfield name="customer[city]" id="tx_vinou_enquiry[customer][city]" size="100"/>
+				<label for="tx_vinouconnector_enquiry[customer][city]">City</label><br>
+				<f:form.textfield name="customer[city]" id="tx_vinouconnector_enquiry[customer][city]" size="100"/>
 			</div>
 			<div class="formfield" style="text-align: left">
-				<label for="tx_vinou_enquiry[customer][phone]">Telefon</label><br>
-				<f:form.textfield name="customer[phone]" id="tx_vinou_enquiry[customer][phone]" size="100"/>
+				<label for="tx_vinouconnector_enquiry[customer][phone]">Telefon</label><br>
+				<f:form.textfield name="customer[phone]" id="tx_vinouconnector_enquiry[customer][phone]" size="100"/>
 			</div>
 			<div class="formfield" style="text-align: left">
-				<label for="tx_vinou_enquiry[customer][email]">E-Mail</label><br>
-				<f:form.textfield name="customer[email]" id="tx_vinou_enquiry[customer][email]" size="100"/>
+				<label for="tx_vinouconnector_enquiry[customer][email]">E-Mail</label><br>
+				<f:form.textfield name="customer[email]" id="tx_vinouconnector_enquiry[customer][email]" size="100"/>
 			</div>
 			<div class="formfield" style="text-align: left">
-				<label for="tx_vinou_enquiry[customer][message]">Nachricht</label><br>
-				<f:form.textarea name="customer[message]" id="tx_vinou_enquiry[customer][message]" rows="15" cols="100"/>
+				<label for="tx_vinouconnector_enquiry[customer][message]">Nachricht</label><br>
+				<f:form.textarea name="customer[message]" id="tx_vinouconnector_enquiry[customer][message]" rows="15" cols="100"/>
 			</div>
 			<div class="formfield" style="text-align: left">
-				<label for="tx_vinou_enquiry[shipping]">Versand</label><br>
+				<label for="tx_vinouconnector_enquiry[shipping]">Versand</label><br>
 				<div class="radio">
 					<f:form.radio name="shipping" value="post" />
 					<span class="radioLabel">Postversand</span>
@@ -91,8 +91,8 @@
 				</div>
 			</div>
 			<div class="formfield" style="text-align: left">
-				<input type="checkbox" name="tx_vinou_enquiry[age]" id="tx_vinou_enquiry[age]" value="1" />
-				<label for="tx_vinou_enquiry[age]">Ich habe zum Zeitpunkt der Bestellung das 18. Lebensjahr vollendet</label>
+				<input type="checkbox" name="tx_vinouconnector_enquiry[age]" id="tx_vinouconnector_enquiry[age]" value="1" />
+				<label for="tx_vinouconnector_enquiry[age]">Ich habe zum Zeitpunkt der Bestellung das 18. Lebensjahr vollendet</label>
 			</div>
 		</fieldset>
 	</f:form>

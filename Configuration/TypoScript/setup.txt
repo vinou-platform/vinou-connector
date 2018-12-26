@@ -1,16 +1,16 @@
-plugin.tx_vinou_wines {
+plugin.tx_vinouconnector_wines {
 	view {
 		templateRootPaths {
 			0 = EXT:vinou_connector/Resources/Private/Templates/
-			1 = {$plugin.tx_vinou_wines.view.templateRootPath}
+			1 = {$plugin.tx_vinouconnector_wines.view.templateRootPath}
 		}
 		partialRootPaths {
 			0 = EXT:vinou_connector/Resources/Private/Partials/
-			1 = {$plugin.tx_vinou_wines.view.partialRootPath}
+			1 = {$plugin.tx_vinouconnector_wines.view.partialRootPath}
 		}
 		layoutRootPaths {
 			0 = EXT:vinou_connector/Resources/Private/Layouts/
-			1 = {$plugin.tx_vinou_wines.view.layoutRootPath}
+			1 = {$plugin.tx_vinouconnector_wines.view.layoutRootPath}
 		}
 	}
 
@@ -73,28 +73,28 @@ plugin.tx_vinou_wines {
 	}
 }
 
-module.tx_vinou_wines < plugin.tx_vinou_wines
+module.tx_vinouconnector_wines < plugin.tx_vinouconnector_wines
 
-plugin.tx_vinou_enquiry {
+plugin.tx_vinouconnector_enquiry {
 	view {
 		templateRootPaths {
 			0 = EXT:vinou_connector/Resources/Private/Templates/
-			1 = {$plugin.tx_vinou_enquiry.view.templateRootPath}
+			1 = {$plugin.tx_vinouconnector_enquiry.view.templateRootPath}
 		}
 		partialRootPaths {
 			0 = EXT:vinou_connector/Resources/Private/Partials/
-			1 = {$plugin.tx_vinou_enquiry.view.partialRootPath}
+			1 = {$plugin.tx_vinouconnector_enquiry.view.partialRootPath}
 		}
 		layoutRootPaths {
 			0 = EXT:vinou_connector/Resources/Private/Layouts/
-			1 = {$plugin.tx_vinou_enquiry.view.layoutRootPath}
+			1 = {$plugin.tx_vinouconnector_enquiry.view.layoutRootPath}
 		}
 	}
 }
 
-module.tx_vinou_enquiry < plugin.tx_vinou_enquiry
+module.tx_vinouconnector_enquiry < plugin.tx_vinouconnector_enquiry
 
-plugin.tx_vinou_enquiry {
+plugin.tx_vinouconnector_enquiry {
 	settings {
 		mail {
 			wineFields = name,articlenumber,quantity,price
@@ -104,24 +104,24 @@ plugin.tx_vinou_enquiry {
 	}
 }
 
-plugin.tx_vinou_shop {
+plugin.tx_vinouconnector_shop {
 	view {
 		templateRootPaths {
 			0 = EXT:vinou_connector/Resources/Private/Templates/
-			1 = {$plugin.tx_vinou_shop.view.templateRootPath}
+			1 = {$plugin.tx_vinouconnector_shop.view.templateRootPath}
 		}
 		partialRootPaths {
 			0 = EXT:vinou_connector/Resources/Private/Partials/
-			1 = {$plugin.tx_vinou_shop.view.partialRootPath}
+			1 = {$plugin.tx_vinouconnector_shop.view.partialRootPath}
 		}
 		layoutRootPaths {
 			0 = EXT:vinou_connector/Resources/Private/Layouts/
-			1 = {$plugin.tx_vinou_shop.view.layoutRootPath}
+			1 = {$plugin.tx_vinouconnector_shop.view.layoutRootPath}
 		}
 	}
 }
 
-module.tx_vinou_shop < plugin.tx_vinou_shop
+module.tx_vinouconnector_shop < plugin.tx_vinouconnector_shop
 
 page {
 	includeCSS {

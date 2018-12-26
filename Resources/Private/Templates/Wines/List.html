@@ -3,14 +3,14 @@
 <f:section name="main">
 	<f:switch expression="{settings.templateLayout}">
 		<f:case value="listSlider">
-			<div class="vinouWineList slider">
+			<div class="vinou-wine-list slider">
 				<f:for each="{wines}" as="wine">
 					<f:render partial="List/SlideItem" arguments="{wine: wine,settings:settings}" />
 				</f:for>
 			</div>
 		</f:case>
 		<f:case default="TRUE">
-			<div class="vinouWineList regular" data-count="{f:if(condition:'{settings.itemsPerRow}',then:'{settings.itemsPerRow}',else:'5')}">
+			<div class="vinou-wine-list regular" data-count="{f:if(condition:'{settings.itemsPerRow}',then:'{settings.itemsPerRow}',else:'5')}">
 				<f:for each="{wines}" as="wine">
 					<f:render partial="List/Item" arguments="{wine: wine,settings:settings}" />
 				</f:for>

@@ -19,16 +19,16 @@ class Api {
 
 	private function curlApiRoute($route, $data = []) {
 		$header = array('Origin: '.$_SERVER['SERVER_NAME']);
-        $data_string = json_encode(array_merge($this->authData,$data));                                                                                                                                                    
+        $data_string = json_encode(array_merge($this->authData,$data));
         $ch = curl_init($this->apiUrl.$route);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-            'Content-Type: application/json',                                                                                
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
             'Content-Length: ' . strlen($data_string),
-            'Origin: '.$_SERVER['SERVER_NAME']                                                                       
-        ));                                                                                                                   
+            'Origin: '.$_SERVER['SERVER_NAME']
+        ));
         $result = curl_exec($ch);
     	return json_decode($result,true);
 	}

@@ -6,7 +6,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 
 class CacheApiPdfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
-	const LOCALDIR = 'typo3temp/vinou/';
+	const LOCALDIR = 'typo3temp/vinou_connector/';
 
     /**
      * @param string $pdf

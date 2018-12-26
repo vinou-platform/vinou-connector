@@ -9,7 +9,7 @@
 				<f:image src="{vin:CacheApiImage(image:wine.image,tstamp:wine.chstamp)}" maxWidth="{settings.detail.image.maxWidth}" maxHeight="{settings.detail.image.maxHeight}"/>
 			</div>
 			<div class="description">
-				<table border="0" cellspacing="0" cellpadding="0" class="wineFacts">
+				<table border="0" cellspacing="0" cellpadding="0" class="wine-facts">
 					<f:if condition="{wine.articlenumber}">
 						<f:then>
 							<tr>
@@ -125,10 +125,10 @@
 					</f:then>
 				</f:if>
 				<p>
-				<a href="{wine.expertiseFile}" target="_blank" class="outlineButton">Expertise</a>
+				<a href="{wine.expertiseFile}" target="_blank" class="outline-button">Expertise</a>
 				<f:if condition="{backPid}">
 					<f:then>
-						<f:link.page pageUid="{backPid}" class="vinouButton back"><f:translate key="detail.back"/></f:link.page>
+						<f:link.page pageUid="{backPid}" class="vinou-button back"><f:translate key="detail.back"/></f:link.page>
 					</f:then>
 				</f:if>
 				</p>
