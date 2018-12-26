@@ -231,6 +231,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 					$wine[$property] = $grapetypes;
 					break;
 				case 'type':
+					$wine['winetype'] = $value;
 					$wine[$property] = $this->translations->winetypes[$value];
 					break;
 				case 'tastes_id':

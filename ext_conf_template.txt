@@ -4,7 +4,7 @@
 cacheExpertise = 1
 
 # cat=Caching/enable/2; type=string; label=Caching Folder
-cachingFolder = typo3temp/vinou
+cachingFolder = typo3temp/vinou_connector
 
 # Mail
 
