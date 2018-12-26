@@ -122,16 +122,3 @@ plugin.tx_vinouconnector_shop {
 }
 
 module.tx_vinouconnector_shop < plugin.tx_vinouconnector_shop
-
-page {
-	includeCSS {
-		slickCSS = EXT:vinou_connector/Vendor/slick/slick.css
-		fontawesome = EXT:vinou_connector/Vendor/fontawesome/css/font-awesome.min.css
-		vinouCSS = EXT:vinou_connector/Resources/Public/Styles/main.css
-	}
-	includeJSFooterlibs {
-		jquery = EXT:vinou_connector/Vendor/jquery/jquery.1.11.1.js
-		slick = EXT:vinou_connector/Vendor/slick/slick.min.js
-		initVinou = EXT:vinou_connector/Resources/Public/Scripts/init.js
-	}
-}
