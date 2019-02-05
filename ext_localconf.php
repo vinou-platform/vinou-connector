@@ -34,11 +34,11 @@ TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYP
 	'Vinou.'.$_EXTKEY,
 	'Shop',
 	array(
-		'Shop' => 'basket, order, finish',
+		'Shop' => 'list, basket, order, finish',
 	),
 	// non-cacheable actions
 	array(
-		'Shop' => 'basket, order, finish',
+		'Shop' => 'list, basket, order, finish',
 	)
 );
 

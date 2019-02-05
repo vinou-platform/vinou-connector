@@ -1,6 +1,8 @@
 <?php
 namespace Vinou\VinouConnector\Utility;
 
+use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
+
 /**
 * Api
 */
@@ -56,7 +58,7 @@ class Api {
 		} else {
 			$result = $this->curlApiRoute('/service/wines/getAll',$postData);
 		}
-		return $result['wines'];
+		return $result;
 	}
 
 	public function getExpertise($id) {

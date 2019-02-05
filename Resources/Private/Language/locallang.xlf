@@ -22,6 +22,22 @@
 				<source>Show basket, orderform and finish action for vinou wines</source>
 			</trans-unit>
 
+			<trans-unit id="shop.list.clusters">
+				<source>Filter options</source>
+			</trans-unit>
+			<trans-unit id="shop.list.clusters.vintage">
+				<source>Vintage</source>
+			</trans-unit>
+			<trans-unit id="shop.list.clusters.place">
+				<source>Place</source>
+			</trans-unit>
+			<trans-unit id="shop.list.clusters.country">
+				<source>Country</source>
+			</trans-unit>
+			<trans-unit id="shop.list.clusters.empty">
+				<source>Empty</source>
+			</trans-unit>
+
 			<trans-unit id="list.more">
 				<source>Read More</source>
 			</trans-unit>
@@ -389,6 +405,9 @@
 			<trans-unit id="flexform_shop.mode">
 				<source>Mode</source>
 			</trans-unit>
+			<trans-unit id="flexform_shop.mode.list">
+				<source>Winelist</source>
+			</trans-unit>
 			<trans-unit id="flexform_shop.mode.basket">
 				<source>Basket</source>
 			</trans-unit>
@@ -397,6 +416,18 @@
 			</trans-unit>
 			<trans-unit id="flexform_shop.mode.finish">
 				<source>Finish Order</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.clusters">
+				<source>Filter options</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.clusters.vintage">
+				<source>Vintage</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.clusters.place">
+				<source>Place</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.clusters.country">
+				<source>Country</source>
 			</trans-unit>
 			<trans-unit id="flexform_shop.detailPid">
 				<source>Product Detail Page</source>

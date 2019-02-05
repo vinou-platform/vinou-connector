@@ -28,6 +28,27 @@
 				<target>Zeigt Warenkorn, Bestellformular, Zahlungsmethoden und Checkout action für Vinou-Weine</target>
 			</trans-unit>
 
+			<trans-unit id="shop.list.clusters">
+				<source>Filter options</source>
+				<target>Filter-Optionen</target>
+			</trans-unit>
+			<trans-unit id="shop.list.clusters.vintage">
+				<source>Vintage</source>
+				<target>Jahrgang</target>
+			</trans-unit>
+			<trans-unit id="shop.list.clusters.place">
+				<source>Place</source>
+				<target>Lage</target>
+			</trans-unit>
+			<trans-unit id="shop.list.clusters.country">
+				<source>Country</source>
+				<target>Land</target>
+			</trans-unit>
+			<trans-unit id="shop.list.clusters.empty">
+				<source>Empty</source>
+				<target>Ohne Angabe</target>
+			</trans-unit>
+
 			<trans-unit id="list.more">
 				<source>Read More</source>
 				<target>Mehr erfahren</target>
@@ -513,6 +534,10 @@
 				<source>Mode</source>
 				<target>Modus</target>
 			</trans-unit>
+			<trans-unit id="flexform_shop.mode.list">
+				<source>Winelist</source>
+				<target>Weinliste</target>
+			</trans-unit>
 			<trans-unit id="flexform_shop.mode.basket">
 				<source>Basket</source>
 				<target>Warenkorb</target>
@@ -528,6 +553,22 @@
 			<trans-unit id="flexform_shop.detailPid">
 				<source>Product Detail Page</source>
 				<target>Detailseite</target>
+			</trans-unit>
+			<trans-unit id="flexform_shop.clusters">
+				<source>Filter options</source>
+				<target>Filter-Optionen</target>
+			</trans-unit>
+			<trans-unit id="flexform_shop.clusters.vintage">
+				<source>Vintage</source>
+				<target>Jahrgang</target>
+			</trans-unit>
+			<trans-unit id="flexform_shop.clusters.place">
+				<source>Place</source>
+				<target>Lage</target>
+			</trans-unit>
+			<trans-unit id="flexform_shop.clusters.country">
+				<source>Country</source>
+				<target>Land</target>
 			</trans-unit>
 			<trans-unit id="flexform_shop.backPid">
 				<source>Back to Page</source>

@@ -45,27 +45,6 @@ plugin.tx_vinouconnector_wines {
 				maxHeight = 600
 			}
 		}
-		billing {
-			required = firstname,lastname,address,zip,city,email
-		}
-		delivery {
-			required = firstname,lastname,address,zip,city
-		}
-		mail {
-			senderName = Vinou Wines
-			senderEmail = noreply@domain.com
-			adminName = Admin
-			adminEmail = admin@domain.com
-			attachements {
-				generalBusinessTerms = 
-				cancellationPolicy =
-			}
-		}
-		payment {
-			methods = prepaid,paypal,debiting,bill
-			default = prepaid
-		}
-		mandatorySign = *
 	}
 
 	persistence {
@@ -118,6 +97,39 @@ plugin.tx_vinouconnector_shop {
 			0 = EXT:vinou_connector/Resources/Private/Layouts/
 			1 = {$plugin.tx_vinouconnector_shop.view.layoutRootPath}
 		}
+	}
+	settings {
+		list {
+			image {
+				maxWidth = 100
+				maxHeight = 200
+			}
+			text {
+				crop = 150
+				append = ...
+			}
+		}
+		billing {
+			required = firstname,lastname,address,zip,city,email
+		}
+		delivery {
+			required = firstname,lastname,address,zip,city
+		}
+		mail {
+			senderName = Vinou Wines
+			senderEmail = noreply@domain.com
+			adminName = Admin
+			adminEmail = admin@domain.com
+			attachements {
+				generalBusinessTerms = 
+				cancellationPolicy =
+			}
+		}
+		payment {
+			methods = prepaid,paypal,debiting,bill
+			default = prepaid
+		}
+		mandatorySign = *
 	}
 }
 

@@ -1,0 +1,36 @@
+<f:layout name="Wines" />
+
+<f:section name="main">
+	<div class="shoplist">
+		<div class="vinou-clusters">
+			<f:for each="{clusters}" as="cluster" key="clustername">
+				<div class="vinou-cluster-group">
+					<h3><f:translate key="shop.list.clusters.{clustername}"/></h3>
+					<ul>
+						<f:for each="{cluster}" as="item">
+							<li>
+								<f:if condition="{item}">
+									<f:then>
+										<label for="cluster[{clustername}][{item}]">
+											<input type="checkbox" id="cluster[{clustername}][{item}]" name="cluster[{clustername}][{item}]" value="{item}"/> {item}
+										</label>
+									</f:then>
+									<f:else>
+										<label for="cluster[{clustername}][empty]">
+											<input type="checkbox" id="cluster[{clustername}][empty]" name="cluster[{clustername}][empty]" value=""/> <f:translate key="shop.list.clusters.empty"/>
+										</label>
+									</f:else>
+								</f:if>
+							</li>
+						</f:for>
+					</ul>
+				</div>
+			</f:for>
+		</div>
+		<div class="vinou-wine-list regular">
+			<f:for each="{wines}" as="wine">
+				<f:render partial="Shop/ListItem" arguments="{wine: wine,settings:settings}" />
+			</f:for>
+		</div>
+	</div>
+</f:section>

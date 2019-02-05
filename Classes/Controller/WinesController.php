@@ -145,6 +145,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 				}
 				$this->view->assign('category',$this->api->getCategory($this->settings['category']));
 				break;
+
 			case 'type':
 				$wines = $this->api->getWinesByType($this->settings['type']);
 				foreach ($wines as $index => $wine) {
@@ -176,7 +177,6 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			$this->view->assign('expertise', $expertise);
 		}
 
-		
 		$this->view->assign('backPid', $this->backPid);
 		$this->view->assign('settings', $this->settings);
 	}

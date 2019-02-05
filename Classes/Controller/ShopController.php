@@ -4,6 +4,7 @@ namespace Vinou\VinouConnector\Controller;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Object\ObjectManager;
 use \TYPO3\CMS\Core\Utility\PathUtility;
+use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \Vinou\VinouConnector\Utility\PaypalUtility;
@@ -125,6 +126,23 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		}
 		$this->view->assign('loggedIn', $loggedIn);
 
+	}
+
+	public function listAction() {
+		$this->initialize();
+
+		$postData = [];
+		$clusters = isset($this->settings['clusters']) ? explode(',',$this->settings['clusters']) : null;
+		if (!is_null($clusters))
+			$postData['cluster'] = $clusters;
+
+		$data = $this->api->getWinesAll($postData);
+
+		$this->view->assign('wines',$data['wines']);
+
+		if (isset($data['clusters'])) {
+			$this->view->assign('clusters',$data['clusters']);
+		}
 	}
 
 	/**
@@ -254,14 +272,13 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$basketData = $this->fetchProductsByBasket($this->detectOrCreateBasket());
 		$this->view->assign('basket', $basketData['basketData']);
 		$this->view->assign('items', $basketData['items']);
-		
+
 		$required = [];
 		$required['billing'] = $this->switchFieldValues(explode(',',$this->settings['billing']['required']));
 		$required['delivery'] = $this->switchFieldValues(explode(',',$this->settings['delivery']['required']));
 		$required['mandatorySign'] = $this->settings['mandatorySign'];
 		$this->view->assign('required', $required);
 
-		
 		$this->storeArgumentInSession('billing');
 		$this->view->assign('billing', $this->getArgumentInSession('billing'));
 
@@ -346,7 +363,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if ($mode === 'default' && is_null($basketData)) {
 			$this->redirect('basket', NULL, NULL, [], $this->basketPid);
 		}
-		
+
 		$this->view->assign('mode',$mode);
 	}
 
@@ -954,7 +971,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		}
 
 		$subject = '=?utf-8?B?'. base64_encode($subject) .'?=';
-		
+
 		$message->setTo($recipient)
 				->setFrom($sender)
 				->setSubject($subject);
@@ -964,7 +981,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$message->attach(\Swift_Attachment::fromPath($file));
 			}
 		}
-		
+
 		$message->send();
 		return $message->isSent();
 	}
