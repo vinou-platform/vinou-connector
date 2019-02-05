@@ -32,6 +32,10 @@
 				<source>Filter options</source>
 				<target>Filter-Optionen</target>
 			</trans-unit>
+			<trans-unit id="shop.list.clusters.type">
+				<source>Winetype</source>
+				<target>Weintyp</target>
+			</trans-unit>
 			<trans-unit id="shop.list.clusters.vintage">
 				<source>Vintage</source>
 				<target>Jahrgang</target>
@@ -557,6 +561,10 @@
 			<trans-unit id="flexform_shop.clusters">
 				<source>Filter options</source>
 				<target>Filter-Optionen</target>
+			</trans-unit>
+			<trans-unit id="flexform_shop.clusters.type">
+				<source>Winetype</source>
+				<target>Weintyp</target>
 			</trans-unit>
 			<trans-unit id="flexform_shop.clusters.vintage">
 				<source>Vintage</source>

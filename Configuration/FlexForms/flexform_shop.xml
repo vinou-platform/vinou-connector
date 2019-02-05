@@ -43,17 +43,21 @@
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.clusters</label>
                             <config>
                                 <type>select</type>
-                                <renderType>selectCheckBox</renderType>
+                                <renderType>selectMultipleSideBySide</renderType>
                                 <items>
                                     <numIndex index="0" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.clusters.type</numIndex>
+                                        <numIndex index="1">type</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.clusters.vintage</numIndex>
                                         <numIndex index="1">vintage</numIndex>
                                     </numIndex>
-                                    <numIndex index="1" type="array">
+                                    <numIndex index="2" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.clusters.place</numIndex>
                                         <numIndex index="1">place</numIndex>
                                     </numIndex>
-                                    <numIndex index="2" type="array">
+                                    <numIndex index="3" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.clusters.country</numIndex>
                                         <numIndex index="1">country</numIndex>
                                     </numIndex>

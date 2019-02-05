@@ -25,6 +25,9 @@
 			<trans-unit id="shop.list.clusters">
 				<source>Filter options</source>
 			</trans-unit>
+			<trans-unit id="shop.list.clusters.type">
+				<source>Winetype</source>
+			</trans-unit>
 			<trans-unit id="shop.list.clusters.vintage">
 				<source>Vintage</source>
 			</trans-unit>
@@ -419,6 +422,9 @@
 			</trans-unit>
 			<trans-unit id="flexform_shop.clusters">
 				<source>Filter options</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.clusters.type">
+				<source>Winetype</source>
 			</trans-unit>
 			<trans-unit id="flexform_shop.clusters.vintage">
 				<source>Vintage</source>
