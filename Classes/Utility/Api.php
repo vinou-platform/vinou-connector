@@ -10,77 +10,158 @@ use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 class Api {
 
 	protected $authData = [];
-	protected $apiUrl = "https://api.vinou.de";
+	protected $apiUrl = "https://api.vinou.de/service/";
+	public $log = [];
 
 	public function __construct($token = '',$authid = '',$dev = false) {
 		$this->authData['token'] = $token;
 		if ($dev) {
 			$this->authData['authid'] = $authid;
 		}
+		$this->validateLogin();
 	}
 
-	private function curlApiRoute($route, $data = []) {
-		$header = array('Origin: '.$_SERVER['SERVER_NAME']);
-        $data_string = json_encode(array_merge($this->authData,$data));
-        $ch = curl_init($this->apiUrl.$route);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($data_string),
-            'Origin: '.$_SERVER['SERVER_NAME']
-        ));
-        $result = curl_exec($ch);
-    	return json_decode($result,true);
+	public function validateLogin(){
+		if(!isset($_SESSION['jwtToken']) && !isset($_SESSION['jwtRefreshToken']))  {
+			$this->login();
+		} else {
+			$ch = curl_init($this->apiUrl.'check/login');
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER,
+				[
+					'Content-Type: application/json',
+					'Origin: '.$_SERVER['SERVER_NAME'],
+					'Authorization: Bearer '.$_SESSION['jwtToken']
+				]
+			);
+			$result = curl_exec($ch);
+			$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			array_push($this->log,'validate existing token');
+			if($httpCode != 200) {
+				array_push($this->log,[
+					'validateresult' => $result
+				]);
+				$this->login();
+			}
+			return true;
+		}
+    }
+
+	//request a fresh token based on authid and authtoken
+	public function login()
+	{
+		$data_string = json_encode($this->authData);
+        $ch = curl_init($this->apiUrl.'login');
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,
+			[
+				'Content-Type: application/json',
+				'Content-Length: ' . strlen($data_string),
+				'Origin: '.$_SERVER['SERVER_NAME']
+			]
+		);
+
+		$result = json_decode(curl_exec($ch),true);
+		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		array_push($this->log,'login and write session');
+		if(curl_errno($ch) == 0 && isset($result['token'], $result['refreshToken']))
+		{
+			curl_close($ch);
+			$_SESSION['jwtToken'] = $result['token'];
+			$_SESSION['jwtRefreshToken'] = $result['refreshToken'];
+			return true;
+		}
+		return false;
+	}
+
+	private function curlApiRoute($route, $data = [])
+	{
+		$data_string = json_encode($data);
+		$ch = curl_init($this->apiUrl.$route);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,
+			[
+				'Content-Type: application/json',
+				'Content-Length: ' . strlen($data_string),
+				'Origin: '.$_SERVER['SERVER_NAME'],
+				'Authorization: Bearer '.$_SESSION['jwtToken']
+			]
+		);
+		$result = curl_exec($ch);
+		$requestinfo = curl_getinfo($ch);
+		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if($httpCode == 200) {
+			curl_close($ch);
+			return json_decode($result, true);
+		}
+		return false;
 	}
 
 	public function getWine($id) {
 		$postData = ['id' => $id];
-		$result = $this->curlApiRoute('/service/wines/get',$postData);
+		$result = $this->curlApiRoute('wines/get',$postData);
 		return $result;
 	}
 
 	public function getWinesByCategory($postData) {
-		$result = $this->curlApiRoute('/service/wines/getByCategory',$postData);
+		$result = $this->curlApiRoute('wines/getByCategory',$postData);
 		return $result;
 	}
 
 	public function getWinesByType($type) {
 		$postData = ['type' => $type];
-		$result = $this->curlApiRoute('/service/wines/getByType',$postData);
+		$result = $this->curlApiRoute('wines/getByType',$postData);
 		return $result['wines'];
 	}
 
 	public function getWinesAll($postData = NULL) {
 		if (is_null($postData)) {
-			$result = $this->curlApiRoute('/service/wines/getAll');
+			$result = $this->curlApiRoute('wines/getAll');
 		} else {
-			$result = $this->curlApiRoute('/service/wines/getAll',$postData);
+			$result = $this->curlApiRoute('wines/getAll',$postData);
 		}
 		return $result;
 	}
 
 	public function getExpertise($id) {
 		$postData = ['id' => $id];
-		$result = $this->curlApiRoute('/service/wines/getExpertise',$postData);
+		$result = $this->curlApiRoute('wines/getExpertise',$postData);
 		return $result['pdf'];
 	}
 
 	public function getCategory($id) {
 		$postData = ['id' => $id];
-		$result = $this->curlApiRoute('/service/categories/get',$postData);
+		$result = $this->curlApiRoute('categories/get',$postData);
 		return $result;
 	}
 
 	public function getCategoryWithWines($id) {
 		$postData = ['id' => $id];
-		$result = $this->curlApiRoute('/service/categories/getWithWines',$postData);
+		$result = $this->curlApiRoute('categories/getWithWines',$postData);
 		return $result;
 	}
 
 	public function getCategoriesAll() {
-		$result = $this->curlApiRoute('/service/categories/getAll');
+		$result = $this->curlApiRoute('categories/getAll');
 		return $result['categories'];
+	}
+
+	public function getClientLogin() {
+		$postData = [
+            'ip' => $_SERVER['REMOTE_ADDR'],
+            'useragent' => $_SERVER['HTTP_USER_AGENT']
+        ];
+		$result = $this->curlApiRoute('clients/login',$postData);
+		if (isset($result['token']) && isset($result['refreshToken'])) {
+			unset($result['id']);
+			unset($result['info']);
+			return $result;
+		}
+		return false;
 	}
 }

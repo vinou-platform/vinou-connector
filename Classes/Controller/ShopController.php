@@ -141,6 +141,17 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->view->assign('wines',$data['wines']);
 
 		if (isset($data['clusters'])) {
+			if (isset($data['clusters']['categories'])) {
+				$categories = [];
+				foreach ($data['clusters']['categories'] as $catArray) {
+					foreach ($catArray as $key => $category) {
+						if (!isset($categories[$key]))
+							$categories[$key] = $category;
+					}
+				}
+				$data['clusters']['categories'] = $categories;
+			}
+
 			$this->view->assign('clusters',$data['clusters']);
 		}
 	}

@@ -562,6 +562,10 @@
 				<source>Filter options</source>
 				<target>Filter-Optionen</target>
 			</trans-unit>
+			<trans-unit id="flexform_shop.clusters.category">
+				<source>Category</source>
+				<target>Kategorie</target>
+			</trans-unit>
 			<trans-unit id="flexform_shop.clusters.type">
 				<source>Winetype</source>
 				<target>Weintyp</target>
