@@ -1,0 +1,16 @@
+{namespace vin=Vinou\VinouConnector\ViewHelpers}
+<div class="vinou-cluster-group" id="{clustername}-cluster-group">
+	<h3 data-status="closed"><vin:translation key="wine.field.category.label"/><span class="arrow"></span></h3>
+	<ul>
+		<f:for each="{cluster}" as="item">
+			<f:if condition="{item}">
+				<f:then>
+					<li>
+						<input type="checkbox" class="vinou-cluster-item" id="cluster[{clustername}][{item.name}]" name="cluster[{clustername}][{item.name}]" value="{item.name}" data-name="{clustername}"/>
+						<label for="cluster[{clustername}][{item.name}]">{item.name}</label>
+					</li>
+				</f:then>
+			</f:if>
+		</f:for>
+	</ul>
+</div>

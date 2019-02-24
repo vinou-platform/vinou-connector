@@ -1,17 +1,21 @@
 {namespace vin=Vinou\VinouConnector\ViewHelpers}
-<div class="item">
-	<f:image src="{vin:CacheApiImage(image:wine.image,tstamp:wine.chstamp)}" maxWidth="{settings.list.image.maxWidth}" maxHeight="{settings.list.image.maxHeight}"/>
-	<h2>{wine.name}</h2>
-	<f:if condition="{settings.list.text.crop}">
-		<f:then>
-			<p><f:format.crop maxCharacters="{settings.list.text.crop}" append="{settings.list.text.append}">{wine.description}</f:format.crop></p>
-		</f:then>
-		<f:else>
-			<p>{wine.description}</p>
-		</f:else>
-	</f:if>
-	<a href="{wine.expertiseFile}" target="_blank" class="vinouButton">Expertise</a>
-	<f:link.action action="detail" pageUid="{settings.detailPid}" arguments="{wine:wine.id}" class="vinouButton more">
-		<f:translate key="LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:list.more"/>
-	</f:link.action>
-</div>
+<li class="item" data-vintage="{wine.vintage}" data-place="{wine.place}" data-name="{wine.name}" data-type="{wine.type}" data-categories="{vin:categoryNames(categories:'{wine.categories}')}">
+	<div class="image">
+		<f:image src="{vin:CacheApiImage(image:wine.image,tstamp:wine.chstamp)}" maxWidth="{settings.list.image.maxWidth}" maxHeight="{settings.list.image.maxHeight}"/>
+	</div>
+	<div class="description">
+		<h3>{wine.vintage}{f:if(condition:'{wine.vintage}>0',then:' - ',else:'')}{wine.name}</h3>
+		<p>{wine.description -> f:format.crop(maxCharacters: 150, append: '...', respectWordBoundaries: true)}<br>
+			<f:link.action pluginName="wines" controller="Wines" action="detail" pageUid="{settings.detailPid}" arguments="{wine:wine.id}" class="btn-link">Mehr über den Wein erfahren</f:link.action></p>
+		<div>
+			<form class="price-form">
+				<div class="form-group">
+					<span class="price-form-label">Preis:</span>
+					<span class="price-form-value">{wine.price -> f:format.number(decimals:2,decimalSeparator:',')} €</span>
+					<input type="number" class="form-control" step="1" min="1" max="48" value="6" id="price"/>
+					<button type="submit"><span class="fa fa-shopping-cart"></span></button>
+				</div>
+			</form>
+		</div>
+	</div>
+</li>
