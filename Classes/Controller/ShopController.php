@@ -131,7 +131,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function listAction() {
 		$this->initialize();
 
-		$postData = [];
+		$postData = [
+			'inshop' => true,
+			'orderBy' => 'topseller DESC, sorting ASC'
+		];
 		$clusters = isset($this->settings['clusters']) ? explode(',',$this->settings['clusters']) : null;
 		if (!is_null($clusters))
 			$postData['cluster'] = $clusters;
