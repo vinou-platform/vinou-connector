@@ -130,6 +130,16 @@ plugin.tx_vinouconnector_shop {
 			default = prepaid
 		}
 		mandatorySign = *
+		manualFilter {
+			type {
+				10 = secco
+				20 = sparkling
+				30 = white
+				40 = rose
+				50 = red
+				60 = general
+			}
+		}
 	}
 }
 
