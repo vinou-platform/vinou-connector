@@ -120,11 +120,8 @@ class Api {
 	}
 
 	public function getWinesAll($postData = NULL) {
-		if (is_null($postData)) {
-			$result = $this->curlApiRoute('wines/getAll');
-		} else {
-			$result = $this->curlApiRoute('wines/getAll',$postData);
-		}
+		$postData['language'] = $GLOBALS['TSFE']->sys_language_isocode;
+		$result = $this->curlApiRoute('wines/getAll',$postData);
 		return $result;
 	}
 

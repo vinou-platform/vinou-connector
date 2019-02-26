@@ -221,6 +221,9 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @return array
 	 */
 	private function localizeWine($wine = NULL) {
+		if ($wine['language'] != $GLOBALS['TSFE']->sys_language_isocode)
+			return null;
+
 		foreach ($wine as $property => $value) {
 			switch ($property) {
 				case 'grapetypes':
