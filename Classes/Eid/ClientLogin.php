@@ -73,8 +73,6 @@ class ClientLogin {
      * @param \array $TYPO3_CONF_VARS           The global $TYPO3_CONF_VARS array. Will be set internally in ->TYPO3_CONF_VARS
      */
     public function __construct($TYPO3_CONF_VARS) {
-        session_start();
-        $_SESSION['start'] = strftime('%d.%m.%Y',time());
 
         $this->extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf']['vinou_connector']);
         $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
@@ -105,6 +103,8 @@ class ClientLogin {
         $this->translations = new \Vinou\VinouConnector\Utility\Translation();
     }
 }
+    error_reporting(E_ALL);
+    ini_set("display_errors", 1);
     global $TYPO3_CONF_VARS;
     $eid = GeneralUtility::makeInstance('Vinou\VinouConnector\Eid\ClientLogin', $TYPO3_CONF_VARS);
     echo $eid->run();

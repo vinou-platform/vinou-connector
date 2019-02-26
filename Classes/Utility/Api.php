@@ -11,6 +11,7 @@ class Api {
 
 	protected $authData = [];
 	protected $apiUrl = "https://api.vinou.de/service/";
+	public $logindata = [];
 	public $log = [];
 
 	public function __construct($token = '',$authid = '',$dev = false) {
@@ -18,11 +19,17 @@ class Api {
 		if ($dev) {
 			$this->authData['authid'] = $authid;
 		}
-		$this->validateLogin();
+		if (isset($GLOBALS['TSFE'])) {
+			$this->logindata = $this->readSessionData('vinouAuth');
+			$this->validateLogin();
+		} else {
+			$this->logindata = $this->login(false);
+		}
 	}
 
 	public function validateLogin(){
-		if(!isset($_SESSION['jwtToken']) && !isset($_SESSION['jwtRefreshToken']))  {
+
+		if(!isset($this->logindata['token']) && !isset($this->logindata['refreshToken']))  {
 			$this->login();
 		} else {
 			$ch = curl_init($this->apiUrl.'check/login');
@@ -32,16 +39,18 @@ class Api {
 				[
 					'Content-Type: application/json',
 					'Origin: '.$_SERVER['SERVER_NAME'],
-					'Authorization: Bearer '.$_SESSION['jwtToken']
+					'Authorization: Bearer '.$this->logindata['token']
 				]
 			);
 			$result = curl_exec($ch);
 			$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			$requestinfo = curl_getinfo($ch);
 			array_push($this->log,'validate existing token');
 			if($httpCode != 200) {
 				array_push($this->log,[
 					'validateresult' => $result
 				]);
+				Debug::var_dump('recreate token');
 				$this->login();
 			}
 			return true;
@@ -49,7 +58,7 @@ class Api {
     }
 
 	//request a fresh token based on authid and authtoken
-	public function login()
+	public function login($cached = true)
 	{
 		$data_string = json_encode($this->authData);
         $ch = curl_init($this->apiUrl.'login');
@@ -70,8 +79,11 @@ class Api {
 		if(curl_errno($ch) == 0 && isset($result['token'], $result['refreshToken']))
 		{
 			curl_close($ch);
-			$_SESSION['jwtToken'] = $result['token'];
-			$_SESSION['jwtRefreshToken'] = $result['refreshToken'];
+			if ($cached) {
+				$this->writeSessionData('vinouAuth',$result);
+			} else {
+				return $result;
+			}
 			return true;
 		}
 		return false;
@@ -89,15 +101,23 @@ class Api {
 				'Content-Type: application/json',
 				'Content-Length: ' . strlen($data_string),
 				'Origin: '.$_SERVER['SERVER_NAME'],
-				'Authorization: Bearer '.$_SESSION['jwtToken']
+				'Authorization: Bearer '.$this->logindata['token']
 			]
 		);
 		$result = curl_exec($ch);
 		$requestinfo = curl_getinfo($ch);
 		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		if($httpCode == 200) {
-			curl_close($ch);
-			return json_decode($result, true);
+		switch ($httpCode) {
+			case 200:
+				curl_close($ch);
+				return json_decode($result, true);
+				break;
+			case 401:
+				//Debug::var_dump('unauthorized');
+				break;
+			default:
+				//Debug::var_dump('recreate token');
+				break;
 		}
 		return false;
 	}
@@ -160,5 +180,22 @@ class Api {
 			return $result;
 		}
 		return false;
+	}
+
+	public function readSessionData($key) {
+		if ($GLOBALS['TSFE']->loginUser) {
+		    return $GLOBALS['TSFE']->fe_user->getKey('user', $key);
+		} else {
+		    return $GLOBALS['TSFE']->fe_user->getKey('ses', $key);
+		}
+	}
+
+	public function writeSessionData($key,$data) {
+		if ($GLOBALS['TSFE']->loginUser) {
+			$GLOBALS['TSFE']->fe_user->setKey('user', $key, $data);
+		} else {
+			$GLOBALS['TSFE']->fe_user->setKey('ses', $key, $data);
+		}
+		return $GLOBALS['TSFE']->fe_user->storeSessionData();
 	}
 }
