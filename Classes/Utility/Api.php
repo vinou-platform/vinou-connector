@@ -171,8 +171,10 @@ class Api {
 	public function getClientLogin() {
 		$postData = [
             'ip' => $_SERVER['REMOTE_ADDR'],
-            'useragent' => $_SERVER['HTTP_USER_AGENT']
+            'userAgent' => $_SERVER['HTTP_USER_AGENT']
         ];
+        // var_dump($postData);
+        // die();
 		$result = $this->curlApiRoute('clients/login',$postData);
 		if (isset($result['token']) && isset($result['refreshToken'])) {
 			unset($result['id']);
