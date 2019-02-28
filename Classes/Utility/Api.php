@@ -19,12 +19,13 @@ class Api {
 		if ($dev) {
 			$this->authData['authid'] = $authid;
 		}
-		if (isset($GLOBALS['TSFE'])) {
-			$this->logindata = $this->readSessionData('vinouAuth');
-			$this->validateLogin();
-		} else {
-			$this->logindata = $this->login(false);
-		}
+		$this->logindata = $this->login(false);
+		// if (isset($GLOBALS['TSFE'])) {
+		// 	$this->logindata = $this->readSessionData('vinouAuth');
+		// 	$this->validateLogin();
+		// } else {
+		// 	$this->logindata = $this->login(false);
+		// }
 	}
 
 
