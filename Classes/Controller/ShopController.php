@@ -237,40 +237,17 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @return void
 	 */
 	public function basketAction() {
+		$this->initialize();
+
 		$basket = $this->detectOrCreateBasket();
+		$this->view->assign('basket',$basket);
 
-		if ($this->request->hasArgument('delete')) {
-			if ($this->request->getArgument('delete') === 'all') {
-				$itemsInBasket = $this->itemsRepository->findByBasketId($basket->getUid());
-				foreach ($itemsInBasket as $item) {
-					$this->itemsRepository->remove($item);
-				}
-			} else {
-				$item = $this->itemsRepository->findByUid($this->request->getArgument('delete'));
-				if (!is_null($item)) {
-					$this->itemsRepository->remove($item);
-				}
-			}
-			$this->persistenceManager->persistAll();
+		if (isset($basket['basketItems']) && count($basket['basketItems']) > 0) {
+			$items = $basket['basketItems'];
+			$this->view->assign('items', $items);
+			$this->view->assign('summary', $this->calculateSum($summary));
 		}
 
-		if ($this->request->hasArgument('product') && $this->request->hasArgument('quantity')) {
-
-			if (intval($this->request->getArgument('quantity')) > 0) {
-				$newBasketItem = new \Vinou\VinouConnector\Domain\Model\Items;
-				$newBasketItem->setBasket($basket);
-				$newBasketItem->setParenttype('basket');
-				$newBasketItem->setProduct($this->productsRepository->findByUid($this->request->getArgument('product')));
-				$newBasketItem->setQuantity($this->request->getArgument('quantity'));
-				$this->itemsRepository->add($newBasketItem);
-				$this->persistenceManager->persistAll();
-			}
-		}
-
-		$basketData = $this->fetchProductsByBasket($basket);
-
-		$this->view->assign('basket', $basketData['basketData']);
-		$this->view->assign('items', $basketData['items']);
 		$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
 		$this->view->assign('settings', $this->settings);
 	}
@@ -283,9 +260,9 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function orderAction() {
 		$this->initialize();
 
-		$basketData = $this->fetchProductsByBasket($this->detectOrCreateBasket());
-		$this->view->assign('basket', $basketData['basketData']);
-		$this->view->assign('items', $basketData['items']);
+		$basket = $this->detectOrCreateBasket();
+		$this->view->assign('basket', $basket);
+		$this->view->assign('items', $basket['basketItems']);
 
 		$required = [];
 		$required['billing'] = $this->switchFieldValues(explode(',',$this->settings['billing']['required']));
@@ -293,20 +270,23 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$required['mandatorySign'] = $this->settings['mandatorySign'];
 		$this->view->assign('required', $required);
 
-		$this->storeArgumentInSession('billing');
-		$this->view->assign('billing', $this->getArgumentInSession('billing'));
-
-		$this->storeArgumentInSession('delivery');
-		$this->view->assign('delivery', $this->getArgumentInSession('delivery'));
-
-		$account = $this->storeArgumentInSession('account');
-		$this->view->assign('account', $this->getArgumentInSession('account'));
-
+		$this->view->assign('billing', $this->api->readSessionData('billing'));
+		$this->view->assign('delivery', $this->api->readSessionData('delivery'));
 		$this->view->assign('settings', $this->settings);
 		$this->view->assign('payment', $this->payments);
 		$this->view->assign('paymentType', $this->paymentType);
 
 		$mode = 'default';
+
+		/**
+		 * REDIRECT IF BASKET IS EMPTY
+		 *
+		 */
+		if ($mode === 'default' && is_null($basket)) {
+			$this->redirect('basket', NULL, NULL, [], $this->basketPid);
+		}
+
+
 		/**
 		 * SWITCH MODE TO DELIVERY
 		 * if deliveryAdress was chcked or the backlink contains delivery
@@ -368,14 +348,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			} else {
 				$this->createOrder($basketData);
 			}
-		}
-
-		/** 
-		 * REDIRECT IF BASKET IS EMPTY
-		 *
-		 */
-		if ($mode === 'default' && is_null($basketData)) {
-			$this->redirect('basket', NULL, NULL, [], $this->basketPid);
 		}
 
 		$this->view->assign('mode',$mode);
@@ -498,52 +470,30 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	private function detectOrCreateBasket() {
-		if ($GLOBALS['TSFE']->loginUser) {
-		    $feUserId = $GLOBALS['TSFE']->fe_user->id;
-		    if (!is_null($this->basketsRepository->findByFeUserId($feUserId))) {
-		    	return $this->basketsRepository->findByFeUserId($feUserId);
-		    } else {
-		    	$newBasket = new \Vinou\VinouConnector\Domain\Model\Baskets;
-		    	$newBasket->setFeUser($feUserId);
-		    	$this->basketsRepository->add($newBasket);
-		    	$this->persistenceManager->persistAll();
-		    	return $newBasket;
-		    }
-		} else {
-		    $sessionId = $GLOBALS['TSFE']->fe_user->id;
-		    if (isset($GLOBALS['TSFE']->fe_user->sesData['vinou']['overrideSessionId'])) {
-		    	$sessionId = $GLOBALS['TSFE']->fe_user->sesData['vinou']['overrideSessionId'];
-		    }
-		    $sessionBasket = $this->basketsRepository->findBySessionId($sessionId);
-
-			if (!is_null($sessionBasket)) {
-				if (isset($this->itemsRepository->findByOrderedBasket($sessionBasket->getUid())[0])) {
-					return $this->createSessionBasket($this->overrideSessionId());
-				} else {
-					return $sessionBasket;
-				}
-			} else {
-				return $this->createSessionBasket($sessionId);
-			}
+		$basketUuid = $this->api->readSessionData('basket');
+		if (is_null($basketUuid) && isset($_COOKIE['basket'])) {
+			$basketUuid = $_COOKIE['basket'];
 		}
+
+		return !is_null($basketUuid) ? $this->api->getBasket($basketUuid) : false;
 	}
 
-	private function createSessionBasket($sessionId) {
-		$newBasket = new \Vinou\VinouConnector\Domain\Model\Baskets;
-		$newBasket->setSession($sessionId);
-		$this->basketsRepository->add($newBasket);
-		$this->persistenceManager->persistAll();
-		return $newBasket;
-	}
-
-	private function overrideSessionId() {
-		$newSessionId = $GLOBALS['TSFE']->fe_user->createSessionId();
-		$sessionData = [
-			'overrideSessionId' => $newSessionId
+	private function calculateSum($items) {
+		$summary = [
+			'net' => 0,
+			'tax' => 0,
+			'gross' => 0,
+			'quantity' => 0,
 		];
-		$GLOBALS['TSFE']->fe_user->setKey('ses', 'vinou', $sessionData);
-		$GLOBALS['TSFE']->fe_user->storeSessionData();
-		return $newSessionId;
+
+		foreach ($items as $item) {
+			$summary['quantity'] += $item['quantity'];
+			$summary['gross'] += ($item['quantity'] * $item['object']['price']);
+		}
+
+		$summary['net'] = $summary['gross'] / 1.19;
+		$summary['tax'] = $summary['gross'] - $summary['net'];
+		return $summary;
 	}
 
 	private function isNextStep($name) {

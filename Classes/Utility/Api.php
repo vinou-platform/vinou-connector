@@ -27,6 +27,7 @@ class Api {
 		}
 	}
 
+
 	public function validateLogin(){
 
 		if(!isset($this->logindata['token']) && !isset($this->logindata['refreshToken']))  {
@@ -48,9 +49,9 @@ class Api {
 			array_push($this->log,'validate existing token');
 			if($httpCode != 200) {
 				array_push($this->log,[
-					'validateresult' => $result
+					'validateresult' => $result,
+					'token expired'
 				]);
-				Debug::var_dump('recreate token');
 				$this->login();
 			}
 			return true;
@@ -81,10 +82,8 @@ class Api {
 			curl_close($ch);
 			if ($cached) {
 				$this->writeSessionData('vinouAuth',$result);
-			} else {
-				return $result;
 			}
-			return true;
+			return $result;
 		}
 		return false;
 	}
@@ -173,8 +172,10 @@ class Api {
             'ip' => $_SERVER['REMOTE_ADDR'],
             'userAgent' => $_SERVER['HTTP_USER_AGENT']
         ];
-        // var_dump($postData);
-        // die();
+
+        if (self::isDev())
+        	$postData['ip'] = $this->fetchLokalIP();
+
 		$result = $this->curlApiRoute('clients/login',$postData);
 		if (isset($result['token']) && isset($result['refreshToken'])) {
 			unset($result['id']);
@@ -182,6 +183,17 @@ class Api {
 			return $result;
 		}
 		return false;
+	}
+
+	public function getBasket($uuid) {
+		$postData = ['uuid' => $uuid];
+		$result = $this->curlApiRoute('baskets/get',$postData);
+		return isset($result['data']) ? $result['data'] : false;
+	}
+
+	public function fetchLokalIP(){
+		$result = $this->curlApiRoute('check/userinfo');
+		return $result['ip'];
 	}
 
 	public function readSessionData($key) {
@@ -199,5 +211,9 @@ class Api {
 			$GLOBALS['TSFE']->fe_user->setKey('ses', $key, $data);
 		}
 		return $GLOBALS['TSFE']->fe_user->storeSessionData();
+	}
+
+	public static function isDev() {
+		return substr($_SERVER["SERVER_NAME"],-5) === '.frog';
 	}
 }

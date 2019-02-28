@@ -8,7 +8,7 @@ mod.wizards.newContentElement.wizardItems {
                 icon = ../typo3conf/ext/vinou_connector/Resources/Public/Icons/wines.svg
                 tt_content_defValues {
                     CType = list
-                    list_type = vinou_wines
+                    list_type = vinouconnector_wines
                 }
             }
             enquiry {
@@ -17,7 +17,7 @@ mod.wizards.newContentElement.wizardItems {
                 icon = ../typo3conf/ext/vinou_connector/Resources/Public/Icons/enquiry.svg
                 tt_content_defValues {
                     CType = list
-                    list_type = vinou_enquiry
+                    list_type = vinouconnector_enquiry
                 }
             }
             shop {
@@ -26,7 +26,7 @@ mod.wizards.newContentElement.wizardItems {
                 icon = ../typo3conf/ext/vinou_connector/Resources/Public/Icons/shop.svg
                 tt_content_defValues {
                     CType = list
-                    list_type = vinou_shop
+                    list_type = vinouconnector_shop
                 }
             }
         }
