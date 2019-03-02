@@ -472,6 +472,12 @@
 			<trans-unit id="message.content.noCop">
 				<source>You had to accept and read the conditions of purchase</source>
 			</trans-unit>
+			<trans-unit id="message.content.noGdpr">
+				<source>You had to accept and read the gdpr notification</source>
+			</trans-unit>
+			<trans-unit id="message.content.noConnection">
+				<source>No Connection</source>
+			</trans-unit>
 			<trans-unit id="message.content.noBilling">
 				<source>Your session is expired, please retry your order</source>
 			</trans-unit>

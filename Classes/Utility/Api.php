@@ -16,9 +16,9 @@ class Api {
 
 	public function __construct($token = '',$authid = '',$dev = false) {
 		$this->authData['token'] = $token;
-		if ($dev) {
+		if ($dev)
 			$this->authData['authid'] = $authid;
-		}
+
 		$this->logindata = $this->login(false);
 		// if (isset($GLOBALS['TSFE'])) {
 		// 	$this->logindata = $this->readSessionData('vinouAuth');
@@ -192,6 +192,15 @@ class Api {
 		return isset($result['data']) ? $result['data'] : false;
 	}
 
+	public function findPackage($type,$count) {
+		$postData = [
+			'type' => $type,
+			$type => $count
+		];
+		$result = $this->curlApiRoute('packaging/find',$postData);
+		return $result['data'];
+	}
+
 	public function fetchLokalIP(){
 		$result = $this->curlApiRoute('check/userinfo');
 		return $result['ip'];
@@ -211,6 +220,11 @@ class Api {
 		} else {
 			$GLOBALS['TSFE']->fe_user->setKey('ses', $key, $data);
 		}
+		return $GLOBALS['TSFE']->fe_user->storeSessionData();
+	}
+
+	public function removeSessionData($key) {
+		unset($GLOBALS['TSFE']->fe_user->sesData[$key]);
 		return $GLOBALS['TSFE']->fe_user->storeSessionData();
 	}
 

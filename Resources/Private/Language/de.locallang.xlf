@@ -623,6 +623,14 @@
 				<source>You had to accept and read the conditions of purchase</source>
 				<target>Sie müssen die allgemeinen Geschäftsbedingungen akzeptieren!</target>
 			</trans-unit>
+			<trans-unit id="message.content.noGdpr">
+				<source>You had to accept and read the gdpr notification</source>
+				<target>Sie müssen den Datenschutzhinweis akzeptieren!</target>
+			</trans-unit>
+			<trans-unit id="message.content.noConnection">
+				<source>No Connection</source>
+				<target>Keine Verbindung</target>
+			</trans-unit>
 			<trans-unit id="message.content.noBilling">
 				<source>Your session is expired, please retry your order</source>
 				<target>Ihre Session ist abgelaufen, bitte versuchen Sie es erneut.</target>

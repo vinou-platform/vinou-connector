@@ -244,8 +244,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		if (isset($basket['basketItems']) && count($basket['basketItems']) > 0) {
 			$items = $basket['basketItems'];
+			$this->view->assign('summary', $this->calculateSum($items));
 			$this->view->assign('items', $items);
-			$this->view->assign('summary', $this->calculateSum($summary));
 		}
 
 		$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
@@ -262,7 +262,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		$basket = $this->detectOrCreateBasket();
 		$this->view->assign('basket', $basket);
-		$this->view->assign('items', $basket['basketItems']);
+
+		$items = $basket['basketItems'];
+		$this->view->assign('summary', $this->calculateSum($items));
+		$this->view->assign('items', $items);
 
 		$required = [];
 		$required['billing'] = $this->switchFieldValues(explode(',',$this->settings['billing']['required']));
@@ -270,8 +273,14 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$required['mandatorySign'] = $this->settings['mandatorySign'];
 		$this->view->assign('required', $required);
 
-		$this->view->assign('billing', $this->api->readSessionData('billing'));
-		$this->view->assign('delivery', $this->api->readSessionData('delivery'));
+		$this->view->assign('billing', $this->storeAndGetArgument('billing'));
+
+		if((bool)$this->storeAndGetArgument('deliveryAdress')) {
+			$this->view->assign('delivery', $this->storeAndGetArgument('delivery'));
+		} else {
+			$this->api->removeSessionData('delivery');
+		}
+		$this->view->assign('message', $this->storeAndGetArgument('message'));
 		$this->view->assign('settings', $this->settings);
 		$this->view->assign('payment', $this->payments);
 		$this->view->assign('paymentType', $this->paymentType);
@@ -284,19 +293,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		 */
 		if ($mode === 'default' && is_null($basket)) {
 			$this->redirect('basket', NULL, NULL, [], $this->basketPid);
-		}
-
-
-		/**
-		 * SWITCH MODE TO DELIVERY
-		 * if deliveryAdress was chcked or the backlink contains delivery
-		 */
-		if (
-			($this->deliveryViewEnabled() && $this->isNextStep('payment')) ||
-			$this->isBackStep('delivery') ||
-			($this->isBackStep('payment') && !$this->paymentView && isset($GLOBALS['TSFE']->fe_user->sesData['delivery']))
-		) {
-			$mode = 'delivery';
 		}
 
 		/**
@@ -342,11 +338,12 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if ($this->isNextStep('createOrder')) {
 			$mode = 'summary';
 			if ($this->request->getArgument('conditionsOfPurchase') !== 'yes') {
-				$this->Alert('error','noCop',ERROR);
-			} elseif (!isset($GLOBALS['TSFE']->fe_user->sesData['billing'])) {
-				$this->Alert('error','noBilling',ERROR);
+				$this->Alert('error','noCop',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			} else if ($this->request->getArgument('gdpr') !== 'yes') {
+				$this->Alert('error','noGdpr',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			} else {
-				$this->createOrder($basketData);
+				$this->Alert('error','noConnection',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				//$this->createOrder($basketData);
 			}
 		}
 
@@ -436,7 +433,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->sendTemplateEmail(
 			$recipient,
 			$this->sender,
-			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject','vinou').": ".str_pad($newOrder->getUid(), 10, "0", STR_PAD_LEFT),
+			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).": ".str_pad($newOrder->getUid(), 10, "0", STR_PAD_LEFT),
 			'Createorder',
 			$mailContent, 
 			$attachement
@@ -445,7 +442,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->sendTemplateEmail(
 			$this->admin,
 			$this->sender,
-			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject','vinou').": ".str_pad($newOrder->getUid(), 10, "0", STR_PAD_LEFT),
+			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).": ".str_pad($newOrder->getUid(), 10, "0", STR_PAD_LEFT),
 			'CreateNotification',
 			$mailContent
 		);
@@ -478,7 +475,14 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		return !is_null($basketUuid) ? $this->api->getBasket($basketUuid) : false;
 	}
 
-	private function calculateSum($items) {
+	private function storeAndGetArgument($argument) {
+		if ($this->request->hasArgument($argument)) {
+			$this->api->writeSessionData($argument,$this->request->getArgument($argument));
+		}
+		return $this->api->readSessionData($argument);
+	}
+
+	private function calculateSum(&$items) {
 		$summary = [
 			'net' => 0,
 			'tax' => 0,
@@ -490,6 +494,16 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$summary['quantity'] += $item['quantity'];
 			$summary['gross'] += ($item['quantity'] * $item['object']['price']);
 		}
+
+		$package = $this->api->findPackage('bottles',$summary['quantity']);
+		$items[] = [
+			'item_type' => 'package',
+			'item_id' => $package['id'],
+			'quantity' => 1,
+			'object' => $package
+		];
+
+		$summary['gross'] += $package['price'];
 
 		$summary['net'] = $summary['gross'] / 1.19;
 		$summary['tax'] = $summary['gross'] - $summary['net'];
@@ -748,7 +762,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->clearAllSessionData();
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($paymentdetails['approval_url']);
 		} else {
-			$this->Alert('error','paypalnotcreated',ERROR);	
+			$this->Alert('error','paypalnotcreated',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);	
 		}
 	}
 
@@ -821,7 +835,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 							$this->sendTemplateEmail(
 								$recipient,
 								$this->sender,
-								\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.acceptorder.subject','vinou').": ".str_pad($order->getUid(), 10, "0", STR_PAD_LEFT),
+								\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.acceptorder.subject',$this->extKey).": ".str_pad($order->getUid(), 10, "0", STR_PAD_LEFT),
 								'Acceptorder',
 								$mailContent,
 								$attachement
@@ -830,17 +844,17 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 							$this->sendTemplateEmail(
 								$this->admin,
 								$this->sender,
-								\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.paymentnotification.subject','vinou').": ".str_pad($order->getUid(), 10, "0", STR_PAD_LEFT),
+								\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.paymentnotification.subject',$this->extKey).": ".str_pad($order->getUid(), 10, "0", STR_PAD_LEFT),
 								'PaymentNotification',
 								$mailContent
 							);
 						} else {
 							$this->view->assign('error',TRUE);
-							$this->Alert('error','paypalprocess',ERROR);			
+							$this->Alert('error','paypalprocess',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 						}
 					} else {
 						$this->view->assign('error',TRUE);
-						$this->Alert('error','noorder',ERROR);
+						$this->Alert('error','noorder',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 					}
 				}
 				break;
@@ -867,7 +881,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$this->sendTemplateEmail(
 					$recipient,
 					$this->sender,
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.acceptorder.subject','vinou').": ".str_pad($order->getUid(), 10, "0", STR_PAD_LEFT),
+					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.acceptorder.subject',$this->extKey).": ".str_pad($order->getUid(), 10, "0", STR_PAD_LEFT),
 					'Acceptorder',
 					$mailContent,
 					$attachement
@@ -876,20 +890,20 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$this->sendTemplateEmail(
 					$this->admin,
 					$this->sender,
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.paymentnotification.subjectprepaid','vinou').": ".str_pad($order->getUid(), 10, "0", STR_PAD_LEFT),
+					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.paymentnotification.subjectprepaid',$this->extKey).": ".str_pad($order->getUid(), 10, "0", STR_PAD_LEFT),
 					'PaymentNotification',
 					$mailContent
 				);
 				break;
 		}
-		
+
 		$this->view->assign('action', 'finish');
 	}
 
 	protected function Alert($titlecode, $messagecode, $type){
 
-		$messageTitle = LocalizationUtility::translate( 'message.title.'.$titlecode , 'vinou');
-		$messageContent = LocalizationUtility::translate( 'message.content.'.$messagecode , 'vinou');
+		$messageTitle = LocalizationUtility::translate( 'message.title.'.$titlecode , $this->extKey);
+		$messageContent = LocalizationUtility::translate( 'message.content.'.$messagecode , $this->extKey);
 
 		if (substr($_SERVER['HTTP_HOST'],-4,4) == '.dev') {
 			$messageContent .= ' '.$messagecode;
@@ -897,8 +911,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		$msg = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
 			$messageContent,
-			$messageTitle,  
-			$type, 
+			$messageTitle,
+			$type,
 			TRUE
 		);
 		$this->controllerContext->getFlashMessageQueue()->enqueue($msg);
