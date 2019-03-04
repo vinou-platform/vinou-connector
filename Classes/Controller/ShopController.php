@@ -48,6 +48,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected $api;
 	protected $llPath = 'Resources/Private/Language/';
 	protected $localDir = 'typo3temp/vinou/';
+	protected $orderDir = 'vinou/orders';
 	protected $absLocalDir = '';
 	protected $translations;
 
@@ -93,6 +94,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->settings['currentPage'] = $GLOBALS['TSFE']->id;
 		$this->settings['cacheExpertise'] = (bool)$this->extConf['cacheExpertise'];
 
+		$this->checkFolders();
+
 		$this->sender = [
 			$this->settings['mail']['senderEmail'] => $this->settings['mail']['senderName']
 		];
@@ -126,6 +129,19 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		}
 		$this->view->assign('loggedIn', $loggedIn);
 
+	}
+
+	private function checkFolders() {
+		$orderDir = PATH_site . $this->orderDir;
+
+		if (!is_dir($orderDir))
+			mkdir($orderDir, 0777, true);
+
+		$htaccess = $orderDir .'/.htaccess';
+		if (!is_file($htaccess)) {
+			$content = 'Deny from all';
+			file_put_contents($htaccess, $content);
+		}
 	}
 
 	public function listAction() {
@@ -260,210 +276,173 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function orderAction() {
 		$this->initialize();
 
+		/* Collect Settings for orderView */
+		$this->view->assign('required', $this->getRequiredFields());
+		$this->view->assign('settings', $this->settings);
+
+		/* get basket data */
 		$basket = $this->detectOrCreateBasket();
+
+		/* goto basket view if no basket could be detected */
+		if (is_null($basket))
+			$this->redirect('basket', NULL, NULL, [], $this->basketPid);
+
 		$this->view->assign('basket', $basket);
 
+
+		/* detect for package and calculate summary*/
 		$items = $basket['basketItems'];
-		$this->view->assign('summary', $this->calculateSum($items));
+		$summary = $this->calculateSum($items);
+		$this->view->assign('summary', $summary);
 		$this->view->assign('items', $items);
 
-		$required = [];
-		$required['billing'] = $this->switchFieldValues(explode(',',$this->settings['billing']['required']));
-		$required['delivery'] = $this->switchFieldValues(explode(',',$this->settings['delivery']['required']));
-		$required['mandatorySign'] = $this->settings['mandatorySign'];
-		$this->view->assign('required', $required);
-
-		$this->view->assign('billing', $this->storeAndGetArgument('billing'));
+		/* get billing information */
+		$billing = $this->storeAndGetArgument('billing');
+		$this->view->assign('billing', $billing);
 
 		if((bool)$this->storeAndGetArgument('deliveryAdress')) {
+			/* set delivery if a separate dddress was defined */
+			$delivery = $this->storeAndGetArgument('delivery');
 			$this->view->assign('delivery', $this->storeAndGetArgument('delivery'));
 		} else {
+			/* set billing as delivery if no separate address was defined  */
+			$delivery = $billing;
 			$this->api->removeSessionData('delivery');
 		}
-		$this->view->assign('message', $this->storeAndGetArgument('message'));
-		$this->view->assign('settings', $this->settings);
-		$this->view->assign('payment', $this->payments);
-		$this->view->assign('paymentType', $this->paymentType);
+
+		/* get message if was set */
+		$message = $this->storeAndGetArgument('message');
+		$this->view->assign('message', $message);
+
+		/* get account information */
+		$account = $this->storeAndGetArgument('account');
+		$this->view->assign('account', $account);
+
+		/* set payment method */
+		$paymentMethod = $this->storeAndGetArgument('paymentMethod');
+		$this->view->assign('paymentMethod', $paymentMethod);
 
 		$mode = 'default';
+		if ($this->request->hasArgument('goTo'))
+			$mode = $this->request->getArgument('goTo');
 
-		/**
-		 * REDIRECT IF BASKET IS EMPTY
-		 *
-		 */
-		if ($mode === 'default' && is_null($basket)) {
-			$this->redirect('basket', NULL, NULL, [], $this->basketPid);
-		}
-
-		/**
-		 * SWITCH MODE TO PAYMENT
-		 * if billing was set and no delivery was set
-		 */
-		if (
-			($this->isNextStep('payment') && $mode !== 'delivery')  ||
-			($this->isBackStep('payment') && $this->paymentView)
-		) {
-			$mode = 'payment';
-		}
-
-		/**
-		 * SWITCH MODE TO PAYMENT
-		 * if billing was set and no delivery was set
-		 */
-		if (
-			$this->isBackStep('account') && $this->paymentView
-		) {
-			$mode = 'account';
-		}
-
-		/**
-		 * SWITCH MODE TO SUMMARY
-		 * if billing was set and no delivery was set
-		 */
-		if (
-			($this->isNextStep('summary') && !$this->deliveryViewEnabled()) ||
-			($mode == 'payment' && !$this->paymentView && !$this->request->hasArgument('back'))
-		) {
-			if ($this->getArgumentInSession('paymentMethod') == 'debiting' && !$GLOBALS['TSFE']->fe_user->sesData['account']) {
-				$mode = 'account';
-			} else {
-				$mode = 'summary';
-			}
-		}
-
-		/**
-		 * CREATE ORDER
-		 * with check for conditions of purchase
-		 */
-		if ($this->isNextStep('createOrder')) {
-			$mode = 'summary';
-			if ($this->request->getArgument('conditionsOfPurchase') !== 'yes') {
-				$this->Alert('error','noCop',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-			} else if ($this->request->getArgument('gdpr') !== 'yes') {
-				$this->Alert('error','noGdpr',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-			} else {
-				$this->Alert('error','noConnection',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-				//$this->createOrder($basketData);
-			}
+		switch ($mode) {
+			case 'payment':
+				$this->view->assign('payment', $this->payments);
+				$this->view->assign('paymentType', $this->paymentType);
+				break;
+			case 'account':
+				break;
+			case 'summary':
+				if ($paymentMethod == 'debiting' && !$account)
+					$mode = 'account';
+				break;
+			case 'submit':
+				if ($this->request->getArgument('conditionsOfPurchase') !== 'yes') {
+					$this->Alert('error','noCop',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				} else if ($this->request->getArgument('gdpr') !== 'yes') {
+					$this->Alert('error','noGdpr',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				} else {
+					//$this->Alert('error','noConnection',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$this->sendOrderByBasket(
+						$basket,
+						$items,
+						$summary,
+						$billing,
+						$delivery,
+						$paymentMethod,
+						$account,
+						$message
+					);
+				}
+				break;
+			default:
+				break;
 		}
 
 		$this->view->assign('mode',$mode);
 	}
 
-	private function createOrder($basketData) {
-		$newOrder = new \Vinou\VinouConnector\Domain\Model\Orders;
-
-		$newOrder->setBasket($basketData['basketData']['basket']);
-		$newOrder->setNet(number_format($basketData['basketData']['net'],2));
-		$newOrder->setTax(number_format($basketData['basketData']['tax'],2));
-		$newOrder->setGross(number_format($basketData['basketData']['gross'],2));
-
-		$billing = $this->getArgumentInSession('billing');
-		/*** BILLING ADDRESS ***/
-		/*** required Fields ***/
-		$newOrder->setFirstname($billing['firstname']);
-		$newOrder->setLastname($billing['lastname']);
-		$newOrder->setAddress($billing['address']);
-		$newOrder->setZip($billing['zip']);
-		$newOrder->setCity($billing['city']);
-
-		/*** BILLING ADDRESS ***/
-		/*** additional Fields ***/
-		!isset($billing['salutation']) ?: $newOrder->setSalutation($billing['salutation']);
-		!isset($billing['company']) ?: $newOrder->setCountry($billing['company']);
-		!isset($billing['country']) ?: $newOrder->setCompany($billing['country']);
-		!isset($billing['email']) ?: $newOrder->setEmail($billing['email']);
-		!isset($billing['phone']) ?: $newOrder->setPhone($billing['phone']);
-
-		$delivery = $this->getArgumentInSession('delivery');
-		if (!$delivery) {
-			$newOrder->setDeliveryFirstname($billing['firstname']);
-			$newOrder->setDeliveryLastname($billing['lastname']);
-			$newOrder->setDeliveryAddress($billing['address']);
-			$newOrder->setDeliveryZip($billing['zip']);
-			$newOrder->setDeliveryCity($billing['city']);
-
-			!isset($billing['company']) ?: $newOrder->setDeliveryCompany($billing['company']);
-			!isset($billing['salutation']) ?: $newOrder->setDeliverySalutation($billing['salutation']);
-			!isset($billing['country']) ?: $newOrder->setDeliveryCountry($billing['country']);
-		} else {
-			$newOrder->setDeliveryFirstname($delivery['firstname']);
-			$newOrder->setDeliveryLastname($delivery['lastname']);
-			$newOrder->setDeliveryAddress($delivery['address']);
-			$newOrder->setDeliveryZip($delivery['zip']);
-			$newOrder->setDeliveryCity($delivery['city']);
-
-			!isset($delivery['company']) ?: $newOrder->setDeliveryCompany($delivery['company']);
-			!isset($delivery['salutation']) ?: $newOrder->setDeliverySalutation($delivery['salutation']);
-			!isset($delivery['country']) ?: $newOrder->setDeliveryCountry($delivery['country']);
-		}
-
-		$newOrder->setPaymenttype($this->paymentType);
-		$this->ordersRepository->add($newOrder);
-		$this->persistenceManager->persistAll();
-
-		foreach ($basketData['items'] as $item) {
-			$orderItem = $item['rawpos'];
-			$orderItem->setShoporder($newOrder);
-			$orderItem->setNet(number_format($item['net'],2));
-			$orderItem->setGross(number_format($item['gross'],2));
-			$orderItem->setOrdered(1);
-			$orderItem->setParenttype('shoporder');
-			$this->itemsRepository->update($orderItem);
-		}
-		$this->persistenceManager->persistAll();
-
-		$mailContent = [
-			'billing' => $billing,
-			'delivery' => $delivery,
-			'items' => $basketData['items'],
-			'basket' => $basketData['basketData'],
-			'paymentMethod' => $this->paymentType
+	private function sendOrderByBasket($basket,$items,$summary,$billing,$delivery,$paymentMethod,$account,$message) {
+		$order = [
+			'source' => 'shop',
+			'payment_type' => $paymentMethod,
+			'basket' => $basket['uuid'],
+			'billing' => [
+				'firstname' => $billing['firstname'],
+				'lastname' => $billing['lastname'],
+				'address' => $billing['address'],
+				'zip' => $billing['zip'],
+				'city' => $billing['city'],
+				'email' => $billing['email'],
+			],
+			'delivery' => [
+				'firstname' => $delivery['firstname'],
+				'lastname' => $delivery['lastname'],
+				'address' => $delivery['address'],
+				'zip' => $delivery['zip'],
+				'city' => $delivery['city'],
+			],
 		];
 
-		$recipient = [
-			$billing['email'] => $billing['firstname'] . " " . $billing['lastname']
-		];
-
-		$attachement = [];
-		if ($this->settings['mail']['attachements']['generalBusinessTerms'] !== '') {
-			$attachement[] = $this->settings['mail']['attachements']['generalBusinessTerms'];
+		$additionalBilling = ['salutation', 'company', 'country', 'phone'];
+		foreach ($additionalBilling as $label) {
+			if (isset($billing[$label]))
+				$order['billing'][$label] = $billing[$label];
 		}
 
-		$this->sendTemplateEmail(
-			$recipient,
-			$this->sender,
-			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).": ".str_pad($newOrder->getUid(), 10, "0", STR_PAD_LEFT),
-			'Createorder',
-			$mailContent, 
-			$attachement
-		);
-
-		$this->sendTemplateEmail(
-			$this->admin,
-			$this->sender,
-			\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).": ".str_pad($newOrder->getUid(), 10, "0", STR_PAD_LEFT),
-			'CreateNotification',
-			$mailContent
-		);
-
-		switch ($this->paymentType) {
-			case 'paypal':
-				$this->initPaypalPayment($basketData,$newOrder,$billing,$delivery);
-				break;
-			case 'debiting':
-				$this->initDebitingPayment($newOrder);
-				break;
-			case 'bill':
-				$this->clearAllSessionData();
-				$this->redirect('finish', NULL, NULL, ['order' => $newOrder->getUid(),'paymentMethod' => 'bill'], $this->finishPid);
-				break;
-			default:
-				/* Prepaid */
-				$this->clearAllSessionData();
-				$this->redirect('finish', NULL, NULL, ['order' => $newOrder->getUid(),'paymentMethod' => 'prepaid'], $this->finishPid);
-				break;
+		$additionalDelivery = ['salutation', 'company', 'country'];
+		foreach ($additionalDelivery as $label) {
+			if (isset($delivery[$label]))
+				$order['delivery'][$label] = $delivery[$label];
 		}
+
+		$sendResult = $this->api->addOrder($order);
+		if ($sendResult) {
+			if ($message) {
+				$order['message'] = $message;
+			}
+
+			file_put_contents($this->orderDir .'/order-'.time().'.json', json_encode($order));
+
+			$recipient = [
+				$billing['email'] => $billing['firstname'] . " " . $billing['lastname']
+			];
+
+			$mailContent = $order;
+			$mailContent['items'] = $items;
+			$mailContent['summary'] = $summary;
+
+			$this->sendTemplateEmail(
+				$recipient,
+				$this->sender,
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$sendResult['data']['number'],
+				'CreateOrderClient',
+				$mailContent,
+				$this->settings['mail']['attachements']
+			);
+
+			$this->sendTemplateEmail(
+				$this->admin,
+				$this->sender,
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$sendResult['data']['number'],
+				'CreateOrderAdmin',
+				$mailContent
+			);
+
+			$this->clearAllSessionData();
+			$this->redirect(NULL, NULL, NULL, [], $this->finishPid);
+		}
+
+		return true;
+	}
+
+	private function getRequiredFields() {
+		$required = [];
+		$required['billing'] = $this->switchFieldValues(explode(',',$this->settings['billing']['required']));
+		$required['delivery'] = $this->switchFieldValues(explode(',',$this->settings['delivery']['required']));
+		$required['mandatorySign'] = $this->settings['mandatorySign'];
+		return $required;
 	}
 
 	private function detectOrCreateBasket() {
@@ -510,30 +489,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		return $summary;
 	}
 
-	private function isNextStep($name) {
-		if ($this->request->hasArgument('nextStep') && $this->request->getArgument('nextStep') == $name) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
-	}
-
-	private function isBackStep($name) {
-		if ($this->request->hasArgument('back') && $this->request->getArgument('back') == $name) {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
-	}
-
-	private function deliveryViewEnabled() {
-		if ($this->request->hasArgument('deliveryAdress') && $this->request->getArgument('deliveryAdress') == 'yes') {
-			return TRUE;
-		} else {
-			return FALSE;
-		}
-	}
-
 	private function switchFieldValues($fields){
 		foreach ($fields as $key => $field) {
 			$fields[$field] = true;
@@ -575,209 +530,12 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	private function clearAllSessionData() {
-		unset($GLOBALS['TSFE']->fe_user->sesData['billing']);
-		unset($GLOBALS['TSFE']->fe_user->sesData['delivery']);
-		unset($GLOBALS['TSFE']->fe_user->sesData['account']);
-		unset($GLOBALS['TSFE']->fe_user->sesData['paymentMethod']);
-	}
-
-	private function fetchProductsByBasket($basket) {
-		$itemsInBasket = $this->itemsRepository->findByBasketId($basket->getUid());
-		$items = [];
-		$sumNet = 0;
-		$sumGross = 0;
-		$posIndex = 1;
-		foreach ($itemsInBasket as $item) {
-			$product = $item->getProduct();
-			$addItem = [];
-			$addItem['uid'] = $item->getUid();
-			$addItem['index'] = $posIndex;
-			$addItem['product'] = $product;
-			$addItem['quantity'] = $item->getQuantity();
-			$addItem['gross'] = $this->calcGrossPrice($product,$item->getQuantity());
-			$addItem['net'] = $this->calcNetPrice($product,$item->getQuantity());
-			$addItem['tax'] = $addItem['gross'] - $addItem['net'];
-			$addItem['rawpos'] = $item;
-
-			$sumNet = $sumNet + $addItem['net'];
-			$sumGross = $sumGross + $addItem['gross'];
-			$items[] = $addItem;
-			$posIndex++;
-		}
-
-		$basketData = [];
-		$basketData['basket'] = $basket;
-		$basketData['net'] = $sumNet;
-		$basketData['gross'] = $sumGross;
-		$basketData['tax'] = $sumGross - $sumNet;
-
-		$returnArr = [
-			'basketData' => $basketData,
-			'items' => $items
-		];
-		return $returnArr;
-	}
-
-	private function fetchProductsByOrder($order) {
-		$itemsInOrder = $this->itemsRepository->findByOrderId($order->getUid());
-		$items = [];
-		$sumNet = 0;
-		$sumGross = 0;
-		$posIndex = 1;
-		foreach ($itemsInOrder as $item) {
-			$product = $item->getProduct();
-			$addItem = [];
-			$addItem['uid'] = $item->getUid();
-			$addItem['index'] = $posIndex;
-			$addItem['product'] = $product;
-			$addItem['quantity'] = $item->getQuantity();
-			$addItem['gross'] = $item->getGross();
-			$addItem['net'] = $item->getNet();
-			$addItem['tax'] = $item->getGross() - $item->getNet();
-			$addItem['rawpos'] = $item;
-
-			$sumNet = $sumNet + $addItem['net'];
-			$sumGross = $sumGross + $addItem['gross'];
-			$items[] = $addItem;
-			$posIndex++;
-		}
-
-		$orderData = [];
-		$orderData['order'] = $order;
-		$orderData['net'] = $sumNet;
-		$orderData['gross'] = $sumGross;
-		$orderData['tax'] = $sumGross - $sumNet;
-
-		$returnArr = [
-			'orderData' => $orderData,
-			'items' => $items
-		];
-		return $returnArr;
-	}
-
-	private function calcNetPrice($product,$quantity) {
-		switch ($product->getPricetype()) {
-			case 'net':
-				return $product->getPrice() * $quantity;
-				break;
-			default:
-				return ($product->getPrice() / (1 + ($product->getTax() / 100)))  * $quantity;
-				break;
-		}
-	}
-
-	private function calcGrossPrice($product,$quantity) {
-		switch ($product->getPricetype()) {
-			case 'net':
-				return ($product->getPrice() * (1 + ($product->getTax() / 100)))  * $quantity;
-				break;
-			default:
-				return $product->getPrice() * $quantity;
-				break;
-		}
-	}
-
-	private function initPaypalPayment($basketData,$order,$billing,$delivery) {
-
-		$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-	    $rootURL = $protocol.\TYPO3\CMS\Core\Utility\GeneralUtility::getHostname();
-
-	    $returnLinkConf = array(
-			'parameter' => $this->finishPid,
-			'additionalParams' => '&tx_vinou_wines[action]=finish&tx_vinou_wines[controller]=Products&tx_vinou_wines[paymentMethod]=paypal',
-			'returnLast' => 'url'
-		);
-		$returnURL = $rootURL.$GLOBALS['TSFE']->cObj->typoLink('', $returnLinkConf);
-
-		$cancelLinkConf = array(
-			'parameter' => $this->finishPid,
-			'additionalParams' => '&tx_vinou_wines[action]=cancel&tx_vinou_wines[controller]=Products&tx_vinou_wines[paymentMethod]=paypal',
-			'returnLast' => 'url'
-		);
-		$cancelURL = $rootURL.$GLOBALS['TSFE']->cObj->typoLink('', $cancelLinkConf);
-
-        $min = str_repeat(0, 15) . 1;
-        $max = str_repeat(9, 16);
-        $invoiceId = mt_rand($min, $max);
-        $order->setInvoiceid($invoiceId);
-
-        $paypalItemlist = [];
-
-		foreach ($basketData['items'] as $item) {
-			$payPalPosition = [
-				"quantity" => strval($item['quantity']),
-				"name" => $item['product']->getTitle(),
-				// "price" => number_format($this->calcNetPrice($item['product'],1),2),
-				"price" => number_format($this->calcGrossPrice($item['product'],1),2),
-				"currency" => "EUR",
-				"description" => $item['product']->getTeaser(),
-				// "tax" => number_format($this->calcGrossPrice($item['product'],1) - $this->calcNetPrice($item['product'],1),2)
-			];
-			array_push($paypalItemlist,$payPalPosition);
-		}
-
-		$paymentInfo = [
-			"intent" => "sale",
-			"redirect_urls" => [
-				"return_url" => $returnURL,
-				"cancel_url" => $cancelURL
-			],
-			"payer" => [
-				"payment_method" => "paypal"
-			],
-			"transactions" => [
-				[
-					"amount" => [
-						"total" => number_format($basketData['basketData']['gross'],2),
-						"currency" => "EUR",
-						// "details" => [
-						// 	"subtotal" => number_format($basketData['basketData']['net'],2),
-						// 	"shipping" => "1.00",
-						// 	"tax" => number_format($basketData['basketData']['tax'],2),
-						// 	"shipping_discount" => "-1.00"
-						// ]
-					],
-					"item_list" => [
-						"items" => $paypalItemlist
-					],
-					"description" => "Bestellung über ".$rootURL,
-					"invoice_number" => $invoiceId
-				]
-			]
-		];
-
-		$paymentResult = PaypalUtility::createPayment($paymentInfo,$this->paypalToken,$this->extConf['mode']);
-
-		if (!is_null($paymentResult->links)) {
-			$paymentdetails = [];
-			foreach ($paymentResult->links as $urls) {
-				$paymentdetails[$urls->rel] = $urls->href;
-			}
-
-			$order->setTransactionid($paymentResult->id);
-			$order->setPaymentdetails(serialize($paymentdetails));
-			$this->ordersRepository->update($order);
-			$this->persistenceManager->persistAll();
-
-			$this->clearAllSessionData();
-			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($paymentdetails['approval_url']);
-		} else {
-			$this->Alert('error','paypalnotcreated',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);	
-		}
-	}
-
-	private function initDebitingPayment($order) {
-		$accountData = $this->getArgumentInSession('account');
-		$paymentdetails = [];
-		foreach ($accountData as $label => $value) {
-			$paymentdetails[$label] = $value;
-		}
-		$order->setPaymentdetails(serialize($paymentdetails));
-		$this->ordersRepository->update($order);
-		$this->persistenceManager->persistAll();
-
-		$this->clearAllSessionData();
-		$this->redirect('finish', NULL, NULL, ['order' => $order->getUid(),'paymentMethod' => 'debiting'], $this->finishPid);
+		$this->api->removeSessionData('billing');
+		$this->api->removeSessionData('delivery');
+		$this->api->removeSessionData('deliveryAdress');
+		$this->api->removeSessionData('message');
+		$this->api->removeSessionData('account');
+		$this->api->removeSessionData('paymentMethod');
 	}
 
 	/**
@@ -788,114 +546,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function finishAction() {
 		$this->initialize();
 
-		$paymentMethod = $this->getArgumentInSession('paymentMethod');
-		if ($this->request->hasArgument('paymentMethod')) {
-			$paymentMethod = $this->request->getArgument('paymentMethod');
-		}
-
-		$this->view->assign('paymentMethod', $paymentMethod);
-
-		switch ($paymentMethod) {
-			case "paypal":
-				$payerId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('PayerID');
-				$paymentId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('paymentId');
-
-				if (!is_null($paymentId) && !is_null($payerId)) {
-					$order = $this->ordersRepository->findByTransactionid($paymentId);
-					if (!is_null($order)) {
-						$executeResult = PaypalUtility::executePayment($payerId,$paymentId,$this->paypalToken,$this->extConf['mode']);
-						if ($executeResult->state == 'approved') {
-							$order->setPayed(1);
-							$this->ordersRepository->update($order);
-							$this->persistenceManager->persistAll();
-							$this->view->assign('order', $order);
-							$orderData = $this->fetchProductsByOrder($order);
-							$this->view->assign('orderData', $orderData['orderData']);
-							$this->view->assign('items', $orderData['items']);
-							$this->view->assign('billing', $order->getBilling());
-							$this->view->assign('delivery', $order->getDelivery());
-
-							$mailContent = [
-								'order' => $orderData['orderData'],
-								'items' => $orderData['items'],
-								'billing' => $order->getBilling(),
-								'delivery' => $order->getDelivery(),
-								'paymentMethod' => $order->getPaymenttype()
-							];
-
-							$recipient = [
-								$order->getEmail() => $order->getFirstname() . " " . $order->getLastname()
-							];
-
-							$attachement = [];
-							if ($this->settings['mail']['attachements']['cancellationPolicy'] !== '') {
-								$attachement[] = $this->settings['mail']['attachements']['cancellationPolicy'];
-							}
-
-							$this->sendTemplateEmail(
-								$recipient,
-								$this->sender,
-								\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.acceptorder.subject',$this->extKey).": ".str_pad($order->getUid(), 10, "0", STR_PAD_LEFT),
-								'Acceptorder',
-								$mailContent,
-								$attachement
-							);
-
-							$this->sendTemplateEmail(
-								$this->admin,
-								$this->sender,
-								\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.paymentnotification.subject',$this->extKey).": ".str_pad($order->getUid(), 10, "0", STR_PAD_LEFT),
-								'PaymentNotification',
-								$mailContent
-							);
-						} else {
-							$this->view->assign('error',TRUE);
-							$this->Alert('error','paypalprocess',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-						}
-					} else {
-						$this->view->assign('error',TRUE);
-						$this->Alert('error','noorder',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-					}
-				}
-				break;
-			default:
-				$order = $this->ordersRepository->findByUid($this->request->getArgument('order'));
-				$orderData = $this->fetchProductsByOrder($order);
-				$mailContent = [
-					'order' => $orderData['orderData'],
-					'items' => $orderData['items'],
-					'billing' => $order->getBilling(),
-					'delivery' => $order->getDelivery(),
-					'paymentMethod' => $order->getPaymenttype()
-				];
-
-				$recipient = [
-					$order->getEmail() => $order->getFirstname() . " " . $order->getLastname()
-				];
-
-				$attachement = [];
-				if ($this->settings['mail']['attachements']['cancellationPolicy'] !== '') {
-					$attachement[] = $this->settings['mail']['attachements']['cancellationPolicy'];
-				}
-
-				$this->sendTemplateEmail(
-					$recipient,
-					$this->sender,
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.acceptorder.subject',$this->extKey).": ".str_pad($order->getUid(), 10, "0", STR_PAD_LEFT),
-					'Acceptorder',
-					$mailContent,
-					$attachement
-				);
-
-				$this->sendTemplateEmail(
-					$this->admin,
-					$this->sender,
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.paymentnotification.subjectprepaid',$this->extKey).": ".str_pad($order->getUid(), 10, "0", STR_PAD_LEFT),
-					'PaymentNotification',
-					$mailContent
-				);
-				break;
-		}
+		// ToDo add ne finish action
 
 		$this->view->assign('action', 'finish');
 	}
@@ -932,21 +583,13 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		$message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']);
+		$templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPaths']['']);
 
-		$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . 'Plain.html';
+		$templatePathAndFilename = PATH_site . 'typo3conf/ext/vinou_connector/Resources/Private/Templates/Email/' . $templateName . '.html';
 		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
 		$emailView->assignMultiple($variables);
-		$emailBody = $emailView->render();
-		$message->setBody($emailBody, 'text/plain');
-
-		if ((bool) $this->extConf['sendHtmlMail']) {
-			$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . 'Html.html';
-			$emailView->setTemplatePathAndFilename($templatePathAndFilename);
-			$emailHtmlBody = $emailView->render();
-			$message->addPart($emailHtmlBody, 'text/html');
-		}
+		$emailHtmlBody = $emailView->render();
+		$message->addPart($emailHtmlBody, 'text/html');
 
 		$subject = '=?utf-8?B?'. base64_encode($subject) .'?=';
 
@@ -954,9 +597,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				->setFrom($sender)
 				->setSubject($subject);
 
-		if (isset($attachement[0])) {
+		if (count($attachement) > 0) {
 			foreach ($attachement as $file) {
-				$message->attach(\Swift_Attachment::fromPath($file));
+				if ($file != '')
+					$message->attach(\Swift_Attachment::fromPath($file));
 			}
 		}
 

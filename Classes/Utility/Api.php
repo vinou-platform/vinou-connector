@@ -192,6 +192,12 @@ class Api {
 		return isset($result['data']) ? $result['data'] : false;
 	}
 
+	public function addOrder($order) {
+		$postData = ['data' => $order];
+		$result = $this->curlApiRoute('orders/add',$postData);
+		return $result;
+	}
+
 	public function findPackage($type,$count) {
 		$postData = [
 			'type' => $type,
