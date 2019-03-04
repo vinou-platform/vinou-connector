@@ -241,8 +241,8 @@
 			<trans-unit id="payment.paypal">
 				<source>PayPal</source>
 			</trans-unit>
-			<trans-unit id="payment.bill">
-				<source>Bill</source>
+			<trans-unit id="payment.invoice">
+				<source>Invoice</source>
 			</trans-unit>
 			<trans-unit id="payment.debiting">
 				<source>Direct Debit</source>

@@ -318,9 +318,9 @@
 				<source>PayPal</source>
 				<target>PayPal</target>
 			</trans-unit>
-			<trans-unit id="payment.bill">
-				<source>Bill</source>
-				<target>Rechnung</target>
+			<trans-unit id="payment.invoice">
+				<source>Invoice</source>
+				<target>Auf Rechnung</target>
 			</trans-unit>
 			<trans-unit id="payment.debiting">
 				<source>Direct Debit</source>
