@@ -97,6 +97,10 @@
                                         <numIndex index="0">price</numIndex>
                                         <numIndex index="1">price</numIndex>
                                     </numIndex>
+                                    <numIndex index="5" type="array">
+                                        <numIndex index="0">sorting</numIndex>
+                                        <numIndex index="1">sorting</numIndex>
+                                    </numIndex>
                                 </items>
                             </config>
                         </TCEforms>
