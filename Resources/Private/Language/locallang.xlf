@@ -9,6 +9,12 @@
 			<trans-unit id="be.wines.description">
 				<source>Display wines from Vinou as list or detail</source>
 			</trans-unit>
+			<trans-unit id="be.products.title">
+				<source>Products</source>
+			</trans-unit>
+			<trans-unit id="be.products.description">
+				<source>Display products from Vinou as list or detail</source>
+			</trans-unit>
 			<trans-unit id="be.enquiry.title">
 				<source>Enquiry</source>
 			</trans-unit>
@@ -263,7 +269,7 @@
 			<trans-unit id="mail.paymentnotification.subjectprepaid">
 				<source>Prepaid order</source>
 			</trans-unit>
-			
+
 			<trans-unit id="flexform_wines.general">
 				<source>Settings</source>
 			</trans-unit>
@@ -337,6 +343,37 @@
 				<source>Default</source>
 			</trans-unit>
 			<trans-unit id="flexform_wines.templateLayout">
+				<source>Template</source>
+			</trans-unit>
+
+			<trans-unit id="flexform_products.general">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.mode">
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.mode.list">
+				<source>List all products</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.mode.detail">
+				<source>Show product details</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.itemsPerRow">
+				<source>Items in one Row</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.detailPid">
+				<source>Product detail page</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.backPid">
+				<source>Back to page</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.template">
+				<source>Layout</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.template.default">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="flexform_products.templateLayout">
 				<source>Template</source>
 			</trans-unit>
 
@@ -448,7 +485,10 @@
 				<source>Products</source>
 			</trans-unit>
 			<trans-unit id="flexform_shop.detailPid">
-				<source>Product Detail Page</source>
+				<source>Wine detail page</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.productPid">
+				<source>Product detail page</source>
 			</trans-unit>
 			<trans-unit id="flexform_shop.backPid">
 				<source>Back to Page</source>

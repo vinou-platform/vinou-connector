@@ -1,0 +1,16 @@
+{namespace vin=Vinou\VinouConnector\ViewHelpers}
+<div class="item">
+	<f:image src="{vin:CacheApiImage(image:product.image,tstamp:product.chstamp)}" maxWidth="{settings.list.regular.image.maxWidth}" maxHeight="{settings.list.regular.image.maxHeight}"/>
+	<h2>{product.name}</h2>
+	<f:if condition="{settings.list.regular.text.crop}">
+		<f:then>
+			<p><f:format.crop maxCharacters="{settings.list.regular.text.crop}" append="{settings.list.regular.text.append}">{product.description}</f:format.crop></p>
+		</f:then>
+		<f:else>
+			<p>{product.description}</p>
+		</f:else>
+	</f:if>
+	<f:link.action action="detail" pageUid="{settings.detailPid}" arguments="{product:product.id}" class="vinouButton more">
+		<f:translate key="LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:list.more"/>
+	</f:link.action>
+</div>

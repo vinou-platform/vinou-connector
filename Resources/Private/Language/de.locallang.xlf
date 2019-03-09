@@ -11,6 +11,14 @@
 				<source>Display wines from Vinou as list or detail</source>
 				<target>Zeigt die Vinou-Weine als Weinliste oder Detailansicht</target>
 			</trans-unit>
+			<trans-unit id="be.products.title">
+				<source>Products</source>
+				<target>Produkte</target>
+			</trans-unit>
+			<trans-unit id="be.products.description">
+				<source>Display products from Vinou as list or detail</source>
+				<target>Zeigt die Produkte aus Vinou als Liste oder Detailansicht</target>
+			</trans-unit>
 			<trans-unit id="be.enquiry.title">
 				<source>Enquiry</source>
 				<target>Anfrageformular</target>
@@ -449,6 +457,47 @@
 				<target>Vorlage wählen</target>
 			</trans-unit>
 
+			<trans-unit id="flexform_products.general">
+				<source>Settings</source>
+				<target>Einstellungen</target>
+			</trans-unit>
+			<trans-unit id="flexform_products.mode">
+				<source>Mode</source>
+				<target>Modus</target>
+			</trans-unit>
+			<trans-unit id="flexform_products.mode.list">
+				<source>List all products</source>
+				<target>Listenansicht</target>
+			</trans-unit>
+			<trans-unit id="flexform_products.mode.detail">
+				<source>Show product details</source>
+				<target>Produktdetails</target>
+			</trans-unit>
+			<trans-unit id="flexform_products.itemsPerRow">
+				<source>Items in one row</source>
+				<target>Anzahl Produkte in einer Zeile</target>
+			</trans-unit>
+			<trans-unit id="flexform_products.detailPid">
+				<source>Product detail page</source>
+				<target>Detailseite</target>
+			</trans-unit>
+			<trans-unit id="flexform_products.backPid">
+				<source>Back to page</source>
+				<target>Zurück zu Seite</target>
+			</trans-unit>
+			<trans-unit id="flexform_products.template">
+				<source>Layout</source>
+				<target>Layout</target>
+			</trans-unit>
+			<trans-unit id="flexform_products.template.default">
+				<source>Default</source>
+				<target>Standard</target>
+			</trans-unit>
+			<trans-unit id="flexform_products.templateLayout">
+				<source>Template</source>
+				<target>Vorlage wählen</target>
+			</trans-unit>
+
 			<trans-unit id="flexform_enquiry.general">
 				<source>Settings</source>
 				<target>Einstellungen</target>
@@ -555,8 +604,12 @@
 				<target>Bestellung abschließen</target>
 			</trans-unit>
 			<trans-unit id="flexform_shop.detailPid">
-				<source>Product Detail Page</source>
-				<target>Detailseite</target>
+				<source>Wine detail page</source>
+				<target>Wein-Detailseite</target>
+			</trans-unit>
+			<trans-unit id="flexform_shop.productPid">
+				<source>Product detail page</source>
+				<target>Produkt-Detailseite</target>
 			</trans-unit>
 			<trans-unit id="flexform_shop.clusters">
 				<source>Filter options</source>

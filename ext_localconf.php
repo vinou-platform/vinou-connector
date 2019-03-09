@@ -22,6 +22,21 @@
 	);
 
 	/**
+     * plugin for products actions
+     */
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+		'Vinou.'.$_EXTKEY,
+		'Products',
+		array(
+			'Products' => 'list, detail',
+		),
+		// non-cacheable actions
+		array(
+			'Products' => 'detail',
+		)
+	);
+
+	/**
      * plugin for enquiry actions
      */
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(

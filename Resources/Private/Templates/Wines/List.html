@@ -12,7 +12,7 @@
 		<f:case default="TRUE">
 			<div class="vinou-wine-list regular" data-count="{f:if(condition:'{settings.itemsPerRow}',then:'{settings.itemsPerRow}',else:'5')}">
 				<f:for each="{wines}" as="wine">
-					<f:render partial="List/Item" arguments="{wine: wine,settings:settings}" />
+					<f:render partial="List/Wine" arguments="{wine: wine,settings:settings}" />
 				</f:for>
 			</div>
 		</f:case>

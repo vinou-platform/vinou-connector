@@ -1,0 +1,13 @@
+<f:layout name="Products" />
+
+<f:section name="main">
+	<f:switch expression="{settings.templateLayout}">
+		<f:defaultCase>
+			<div class="vinou-product-list regular" data-count="{f:if(condition:'{settings.itemsPerRow}',then:'{settings.itemsPerRow}',else:'5')}">
+				<f:for each="{products}" as="product">
+					<f:render partial="List/Product" arguments="{product: product,settings:settings}" />
+				</f:for>
+			</div>
+		</f:defaultCase>
+	</f:switch>
+</f:section>
