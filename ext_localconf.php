@@ -17,7 +17,7 @@
 		),
 		// non-cacheable actions
 		array(
-			'Wines' => 'detail',
+			'Wines' => 'list, detail',
 		)
 	);
 
@@ -32,7 +32,7 @@
 		),
 		// non-cacheable actions
 		array(
-			'Products' => 'detail',
+			'Products' => 'list, detail',
 		)
 	);
 
@@ -47,7 +47,7 @@
 		),
 		// non-cacheable actions
 		array(
-			'Enquiry' => 'submitRequest',
+			'Enquiry' => 'form, submitRequest',
 		)
 	);
 
