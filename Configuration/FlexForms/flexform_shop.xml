@@ -96,6 +96,7 @@
                                 <OR>
                                     <numIndex index="0">FIELD:switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;Shop->list;</numIndex>
                                     <numIndex index="1">FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
+                                    <numIndex index="2">FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
                                 </OR>
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.detailPid</label>
@@ -116,6 +117,7 @@
                                 <OR>
                                     <numIndex index="0">FIELD:switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;Shop->list;</numIndex>
                                     <numIndex index="1">FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
+                                    <numIndex index="2">FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
                                 </OR>
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.productPid</label>
