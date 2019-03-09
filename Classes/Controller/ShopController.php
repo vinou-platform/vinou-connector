@@ -147,32 +147,57 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function listAction() {
 		$this->initialize();
 
-		$postData = [
-			'inshop' => true,
-			'orderBy' => 'topseller DESC, sorting ASC'
-		];
-		$clusters = isset($this->settings['clusters']) ? explode(',',$this->settings['clusters']) : null;
-		if (!is_null($clusters))
-			$postData['cluster'] = $clusters;
+		$objectTypes = explode(',',$this->settings['showTypes']);
+		$items = [];
 
-		$data = $this->api->getWinesAll($postData);
+		if (in_array('wines',$objectTypes)) {
 
-		$this->view->assign('wines',$data['wines']);
+			$postData = [
+				'inshop' => true,
+				'orderBy' => 'topseller DESC, sorting ASC'
+			];
+			$clusters = isset($this->settings['clusters']) ? explode(',',$this->settings['clusters']) : null;
+			if (!is_null($clusters))
+				$postData['cluster'] = $clusters;
 
-		if (isset($data['clusters'])) {
-			if (isset($data['clusters']['categories'])) {
-				$categories = [];
-				foreach ($data['clusters']['categories'] as $catArray) {
-					foreach ($catArray as $key => $category) {
-						if (!isset($categories[$key]))
-							$categories[$key] = $category;
-					}
-				}
-				$data['clusters']['categories'] = $categories;
+			$data = $this->api->getWinesAll($postData);
+
+			$wines = isset($data['wines']) ? $data['wines'] : $data['data'];
+			foreach ($wines as &$wine) {
+				$wine['object_type'] = 'wine';
 			}
+			$items = array_merge($items,$wines);
 
-			$this->view->assign('clusters',$data['clusters']);
+			if (isset($data['clusters'])) {
+				if (isset($data['clusters']['categories'])) {
+					$categories = [];
+					foreach ($data['clusters']['categories'] as $catArray) {
+						foreach ($catArray as $key => $category) {
+							if (!isset($categories[$key]))
+								$categories[$key] = $category;
+						}
+					}
+					$data['clusters']['categories'] = $categories;
+				}
+
+				$this->view->assign('clusters',$data['clusters']);
+			}
 		}
+
+		if (in_array('products',$objectTypes)) {
+
+			$data = $this->api->getProductsAll();
+
+			$products = isset($data['products']) ? $data['products'] : $data['data'];
+			foreach ($products as &$product) {
+				$product['object_type'] = 'product';
+			}
+			$items = array_merge($items,$products);
+
+		}
+
+		$this->view->assign('items',$items);
+
 	}
 
 	/**
@@ -471,7 +496,11 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		foreach ($items as $item) {
 			$summary['quantity'] += $item['quantity'];
-			$summary['gross'] += ($item['quantity'] * $item['object']['price']);
+			if (isset($item['object']['price'])) {
+				$summary['gross'] += ($item['quantity'] * $item['object']['price']);
+			} else {
+				$summary['gross'] += ($item['quantity'] * $item['object']['gross']);
+			}
 		}
 
 		$package = $this->api->findPackage('bottles',$summary['quantity']);

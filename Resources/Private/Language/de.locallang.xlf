@@ -582,6 +582,18 @@
 				<source>Country</source>
 				<target>Land</target>
 			</trans-unit>
+			<trans-unit id="flexform_shop.showTypes">
+				<source>Show objects of type</source>
+				<target>Zeige Objekte vom Typ</target>
+			</trans-unit>
+			<trans-unit id="flexform_shop.showTypes.wines">
+				<source>Wines</source>
+				<target>Weine</target>
+			</trans-unit>
+			<trans-unit id="flexform_shop.showTypes.products">
+				<source>Products</source>
+				<target>Produkte</target>
+			</trans-unit>
 			<trans-unit id="flexform_shop.backPid">
 				<source>Back to Page</source>
 				<target>Zurück zu Seite</target>

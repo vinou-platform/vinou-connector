@@ -438,6 +438,15 @@
 			<trans-unit id="flexform_shop.clusters.country">
 				<source>Country</source>
 			</trans-unit>
+			<trans-unit id="flexform_shop.showTypes">
+				<source>Show objects of type</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.showTypes.wines">
+				<source>Wines</source>
+			</trans-unit>
+			<trans-unit id="flexform_shop.showTypes.products">
+				<source>Products</source>
+			</trans-unit>
 			<trans-unit id="flexform_shop.detailPid">
 				<source>Product Detail Page</source>
 			</trans-unit>

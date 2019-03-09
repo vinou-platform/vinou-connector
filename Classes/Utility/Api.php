@@ -168,6 +168,17 @@ class Api {
 		return $result['categories'];
 	}
 
+	public function getProductsAll($postData = NULL) {
+		$result = $this->curlApiRoute('products/getAll',$postData);
+		return $result;
+	}
+
+	public function getProduct($id) {
+		$postData = ['id' => $id];
+		$result = $this->curlApiRoute('products/get',$postData);
+		return $result;
+	}
+
 	public function getClientLogin() {
 		$postData = [
             'ip' => $_SERVER['REMOTE_ADDR'],

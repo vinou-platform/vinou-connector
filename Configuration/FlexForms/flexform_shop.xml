@@ -69,6 +69,27 @@
                             </config>
                         </TCEforms>
                     </settings.clusters>
+                    <settings.showTypes>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.showTypes</label>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectCheckBox</renderType>
+                                <default>wines</default>
+                                <items>
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.showTypes.wines</numIndex>
+                                        <numIndex index="1">wines</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_shop.showTypes.products</numIndex>
+                                        <numIndex index="1">products</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.showTypes>
                     <settings.detailPid>
                         <TCEforms>
                             <displayCond>
