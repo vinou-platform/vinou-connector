@@ -1,0 +1,8 @@
+plugin.tx_vinou {
+	settings {
+		javascript {
+			jQuery = 0
+			slider = 1
+		}
+	}
+}

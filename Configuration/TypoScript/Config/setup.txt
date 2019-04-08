@@ -1,3 +1,31 @@
+# add Vinou-JS (Shop,Enquiry,List) if it was turned on in the constants
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.vinou}]
+page.includeJSFooterlibs {
+	listjs = EXT:vinou_connector/Vendor/listjs/list.js
+	vinou = EXT:vinou_connector/Resources/Public/JavaScript/Src/vinou.js
+}
+
+# add only shop javascript if it was turned on in the constants
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.shop}]
+page.includeJSFooterlibs {
+	listjs = EXT:vinou_connector/Vendor/listjs/list.js
+	shop = EXT:vinou_connector/Resources/Public/JavaScript/Src/shop.js
+}
+
+# add only enquiry javascript if it was turned on in the constants
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.enquiry}]
+page.includeJSFooterlibs {
+	enquiry = EXT:vinou_connector/Resources/Public/JavaScript/Src/enquiry.js
+}
+
+# add only list javascript if it was turned on in the constants
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.list}]
+page.includeJSFooterlibs {
+	list = EXT:vinou_connector/Resources/Public/JavaScript/Src/list.js
+}
+
+[end]
+
 plugin.tx_vinouconnector_wines {
 	view {
 		templateRootPaths {

@@ -1,21 +1,62 @@
 {namespace vin=Vinou\VinouConnector\ViewHelpers}
-<li class="item" data-vintage="{wine.vintage}" data-place="{wine.place}" data-name="{wine.name}" data-type="{wine.type}" data-categories="{vin:categoryNames(categories:'{wine.categories}')}">
-	<div class="image">
-		<f:image src="{vin:CacheApiImage(image:wine.image,tstamp:wine.chstamp)}" maxWidth="{settings.list.image.maxWidth}" maxHeight="{settings.list.image.maxHeight}"/>
-	</div>
-	<div class="description">
-		<h3>{wine.vintage}{f:if(condition:'{wine.vintage}>0',then:' - ',else:'')}{wine.name}</h3>
-		<p>{wine.description -> f:format.crop(maxCharacters: 150, append: '...', respectWordBoundaries: true)}<br>
-			<f:link.action pluginName="wines" controller="Wines" action="detail" pageUid="{settings.detailPid}" arguments="{wine:wine.id}" class="btn-link">Mehr über den Wein erfahren</f:link.action></p>
-		<div>
-			<form class="price-form">
-				<div class="form-group">
-					<span class="price-form-label">Preis:</span>
-					<span class="price-form-value">{wine.price -> f:format.number(decimals:2,decimalSeparator:',')} €</span>
-					<input type="number" class="form-control" step="1" min="1" max="48" value="6" id="price"/>
-					<button type="submit"><span class="fa fa-shopping-cart"></span></button>
+<f:switch expression="{item.object_type}">
+	<f:case value="product">
+		<li class="item product" data-name="{item.name}" data-categories="Produkte" id="shop-list-item-{item.id}">
+			<div class="inner-item">
+				<div class="image">
+					<f:if condition="{item.image}">
+						<f:link.action pluginName="products" controller="Products" action="detail" pageUid="{settings.productPid}" arguments="{product:item.id}"><img src="https://api.vinou.de{item.image}?height=300"/></f:link.action>
+					</f:if>
 				</div>
-			</form>
-		</div>
-	</div>
-</li>
+				<div class="description">
+					<h3><f:link.action pluginName="products" controller="Products" action="detail" pageUid="{settings.productPid}" arguments="{product:item.id}">{item.name}</f:link.action></h3>
+					<f:link.action pluginName="products" controller="Products" action="detail" pageUid="{settings.productPid}" arguments="{product:item.id}" class="btn-link">Details</f:link.action>
+					<p class="small-text">{item.description -> f:format.crop(maxCharacters: 75, append: '...', respectWordBoundaries: true)}<br>
+						</p>
+					<div>
+						<form class="price-form add-item-form" method="POST">
+							<input type="hidden" name="item_id" value="{item.id}"/>
+							<input type="hidden" name="item_type" value="product"/>
+							<div class="form-group">
+								<span class="price-form-label">Preis:</span>
+								<span class="price-form-value">{item.gross -> f:format.number(decimals:2,decimalSeparator:',')} €</span>
+								<input type="number" id="quantity" name="quantity" class="form-control" step="1" min="1"value="6"/>
+								<button type="submit"><span class="fa fa-shopping-cart"></span></button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</li>
+	</f:case>
+	<f:defaultCase>
+		<li class="item wine" data-vintage="{item.vintage}" data-place="{item.place}" data-name="{item.name}" data-type="{item.type}" data-categories="{vin:categoryNames(categories:'{item.categories}')}" data-sorting="{item.topseller}-{item.sorting}" id="shop-list-item-{item.id}">
+			<div class="inner-item">
+				<div class="image">
+					<f:if condition="{item.image}">
+						<f:link.action pluginName="wines" controller="Wines" action="detail" pageUid="{settings.detailPid}" arguments="{wine:item.id}"><img src="https://api.vinou.de{item.image}?height=300"/></f:link.action>
+					</f:if>
+				</div>
+				<div class="description">
+					<h3><f:link.action pluginName="wines" controller="Wines" action="detail" pageUid="{settings.detailPid}" arguments="{wine:item.id}">{item.vintage}{f:if(condition:'{item.vintage}>0',then:' - ',else:'')}{item.name}</f:link.action></h3>
+					<f:if condition="{item.topseller}"><span class="tag">Topseller</span></f:if>
+					<f:link.action pluginName="wines" controller="Wines" action="detail" pageUid="{settings.detailPid}" arguments="{wine:item.id}" class="btn-link">Details</f:link.action>
+					<p class="small-text">{item.description -> f:format.crop(maxCharacters: 75, append: '...', respectWordBoundaries: true)}<br>
+						</p>
+					<div>
+						<form class="price-form add-item-form" method="POST">
+							<input type="hidden" name="item_id" value="{item.id}"/>
+							<input type="hidden" name="item_type" value="wine"/>
+							<div class="form-group">
+								<span class="price-form-label">Preis:</span>
+								<span class="price-form-value">{item.price -> f:format.number(decimals:2,decimalSeparator:',')} €</span>
+								<input type="number" id="quantity" name="quantity" class="form-control" step="1" min="1"value="6"/>
+								<button type="submit"><span class="fa fa-shopping-cart"></span></button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</li>
+	</f:defaultCase>
+</f:switch>

@@ -1,12 +1,15 @@
 <f:layout name="Wines" />
 
 <f:section name="main">
-	<div class="shoplist">
-		<div class="vinou-clusters col-sm-3">
+	<div class="vinou-shop">
+		<div class="vinou-shop-clusters" id="vinou-clusters">
 			<f:for each="{clusters}" as="cluster" key="clustername">
 				<f:switch expression="{clustername}">
 					<f:case value="categories">
-						<f:render partial="Shop/ClusterCategory" arguments="{cluster: settings.manualFilter.category,clustername:clustername,label:'category.label'}" />
+						<f:render partial="Shop/ClusterGroup" arguments="{cluster: settings.manualFilter.category,clustername:clustername,label:'category.label'}" />
+					</f:case>
+					<f:case value="type">
+						<f:render partial="Shop/ClusterGroup" arguments="{cluster: settings.manualFilter.type,clustername:clustername,label:clustername}" />
 					</f:case>
 					<f:defaultCase>
 						<f:render partial="Shop/ClusterGroup" arguments="{cluster: cluster,clustername:clustername,label:clustername}" />
@@ -14,11 +17,11 @@
 				</f:switch>
 			</f:for>
 		</div>
-		<div class="col-sm-9 vinou-wine-list regular" id="vinou-shoplist" data-items-per-page="10">
+		<div class="vinou-shop-list regular" id="vinou-list" data-items-per-page="10">
 			<ul class="pagination top"></ul>
 			<ul class="list">
-				<f:for each="{wines}" as="wine" iteration="index">
-					<f:render partial="Shop/ListItem" arguments="{wine: wine,settings:settings}" />
+				<f:for each="{items}" as="item" iteration="index">
+					<f:render partial="Shop/ListItem" arguments="{item: item,settings:settings}" />
 				</f:for>
 			</ul>
 			<ul class="pagination bottom"></ul>

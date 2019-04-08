@@ -4,9 +4,19 @@ page {
 		fontawesome = EXT:vinou_connector/Vendor/fontawesome/css/font-awesome.min.css
 		vinouCSS = EXT:vinou_connector/Resources/Public/Styles/main.css
 	}
-	includeJSFooterlibs {
-		jquery = EXT:vinou_connector/Vendor/jquery/jquery.1.11.1.js
-		slick = EXT:vinou_connector/Vendor/slick/slick.min.js
-		initVinou = EXT:vinou_connector/Resources/Public/Scripts/init.js
-	}
 }
+
+# add jQuery if it was turned on in the constants
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.jQuery}]
+page.includeJSFooterlibs {
+	jquery = EXT:vinou_connector/Vendor/jquery/jquery.1.11.1.js
+}
+
+# add Slider with Slick if it was turned on in the constants
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.slider}]
+page.includeJSFooterlibs {
+	slick = EXT:vinou_connector/Vendor/slick/slick.min.js
+	vinouSlider = EXT:vinou_connector/Resources/Public/JavaScript/Src/slider.js
+}
+
+[end]

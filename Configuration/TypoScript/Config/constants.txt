@@ -1,3 +1,14 @@
+plugin.tx_vinou {
+	settings {
+		javascript {
+			vinou = 1
+			list = 0
+			shop = 0
+			enquiry = 0
+		}
+	}
+}
+
 plugin.tx_vinouconnector_wines {
 	view {
 		# cat=tx_vinouconnector_wines/file; type=string; label= Path to template root (FE)
