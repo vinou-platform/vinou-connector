@@ -29,7 +29,7 @@ var vinouShop = {
 		var parent = detail ? detail : listitem;
 
 		var image = parent.querySelector('img').cloneNode(true);
-		ctrl.dropper.setAttribute('data-status', 'visible');
+		ctrl.dropper.setAttribute('data-status','visible');
 		ctrl.dropper.innerHTML = '';
 		ctrl.dropper.appendChild(image);
 
@@ -38,22 +38,24 @@ var vinouShop = {
 		ctrl.dropper.style.left = parseInt(offset.left) + 'px';
 
 		var target = document.querySelector('.basket-status .juwel').getBoundingClientRect();
-		ctrl.dropper.setAttribute('data-status', 'tobasket');
+		ctrl.dropper.setAttribute('data-status','tobasket');
 		ctrl.dropper.style.top = parseInt(target.top) + 'px';
 		ctrl.dropper.style.left = parseInt(target.left) + 'px';
 
-		var timeOut = setTimeout(function() {
-			ctrl.dropper.setAttribute('data-status', 'hidden');
-		}, 800);
+		var timeOut = setTimeout(function(){
+			ctrl.dropper.setAttribute('data-status','hidden');
+		},800);
 
 		var basket = localStorage.getItem("basket");
 		var postData = {
 			uuid: basket,
 			data: item
 		};
-		ctrl.doApiRequest('/service/baskets/addItem', postData, function() {
-			if (this.status === 200)
+		ctrl.doApiRequest('/service/baskets/addItem',postData,function(){
+			if (this.status === 200) {
+				toast.show('Erfolgreich','Ihre Position wurde in den Warenkorb gelegt');
 				ctrl.updateBasketCount(basket);
+			}
 		});
 	},
 
@@ -63,8 +65,9 @@ var vinouShop = {
 		var postData = {
 			id: id
 		};
-		ctrl.doApiRequest('/service/baskets/deleteItem', postData, function() {
+		ctrl.doApiRequest('/service/baskets/deleteItem',postData,function(){
 			if (this.status === 200) {
+				toast.show('Erfolgreich','Ihre Position wurde gelöscht');
 				ctrl.updateBasketCount(basket);
 				var row = document.getElementById('basket-row-' + id);
 				row.parentNode.removeChild(row);
@@ -85,16 +88,16 @@ var vinouShop = {
 			var row = document.getElementById('basket-row-' + form.id);
 			var price = form.quantity * parseFloat(form.price);
 			row.querySelector('.position-price').innerHTML = price.toFixed(2) + ' €';
-			ctrl.doApiRequest('/service/baskets/editItem', postData, function() {
+			ctrl.doApiRequest('/service/baskets/editItem',postData,function(){
 				if (this.status === 200) {
+					toast.show('Erfolgreich','Ihre Position wurde geändert');
 					ctrl.updateBasketCount(basket);
 				}
 			});
 		} else {
-			ctrl.doApiRequest('/service/baskets/deleteItem', {
-				id: form.id
-			}, function() {
+			ctrl.doApiRequest('/service/baskets/deleteItem',{id:form.id},function(){
 				if (this.status === 200) {
+					toast.show('Erfolgreich','Ihre Position wurde gelöscht');
 					ctrl.updateBasketCount(basket);
 					var row = document.getElementById('basket-row-' + form.id);
 					row.parentNode.removeChild(row);
@@ -109,18 +112,18 @@ var vinouShop = {
 		if (!basket) {
 			ctrl.createBasket();
 		} else {
-			ctrl.setCookie('basket', basket, 30);
+			ctrl.setCookie('basket',basket,30);
 			ctrl.updateBasketCount(basket);
 		}
 	},
 
-	updateBasketCount: function(basket) {
+	updateBasketCount: function(basket){
 		var ctrl = this;
 		var card = document.querySelector('.basket-status');
-		card.setAttribute('data-status', 'normal');
-		ctrl.doApiRequest('/service/baskets/get', {
+		card.setAttribute('data-status','normal');
+		ctrl.doApiRequest('/service/baskets/get',{
 			uuid: basket
-		}, function() {
+		},function(){
 			if (this.status == 200) {
 				response = JSON.parse(this.responseText);
 				var summary = {
@@ -130,7 +133,7 @@ var vinouShop = {
 					gross: 0
 				};
 
-				response.data.basketItems.forEach(function(item) {
+				response.data.basketItems.forEach(function(item){
 					summary.quantity += item.quantity;
 					if (item.object.price) {
 						summary.gross += item.quantity * item.object.price;
@@ -139,15 +142,15 @@ var vinouShop = {
 					}
 				})
 
-				ctrl.doApiRequest('/service/packaging/find', {
+				ctrl.doApiRequest('/service/packaging/find',{
 					type: 'bottles',
 					bottles: summary.quantity
-				}, function() {
+				},function(){
 					response = JSON.parse(this.responseText);
 					if (response.data) {
 						price = response.data.price;
 						summary.gross += 1 * price;
-						price.replace('.', ',');
+						price.replace('.',',');
 						packagePrice = document.querySelector('#package-row .position-price');
 						if (packagePrice)
 							packagePrice.innerHTML = price + ' €';
@@ -157,7 +160,7 @@ var vinouShop = {
 					summary.tax = summary.gross - summary.net;
 
 					document.querySelector('.basket-status .juwel').innerHTML = summary.quantity;
-					card.setAttribute('data-status', 'updated');
+					card.setAttribute('data-status','updated');
 
 					ctrl.updateBasketSum(summary);
 				});
@@ -170,25 +173,25 @@ var vinouShop = {
 	},
 
 	updateBasketSum: function(sum) {
-		const entries = Object.entries(sum);
-		for (const [key, value] of entries) {
-			console.log(key + ': ' + value);
-			el = document.getElementById('basket-sum-' + key);
-			if (el) {
-				var price = value.toFixed(2);
-				price.replace('.', ',');
-				el.innerHTML = price + ' €';
+		for (var key in sum) {
+			if (sum.hasOwnProperty(key)) {
+				el = document.getElementById('basket-sum-' + key);
+				if (el) {
+					var price = sum[key].toFixed(2);
+					price.replace('.',',');
+					el.innerHTML = price + ' €';
+				}
 			}
 		}
 	},
 
 	createBasket: function() {
 		var ctrl = this;
-		ctrl.doApiRequest('/service/baskets/add', null, function() {
+		ctrl.doApiRequest('/service/baskets/add',null,function(){
 			if (this.status === 200) {
 				response = JSON.parse(this.responseText);
-				localStorage.setItem("basket", response.data.uuid);
-				ctrl.setCookie('basket', response.data.uuid, 30);
+				localStorage.setItem("basket",response.data.uuid);
+				ctrl.setCookie('basket',response.data.uuid,30);
 			}
 		});
 	},
@@ -196,12 +199,12 @@ var vinouShop = {
 	validateLogin: function() {
 		var ctrl = this;
 		// check if token is set in local storage
-		if (!localStorage.getItem("token")) {
+		if(!localStorage.getItem("token")){
 			// login client if no token is set
 			ctrl.login();
 		} else {
 			// check if token is expired
-			ctrl.doApiRequest('/service/check/login', null, function() {
+			ctrl.doApiRequest('/service/check/login',null,function(){
 				if (this.status == 200) {
 					ctrl.validateBasket();
 				} else {
@@ -216,13 +219,13 @@ var vinouShop = {
 	login: function() {
 		var ctrl = this;
 		// do client login
-		this.request('/?eID=clientLogin', null, function() {
-			switch (this.status) {
+		this.request('/?eID=clientLogin',null,function(){
+			switch(this.status) {
 				case 200:
 					response = JSON.parse(this.responseText);
 					if (response.token)
-						localStorage.setItem("token", response.token);
-					// set token into local storage
+						localStorage.setItem("token",response.token);
+						// set token into local storage
 					ctrl.validateBasket();
 					break;
 				default:
@@ -232,7 +235,7 @@ var vinouShop = {
 		});
 	},
 
-	request: function(route, data = null, callback) {
+	request: function(route,data,callback) {
 		var args = Array.prototype.slice.call(arguments, 3);
 		var request = new XMLHttpRequest();
 		request.onload = function() {
@@ -256,7 +259,7 @@ var vinouShop = {
 		request.send(JSON.stringify(data));
 	},
 
-	doApiRequest: function(route, data = null, callback) {
+	doApiRequest: function(route,data,callback) {
 		var args = Array.prototype.slice.call(arguments, 3);
 		var request = new XMLHttpRequest();
 		request.onload = function() {
@@ -293,8 +296,9 @@ var vinouShop = {
 					event.preventDefault();
 					ctrl.addItemToBasket(ctrl.serializeForm(this));
 				}, true);
-			} else {
-				addForms[i].attachEvent('onsubmit', function(event) {
+			}
+			else {
+				addForms[i].attachEvent('onsubmit', function(event){
 					event.preventDefault();
 					ctrl.addItemToBasket(ctrl.serializeForm(this));
 				});
@@ -308,8 +312,9 @@ var vinouShop = {
 					event.preventDefault();
 					ctrl.updateBasketItem(ctrl.serializeForm(this));
 				}, true);
-			} else {
-				updateForms[i].attachEvent('onsubmit', function(event) {
+			}
+			else {
+				updateForms[i].attachEvent('onsubmit', function(event){
 					event.preventDefault();
 					ctrl.updateBasketItem(ctrl.serializeForm(this));
 				});
@@ -328,16 +333,16 @@ var vinouShop = {
 
 		var delCheck = document.querySelector('#deliveryAdress');
 		if (delCheck) {
-			delCheck.addEventListener('change', function() {
+			delCheck.addEventListener('change',function(){
 				var delForm = document.querySelector('#delivery-fieldset');
-				delForm.setAttribute('data-visible', this.checked ? 1 : 0);
+				delForm.setAttribute('data-visible',this.checked ? 1 : 0);
 				var requiredFields = document.querySelectorAll('#delivery-fieldset [data-required="1"]');
 				if (this.checked) {
-					requiredFields.forEach(function(item) {
-						item.setAttribute('required', 'required');
+					requiredFields.forEach(function(item){
+						item.setAttribute('required','required');
 					});
 				} else {
-					requiredFields.forEach(function(item) {
+					requiredFields.forEach(function(item){
 						item.removeAttribute('required');
 					});
 				}
@@ -346,7 +351,7 @@ var vinouShop = {
 
 	},
 
-	serializeForm: function(form) {
+	serializeForm: function(form){
 		if (!form || form.nodeName !== "FORM") {
 			return;
 		}
@@ -356,65 +361,65 @@ var vinouShop = {
 				continue;
 			}
 			switch (form.elements[i].nodeName) {
-				case 'INPUT':
-					switch (form.elements[i].type) {
-						case 'text':
-						case 'number':
-						case 'email':
-						case 'date':
-						case 'hidden':
-						case 'password':
-						case 'button':
-						case 'reset':
-						case 'submit':
-							q[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
-							break;
-						case 'checkbox':
-						case 'radio':
-							if (form.elements[i].checked) {
-								q[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
-							}
-							break;
-					}
-					break;
-				case 'file':
-					break;
-				case 'TEXTAREA':
+			case 'INPUT':
+				switch (form.elements[i].type) {
+				case 'text':
+				case 'number':
+				case 'email':
+				case 'date':
+				case 'hidden':
+				case 'password':
+				case 'button':
+				case 'reset':
+				case 'submit':
 					q[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
 					break;
-				case 'SELECT':
-					switch (form.elements[i].type) {
-						case 'select-one':
-							q[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
-							break;
-						case 'select-multiple':
-							for (j = form.elements[i].options.length - 1; j >= 0; j = j - 1) {
-								if (form.elements[i].options[j].selected) {
-									q[form.elements[i].name] = encodeURIComponent(form.elements[i].options[j].value);
-								}
-							}
-							break;
+				case 'checkbox':
+				case 'radio':
+					if (form.elements[i].checked) {
+						q[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
 					}
 					break;
+				}
+				break;
+			case 'file':
+				break;
+			case 'TEXTAREA':
+				q[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
+				break;
+			case 'SELECT':
+				switch (form.elements[i].type) {
+				case 'select-one':
+					q[form.elements[i].name] = encodeURIComponent(form.elements[i].value);
+					break;
+				case 'select-multiple':
+					for (j = form.elements[i].options.length - 1; j >= 0; j = j - 1) {
+						if (form.elements[i].options[j].selected) {
+							q[form.elements[i].name] = encodeURIComponent(form.elements[i].options[j].value);
+						}
+					}
+					break;
+				}
+				break;
 			}
 		}
 		return q;
 	},
 
-	setCookie: function(cname, cvalue, exdays) {
+	setCookie: function (cname, cvalue, exdays) {
 		var d = new Date();
-		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-		var expires = "expires=" + d.toUTCString();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+d.toUTCString();
 		document.cookie = cname + "=" + cvalue + "; " + expires + "; path=/";
 	},
 
 	getCookie: function(cname) {
 		var name = cname + "=";
 		var ca = document.cookie.split(';');
-		for (var i = 0; i < ca.length; i++) {
+		for(var i=0; i<ca.length; i++) {
 			var c = ca[i];
-			while (c.charAt(0) == ' ') c = c.substring(1);
-			if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+			while (c.charAt(0)==' ') c = c.substring(1);
+			if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
 		}
 		return "";
 	}
