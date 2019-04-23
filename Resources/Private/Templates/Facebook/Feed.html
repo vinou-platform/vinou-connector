@@ -4,10 +4,10 @@
 	<ul class="facebook-feed">
 		<f:for each="{feed}" as="item">
 			<li>
-				<img src="{item.full_picture}" width="400" class="feedImage" onload="vTools.detectOrientation(this)"/>
+				<img src="{item.full_picture}" width="{settings.feed.image.width}" class="feedImage" onload="vTools.detectOrientation(this)"/>
 				<div class="meta">
 					<span class="date"><f:format.date format="%d. %B %Y">{item.created_time}</f:format.date></span>
-					<span class="message"><f:format.raw>{item.message}</f:format.raw></span>
+					<span class="message">{item.message -> f:format.crop(maxCharacters:390,respectWordBoundaries:1)}</span>
 					<a href="{item.link}" target="_blank" class="btn-purple">Zum Facebook-Post</a>
 				</div>
 			</li>

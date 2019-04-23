@@ -103,7 +103,27 @@ class FacebookController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	public function eventsAction() {
 		$this->initialize();
 
-		$this->view->assign('events', $this->getFBContent('events'));
+		$content = json_decode(file_get_contents(
+		    \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('events.json')
+		), true);
+
+
+		$rawEvents = array_reverse($content['data']);
+		$events = [];
+		$now = time();
+		$i = 1;
+		foreach ($rawEvents as $event) {
+			if (strtotime($event['start_time']) > $now) {
+				$events[] = $event;
+				$i++;
+				if ($i > $this->settings['limit'])
+					break;
+			}
+		}
+
+		$this->view->assign('events', $events);
+
+		//$this->view->assign('events', $this->getFBContent('events'));
 
 		$this->view->assign('settings', $this->settings);
 	}

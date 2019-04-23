@@ -1,9 +1,20 @@
 <f:layout name="Facebook" />
 
 <f:section name="Main">
-	<ul>
+	<ul class="facebook-events">
 		<f:for each="{events}" as="event">
-			<f:debug>{event}</f:debug>
+			<li>
+				<span class="date">
+					<span class="day">{event.start_time -> f:format.date(format:'%d')}</span>
+					<span class="month">{event.start_time -> f:format.date(format:'%b')}</span>
+					<span class="year">{event.start_time -> f:format.date(format:'%Y')}</span>
+				</span>
+				<span class="meta">
+					<span class="name">{event.name}</span>
+					<span class="description"><f:format.nl2br>{event.description -> f:format.crop(maxCharacters:150,respectWordBoundaries:1)}</f:format.nl2br></span>
+					<a href="https://www.facebook.com/events/{event.id}" target="_blank" class="btn-link">Zur Veranstaltung</a>
+				</span>
+			</li>
 		</f:for>
 	</ul>
 </f:section>

@@ -161,6 +161,12 @@ plugin.tx_vinouconnector_facebook {
 	}
 	settings {
 		limit = 10
+		feed {
+			image {
+				width = 400
+				height = 400
+			}
+		}
 	}
 }
 
