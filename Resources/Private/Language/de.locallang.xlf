@@ -19,6 +19,14 @@
 				<source>Display products from Vinou as list or detail</source>
 				<target>Zeigt die Produkte aus Vinou als Liste oder Detailansicht</target>
 			</trans-unit>
+			<trans-unit id="be.facebook.title">
+				<source>Facebook-Content</source>
+				<target>Facebook-Inhalte</target>
+			</trans-unit>
+			<trans-unit id="be.facebook.description">
+				<source>Creates a plugin that shows events or feed of a special facebook page</source>
+				<target>Zeigt Veranstaltungen und News-Feed einer Facebook-Seite an</target>
+			</trans-unit>
 			<trans-unit id="be.enquiry.title">
 				<source>Enquiry</source>
 				<target>Anfrageformular</target>
@@ -356,322 +364,347 @@
 				<target>Vorkassebestellung eingeleitet - Zahlung prüfen</target>
 			</trans-unit>
 			
-			<trans-unit id="flexform_wines.general">
+			<trans-unit id="flexform.wines.general">
 				<source>Settings</source>
 				<target>Einstellungen</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.mode">
+			<trans-unit id="flexform.wines.mode">
 				<source>Mode</source>
 				<target>Modus</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.mode.list">
+			<trans-unit id="flexform.wines.mode.list">
 				<source>List all Products</source>
 				<target>Listenansicht</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.mode.detail">
+			<trans-unit id="flexform.wines.mode.detail">
 				<source>Show Wine Details</source>
 				<target>Winedetails</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.listmode">
+			<trans-unit id="flexform.wines.listmode">
 				<source>Listmode</source>
 				<target>List-Modus</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.listmode.empty">
+			<trans-unit id="flexform.wines.listmode.empty">
 				<source>-- Please Choose --</source>
 				<target>-- Bitte wählen --</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.listmode.category">
+			<trans-unit id="flexform.wines.listmode.category">
 				<source>By Category</source>
 				<target>Kategorien</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.listmode.type">
+			<trans-unit id="flexform.wines.listmode.type">
 				<source>By Type</source>
 				<target>Weintyp</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.category">
+			<trans-unit id="flexform.wines.category">
 				<source>Category</source>
 				<target>Kategorie</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.category.empty">
+			<trans-unit id="flexform.wines.category.empty">
 				<source>-- Please Choose --</source>
 				<target>-- Bitte wählen --</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.sortBy">
+			<trans-unit id="flexform.wines.sortBy">
 				<source>Sort Property</source>
 				<target>Sortiert nach</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.sortBy.empty">
+			<trans-unit id="flexform.wines.sortBy.empty">
 				<source>-- Please Choose --</source>
 				<target>-- Bitte wählen --</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.sortDirection">
+			<trans-unit id="flexform.wines.sortDirection">
 				<source>Sort Direction</source>
 				<target>Sortierrichtung</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.sortDirection.asc">
+			<trans-unit id="flexform.wines.sortDirection.asc">
 				<source>Ascending</source>
 				<target>Aufsteigend</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.sortDirection.desc">
+			<trans-unit id="flexform.wines.sortDirection.desc">
 				<source>Descending</source>
 				<target>Absteigend</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.groupBy">
+			<trans-unit id="flexform.wines.groupBy">
 				<source>Group By Property</source>
 				<target>Groupiert Nach</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.groupBy.empty">
+			<trans-unit id="flexform.wines.groupBy.empty">
 				<source>-- Please Choose --</source>
 				<target>-- Bitte wählen --</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.type">
+			<trans-unit id="flexform.wines.type">
 				<source>Wine Type</source>
 				<target>Weintyp</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.type.empty">
+			<trans-unit id="flexform.wines.type.empty">
 				<source>-- Please Choose --</source>
 				<target>-- Bitte wählen --</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.itemsPerRow">
+			<trans-unit id="flexform.wines.itemsPerRow">
 				<source>Items in one Row</source>
 				<target>Anzahl Produkte in einer Zeile</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.detailPid">
+			<trans-unit id="flexform.wines.detailPid">
 				<source>Product Detail Page</source>
 				<target>Detailseite</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.backPid">
+			<trans-unit id="flexform.wines.backPid">
 				<source>Back to Page</source>
 				<target>Zurück zu Seite</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.template">
+			<trans-unit id="flexform.wines.template">
 				<source>Layout</source>
 				<target>Layout</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.template.default">
+			<trans-unit id="flexform.wines.template.default">
 				<source>Default</source>
 				<target>Standard</target>
 			</trans-unit>
-			<trans-unit id="flexform_wines.templateLayout">
+			<trans-unit id="flexform.wines.templateLayout">
 				<source>Template</source>
 				<target>Vorlage wählen</target>
 			</trans-unit>
 
-			<trans-unit id="flexform_products.general">
+			<trans-unit id="flexform.products.general">
 				<source>Settings</source>
 				<target>Einstellungen</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.mode">
+			<trans-unit id="flexform.products.mode">
 				<source>Mode</source>
 				<target>Modus</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.mode.list">
+			<trans-unit id="flexform.products.mode.list">
 				<source>List all products</source>
 				<target>Listenansicht</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.mode.detail">
+			<trans-unit id="flexform.products.mode.detail">
 				<source>Show product details</source>
 				<target>Produktdetails</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.itemsPerRow">
+			<trans-unit id="flexform.products.itemsPerRow">
 				<source>Items in one row</source>
 				<target>Anzahl Produkte in einer Zeile</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.detailPid">
+			<trans-unit id="flexform.products.detailPid">
 				<source>Product detail page</source>
 				<target>Detailseite</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.backPid">
+			<trans-unit id="flexform.products.backPid">
 				<source>Back to page</source>
 				<target>Zurück zu Seite</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.template">
+			<trans-unit id="flexform.products.template">
 				<source>Layout</source>
 				<target>Layout</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.template.default">
+			<trans-unit id="flexform.products.template.default">
 				<source>Default</source>
 				<target>Standard</target>
 			</trans-unit>
-			<trans-unit id="flexform_products.templateLayout">
+			<trans-unit id="flexform.products.templateLayout">
 				<source>Template</source>
 				<target>Vorlage wählen</target>
 			</trans-unit>
 
-			<trans-unit id="flexform_enquiry.general">
-				<source>Settings</source>
-				<target>Einstellungen</target>
+			<trans-unit id="flexform.facebook.general">
+				<source>General</source>
+				<target>Allgemein</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.mode">
+			<trans-unit id="flexform.facebook.mode">
 				<source>Mode</source>
 				<target>Modus</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.mode.form">
+			<trans-unit id="flexform.facebook.mode.events">
+				<source>Events</source>
+				<target>Veranstaltungen</target>
+			</trans-unit>
+			<trans-unit id="flexform.facebook.mode.feed">
+				<source>Feed</source>
+				<target>Feed</target>
+			</trans-unit>
+			<trans-unit id="flexform.facebook.pageId">
+				<source>ID of Facebook-Page</source>
+				<target>ID der Facebook-Seite</target>
+			</trans-unit>
+			<trans-unit id="flexform.facebook.limit">
+				<source>Limit of entries to show</source>
+				<target>Maximale Anzahl der Beiträge</target>
+			</trans-unit>
+
+			<trans-unit id="flexform.enquiry.general">
+				<source>Settings</source>
+				<target>Einstellungen</target>
+			</trans-unit>
+			<trans-unit id="flexform.enquiry.mode">
+				<source>Mode</source>
+				<target>Modus</target>
+			</trans-unit>
+			<trans-unit id="flexform.enquiry.mode.form">
 				<source>Show request form</source>
 				<target>Anfrageformular</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.sortBy">
+			<trans-unit id="flexform.enquiry.sortBy">
 				<source>Sort Property</source>
 				<target>Sortiert nach</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.sortBy.empty">
+			<trans-unit id="flexform.enquiry.sortBy.empty">
 				<source>-- Please Choose --</source>
 				<target>-- Bitte wählen --</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.sortDirection">
+			<trans-unit id="flexform.enquiry.sortDirection">
 				<source>Sort Direction</source>
 				<target>Sortierrichtung</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.detailPid">
+			<trans-unit id="flexform.enquiry.detailPid">
 				<source>Product Detail Page</source>
 				<target>Detailseite</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.finishPid">
+			<trans-unit id="flexform.enquiry.finishPid">
 				<source>Landingpage after Submit</source>
 				<target>Seite nach dem Abschicken</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.mailsettings">
+			<trans-unit id="flexform.enquiry.mailsettings">
 				<source>Mail-Settings</source>
 				<target>Email-Einstellungen</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.requestTo">
+			<trans-unit id="flexform.enquiry.requestTo">
 				<source>Receiver Mail</source>
 				<target>Empfänger</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.requestCc">
+			<trans-unit id="flexform.enquiry.requestCc">
 				<source>CC for request</source>
 				<target>CC</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.requestBcc">
+			<trans-unit id="flexform.enquiry.requestBcc">
 				<source>BCC for request</source>
 				<target>BCC</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.copyToSender">
+			<trans-unit id="flexform.enquiry.copyToSender">
 				<source>Send copy to Sender</source>
 				<target>Kopie an Sender</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.serverMail">
+			<trans-unit id="flexform.enquiry.serverMail">
 				<source>Server mailadress</source>
 				<target>Server-Mailadresse</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.serverName">
+			<trans-unit id="flexform.enquiry.serverName">
 				<source>Server name</source>
 				<target>Server-Name</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.senderMailSubject">
+			<trans-unit id="flexform.enquiry.senderMailSubject">
 				<source>Subject for mail to sender</source>
 				<target>Betreff für Email an Sender</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.adminMailSubject">
+			<trans-unit id="flexform.enquiry.adminMailSubject">
 				<source>Subject for mail to admin</source>
 				<target>Betreff für Email an Weingut</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.template">
+			<trans-unit id="flexform.enquiry.template">
 				<source>Layout</source>
 				<target>Layout</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.template.default">
+			<trans-unit id="flexform.enquiry.template.default">
 				<source>Default</source>
 				<target>Standard</target>
 			</trans-unit>
-			<trans-unit id="flexform_enquiry.templateLayout">
+			<trans-unit id="flexform.enquiry.templateLayout">
 				<source>Template</source>
 				<target>Vorlage wählen</target>
 			</trans-unit>
 
-			<trans-unit id="flexform_shop.general">
+			<trans-unit id="flexform.shop.general">
 				<source>Settings</source>
 				<target>Einstellungen</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.mode">
+			<trans-unit id="flexform.shop.mode">
 				<source>Mode</source>
 				<target>Modus</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.mode.list">
+			<trans-unit id="flexform.shop.mode.list">
 				<source>Winelist</source>
 				<target>Weinliste</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.mode.basket">
+			<trans-unit id="flexform.shop.mode.basket">
 				<source>Basket</source>
 				<target>Warenkorb</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.mode.order">
+			<trans-unit id="flexform.shop.mode.order">
 				<source>Order</source>
 				<target>Kasse</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.mode.finish">
+			<trans-unit id="flexform.shop.mode.finish">
 				<source>Finish Order</source>
 				<target>Bestellung abschließen</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.detailPid">
+			<trans-unit id="flexform.shop.detailPid">
 				<source>Wine detail page</source>
 				<target>Wein-Detailseite</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.productPid">
+			<trans-unit id="flexform.shop.productPid">
 				<source>Product detail page</source>
 				<target>Produkt-Detailseite</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.clusters">
+			<trans-unit id="flexform.shop.clusters">
 				<source>Filter options</source>
 				<target>Filter-Optionen</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.clusters.category">
+			<trans-unit id="flexform.shop.clusters.category">
 				<source>Category</source>
 				<target>Kategorie</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.clusters.type">
+			<trans-unit id="flexform.shop.clusters.type">
 				<source>Winetype</source>
 				<target>Weintyp</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.clusters.vintage">
+			<trans-unit id="flexform.shop.clusters.vintage">
 				<source>Vintage</source>
 				<target>Jahrgang</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.clusters.place">
+			<trans-unit id="flexform.shop.clusters.place">
 				<source>Place</source>
 				<target>Lage</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.clusters.country">
+			<trans-unit id="flexform.shop.clusters.country">
 				<source>Country</source>
 				<target>Land</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.showTypes">
+			<trans-unit id="flexform.shop.showTypes">
 				<source>Show objects of type</source>
 				<target>Zeige Objekte vom Typ</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.showTypes.wines">
+			<trans-unit id="flexform.shop.showTypes.wines">
 				<source>Wines</source>
 				<target>Weine</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.showTypes.products">
+			<trans-unit id="flexform.shop.showTypes.products">
 				<source>Products</source>
 				<target>Produkte</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.backPid">
+			<trans-unit id="flexform.shop.backPid">
 				<source>Back to Page</source>
 				<target>Zurück zu Seite</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.basketPid">
+			<trans-unit id="flexform.shop.basketPid">
 				<source>Basket-Page</source>
 				<target>Warenkorb-Seite</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.orderPid">
+			<trans-unit id="flexform.shop.orderPid">
 				<source>Page to finish Order</source>
 				<target>Kasse</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.finishPid">
+			<trans-unit id="flexform.shop.finishPid">
 				<source>Page after Payment</source>
 				<target>Seite nach Payment</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.template">
+			<trans-unit id="flexform.shop.template">
 				<source>Layout</source>
 				<target>Layout</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.template.default">
+			<trans-unit id="flexform.shop.template.default">
 				<source>Default</source>
 				<target>Standard</target>
 			</trans-unit>
-			<trans-unit id="flexform_shop.templateLayout">
+			<trans-unit id="flexform.shop.templateLayout">
 				<source>Template</source>
 				<target>Vorlage wählen</target>
 			</trans-unit>

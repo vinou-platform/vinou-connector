@@ -37,6 +37,21 @@
 	);
 
 	/**
+     * plugin for facebook actions
+     */
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+		'Vinou.'.$_EXTKEY,
+		'Facebook',
+		array(
+			'Facebook' => 'events, feed',
+		),
+		// non-cacheable actions
+		array(
+			'Facebook' => 'events, feed',
+		)
+	);
+
+	/**
      * plugin for enquiry actions
      */
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(

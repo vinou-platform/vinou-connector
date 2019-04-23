@@ -6,19 +6,19 @@
         <sDEF>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.general</sheetTitle>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.general</sheetTitle>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <switchableControllerActions>
                         <TCEforms>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.mode</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.mode</label>
                             <onChange>reload</onChange>
                             <config>
                                 <type>select</type>
                                 <items>
                                     <numIndex index="0">
-                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.mode.form</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.mode.form</numIndex>
                                         <numIndex index="1">Enquiry->form;Enquiry->submitRequest;</numIndex>
                                     </numIndex>
                                 </items>
@@ -28,12 +28,12 @@
                     <settings.sortBy>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Enquiry->form;Enquiry->submitRequest;</displayCond>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.sortBy</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.sortBy</label>
                             <config>
                                 <type>select</type>
                                 <items>
                                     <numIndex index="0" type="array">
-                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.sortBy.empty</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.sortBy.empty</numIndex>
                                         <numIndex index="1"></numIndex>
                                     </numIndex>
                                     <numIndex index="1" type="array">
@@ -59,7 +59,7 @@
                     <settings.sortDirection>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Enquiry->form;Enquiry->submitRequest;</displayCond>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.sortDirection</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.sortDirection</label>
                             <config>
                                 <type>select</type>
                                 <items>
@@ -78,7 +78,7 @@
                     <settings.finishPid>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Enquiry->form;Enquiry->submitRequest;</displayCond>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.finishPid</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.finishPid</label>
                             <config>
                                 <type>group</type>
                                 <internal_type>db</internal_type>
@@ -96,13 +96,13 @@
         <mailsettings>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.mailsettings</sheetTitle>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.mailsettings</sheetTitle>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <settings.requestTo>
                         <TCEforms>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.requestTo</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.requestTo</label>
                             <config>
                               <type>input</type>
                               <size>25</size>
@@ -111,7 +111,7 @@
                     </settings.requestTo>
                     <settings.requestCc>
                         <TCEforms>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.requestCc</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.requestCc</label>
                             <config>
                               <type>input</type>
                               <size>25</size>
@@ -120,7 +120,7 @@
                     </settings.requestCc>
                     <settings.requestBcc>
                         <TCEforms>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.requestBcc</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.requestBcc</label>
                             <config>
                               <type>input</type>
                               <size>25</size>
@@ -129,7 +129,7 @@
                     </settings.requestBcc>
                     <settings.copyToSender>
                         <TCEforms>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.copyToSender</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.copyToSender</label>
                             <config>
                               <type>check</type>
                             </config>
@@ -137,7 +137,7 @@
                     </settings.copyToSender>
                     <settings.serverMail>
                         <TCEforms>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.serverMail</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.serverMail</label>
                             <config>
                               <type>input</type>
                               <size>25</size>
@@ -146,7 +146,7 @@
                     </settings.serverMail>
                     <settings.serverName>
                         <TCEforms>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.serverName</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.serverName</label>
                             <config>
                               <type>input</type>
                               <size>25</size>
@@ -155,7 +155,7 @@
                     </settings.serverName>
                     <settings.senderMailSubject>
                         <TCEforms>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.senderMailSubject</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.senderMailSubject</label>
                             <config>
                               <type>input</type>
                               <size>25</size>
@@ -165,7 +165,7 @@
                     </settings.senderMailSubject>
                     <settings.adminMailSubject>
                         <TCEforms>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.adminMailSubject</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.adminMailSubject</label>
                             <config>
                               <type>input</type>
                               <size>25</size>
@@ -179,20 +179,20 @@
         <template>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.template</sheetTitle>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.template</sheetTitle>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <settings.templateLayout>
                         <TCEforms>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.templateLayout</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.templateLayout</label>
                             <config>
                                 <type>select</type>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\WinesFlexForm->user_templateLayout</itemsProcFunc>
                                 <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0" type="array">
-                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform_enquiry.template.default</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.enquiry.template.default</numIndex>
                                         <numIndex index="1"></numIndex>
                                     </numIndex>
                                 </items>

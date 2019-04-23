@@ -43,3 +43,17 @@ var toast = {
 	}
 }
 toast.init();
+
+var vTools = {
+	detectOrientation: function(element) {
+		var w = element.offsetWidth;
+		var h = element.offsetHeight;
+		if (w < h) {
+			element.setAttribute('data-orientation','portrait');
+		} else if (w === h) {
+			element.setAttribute('data-orientation','square');
+		} else {
+			element.setAttribute('data-orientation','landscape');
+		}
+	}
+}

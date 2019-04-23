@@ -21,3 +21,11 @@ authId =
 
 # cat=Vinou/enable/3; type=string; label=Token
 token =
+
+# Facebook
+
+# cat=Facebook/enable/1; type=string; label=App-Id
+appId =
+
+# cat=Facebook/enable/2; type=string; label=App-Secret
+appSecret =

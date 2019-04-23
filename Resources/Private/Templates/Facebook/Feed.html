@@ -1,0 +1,16 @@
+<f:layout name="Facebook" />
+
+<f:section name="Main">
+	<ul class="facebook-feed">
+		<f:for each="{feed}" as="item">
+			<li>
+				<img src="{item.full_picture}" width="400" class="feedImage" onload="vTools.detectOrientation(this)"/>
+				<div class="meta">
+					<span class="date"><f:format.date format="%d. %B %Y">{item.created_time}</f:format.date></span>
+					<span class="message"><f:format.raw>{item.message}</f:format.raw></span>
+					<a href="{item.link}" target="_blank" class="btn-purple">Zum Facebook-Post</a>
+				</div>
+			</li>
+		</f:for>
+	</ul>
+</f:section>
