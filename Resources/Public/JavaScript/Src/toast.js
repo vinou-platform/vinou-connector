@@ -45,9 +45,25 @@ var toast = {
 toast.init();
 
 var vTools = {
+	feedImageSelector: '.facebook-feed .feed-image',
+	init: function () {
+		var $ctrl = this;
+		window.addEventListener("load", function () {
+			$ctrl.setImageOrientations();
+		}, false);
+	},
+	setImageOrientations: function() {
+		var $ctrl = this;
+		var images = document.querySelectorAll($ctrl.feedImageSelector);
+		for (var i = 0; i < images.length; i++) {
+			$ctrl.detectOrientation(images[i]);
+		}
+	},
 	detectOrientation: function(element) {
 		var w = element.offsetWidth;
 		var h = element.offsetHeight;
+		console.log(w);
+		console.log(h);
 		if (w < h) {
 			element.setAttribute('data-orientation','portrait');
 		} else if (w === h) {
@@ -55,5 +71,6 @@ var vTools = {
 		} else {
 			element.setAttribute('data-orientation','landscape');
 		}
-	}
+	},
 }
+vTools.init();

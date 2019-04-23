@@ -4,7 +4,7 @@
 	<ul class="facebook-feed">
 		<f:for each="{feed}" as="item">
 			<li>
-				<img src="{item.full_picture}" width="{settings.feed.image.width}" class="feedImage" onload="vTools.detectOrientation(this)"/>
+				<img src="{item.full_picture}" width="{settings.feed.image.width}" class="feed-image"/>
 				<div class="meta">
 					<span class="date"><f:format.date format="%d. %B %Y">{item.created_time}</f:format.date></span>
 					<span class="message">{item.message -> f:format.crop(maxCharacters:390,respectWordBoundaries:1)}</span>
