@@ -218,6 +218,12 @@ class Api {
 		return $result['data'];
 	}
 
+	public function getAllPackages() {
+		$postData = [];
+		$result = $this->curlApiRoute('packaging/getAll',$postData);
+		return $result['data'];
+	}
+
 	public function fetchLokalIP(){
 		$result = $this->curlApiRoute('check/userinfo');
 		return $result['ip'];

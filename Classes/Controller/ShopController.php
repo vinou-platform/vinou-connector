@@ -289,6 +289,9 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->view->assign('items', $items);
 		}
 
+		$packagings = $this->api->getAllPackages();
+		$this->view->assign('packagings', $packagings);
+
 		$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
 		$this->view->assign('settings', $this->settings);
 	}
