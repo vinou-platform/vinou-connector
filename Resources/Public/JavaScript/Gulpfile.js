@@ -6,7 +6,7 @@ var gulpUtil = require('gulp-util');
 var rename = require('gulp-rename');
 var concat = require('gulp-concat');
 var watchDirs = ['Src/**/*'];
-var vinouJsFiles = ['Src/enquiry.js','Src/list.js','Src/shop.js'];
+var vinouJsFiles = ['Src/enquiry.js','Src/shop.js','Src/list.js'];
 
 
 gulp.task('vinou-js', function () {
