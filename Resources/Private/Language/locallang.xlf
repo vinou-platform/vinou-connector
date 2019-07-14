@@ -155,20 +155,20 @@
 			<trans-unit id="order.delivery">
 				<source>Delivery address</source>
 			</trans-unit>
-			<trans-unit id="order.salutation">
+			<trans-unit id="order.gender">
 				<source>Salutation</source>
 			</trans-unit>
-			<trans-unit id="order.salutation.empty">
+			<trans-unit id="order.gender.empty">
 				<source>Please choose</source>
 			</trans-unit>
-			<trans-unit id="order.salutation.mr">
+			<trans-unit id="order.gender.m">
 				<source>Mr.</source>
 			</trans-unit>
-			<trans-unit id="order.salutation.mrs">
+			<trans-unit id="order.gender.f">
 				<source>Mrs.</source>
 			</trans-unit>
-			<trans-unit id="order.salutation.company">
-				<source>Company</source>
+			<trans-unit id="order.gender.d">
+				<source>Divers</source>
 			</trans-unit>
 			<trans-unit id="order.firstname">
 				<source>Firstname</source>

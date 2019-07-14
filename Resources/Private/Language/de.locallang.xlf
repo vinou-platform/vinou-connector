@@ -204,25 +204,25 @@
 				<source>Delivery address</source>
 				<target>Lieferadresse</target>
 			</trans-unit>
-			<trans-unit id="order.salutation">
+			<trans-unit id="order.gender">
 				<source>Salutation</source>
 				<target>Anrede</target>
 			</trans-unit>
-			<trans-unit id="order.salutation.empty">
+			<trans-unit id="order.gender.empty">
 				<source>Please choose</source>
 				<target>Bitte wählen</target>
 			</trans-unit>
-			<trans-unit id="order.salutation.mr">
+			<trans-unit id="order.gender.m">
 				<source>Mr.</source>
 				<target>Herr</target>
 			</trans-unit>
-			<trans-unit id="order.salutation.mrs">
+			<trans-unit id="order.gender.f">
 				<source>Mrs.</source>
 				<target>Frau</target>
 			</trans-unit>
-			<trans-unit id="order.salutation.company">
-				<source>Company</source>
-				<target>Firma</target>
+			<trans-unit id="order.gender.d">
+				<source>Divers</source>
+				<target>Divers</target>
 			</trans-unit>
 			<trans-unit id="order.firstname">
 				<source>Firstname</source>
