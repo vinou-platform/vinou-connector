@@ -89,7 +89,7 @@ class Api {
 		return false;
 	}
 
-	private function curlApiRoute($route, $data = [])
+	private function curlApiRoute($route, $data = [], $debug = false)
 	{
 		$data_string = json_encode($data);
 		$ch = curl_init($this->apiUrl.$route);
@@ -110,13 +110,23 @@ class Api {
 		switch ($httpCode) {
 			case 200:
 				curl_close($ch);
+				if ($debug)
+					Debug::var_dump($requestinfo);
 				return json_decode($result, true);
 				break;
 			case 401:
-				//Debug::var_dump('unauthorized');
+				if ($debug) {
+					Debug::var_dump('unauthorized');
+					Debug::var_dump($requestinfo);
+					Debug::var_dump(json_decode($result, true));
+				}
 				break;
 			default:
-				//Debug::var_dump('recreate token');
+				if ($debug) {
+					Debug::var_dump('recreate token');
+					Debug::var_dump($requestinfo);
+					Debug::var_dump(json_decode($result, true));
+				}
 				break;
 		}
 		return false;
@@ -205,7 +215,7 @@ class Api {
 
 	public function addOrder($order) {
 		$postData = ['data' => $order];
-		$result = $this->curlApiRoute('orders/add',$postData);
+		$result = $this->curlApiRoute('orders/add', $postData);
 		return $result;
 	}
 

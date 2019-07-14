@@ -339,8 +339,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		}
 
 		/* get message if was set */
-		$message = $this->storeAndGetArgument('message');
-		$this->view->assign('message', $message);
+		$note = $this->storeAndGetArgument('note');
+		$this->view->assign('note', $note);
 
 		/* get account information */
 		$account = $this->storeAndGetArgument('account');
@@ -380,7 +380,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 						$delivery,
 						$paymentMethod,
 						$account,
-						$message
+						$note
 					);
 				}
 				break;
@@ -391,7 +391,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->view->assign('mode',$mode);
 	}
 
-	private function sendOrderByBasket($basket,$items,$summary,$billing,$delivery,$paymentMethod,$account,$message) {
+	private function sendOrderByBasket($basket,$items,$summary,$billing,$delivery,$paymentMethod,$account,$note) {
 		$order = [
 			'source' => 'shop',
 			'payment_type' => $paymentMethod,
@@ -411,27 +411,27 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				'zip' => $delivery['zip'],
 				'city' => $delivery['city'],
 			],
+			'note' => $note
 		];
 
-		$additionalBilling = ['salutation', 'company', 'country', 'phone'];
+		$additionalBilling = ['gender', 'company', 'countrycode', 'phone'];
 		foreach ($additionalBilling as $label) {
 			if (isset($billing[$label]))
 				$order['billing'][$label] = $billing[$label];
 		}
 
-		$additionalDelivery = ['salutation', 'company', 'country'];
+		$additionalDelivery = ['gender', 'company', 'countrycode'];
 		foreach ($additionalDelivery as $label) {
 			if (isset($delivery[$label]))
 				$order['delivery'][$label] = $delivery[$label];
 		}
 
 		$sendResult = $this->api->addOrder($order);
-		if ($sendResult) {
-			if ($message) {
-				$order['message'] = $message;
-			}
+		file_put_contents($this->orderDir .'/order-'.time().'.json', json_encode($order));
 
-			file_put_contents($this->orderDir .'/order-'.time().'.json', json_encode($order));
+		if ($sendResult) {
+
+			// file_put_contents($this->orderDir .'/order-'.time().'.json', json_encode($order));
 
 			$recipient = [
 				$billing['email'] => $billing['firstname'] . " " . $billing['lastname']
