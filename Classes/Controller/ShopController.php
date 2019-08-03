@@ -7,7 +7,8 @@ use \TYPO3\CMS\Core\Utility\PathUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use \Vinou\VinouConnector\Utility\PaypalUtility;
+use \Vinou\VinouConnector\Utility\PaypalUtility;#
+use \Vinou\Utilities\General\Session;
 
 class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -111,9 +112,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	      $dev = true;
 	    }
 
-	    $this->api = new \Vinou\VinouConnector\Utility\Api(
+	    $this->api = new \Vinou\ApiConnector\Api(
 	      $this->extConf['token'],
 	      $this->extConf['authId'],
+	      true,
 	      $dev
 	    );
 
@@ -206,8 +208,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @return void
 	 */
 	public function getPaymentMethods() {
-		$this->storeArgumentInSession('paymentMethod');
-		$selectedMethod = $this->getArgumentInSession('paymentMethod');
+		$selectedMethod = $this->storeAndGetArgument('paymentMethod');
 		$availableMethods = explode(',',$this->settings['payment']['methods']);
 
 		if (!$selectedMethod) {
@@ -216,7 +217,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		if (!in_array($selectedMethod,$availableMethods) && $selectedMethod !== $this->settings['payment']['default']) {
 			$selectedMethod = $this->settings['payment']['default'];
-			$this->writeValueInSession('paymentMethod',$selectedMethod);
+			Session::setValue('paymentMethod',$selectedMethod);
 		}
 
 		$this->paymentType = $selectedMethod;
@@ -335,7 +336,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		} else {
 			/* set billing as delivery if no separate address was defined  */
 			$delivery = $billing;
-			$this->api->removeSessionData('delivery');
+			Session::deleteValue('delivery');
 		}
 
 		/* get message if was set */
@@ -474,19 +475,19 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	private function detectOrCreateBasket() {
-		$basketUuid = $this->api->readSessionData('basket');
-		if (is_null($basketUuid) && isset($_COOKIE['basket'])) {
+		$basketUuid = Session::getValue('basket');
+		if (!$basketUuid && isset($_COOKIE['basket'])) {
 			$basketUuid = $_COOKIE['basket'];
 		}
 
-		return !is_null($basketUuid) ? $this->api->getBasket($basketUuid) : false;
+		return $basketUuid ? $this->api->getBasket($basketUuid) : false;
 	}
 
 	private function storeAndGetArgument($argument) {
 		if ($this->request->hasArgument($argument)) {
-			$this->api->writeSessionData($argument,$this->request->getArgument($argument));
+			Session::setValue($argument,$this->request->getArgument($argument));
 		}
-		return $this->api->readSessionData($argument);
+		return Session::getValue($argument);
 	}
 
 	private function calculateSum(&$items) {
@@ -529,45 +530,13 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		return $fields;
 	}
 
-	private function storeArgumentInSession($name) {
-		if ($this->request->hasArgument($name)) {
-			$argument = $this->request->getArgument($name);
-			$this->writeValueInSession($name,$argument);
-		} else {
-			$argument = $this->getArgumentInSession($name);
-		}
-		return $argument;
-	}
-
-	private function writeValueInSession($name,$value) {
-		if ($GLOBALS['TSFE']->loginUser) {
-			$GLOBALS['TSFE']->fe_user->setKey('user', $name, $value);
-		} else {
-			$GLOBALS['TSFE']->fe_user->setKey('ses', $name, $value);
-		}
-		return $argument;
-	}
-
-	private function getArgumentInSession($name) {
-		if (isset($GLOBALS['TSFE']->fe_user->sesData[$name])) {
-			if ($GLOBALS['TSFE']->loginUser) {
-				$argument = $GLOBALS['TSFE']->fe_user->getKey('user', $name);
-			} else {
-				$argument = $GLOBALS['TSFE']->fe_user->getKey('ses', $name);
-			}
-		} else {
-			$argument = FALSE;
-		}
-		return $argument;
-	}
-
 	private function clearAllSessionData() {
-		$this->api->removeSessionData('billing');
-		$this->api->removeSessionData('delivery');
-		$this->api->removeSessionData('deliveryAdress');
-		$this->api->removeSessionData('message');
-		$this->api->removeSessionData('account');
-		$this->api->removeSessionData('paymentMethod');
+		Session::deleteValue('billing');
+		Session::deleteValue('delivery');
+		Session::deleteValue('deliveryAdress');
+		Session::deleteValue('message');
+		Session::deleteValue('account');
+		Session::deleteValue('paymentMethod');
 	}
 
 	/**

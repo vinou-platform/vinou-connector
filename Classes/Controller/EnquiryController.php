@@ -96,9 +96,10 @@ class EnquiryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	      $dev = true;
 	    }
 
-	    $this->api = new \Vinou\VinouConnector\Utility\Api(
+	    $this->api = new \Vinou\ApiConnector\Api(
 	      $this->extConf['token'],
 	      $this->extConf['authId'],
+	      true,
 	      $dev
 	    );
 

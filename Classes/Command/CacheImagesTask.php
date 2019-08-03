@@ -1,9 +1,11 @@
 <?php 
 namespace Vinou\VinouConnector\Command;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Vinou\VinouConnector\Utility\Api;
-use Vinou\VinouConnector\Utility\Images;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \Vinou\ApiConnector\Api;
+use \Vinou\ApiConnector\Images;
+
+define('VINOU_MODE', 'cli');
 
 /***************************************************************
  *  Copyright notice
@@ -71,6 +73,7 @@ class CacheImagesTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
         $this->api = new Api(
           $this->extConf['token'],
           $this->extConf['authId'],
+          true,
           $dev
         );
     }
@@ -81,11 +84,14 @@ class CacheImagesTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
         $this->reportData['itemsPerTask'] = $this->itemsPerTask;
         $this->reportData['imported'] = 0;
 
-        $allWines = $this->api->getWinesAll();
+        $data = $this->api->getWinesAll();
+        $wines = isset($data['wines']) ? $data['wines'] : $data['data'];
         $startAgain = FALSE;
-        for ($i=0; $i < count($allWines); $i++) {
-            
-            $cacheImageProcess = Images::storeApiImage($allWines[$i]['image'],$this->absoluteTempDirectory,$allWines[$i]['chstamp']);
+
+        for ($i=0; $i < count($wines); $i++) {
+            $wine = $wines[$i];
+
+            $cacheImageProcess = Images::storeApiImage($wine['image'],$this->absoluteTempDirectory.'/',$wine['chstamp']);
             if ($cacheImageProcess['fileFetched']) {
                 $this->reportData['imported']++;
             }

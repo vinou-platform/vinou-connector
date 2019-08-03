@@ -18,39 +18,12 @@ class CacheExpertise {
      */
     protected $extConf;
 
-    /**
-     * objectManager
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * persistence manager
-     *
-     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-     * @inject
-     */
-    protected $persistenceManager;
-
     protected $api;
     protected $llPath = 'Resources/Private/Language/';
     protected $localDir = 'typo3temp/vinou_connector/';
     protected $absoluteTempDirectory = '';
     protected $translations;
 
-    /**
-     * configuration
-     *
-     * @var \array
-     */
-    protected $configuration;
-
-    /**
-     * bootstrap
-     *
-     * @var \array
-     */
-    protected $bootstrap;
 
     /**
      * Generates the output
@@ -62,7 +35,7 @@ class CacheExpertise {
             $wine = $this->api->getExpertise(GeneralUtility::_GET('wineID'));
             $wine = $this->api->getWine(GeneralUtility::_GET('wineID'));
             if ($this->extConf['cacheExpertise'] == 1) {
-                $cachePDFProcess = \Vinou\VinouConnector\Utility\Pdf::storeApiPDF($wine['expertisePdf'],$this->absoluteTempDirectory.'/',$wine['id'].'-',$wine['chstamp'],true);
+                $cachePDFProcess = \Vinou\ApiConnector\Pdf::storeApiPDF($wine['expertisePdf'],$this->absoluteTempDirectory.'/',$wine['id'].'-',$wine['chstamp'],true);
                 $redirectURL = '/'.$this->extConf['cachingFolder'].'/'.$cachePDFProcess['fileName'];
             } else {
                 $redirectURL = 'https://api.vinou.de'.$wine['expertisePdf'];
@@ -79,8 +52,6 @@ class CacheExpertise {
      */
     public function __construct($TYPO3_CONF_VARS) {
         $this->extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf']['vinou_connector']);
-        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
 
         header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
         header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
@@ -94,9 +65,10 @@ class CacheExpertise {
             $dev = true;
         }
 
-        $this->api = new \Vinou\VinouConnector\Utility\Api(
+        $this->api = new \Vinou\ApiConnector\Api (
             $this->extConf['token'],
             $this->extConf['authId'],
+            true,
             $dev
         );
 
@@ -104,9 +76,11 @@ class CacheExpertise {
         if(!is_dir($this->absoluteTempDirectory)){
             mkdir($this->absoluteTempDirectory, 0777, true);
         }
-        $this->translations = new \Vinou\VinouConnector\Utility\Translation();
     }
 }
+    error_reporting(E_ALL);
+    ini_set("display_errors", 1);
+    define('VINOU_MODE','Ajax');
     global $TYPO3_CONF_VARS;
     $eid = GeneralUtility::makeInstance('Vinou\VinouConnector\Eid\CacheExpertise', $TYPO3_CONF_VARS);
     echo $eid->run();

@@ -82,9 +82,10 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	      $dev = true;
 	    }
 
-	    $this->api = new \Vinou\VinouConnector\Utility\Api(
+	    $this->api = new \Vinou\ApiConnector\Api(
 	      $this->extConf['token'],
 	      $this->extConf['authId'],
+	      true,
 	      $dev
 	    );
 
@@ -194,7 +195,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		if ($this->settings['cacheExpertise']) {
 			if ($wine['expertiseStatus']=='OK') {
 				$expertiseFile = $fileName = array_values(array_slice(explode('/',$wine['expertisePDF']), -1))[0];
-				$convertedFileName = \Vinou\VinouConnector\Utility\Pdf::convertFileName($wine['id'].'-'.$fileName);
+				$convertedFileName = \Vinou\ApiConnector\Pdf::convertFileName($wine['id'].'-'.$fileName);
 				$localFile = $this->absLocalDir .$convertedFileName;
 
 				$dateTimeZone = new \DateTimeZone(date_default_timezone_get());

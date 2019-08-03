@@ -23,9 +23,10 @@ class WinesFlexForm {
       $dev = true;
     }
 
-    $this->api = new \Vinou\VinouConnector\Utility\Api(
+    $this->api = new \Vinou\ApiConnector\Api(
       $this->extConf['token']['value'],
       $this->extConf['authId']['value'],
+      true,
       $dev
     );
   }
