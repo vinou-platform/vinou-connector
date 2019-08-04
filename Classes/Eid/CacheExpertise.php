@@ -2,6 +2,8 @@
 namespace Vinou\VinouConnector\Eid;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \Vinou\ApiConnector\Api;
+use \Vinou\ApiConnector\FileHandler\Pdf;
 
 /**
  * This class could called with AJAX via eID
@@ -35,7 +37,7 @@ class CacheExpertise {
             $wine = $this->api->getExpertise(GeneralUtility::_GET('wineID'));
             $wine = $this->api->getWine(GeneralUtility::_GET('wineID'));
             if ($this->extConf['cacheExpertise'] == 1) {
-                $cachePDFProcess = \Vinou\ApiConnector\Pdf::storeApiPDF($wine['expertisePdf'],$this->absoluteTempDirectory.'/',$wine['id'].'-',$wine['chstamp'],true);
+                $cachePDFProcess = Pdf::storeApiPDF($wine['expertisePdf'],$this->absoluteTempDirectory.'/',$wine['id'].'-',$wine['chstamp'],true);
                 $redirectURL = '/'.$this->extConf['cachingFolder'].'/'.$cachePDFProcess['fileName'];
             } else {
                 $redirectURL = 'https://api.vinou.de'.$wine['expertisePdf'];
@@ -65,7 +67,7 @@ class CacheExpertise {
             $dev = true;
         }
 
-        $this->api = new \Vinou\ApiConnector\Api (
+        $this->api = new Api (
             $this->extConf['token'],
             $this->extConf['authId'],
             true,

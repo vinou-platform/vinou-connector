@@ -1,9 +1,6 @@
 <?php
 namespace Vinou\VinouConnector\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
-
 class CategoryNamesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
     /**

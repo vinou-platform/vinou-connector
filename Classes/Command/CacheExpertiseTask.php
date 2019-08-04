@@ -4,7 +4,7 @@ namespace Vinou\VinouConnector\Command;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \Vinou\ApiConnector\Api;
-use \Vinou\ApiConnector\Pdf;
+use \Vinou\ApiConnector\FileHandler\Pdf;
 
 define('VINOU_MODE', 'cli');
 

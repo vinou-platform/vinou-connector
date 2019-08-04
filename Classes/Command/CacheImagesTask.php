@@ -3,7 +3,7 @@ namespace Vinou\VinouConnector\Command;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \Vinou\ApiConnector\Api;
-use \Vinou\ApiConnector\Images;
+use \Vinou\ApiConnector\FileHandler\Images;
 
 define('VINOU_MODE', 'cli');
 

@@ -1,6 +1,7 @@
 <?php
-
 namespace Vinou\VinouConnector\Hooks;
+
+use \Vinou\ApiConnector\Api;
 
 class WinesFlexForm {
 
@@ -23,7 +24,7 @@ class WinesFlexForm {
       $dev = true;
     }
 
-    $this->api = new \Vinou\ApiConnector\Api(
+    $this->api = new Api (
       $this->extConf['token']['value'],
       $this->extConf['authId']['value'],
       true,

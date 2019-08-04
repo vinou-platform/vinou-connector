@@ -1,6 +1,7 @@
 <?php
 namespace Vinou\VinouConnector\Eid;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \Vinou\ApiConnector\Api;
 
 /**
  * This class could called with AJAX via eID
@@ -61,7 +62,7 @@ class ClientLogin {
             $dev = true;
         }
 
-        $this->api = new \Vinou\ApiConnector\Api(
+        $this->api = new Api (
             $this->extConf['token'],
             $this->extConf['authId'],
             true,

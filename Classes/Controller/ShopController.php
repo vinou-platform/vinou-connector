@@ -8,7 +8,8 @@ use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \Vinou\VinouConnector\Utility\PaypalUtility;#
-use \Vinou\Utilities\General\Session;
+use \Vinou\ApiConnector\Api;
+use \Vinou\ApiConnector\Session\Session;
 
 class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -112,7 +113,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	      $dev = true;
 	    }
 
-	    $this->api = new \Vinou\ApiConnector\Api(
+	    $this->api = new Api(
 	      $this->extConf['token'],
 	      $this->extConf['authId'],
 	      true,

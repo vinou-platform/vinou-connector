@@ -7,6 +7,7 @@ use \TYPO3\CMS\Core\Utility\PathUtility;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
+use \Vinou\ApiConnector\Api;
 
 class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -82,7 +83,7 @@ class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	      $dev = true;
 	    }
 
-	    $this->api = new \Vinou\ApiConnector\Api(
+	    $this->api = new Api(
 	      $this->extConf['token'],
 	      $this->extConf['authId'],
 	      true,
