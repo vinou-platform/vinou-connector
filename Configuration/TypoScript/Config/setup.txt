@@ -1,9 +1,11 @@
 # add Vinou-Toasts if it was turned on in the constants
 [globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.toasts}]
 page.includeCSS.toasts = EXT:vinou_connector/Resources/Public/Styles/toasts.css
-page.includeCSS.dialogs = EXT:vinou_connector/Resources/Public/Styles/dialogs.css
 page.includeJSFooterlibs.toasts = EXT:vinou_connector/Resources/Public/JavaScript/Src/toast.js
 
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.dialogs}]
+page.includeCSS.dialogs = EXT:vinou_connector/Resources/Public/Styles/dialogs.css
+page.includeJSFooterlibs.dialogs = EXT:vinou_connector/Resources/Public/JavaScript/Src/dialog.js
 
 # add Vinou-JS (Shop,Enquiry,List) if it was turned on in the constants
 [globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.vinou}]

@@ -2,6 +2,7 @@ plugin.tx_vinou {
 	settings {
 		javascript {
 			toasts = 1
+			dialogs = 1
 			vinou = 1
 			list = 0
 			shop = 0
