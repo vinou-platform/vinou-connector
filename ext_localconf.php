@@ -92,6 +92,13 @@
     $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['clientLogin'] =
         'EXT:'.$_EXTKEY.'/Classes/Eid/ClientLogin.php';
 
+    /**
+     * eID to manage ajax actions
+     */
+    $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['vinouActions'] =
+        'EXT:'.$_EXTKEY.'/Classes/Eid/AjaxActions.php';
+
+
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Vinou\\VinouConnector\\Command\\CacheExpertiseTask'] = array(
 	    'extension' => $_EXTKEY,
 	    'title' => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tasks.cacheexpertise.title',

@@ -1,3 +1,69 @@
+function vDialog(params) {
+
+	this.params = params || {};
+	this.params.ok = params.ok || function() {};
+	this.params.cancel = params.cancel || function() {};
+	this.params.yes = params.yes || 'Ja';
+	this.params.no = params.no || 'Nein';
+	this.params.title = params.title || 'Dialog';
+	this.params.description = params.description || 'Description';
+
+	this.init();
+}
+
+vDialog.prototype = {
+	wrapperId: 'dialog-wrapper',
+	wrapper: null,
+	init: function(params) {
+		this.create();
+		this.actions();
+	},
+	create: function() {
+		var $ctrl = this;
+
+		$ctrl.wrapper = document.createElement( "div" );
+		$ctrl.wrapper.id = $ctrl.wrapperId;
+		$ctrl.wrapper.setAttribute('data-status', 'hidden');
+		var html = "<div id='dialog'>";
+			html += "<h3 id='dialog-title'>" + $ctrl.params.title + "</h3>";
+			html += "<div id='dialog-description'>";
+			html += "<p>" + $ctrl.params.description + "</p>";
+			html += "<button id='dialog-cancel'>" + $ctrl.params.no + "</button><button type='button' id='dialog-ok'>" + $ctrl.params.yes + "</button>";
+			html += "</div></div>";
+
+		$ctrl.wrapper.innerHTML = html;
+
+		document.body.appendChild($ctrl.wrapper);
+		$ctrl.wrapper.setAttribute('data-status', 'visible');
+	},
+	exit: function() {
+		var $ctrl = this;
+
+		$ctrl.wrapper.setAttribute('data-status','hidden');
+		setTimeout(function() {
+			document.body.removeChild($ctrl.wrapper);
+		}, 1000);
+	},
+	actions: function() {
+		var $ctrl = this;
+
+		$ctrl.wrapper.querySelector( "#dialog-ok" ).addEventListener( "click", function() {
+			$ctrl.exit();
+			setTimeout(function() {
+				$ctrl.params.ok();
+			}, 1000);
+		}, false);
+
+
+		$ctrl.wrapper.querySelector( "#dialog-cancel" ).addEventListener( "click", function() {
+			$ctrl.exit();
+			setTimeout(function() {
+				$ctrl.params.cancel();
+			}, 1000);
+		}, false);
+	}
+};
+
 var vinouEnquiry = {
 
 	wines: document.querySelectorAll('input[name*="[quantity]"]'),
@@ -46,11 +112,12 @@ var vinouShop = {
 	quantityEditInputs: 'form.basket-edit-form input[name="quantity"]',
 	token: null,
 	dropper: null,
+	quantity: 0,
 
 	init: function() {
-		this.validateLogin();
 		this.bindEvents();
 		this.createDropper();
+		this.updateBasketCount();
 	},
 
 	createDropper: function() {
@@ -82,42 +149,43 @@ var vinouShop = {
 		ctrl.dropper.style.top = parseInt(target.top) + 'px';
 		ctrl.dropper.style.left = parseInt(target.left) + 'px';
 
-		var timeOut = setTimeout((function(){
+		var timeOut = setTimeout(function(){
 			ctrl.dropper.setAttribute('data-status','hidden');
-		}),800);
+		},800);
 
-		var basket = localStorage.getItem("basket");
 		var postData = {
-			uuid: basket,
 			data: item
 		};
-		ctrl.doApiRequest('/service/baskets/addItem',postData,(function(){
+
+		ctrl.ajaxAction('addItem',postData,function(){
 			if (this.status === 200) {
 				toast.show('Erfolgreich','Ihre Position wurde in den Warenkorb gelegt');
-				ctrl.updateBasketCount(basket);
+				ctrl.updateBasketCount();
 			}
-		}));
+		});
+
+
 	},
 
-	deleteItemFromBasket: function(id) {
+	deleteItemFromBasket: function(id, wineid) {
 		var ctrl = this;
-		var basket = localStorage.getItem("basket");
 		var postData = {
 			id: id
 		};
-		ctrl.doApiRequest('/service/baskets/deleteItem',postData,(function(){
+		ctrl.ajaxAction('deleteItem',postData,(function(){
 			if (this.status === 200) {
 				toast.show('Erfolgreich','Ihre Position wurde gelöscht');
-				ctrl.updateBasketCount(basket);
+				ctrl.updateBasketCount();
 				var row = document.getElementById('basket-row-' + id);
-				row.parentNode.removeChild(row);
+				if (row) row.parentNode.removeChild(row);
+				var overlay = document.querySelector('#shop-list-item-' + wineid + ' .basket-overlay');
+				if (overlay) overlay.setAttribute('data-status','hidden');
 			}
 		}));
 	},
 
 	updateBasketItem: function(form) {
 		var ctrl = this;
-		var basket = localStorage.getItem("basket");
 		var postData = {
 			id: form.id,
 			data: {
@@ -126,44 +194,34 @@ var vinouShop = {
 		};
 		if (form.quantity > 0) {
 			var row = document.getElementById('basket-row-' + form.id);
-			var price = form.quantity * parseFloat(form.price);
-			row.querySelector('.position-price').innerHTML = price.toFixed(2) + ' €';
-			ctrl.doApiRequest('/service/baskets/editItem',postData,(function(){
+			if (row) {
+				var price = form.quantity * parseFloat(form.price);
+				row.querySelector('.position-price').innerHTML = price.toFixed(2) + ' €';
+			}
+			ctrl.ajaxAction('editItem',postData,(function(){
 				if (this.status === 200) {
 					toast.show('Erfolgreich','Ihre Position wurde geändert');
-					ctrl.updateBasketCount(basket);
+					ctrl.updateBasketCount();
 				}
 			}));
 		} else {
-			ctrl.doApiRequest('/service/baskets/deleteItem',{id:form.id},(function(){
+			ctrl.ajaxAction('deleteItem',{id:form.id},(function(){
 				if (this.status === 200) {
 					toast.show('Erfolgreich','Ihre Position wurde gelöscht');
-					ctrl.updateBasketCount(basket);
+					ctrl.updateBasketCount();
 					var row = document.getElementById('basket-row-' + form.id);
-					row.parentNode.removeChild(row);
+					if (row)
+						row.parentNode.removeChild(row);
 				}
 			}));
 		}
 	},
 
-	validateBasket: function() {
-		var ctrl = this;
-		var basket = localStorage.getItem("basket");
-		if (!basket) {
-			ctrl.createBasket();
-		} else {
-			ctrl.setCookie('basket',basket,30);
-			ctrl.updateBasketCount(basket);
-		}
-	},
-
-	updateBasketCount: function(basket){
+	updateBasketCount: function(){
 		var ctrl = this;
 		var card = document.querySelector('.basket-status');
 		card.setAttribute('data-status','normal');
-		ctrl.doApiRequest('/service/baskets/get',{
-			uuid: basket
-		},(function(){
+		ctrl.ajaxAction('get',{},(function(){
 			if (this.status == 200) {
 				response = JSON.parse(this.responseText);
 				var summary = {
@@ -173,7 +231,7 @@ var vinouShop = {
 					gross: 0
 				};
 
-				response.data.basketItems.forEach((function(item){
+				response.basketItems.forEach((function(item){
 					summary.quantity += item.quantity;
 					if (item.object.price) {
 						summary.gross += item.quantity * item.object.price;
@@ -182,12 +240,12 @@ var vinouShop = {
 					}
 				}))
 
-				ctrl.doApiRequest('/service/packaging/find',{
+				ctrl.ajaxAction('findPackage',{
 					type: 'bottles',
-					bottles: summary.quantity
+					quantity: summary.quantity
 				},(function(){
 					response = JSON.parse(this.responseText);
-					if (response.data) {
+					if (response && response.data) {
 						price = response.data.price;
 						summary.gross += 1 * price;
 						price.replace('.',',');
@@ -201,14 +259,11 @@ var vinouShop = {
 
 					document.querySelector('.basket-status .juwel').innerHTML = summary.quantity;
 					card.setAttribute('data-status','updated');
+					ctrl.quantity = summary.quantity;
 
 					ctrl.updateBasketSum(summary);
 				}));
-			} else {
-				ctrl.createBasket();
 			}
-
-
 		}));
 	},
 
@@ -225,81 +280,7 @@ var vinouShop = {
 		}
 	},
 
-	createBasket: function() {
-		var ctrl = this;
-		ctrl.doApiRequest('/service/baskets/add',null,(function(){
-			if (this.status === 200) {
-				response = JSON.parse(this.responseText);
-				localStorage.setItem("basket",response.data.uuid);
-				ctrl.setCookie('basket',response.data.uuid,30);
-			}
-		}));
-	},
-
-	validateLogin: function() {
-		var ctrl = this;
-		// check if token is set in local storage
-		if(!localStorage.getItem("token")){
-			// login client if no token is set
-			ctrl.login();
-		} else {
-			// check if token is expired
-			ctrl.doApiRequest('/service/check/login',null,(function(){
-				if (this.status == 200) {
-					ctrl.validateBasket();
-				} else {
-					console.error('invalid client token');
-					ctrl.login();
-					// create new token
-				}
-			}));
-		}
-	},
-
-	login: function() {
-		var ctrl = this;
-		// do client login
-		this.request('/?eID=clientLogin',null,(function(){
-			switch(this.status) {
-				case 200:
-					response = JSON.parse(this.responseText);
-					if (response.token)
-						localStorage.setItem("token",response.token);
-						// set token into local storage
-					ctrl.validateBasket();
-					break;
-				default:
-					console.error('no client token could be generated');
-					break;
-			}
-		}));
-	},
-
-	request: function(route,data,callback) {
-		var args = Array.prototype.slice.call(arguments, 3);
-		var request = new XMLHttpRequest();
-		request.onload = function() {
-			if (request.readyState === 4) {
-				switch (request.status) {
-					case 200:
-						callback.apply(request, args);
-						break;
-					case 401:
-						callback.apply(request, args);
-						break;
-					default:
-						callback.apply(request, args);
-						break;
-				}
-			}
-		};
-		request.callback = callback;
-		request.open("POST", route, true);
-		request.setRequestHeader("Content-type", "application/json");
-		request.send(JSON.stringify(data));
-	},
-
-	doApiRequest: function(route,data,callback) {
+	ajaxAction: function(action,data,callback) {
 		var args = Array.prototype.slice.call(arguments, 3);
 		var request = new XMLHttpRequest();
 		request.onload = function() {
@@ -319,10 +300,27 @@ var vinouShop = {
 			}
 		};
 		request.callback = callback;
-		request.open("POST", "https://api.vinou.de" + route, true);
+		data.action = action;
+		request.open("POST", "/?eID=vinouActions", true);
 		request.setRequestHeader("Content-type", "application/json");
-		request.setRequestHeader("Authorization", "Bearer " + localStorage.getItem("token"));
 		request.send(JSON.stringify(data));
+	},
+
+	submitAddForm: function(form) {
+		var ctrl = this;
+		if (ctrl.quantity === 0) {
+			new vDialog({
+				title: 'Altersabfrage',
+				description: 'Gerne liefern wir Ihnen Ihre Weine. Bitte bestätigen Sie uns, dass Sie dafür die notwendigen Altersbeschränkungen erfüllen.',
+				yes: 'Ja, ich bin 18',
+				no: 'Abbrechen',
+				ok: function() {
+					ctrl.addItemToBasket(ctrl.serializeForm(form));
+				}
+			});
+		} else {
+			ctrl.addItemToBasket(ctrl.serializeForm(form));
+		}
 	},
 
 	bindEvents: function() {
@@ -332,61 +330,61 @@ var vinouShop = {
 		var addForms = document.querySelectorAll(ctrl.addForms);
 		for (var i = 0; i < addForms.length; i++) {
 			if (addForms[i].addEventListener) {
-				addForms[i].addEventListener("submit", (function(event) {
+				addForms[i].addEventListener("submit", function(event) {
 					event.preventDefault();
-					ctrl.addItemToBasket(ctrl.serializeForm(this));
-				}), true);
+					ctrl.submitAddForm(this);
+				}, true);
 			}
 			else {
-				addForms[i].attachEvent('onsubmit', (function(event){
+				addForms[i].attachEvent('onsubmit', function(event){
 					event.preventDefault();
-					ctrl.addItemToBasket(ctrl.serializeForm(this));
-				}));
+					ctrl.submitAddForm(this);
+				});
 			}
 		}
 
 		var updateForms = document.querySelectorAll(ctrl.updateForms);
 		for (var i = 0; i < updateForms.length; i++) {
 			if (updateForms[i].addEventListener) {
-				updateForms[i].addEventListener("submit", (function(event) {
+				updateForms[i].addEventListener("submit", function(event) {
 					event.preventDefault();
 					ctrl.updateBasketItem(ctrl.serializeForm(this));
-				}), true);
+				}, true);
 			}
 			else {
-				updateForms[i].attachEvent('onsubmit', (function(event){
+				updateForms[i].attachEvent('onsubmit', function(event){
 					event.preventDefault();
 					ctrl.updateBasketItem(ctrl.serializeForm(this));
-				}));
+				});
 			}
 		}
 
 		var deleteButtons = document.querySelectorAll(ctrl.deleteItemButtons);
 		for (var i = 0; i < deleteButtons.length; i++) {
-			deleteButtons[i].addEventListener("click", (function(event) {
+			deleteButtons[i].addEventListener("click", function(event) {
 				event.preventDefault();
 				var id = this.getAttribute('data-id');
 				ctrl.deleteItemFromBasket(id);
 				return false;
-			}));
+			});
 		}
 
 		var delCheck = document.querySelector('#deliveryAdress');
 		if (delCheck) {
-			delCheck.addEventListener('change',(function(){
+			delCheck.addEventListener('change',function(){
 				var delForm = document.querySelector('#delivery-fieldset');
 				delForm.setAttribute('data-visible',this.checked ? 1 : 0);
 				var requiredFields = document.querySelectorAll('#delivery-fieldset [data-required="1"]');
 				if (this.checked) {
-					requiredFields.forEach((function(item){
+					requiredFields.forEach(function(item){
 						item.setAttribute('required','required');
-					}));
+					});
 				} else {
-					requiredFields.forEach((function(item){
+					requiredFields.forEach(function(item){
 						item.removeAttribute('required');
-					}));
+					});
 				}
-			}));
+			});
 		}
 
 	},
@@ -444,24 +442,6 @@ var vinouShop = {
 			}
 		}
 		return q;
-	},
-
-	setCookie: function (cname, cvalue, exdays) {
-		var d = new Date();
-		d.setTime(d.getTime() + (exdays*24*60*60*1000));
-		var expires = "expires="+d.toUTCString();
-		document.cookie = cname + "=" + cvalue + "; " + expires + "; path=/";
-	},
-
-	getCookie: function(cname) {
-		var name = cname + "=";
-		var ca = document.cookie.split(';');
-		for(var i=0; i<ca.length; i++) {
-			var c = ca[i];
-			while (c.charAt(0)==' ') c = c.substring(1);
-			if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
-		}
-		return "";
 	}
 }
 vinouShop.init();
