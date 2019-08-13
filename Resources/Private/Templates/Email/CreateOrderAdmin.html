@@ -57,10 +57,10 @@
 					</f:then>
 					<f:else>
 						<tr>
-							<td style="border: 1px solid #999999;">{item.object.name}</td>
-							<td style="border: 1px solid #999999;">{item.object.articlenumber}</td>
+							<td style="border: 1px solid #999999;">{item.item.name}</td>
+							<td style="border: 1px solid #999999;">{item.item.articlenumber}</td>
 							<td style="border: 1px solid #999999;">{item.quantity}</td>
-							<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{vin:priceCalc(price:item.object.price,quantity:item.quantity)}</f:format.currency></td>
+							<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{vin:priceCalc(price:item.item.price,quantity:item.quantity)}</f:format.currency></td>
 						</tr>
 					</f:else>
 				</f:if>
