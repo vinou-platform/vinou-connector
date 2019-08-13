@@ -501,10 +501,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		foreach ($items as $item) {
 			$summary['quantity'] += $item['quantity'];
-			if (isset($item['object']['price'])) {
-				$summary['gross'] += ($item['quantity'] * $item['object']['price']);
+			if (isset($item['item']['price'])) {
+				$summary['gross'] += ($item['quantity'] * $item['item']['price']);
 			} else {
-				$summary['gross'] += ($item['quantity'] * $item['object']['gross']);
+				$summary['gross'] += ($item['quantity'] * $item['item']['gross']);
 			}
 		}
 

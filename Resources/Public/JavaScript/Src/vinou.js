@@ -180,8 +180,8 @@ var vinouShop = {
 						quantity: summary.quantity
 					},(function(){
 						response = JSON.parse(this.responseText);
-						if (response && response.data) {
-							price = response.data.price;
+						if (response) {
+							price = response.price;
 							summary.gross += 1 * price;
 							price.replace('.',',');
 							packagePrice = document.querySelector('#package-row .position-price');
