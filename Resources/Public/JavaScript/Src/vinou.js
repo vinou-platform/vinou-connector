@@ -165,38 +165,42 @@ var vinouShop = {
 					gross: 0
 				};
 
-				response.basketItems.forEach((function(item){
-					summary.quantity += item.quantity;
-					if (item.object.price) {
-						summary.gross += item.quantity * item.object.price;
-					} else {
-						summary.gross += item.quantity * item.object.gross;
-					}
-				}))
+				if (response.basketItems) {
+					response.basketItems.forEach((function(item){
+						summary.quantity += item.quantity;
+						if (item.item.price) {
+							summary.gross += item.quantity * item.item.price;
+						} else {
+							summary.gross += item.quantity * item.item.gross;
+						}
+					}))
 
-				ctrl.ajaxAction('findPackage',{
-					type: 'bottles',
-					quantity: summary.quantity
-				},(function(){
-					response = JSON.parse(this.responseText);
-					if (response && response.data) {
-						price = response.data.price;
-						summary.gross += 1 * price;
-						price.replace('.',',');
-						packagePrice = document.querySelector('#package-row .position-price');
-						if (packagePrice)
-							packagePrice.innerHTML = price + ' €';
-					}
+					ctrl.ajaxAction('findPackage',{
+						type: 'bottles',
+						quantity: summary.quantity
+					},(function(){
+						response = JSON.parse(this.responseText);
+						if (response && response.data) {
+							price = response.data.price;
+							summary.gross += 1 * price;
+							price.replace('.',',');
+							packagePrice = document.querySelector('#package-row .position-price');
+							if (packagePrice)
+								packagePrice.innerHTML = price + ' €';
+						}
 
-					summary.net = summary.gross / 1.19;
-					summary.tax = summary.gross - summary.net;
+						summary.net = summary.gross / 1.19;
+						summary.tax = summary.gross - summary.net;
 
+						document.querySelector('.basket-status .juwel').innerHTML = summary.quantity;
+						card.setAttribute('data-status','updated');
+						ctrl.updateBasketSum(summary);
+					}));
+				} else {
 					document.querySelector('.basket-status .juwel').innerHTML = summary.quantity;
 					card.setAttribute('data-status','updated');
-					ctrl.quantity = summary.quantity;
-
 					ctrl.updateBasketSum(summary);
-				}));
+				}
 			}
 		}));
 	},
