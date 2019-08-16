@@ -151,11 +151,13 @@ var vinouShop = {
 						summary.tax = summary.gross - summary.net;
 
 						document.querySelector('.basket-status .juwel').innerHTML = summary.quantity;
+						ctrl.quantity = summary.quantity;
 						card.setAttribute('data-status','updated');
 						ctrl.updateBasketSum(summary);
 					}));
 				} else {
 					document.querySelector('.basket-status .juwel').innerHTML = summary.quantity;
+					ctrl.quantity = summary.quantity;
 					card.setAttribute('data-status','updated');
 					ctrl.updateBasketSum(summary);
 				}
