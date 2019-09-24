@@ -180,7 +180,7 @@ var vinouShop = {
 						quantity: summary.quantity
 					},(function(){
 						response = JSON.parse(this.responseText);
-						if (response) {
+						if (response && response.price) {
 							price = response.price;
 							summary.gross += 1 * price;
 							price.replace('.',',');
