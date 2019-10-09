@@ -43,6 +43,9 @@
 			<trans-unit id="shop.list.clusters.vintage">
 				<source>Vintage</source>
 			</trans-unit>
+			<trans-unit id="shop.list.clusters.taste">
+				<source>Taste</source>
+			</trans-unit>
 			<trans-unit id="shop.list.clusters.place">
 				<source>Place</source>
 			</trans-unit>
@@ -493,6 +496,9 @@
 			</trans-unit>
 			<trans-unit id="flexform.shop.clusters.vintage">
 				<source>Vintage</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.clusters.taste">
+				<source>Taste</source>
 			</trans-unit>
 			<trans-unit id="flexform.shop.clusters.place">
 				<source>Place</source>

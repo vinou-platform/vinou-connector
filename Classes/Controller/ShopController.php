@@ -163,9 +163,15 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			if (!is_null($clusters))
 				$postData['cluster'] = $clusters;
 
-			$data = $this->api->getWinesAll($postData);
+			if ((int)$this->settings['category'] > 0) {
+				$data = $this->api->getCategoryWines((int)$this->settings['category'], $postData);
+				$wines = isset($data['data']) ? $data['data'] : false;
 
-			$wines = isset($data['wines']) ? $data['wines'] : $data['data'];
+			} else {
+				$data = $this->api->getWinesAll($postData);
+				$wines = isset($data['wines']) ? $data['wines'] : $data['data'];
+			}
+
 			foreach ($wines as &$wine) {
 				$wine['object_type'] = 'wine';
 			}

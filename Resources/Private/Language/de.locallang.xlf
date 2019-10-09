@@ -56,6 +56,10 @@
 				<source>Vintage</source>
 				<target>Jahrgang</target>
 			</trans-unit>
+			<trans-unit id="shop.list.clusters.taste">
+				<source>Taste</source>
+				<target>Geschmack</target>
+			</trans-unit>
 			<trans-unit id="shop.list.clusters.place">
 				<source>Place</source>
 				<target>Lage</target>
@@ -659,6 +663,10 @@
 			<trans-unit id="flexform.shop.clusters.vintage">
 				<source>Vintage</source>
 				<target>Jahrgang</target>
+			</trans-unit>
+			<trans-unit id="flexform.shop.clusters.taste">
+				<source>Taste</source>
+				<target>Geschmack</target>
 			</trans-unit>
 			<trans-unit id="flexform.shop.clusters.place">
 				<source>Place</source>
