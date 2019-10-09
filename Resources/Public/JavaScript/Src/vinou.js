@@ -327,6 +327,30 @@ var vinouShop = {
 			});
 		}
 
+		var incButtons = document.querySelectorAll('button.inc');
+		for (var i = 0; i < incButtons.length; i++) {
+			incButtons[i].addEventListener('click',function(event) {
+				event.preventDefault();
+				var input = this.parentNode.querySelector('input[name="quantity"]');
+				var current = input.value;
+				var max = input.getAttribute('max') ? input.getAttribute('max') : 99;
+				input.value = current < max ? parseInt(current) + 1 : max;
+				return false;
+			});
+		}
+
+		var decButtons = document.querySelectorAll('button.dec');
+		for (var i = 0; i < decButtons.length; i++) {
+			decButtons[i].addEventListener('click',function(event) {
+				event.preventDefault();
+				var input = this.parentNode.querySelector('input[name="quantity"]');
+				var current = input.value;
+				var min = input.getAttribute('min') ? input.getAttribute('min') : 1;
+				input.value = current > min ? parseInt(current) - 1 : min;
+				return false;
+			});
+		}
+
 	},
 
 	serializeForm: function(form){
