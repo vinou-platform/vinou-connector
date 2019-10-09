@@ -6,6 +6,7 @@ var vinouShop = {
 	quantityEditInputs: 'form.basket-edit-form input[name="quantity"]',
 	token: null,
 	dropper: null,
+	quantity: 0,
 
 	init: function() {
 		this.bindEvents();
@@ -46,17 +47,18 @@ var vinouShop = {
 			ctrl.dropper.setAttribute('data-status','hidden');
 		},800);
 
-		var basket = localStorage.getItem("basket");
 		var postData = {
-			uuid: basket,
 			data: item
 		};
+
 		ctrl.ajaxAction('addItem',postData,function(){
 			if (this.status === 200) {
 				toast.show('Erfolgreich','Ihre Position wurde in den Warenkorb gelegt');
-				ctrl.updateBasketCount(basket);
+				ctrl.updateBasketCount();
 			}
 		});
+
+
 	},
 
 	deleteItemFromBasket: function(id, wineid) {
@@ -138,7 +140,7 @@ var vinouShop = {
 						quantity: summary.quantity
 					},(function(){
 						response = JSON.parse(this.responseText);
-						if (response) {
+						if (response && response.price) {
 							price = response.price;
 							summary.gross += 1 * price;
 							price.replace('.',',');
@@ -204,6 +206,23 @@ var vinouShop = {
 		request.send(JSON.stringify(data));
 	},
 
+	submitAddForm: function(form) {
+		var ctrl = this;
+		if (ctrl.quantity === 0) {
+			new vDialog({
+				title: 'Altersabfrage',
+				description: 'Gerne liefern wir Ihnen Ihre Weine. Bitte bestätigen Sie uns, dass Sie dafür die notwendigen Altersbeschränkungen erfüllen.',
+				yes: 'Ja, ich bin 18',
+				no: 'Abbrechen',
+				ok: function() {
+					ctrl.addItemToBasket(ctrl.serializeForm(form));
+				}
+			});
+		} else {
+			ctrl.addItemToBasket(ctrl.serializeForm(form));
+		}
+	},
+
 	bindEvents: function() {
 		var ctrl = this;
 		var dropper = document.getElementById('basket-dropper');
@@ -213,13 +232,13 @@ var vinouShop = {
 			if (addForms[i].addEventListener) {
 				addForms[i].addEventListener("submit", function(event) {
 					event.preventDefault();
-					ctrl.addItemToBasket(ctrl.serializeForm(this));
+					ctrl.submitAddForm(this);
 				}, true);
 			}
 			else {
 				addForms[i].attachEvent('onsubmit', function(event){
 					event.preventDefault();
-					ctrl.addItemToBasket(ctrl.serializeForm(this));
+					ctrl.submitAddForm(this);
 				});
 			}
 		}
