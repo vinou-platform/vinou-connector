@@ -69,6 +69,9 @@ class AjaxActions {
             array_push($errors, 'no action defined');
         }
 
+        if (isset($result['error']))
+            array_push($errors, $result['error']);
+
         if (count($errors) > 0) {
             header('HTTP/1.0 400 Bad Request');
             echo json_encode($errors);
