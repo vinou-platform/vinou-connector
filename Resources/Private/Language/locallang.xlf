@@ -52,6 +52,9 @@
 			<trans-unit id="shop.list.clusters.country">
 				<source>Country</source>
 			</trans-unit>
+			<trans-unit id="shop.list.clusters.grapetype">
+				<source>Grapetype</source>
+			</trans-unit>
 			<trans-unit id="shop.list.clusters.empty">
 				<source>Empty</source>
 			</trans-unit>
@@ -505,6 +508,9 @@
 			</trans-unit>
 			<trans-unit id="flexform.shop.clusters.country">
 				<source>Country</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.clusters.grapetype">
+				<source>Grapetype</source>
 			</trans-unit>
 			<trans-unit id="flexform.shop.showTypes">
 				<source>Show objects of type</source>

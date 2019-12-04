@@ -69,6 +69,10 @@
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.clusters.country</numIndex>
                                         <numIndex index="1">country</numIndex>
                                     </numIndex>
+                                    <numIndex index="6" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.clusters.grapetype</numIndex>
+                                        <numIndex index="1">grapetypeIds</numIndex>
+                                    </numIndex>
                                 </items>
                             </config>
                         </TCEforms>
