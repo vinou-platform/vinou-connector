@@ -6,7 +6,7 @@ use \Vinou\ApiConnector\FileHandler\Images;
 
 class CacheApiImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
-	const LOCALDIR = 'typo3temp/vinou_connector/';
+	const LOCALDIR = 'vinou/cache/images/';
 
     /**
      * @param string $image
