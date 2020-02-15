@@ -20,7 +20,7 @@ class CacheApiImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
             mkdir($absLocalDir, 0777, true);
         }
 
-        $cacheImageProcess = Images::storeApiImage($image,$absLocalDir,$tstamp);
+        $cacheImageProcess = Images::storeApiImage($image,$tstamp,$absLocalDir);
         $fileName = $cacheImageProcess['fileName'];
 
 		return self::LOCALDIR.$fileName;
