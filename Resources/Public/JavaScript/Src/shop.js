@@ -7,6 +7,8 @@ var vinouShop = {
 	token: null,
 	dropper: null,
 	quantity: 0,
+	timeout: null,
+	tempquantity: 0,
 
 	init: function() {
 		this.bindEvents();
@@ -245,6 +247,27 @@ var vinouShop = {
 
 		var updateForms = document.querySelectorAll(ctrl.updateForms);
 		for (var i = 0; i < updateForms.length; i++) {
+			var quantityField = updateForms[i].querySelector('input[name="quantity"]');
+			quantityField.addEventListener('focus', function(event) {
+				ctrl.tempquantity = this.value;
+			});
+
+			quantityField.addEventListener('blur', function(event) {
+				if (ctrl.tempquantity && ctrl.tempquantity != this.value) {
+					ctrl.tempquantity = null;
+					ctrl.updateBasketItem(ctrl.serializeForm(updateForms[i]));
+				}
+			});
+
+			quantityField.addEventListener('input', function(event) {
+				clearTimeout(ctrl.timeout);
+				ctrl.timeout = setTimeout(function(){
+					if (ctrl.tempquantity)
+						ctrl.updateBasketItem(ctrl.serializeForm(updateForms[i]));
+				}, 250);
+			});
+
+
 			if (updateForms[i].addEventListener) {
 				updateForms[i].addEventListener("submit", function(event) {
 					event.preventDefault();
