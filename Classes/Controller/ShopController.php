@@ -404,6 +404,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			'source' => 'shop',
 			'payment_type' => $paymentMethod,
 			'basket' => $basket['uuid'],
+			'billing_type' => 'client',
 			'billing' => [
 				'firstname' => $billing['firstname'],
 				'lastname' => $billing['lastname'],
@@ -412,6 +413,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				'city' => $billing['city'],
 				'email' => $billing['email'],
 			],
+			'delivery_type' => 'address',
 			'delivery' => [
 				'firstname' => $delivery['firstname'],
 				'lastname' => $delivery['lastname'],
@@ -419,6 +421,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				'zip' => $delivery['zip'],
 				'city' => $delivery['city'],
 			],
+			'invoice_type' => isset($this->settings['checkout']['invoice_type']) ? $this->settings['checkout']['invoice_type'] : 'gross',
+            'payment_period' => isset($this->settings['checkout']['payment_period']) ? (int)$this->settings['checkout']['payment_period'] : 14,
 			'note' => $note
 		];
 

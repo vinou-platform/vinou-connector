@@ -6,20 +6,24 @@ var gulpUtil = require('gulp-util');
 var rename = require('gulp-rename');
 var concat = require('gulp-concat');
 var watchDirs = ['Src/**/*'];
-var vinouJsFiles = ['Src/enquiry.js','Src/shop.js','Src/list.js'];
+var vinouJsFiles = [
+	'../../Public/Scripts/enquiry.min.js',
+	'../../Public/Scripts/shop.min.js',
+	'../../Public/Scripts/list.min.js'
+];
 
 
-gulp.task('vinou-js', function () {
+gulp.task('concat', ['minify'], function () {
 	return gulp.src(vinouJsFiles)
 		.pipe(optimisejs())
-	    .pipe(concat('vinou.js'))
-		.pipe(gulp.dest('Src'))
+	    .pipe(concat('vinou.min.js'))
+		.pipe(gulp.dest('../../Public/Scripts'))
 		.on('error', function (error) {
 			console.error('' + error);
 		});
 });
 
-gulp.task('minify', ['vinou-js'], function () {
+gulp.task('minify', function () {
 	return gulp.src('./Src/*.js')
 		.pipe(stripDebug())
 		.pipe(optimisejs())
@@ -27,12 +31,16 @@ gulp.task('minify', ['vinou-js'], function () {
 	    .pipe(rename({
             suffix: '.min'
         }))
-		.pipe(gulp.dest('Minified'))
+		.pipe(gulp.dest('../../Public/Scripts'))
 		.on('error', function (error) {
 			console.error('' + error);
 		});
 });
 
-gulp.task('default', ['vinou-js'], function () {
-	gulp.watch(watchDirs, ['vinou-js']);
+gulp.task('watch', function() {
+	gulp.watch(watchDirs, ['concat']);
+});
+
+gulp.task('default', ['concat'], function () {
+	gulp.watch(watchDirs, ['concat']);
 });
