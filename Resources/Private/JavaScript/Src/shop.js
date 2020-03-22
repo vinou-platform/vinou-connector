@@ -276,7 +276,7 @@ var vinouShop = {
 			var addButton = addForms[i].querySelector('.add-basket');
 			addButton.addEventListener('click',function(event) {
 				event.preventDefault();
-				ctrl.submitAddForm(addForms[i]);
+				ctrl.submitAddForm(this.form);
 			});
 		}
 

@@ -16,6 +16,14 @@ page.includeJSFooterlibs {
 	list = EXT:vinou_connector/Resources/Public/Scripts/list.min.js
 }
 
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.vinou}] && [applicationContext = Development]
+page.includeJSFooterlibs {
+	listjs = EXT:vinou_connector/Vendor/listjs/list.js
+	enquiry = EXT:vinou_connector/Resources/Private/JavaScript/Src/enquiry.js
+	shop = EXT:vinou_connector/Resources/Private/JavaScript/Src/shop.js
+	list = EXT:vinou_connector/Resources/Private/JavaScript/Src/list.js
+}
+
 # add only shop javascript if it was turned on in the constants
 [globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.shop}]
 page.includeJSFooterlibs {
