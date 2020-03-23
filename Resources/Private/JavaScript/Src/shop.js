@@ -9,6 +9,7 @@ var vinouShop = {
 	quantity: 0,
 	timeout: null,
 	tempquantity: 0,
+	currency: ' €',
 
 	init: function() {
 		this.bindEvents();
@@ -102,7 +103,7 @@ var vinouShop = {
 			var row = document.getElementById('basket-row-' + form.id);
 			if (row) {
 				var price = form.quantity * parseFloat(form.price);
-				row.querySelector('.price strong').innerHTML = price.toFixed(2).replace('.',',') + ' EUR';
+				row.querySelector('.price strong').innerHTML = price.toFixed(2).replace('.',',') + ctrl.currency;
 			}
 			ctrl.basketAction('editItem',postData,(function(){
 				if (this.status === 200) {
@@ -163,9 +164,9 @@ var vinouShop = {
 							summary.tax += 1 * response.tax;
 							summary.net += 1 * response.net;
 							summary.gross += 1 * response.gross;
-							packageGross = response.gross.replace('.',',') + ' EUR';
+							packageGross = response.gross.replace('.',',') + ctrl.currency;
 						} else {
-							packageGross = '0,00 EUR';
+							packageGross = '0,00' + ctrl.currency;
 						}
 
 						if (packagePrice)
@@ -192,11 +193,12 @@ var vinouShop = {
 	},
 
 	updateBasketSum: function(sum) {
+		var ctrl = this;
 		for (var key in sum) {
 			if (sum.hasOwnProperty(key)) {
 				el = document.querySelector('#basket-table #basket-sum-' + key);
 				if (el)
-					el.innerHTML = sum[key].toFixed(2).replace('.',',') + ' EUR';
+					el.innerHTML = sum[key].toFixed(2).replace('.',',') + ctrl.currency;
 			}
 		}
 
