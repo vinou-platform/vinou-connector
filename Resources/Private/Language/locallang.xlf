@@ -488,6 +488,12 @@
 			<trans-unit id="flexform.shop.mode.finish">
 				<source>Finish Order</source>
 			</trans-unit>
+			<trans-unit id="flexform.shop.mode.finishPaypal">
+				<source>Finish Paypal</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.mode.cancelPaypal">
+				<source>Cancel Paypal</source>
+			</trans-unit>
 			<trans-unit id="flexform.shop.clusters">
 				<source>Filter options</source>
 			</trans-unit>
@@ -539,6 +545,12 @@
 			<trans-unit id="flexform.shop.finishPid">
 				<source>Page after Payment</source>
 			</trans-unit>
+			<trans-unit id="flexform.shop.finishPaypalPid">
+				<source>Page to finish paypal payment</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.cancelPaypalPid">
+				<source>Page to cancel order after paypal</source>
+			</trans-unit>
 			<trans-unit id="flexform.shop.template">
 				<source>Layout</source>
 			</trans-unit>
@@ -578,6 +590,18 @@
 			</trans-unit>
 			<trans-unit id="message.content.paypalprocess">
 				<source>Paypal Process terminated, please try again later.</source>
+			</trans-unit>
+			<trans-unit id="message.content.nofinishPaypalPid">
+				<source>No finishPaypalPid given in settings.</source>
+			</trans-unit>
+			<trans-unit id="message.content.nocancelPaypalPid">
+				<source>No cancelPaypalPid given in settings.</source>
+			</trans-unit>
+			<trans-unit id="message.content.finishPaypalAborted">
+				<source>Paypal checkout couldnt be finished.</source>
+			</trans-unit>
+			<trans-unit id="message.content.cancelPaypalError">
+				<source>Cancellation corrupted, please contact system administrator.</source>
 			</trans-unit>
 
 			<trans-unit id="tasks.cacheexpertise.title">

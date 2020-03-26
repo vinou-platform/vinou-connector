@@ -406,17 +406,17 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			'basket' => $basket['uuid'],
 			'billing_type' => 'client',
 			'billing' => [
-				'firstname' => $billing['firstname'],
-				'lastname' => $billing['lastname'],
+				'first_name' => $billing['firstname'],
+				'last_name' => $billing['lastname'],
 				'address' => $billing['address'],
 				'zip' => $billing['zip'],
 				'city' => $billing['city'],
-				'email' => $billing['email'],
+				'mail' => $billing['email'],
 			],
 			'delivery_type' => 'address',
 			'delivery' => [
-				'firstname' => $delivery['firstname'],
-				'lastname' => $delivery['lastname'],
+				'first_name' => $delivery['firstname'],
+				'last_name' => $delivery['lastname'],
 				'address' => $delivery['address'],
 				'zip' => $delivery['zip'],
 				'city' => $delivery['city'],
@@ -438,12 +438,44 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$order['delivery'][$label] = $delivery[$label];
 		}
 
-		$sendResult = $this->api->addOrder($order);
+		$check = $this->api->checkClientMail($order['billing']);
+        if ($check) {
+            $order['client_id'] = $check;
+            $order['billing_type'] = 'address';
+        } else {
+            unset($order['billing_type']);
+        }
+
+		if ($paymentMethod == 'paypal') {
+
+			if (!isset($this->settings['finishPaypalPid']))
+				$this->Alert('error','nofinishPaypalPid',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+
+			$order['return_url'] = $this->uriBuilder
+				->reset()
+				->setTargetPageUid($this->settings['finishPaypalPid'])
+				->setCreateAbsoluteUri(TRUE)
+				->setNoCache(TRUE)
+				->build();
+
+			if (!isset($this->settings['cancelPaypalPid']))
+				$this->Alert('error','nocancelPaypalPid',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+
+			$order['cancel_url'] = $this->uriBuilder
+				->reset()
+				->setTargetPageUid($this->settings['cancelPaypalPid'])
+				->setCreateAbsoluteUri(TRUE)
+				->setNoCache(TRUE)
+				->build();
+
+		}
+
 		file_put_contents($this->orderDir .'/order-'.time().'.json', json_encode($order));
 
-		if ($sendResult) {
+		// addOrder will do the redirect if paypal was set
+		$sendResult = $this->api->addOrder($order);
 
-			// file_put_contents($this->orderDir .'/order-'.time().'.json', json_encode($order));
+		if ($sendResult) {
 
 			$recipient = [
 				$billing['email'] => $billing['firstname'] . " " . $billing['lastname']
@@ -456,7 +488,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$recipient,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$sendResult['data']['number'],
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$sendResult['number'],
 				'CreateOrderClient',
 				$mailContent,
 				$this->settings['mail']['attachements']
@@ -465,7 +497,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$this->admin,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$sendResult['data']['number'],
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$sendResult['number'],
 				'CreateOrderAdmin',
 				$mailContent
 			);
@@ -475,6 +507,69 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		}
 
 		return true;
+	}
+
+	public function finishPaypalAction() {
+		$this->initialize();
+		$error = false;
+
+		$this->view->assign('settings', $this->settings);
+		$order = $this->api->getSessionOrder();
+		$this->view->assign('order', $order);
+
+		$paypalresult = $this->api->finishPaypalPayment(GeneralUtility::_GET());
+		$this->view->assign('paypalresult', $paypalresult);
+
+		if (!$paypalresult) {
+			$error = true;
+		} else {
+			$recipient = [
+				$order['client']['mail'] => $order['client']['first_name'] . " " . $order['client']['last_name']
+			];
+
+			$mailContent = $order;
+			$mailContent['items'] = $order['positions'];
+			$mailContent['items'][] = $order['package'];
+			$mailContent['summary'] = $order;
+
+			$this->sendTemplateEmail(
+				$recipient,
+				$this->sender,
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$order['number'],
+				'CreateOrderClient',
+				$mailContent,
+				$this->settings['mail']['attachements']
+			);
+
+			$this->sendTemplateEmail(
+				$this->admin,
+				$this->sender,
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$order['number'],
+				'CreateOrderAdmin',
+				$mailContent
+			);
+
+			$this->clearAllSessionData();
+		}
+
+		$this->view->assign('error', $error);
+	}
+
+	public function cancelPaypalAction() {
+		$this->initialize();
+		$this->view->assign('settings', $this->settings);	
+		$this->view->assign('order', $this->api->getSessionOrder());
+		$error = false;
+
+		$cancelresult = $this->api->cancelPaypalPayment();
+
+		if (!$cancelresult) {
+			$error = true;
+		} else {
+			$this->view->assign('cancelresult', $cancelresult);
+		}
+
+		$this->view->assign('error', $error);
 	}
 
 	private function getRequiredFields() {

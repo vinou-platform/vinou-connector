@@ -644,6 +644,14 @@
 				<source>Finish Order</source>
 				<target>Bestellung abschließen</target>
 			</trans-unit>
+			<trans-unit id="flexform.shop.mode.finishPaypal">
+				<source>Finish Paypal</source>
+				<target>Paypal-Bestellung abschließen</target>
+			</trans-unit>
+			<trans-unit id="flexform.shop.mode.cancelPaypal">
+				<source>Cancel Paypal</source>
+				<target>Paypal-Bestellung abbrechen</target>
+			</trans-unit>
 			<trans-unit id="flexform.shop.detailPid">
 				<source>Wine detail page</source>
 				<target>Wein-Detailseite</target>
@@ -712,6 +720,14 @@
 				<source>Page after Payment</source>
 				<target>Seite nach Payment</target>
 			</trans-unit>
+			<trans-unit id="flexform.shop.finishPaypalPid">
+				<source>Page to finish paypal payment</source>
+				<target>Seite für Paypal-Abschluss</target>
+			</trans-unit>
+			<trans-unit id="flexform.shop.cancelPaypalPid">
+				<source>Page to cancel order after paypal</source>
+				<target>Seite für Paypal-Abbruch</target>
+			</trans-unit>
 			<trans-unit id="flexform.shop.template">
 				<source>Layout</source>
 				<target>Layout</target>
@@ -764,6 +780,22 @@
 			<trans-unit id="message.content.paypalprocess">
 				<source>Paypal Process terminated, please try again later.</source>
 				<target>Der Paypal Prozess wurde unerwartet abgebrochen, bitte versuchen sie es später erneut oder wenden Sie sich an uns.</target>
+			</trans-unit>
+			<trans-unit id="message.content.nofinishPaypalPid">
+				<source>No finishPaypalPid given in settings.</source>
+				<target>Keine finishPaypalPid in Typoscript Einstellungen gesetzt</target>
+			</trans-unit>
+			<trans-unit id="message.content.nocancelPaypalPid">
+				<source>No cancelPaypalPid given in settings.</source>
+				<target>Keine cancelPaypalPid in Typoscript Einstellungen gesetzt</target>
+			</trans-unit>
+			<trans-unit id="message.content.finishPaypalAborted">
+				<source>Paypal checkout couldnt be finished.</source>
+				<target>Paypal checkout konnte nicht abgeschlossen werden.</target>
+			</trans-unit>
+			<trans-unit id="message.content.cancelPaypalError">
+				<source>Cancellation corrupted, please contact system administrator.</source>
+				<target>Der Abbruch war nicht erfolgreich, Bitte kontaktiere einen System-Administrator.</target>
 			</trans-unit>
 
 			<trans-unit id="tasks.cacheexpertise.title">
