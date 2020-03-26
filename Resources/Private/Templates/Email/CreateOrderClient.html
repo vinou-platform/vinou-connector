@@ -14,17 +14,17 @@
 			<tr>
 				<td style="border: 1px solid #999999;" colspan="2">
 					<p><b>Rechnungsadresse:</b><br>
-						Firma: {billing.company}<br>
-						Name: {billing.firstname} {billing.lastname} <br>
+						<f:if condition="{billing.company}">Firma: {billing.company}<br></f:if>
+						Name: {billing.first_name} {billing.last_name} <br>
 						Straße: {billing.address}<br>
 						PLZ/Ort: {billing.zip} {billing.city} <br>
-						Email: {billing.email}<br>
-						Tel: {billing.phone}<br>
+						Email: {billing.mail}<br>
+						<f:if condition="{billing.phone}">Tel: {billing.phone}<br></f:if>
 					</p>
 				</td>
 				<td style="border: 1px solid #999999;" colspan="2">
 					<p><b>Die Lieferung erfolgt an:</b><br>
-						Name: {delivery.firstname} {delivery.lastname} <br>
+						Name: {delivery.first_name} {delivery.last_name} <br>
 						Straße: {delivery.address}<br>
 						PLZ/Ort: {delivery.zip} {delivery.city} <br>
 					</p>

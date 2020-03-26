@@ -1,0 +1,15 @@
+<f:layout name="Shop" />
+
+<f:section name="main">
+
+	<f:if condition="{error}">
+		<f:then>
+			<p><strong>ACHTUNG!!!</strong> Ein Fehler ist aufgetreten. Die Bestellung konnte nicht abgeschlossen werden. Bitte wende dich an einen Administrator.</p>
+		</f:then>
+		<f:else>
+			<h3>Vielen Dank</h3>
+			<p>Wir haben Ihre Bestellung mit der <strong>Nummer {order.number}</strong> erhalten. Eine Bestätigung finden Sie in Ihrem Mail-Postfach</p>
+		</f:else>
+	</f:if>
+
+</f:section>
