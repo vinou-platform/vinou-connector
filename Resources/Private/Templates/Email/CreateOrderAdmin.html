@@ -1,84 +1,75 @@
 {namespace vin=Vinou\VinouConnector\ViewHelpers}
-<html>
+<f:layout name="DefaultMail" />
 
-<head>
-    <title>{title}</title>
-</head>
+<f:section name="mailcontent">
 
-<body style="font-family: Arial; text-align: center">
-	<div style="display: block; margin: 0px auto; max-width: 600px; text-align: left;">
-		<h3>Eine Bestellung ist eingegangen!</h3>
+	<h3>Eine Bestellung ist eingegangen!</h3>
 
-		<table border="0" cellspacing="0" cellpadding="10" style="border: 1px solid #999999; border-collapse: collapse; width: 100%">
+	<table border="0" cellspacing="0" cellpadding="10" style="border: 1px solid #999999; border-collapse: collapse; width: 100%">
+		<tr>
+			<td style="border: 1px solid #999999;" colspan="2">
+				<p><b>Rechnungsadresse:</b><br>
+					<f:if condition="{order.billing.company}">Firma: {order.billing.company}<br></f:if>
+					Name: {order.billing.first_name} {order.billing.last_name} <br>
+					Straße: {order.billing.address}<br>
+					PLZ/Ort: {order.billing.zip} {order.billing.city} <br>
+					Email: {order.client.mail}<br>
+					<f:if condition="{order.client.phone}">Tel: {order.client.phone}<br></f:if>
+				</p>
+			</td>
+			<td style="border: 1px solid #999999;" colspan="2">
+				<p><b>Die Lieferung erfolgt an:</b><br>
+					<f:if condition="{order.delivery.company}">Firma: {order.delivery.company}<br></f:if>
+					Name: {order.delivery.first_name} {order.delivery.last_name} <br>
+					Straße: {order.delivery.address}<br>
+					PLZ/Ort: {order.delivery.zip} {order.delivery.city} <br>
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4" style="border: 1px solid #999999;">
+				<p><b>Zahlungsart:</b><br>
+				<f:translate key="LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:payment.{order.payment_type}"/></p>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4" style="border: 1px solid #999999;">
+				<p><b>Nachricht:</b><br>
+				{order.note}<br></p>
+			</td>
+		</tr>
+		<tr>
+			<td><b>Artikel</b></td>
+			<td><b>Nummer</b></td>
+			<td><b>Stückzahl</b></td>
+			<td><b>Preis</b></td>
+		</tr>
+		<f:for each="{order.positions}" as="item">
 			<tr>
-				<td colspan="2" style="border: 1px solid #999999;">
-					<p><b>Rechnungsadresse:</b><br>
-						<f:if condition="{billing.company}">Firma: {billing.company}<br></f:if>
-						Name: {billing.first_name} {billing.last_name} <br>
-						Straße: {billing.address}<br>
-						PLZ/Ort: {billing.zip} {billing.city} <br>
-						Email: {billing.mail}<br>
-						<f:if condition="{billing.phone}">Tel: {billing.phone}<br></f:if>
-					</p>
-				</td>
-				<td colspan="2" style="border: 1px solid #999999;">
-					<p><b>Die Lieferung erfolgt an:</b><br>
-						Name: {delivery.first_name} {delivery.last_name} <br>
-						Straße: {delivery.address}<br>
-						PLZ/Ort: {delivery.zip} {delivery.city} <br>
-					</p>
-				</td>
+				<td style="border: 1px solid #999999;">{item.item.name}</td>
+				<td style="border: 1px solid #999999;">{item.item.articlenumber}</td>
+				<td style="border: 1px solid #999999;">{item.quantity}</td>
+				<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{vin:priceCalc(price:item.item.gross,quantity:item.quantity)}</f:format.currency></td>
 			</tr>
+		</f:for>
+		<f:if condition="{order.package}">
 			<tr>
-				<td colspan="4" style="border: 1px solid #999999;">
-					<p><b>Zahlungsart:</b><br>
-					<f:translate key="LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:payment.{payment_type}"/></p>
-				</td>
+				<td colspan="3" style="border: 1px solid #999999;">Versand und Verpackung</td>
+				<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.package.gross}</f:format.currency></td>
 			</tr>
-			<tr>
-				<td colspan="4" style="border: 1px solid #999999;">
-					<p><b>Nachricht:</b><br>
-					{note}<br></p>
-				</td>
-			</tr>
-			<tr>
-				<td><b>Artikel</b></td>
-				<td><b>Nummer</b></td>
-				<td><b>Stückzahl</b></td>
-				<td><b>Preis</b></td>
-			</tr>
-			<f:for each="{items}" as="item">
-				<f:if condition="{item.item_type}=='package'">
-					<f:then>
-						<tr>
-							<td colspan="3" style="border: 1px solid #999999;">Versand und Verpackung</td>
-							<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{vin:priceCalc(price:item.object.price,quantity:item.quantity)}</f:format.currency></td>
-						</tr>
-					</f:then>
-					<f:else>
-						<tr>
-							<td style="border: 1px solid #999999;">{item.item.name}</td>
-							<td style="border: 1px solid #999999;">{item.item.articlenumber}</td>
-							<td style="border: 1px solid #999999;">{item.quantity}</td>
-							<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{vin:priceCalc(price:item.item.price,quantity:item.quantity)}</f:format.currency></td>
-						</tr>
-					</f:else>
-				</f:if>
-			</f:for>
-			<tr>
-				<td colspan="3" style="border: 1px solid #999999;"><b>Gesamtsumme (Netto)</b></td>
-				<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{summary.net}</f:format.currency></td>
-			</tr>
-			<tr>
-				<td colspan="3" style="border: 1px solid #999999;"><b>MwSt.</b></td>
-				<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{summary.tax}</f:format.currency></td>
-			</tr>
-			<tr>
-				<td colspan="3" style="border: 1px solid #999999;"><b>Gesamtsumme (Brutto)</b></td>
-				<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{summary.gross}</f:format.currency></td>
-			</tr>
-		</table>
-	</div>
-</body>
-
-</html>
+		</f:if>
+		<tr>
+			<td colspan="3" style="border: 1px solid #999999;"><b>Gesamtsumme (Netto)</b></td>
+			<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.net}</f:format.currency></td>
+		</tr>
+		<tr>
+			<td colspan="3" style="border: 1px solid #999999;"><b>MwSt.</b></td>
+			<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.tax}</f:format.currency></td>
+		</tr>
+		<tr>
+			<td colspan="3" style="border: 1px solid #999999;"><b>Gesamtsumme (Brutto)</b></td>
+			<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.gross}</f:format.currency></td>
+		</tr>
+	</table>
+	
+</f:section>

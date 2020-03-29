@@ -1,10 +1,7 @@
-<html>
+{namespace vin=Vinou\VinouConnector\ViewHelpers}
+<f:layout name="DefaultMail" />
 
-<head>
-    <title>{title}</title>
-</head>
-
-<body style="font-family: Arial;">
+<f:section name="mailcontent">
 	<p>Wir haben ihre Anfrage wie folgt erhalten.</p>
 	<p><b>Kundendaten:</b><br>
 		Name: {customer.firstname} {customer.lastname} <br>
@@ -45,6 +42,4 @@
 		</tr>
 	</table>
 	<p>Wir werden uns schnellstmöglich mit Ihnen in Verbindung setzen.</p>
-</body>
-
-</html>
+</f:section>

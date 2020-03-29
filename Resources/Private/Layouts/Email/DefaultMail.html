@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{title}</title>
+	<style>
+		body,html {
+			background-color: #f9f9f9;
+			line-height: 1.4em;
+			font-family: Roboto, Helvetica, Arial, sans-serif;
+		}
+
+		h1,h2,h3,h4,h5 {
+			color: #333333;
+		}
+
+		p,li,span,td,th,tr,table,a {
+			color: #333333;
+		}
+
+		a {
+			color: #640000;
+			text-decoration: none;
+		}
+
+		a.button {
+			background-color: #640000;
+			color: white;
+			display: inline-block;
+			padding: 0.5em 2em;
+		}
+
+	</style>
+</head>
+<body>
+	<table border="0" cellspacing="0" cellpadding="0" width="100%">
+		<tr>
+			<td width="*">&nbsp;</td>
+			<td width="600" align="center">
+				<f:if condition="{customer.image}">
+					<img src="https://api.vinou.de{customer.image}" width="150" style="width: 150px; margin: 1.5em auto; display: inline-block;"/>
+				</f:if>
+			</td>
+			<td width="*">&nbsp;</td>
+		</tr>
+		<tr>
+			<td width="*">&nbsp;</td>
+			<td width="600">
+				<table border="0" cellspacing="0" cellpadding="30" width="100%" style="border: 1px solid #CCCCCC; background-color: white;">
+					<tr>
+						<td>
+							<f:render section="mailcontent" />
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td width="*">&nbsp;</td>
+		</tr>
+		<tr>
+			<td width="*">&nbsp;</td>
+			<td width="600">
+				<p style="font-size: 10px; line-height: 14px; text-align: center;">
+					<br/>
+					{customer.company} &middot; UST-ID: {customer.vatid}<f:if condition="{customer.taxid}"> &middot; Steuernummer: {customer.taxid}</f:if><br>
+					Adresse: {customer.address} {customer.zip} {customer.city} &middot; Telefon: {customer.phone} &middot; E-Mail: {customer.mail}<br>
+				</p>
+			</td>
+			<td width="*">&nbsp;</td>
+		</tr>
+	</table>
+
+</body>
+</html>

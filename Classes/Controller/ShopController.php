@@ -473,22 +473,22 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		file_put_contents($this->orderDir .'/order-'.time().'.json', json_encode($order));
 
 		// addOrder will do the redirect if paypal was set
-		$sendResult = $this->api->addOrder($order);
+		$addedOrder = $this->api->addOrder($order);
 
-		if ($sendResult) {
+		if ($addedOrder) {
 
 			$recipient = [
 				$billing['email'] => $billing['firstname'] . " " . $billing['lastname']
 			];
 
-			$mailContent = $order;
-			$mailContent['items'] = $items;
-			$mailContent['summary'] = $summary;
+			$mailContent = [
+				'order' => $this->api->getOrder($addedOrder['id'])
+			];
 
 			$this->sendTemplateEmail(
 				$recipient,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$sendResult['number'],
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$addedOrder['number'],
 				'CreateOrderClient',
 				$mailContent,
 				$this->settings['mail']['attachements']
@@ -497,7 +497,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$this->admin,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$sendResult['number'],
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$addedOrder['number'],
 				'CreateOrderAdmin',
 				$mailContent
 			);
@@ -527,10 +527,9 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$order['client']['mail'] => $order['client']['first_name'] . " " . $order['client']['last_name']
 			];
 
-			$mailContent = $order;
-			$mailContent['items'] = $order['positions'];
-			$mailContent['items'][] = $order['package'];
-			$mailContent['summary'] = $order;
+			$mailContent = [
+				'order' => $order
+			];
 
 			$this->sendTemplateEmail(
 				$recipient,
@@ -686,23 +685,24 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	* @return boolean TRUE on success, otherwise false
 	*/
 	protected function sendTemplateEmail(array $recipient, array $sender, $subject, $templateName, array $variables = array(), array $attachement = array()) {
-		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $emailView */
+
+		$extPath = 'typo3conf/ext/vinou_connector/Resources/Private/';
+		
 		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-		$message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$emailView->setLayoutRootPaths([PATH_site . $extPath . 'Layouts/Email/']);
+		$emailView->setTemplateRootPaths([PATH_site . $extPath . 'Templates/Email/']);
+		$emailView->setTemplate($templateName . '.html');
 
-		$templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPaths']['']);
-
-		$templatePathAndFilename = PATH_site . 'typo3conf/ext/vinou_connector/Resources/Private/Templates/Email/' . $templateName . '.html';
-		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
+		$variables['title'] = $subject;
+		$variables['customer'] = $this->api->getCustomer();		
 		$emailView->assignMultiple($variables);
 		$emailHtmlBody = $emailView->render();
+
+		$message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 		$message->addPart($emailHtmlBody, 'text/html');
-
-		$subject = '=?utf-8?B?'. base64_encode($subject) .'?=';
-
 		$message->setTo($recipient)
 				->setFrom($sender)
-				->setSubject($subject);
+				->setSubject('=?utf-8?B?'. base64_encode($subject) .'?=');
 
 		if (count($attachement) > 0) {
 			foreach ($attachement as $file) {
