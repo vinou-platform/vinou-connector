@@ -160,6 +160,9 @@ var vinouShop = {
 					ctrl.basketAction('checkquantity', {
 						quantity: summary.quantity
 					},(function(){
+						if (!document.getElementById('basket-table') || summary.quantity == 0)
+							return true;
+
 						if (ctrl.basketMessages)
 							ctrl.basketMessages.setAttribute('data-status', 'hidden');
 						if (this.status == 200) {
@@ -171,8 +174,6 @@ var vinouShop = {
 								ctrl.basketToCheckout.setAttribute('data-status', 'hidden');
 
 							response = JSON.parse(this.responseText);
-
-							console.log(response);
 
 							toast.screentime = 4000;
 
