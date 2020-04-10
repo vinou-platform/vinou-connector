@@ -797,6 +797,14 @@
 				<source>Cancellation corrupted, please contact system administrator.</source>
 				<target>Der Abbruch war nicht erfolgreich, Bitte kontaktiere einen System-Administrator.</target>
 			</trans-unit>
+			<trans-unit id="message.content.minBasketSize">
+				<source>The basket amount did not reach the minimum value.</source>
+				<target>Du hast noch nicht die nötige Mindestbestellmenge im Warenkorb erreicht.</target>
+			</trans-unit>
+			<trans-unit id="message.content.packageSteps">
+				<source>The basket amount did not match any package size.</source>
+				<target>Deine Bestellmenge passt nicht zu unseren Verpackungseinheiten.</target>
+			</trans-unit>
 
 			<trans-unit id="tasks.cacheexpertise.title">
 				<source>Cache Vinou expertise</source>

@@ -33,8 +33,8 @@ var toast = {
 
 	show: function(title, description) {
 		var $ctrl = this;
-		$ctrl.title.innerText = title;
-		$ctrl.description.innerText = description;
+		$ctrl.title.innerHTML = title;
+		$ctrl.description.innerHTML = description;
 		$ctrl.wrapper.setAttribute('data-status', 'visible');
 		window.setTimeout(function(){
 			$ctrl.wrapper.removeAttribute('data-status');

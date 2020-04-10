@@ -288,12 +288,22 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function basketAction() {
 		$this->initialize();
 
+
 		$basket = $this->detectOrCreateBasket();
 		$this->view->assign('basket',$basket);
 
 		if (isset($basket['basketItems']) && count($basket['basketItems']) > 0) {
 			$items = $basket['basketItems'];
-			$this->view->assign('summary', $this->calculateSum($items));
+			$summary = $this->calculateSum($items);
+
+			$basketSettings = $this->settings['basket'];
+			if (isset($basketSettings['minBasketSize']) && $summary['quantity'] < $basketSettings['minBasketSize'])
+				$this->Alert('error','minBasketSize',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+
+			if (isset($basketSettings['packageSteps']) && !in_array($summary['quantity'], explode(',', preg_replace('/\s/', '', $basketSettings['packageSteps']))))
+				$this->Alert('error','packageSteps',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+
+			$this->view->assign('summary', $summary);
 			$this->view->assign('items', $items);
 		}
 
@@ -329,6 +339,14 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		/* detect for package and calculate summary*/
 		$items = $basket['basketItems'];
 		$summary = $this->calculateSum($items);
+
+		$basketSettings = $this->settings['basket'];
+		if (isset($basketSettings['minBasketSize']) && $summary['quantity'] < $basketSettings['minBasketSize'])
+			$this->redirect(NULL, NULL, NULL, [], $this->basketPid);
+
+		if (isset($basketSettings['packageSteps']) && !in_array($summary['quantity'], explode(',',$basketSettings['packageSteps'])))
+			$this->redirect(NULL, NULL, NULL, [], $this->basketPid);
+
 		$this->view->assign('summary', $summary);
 		$this->view->assign('items', $items);
 
@@ -673,6 +691,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			TRUE
 		);
 		$this->controllerContext->getFlashMessageQueue()->enqueue($msg);
+
+		$this->view->assign('error', $type);
 	}
 
 	/**
@@ -687,7 +707,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected function sendTemplateEmail(array $recipient, array $sender, $subject, $templateName, array $variables = array(), array $attachement = array()) {
 
 		$extPath = 'typo3conf/ext/vinou_connector/Resources/Private/';
-		
+
 		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		$emailView->setLayoutRootPaths([PATH_site . $extPath . 'Layouts/Email/']);
 		$emailView->setTemplateRootPaths([PATH_site . $extPath . 'Templates/Email/']);

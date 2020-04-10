@@ -10,8 +10,12 @@ var vinouShop = {
 	timeout: null,
 	tempquantity: 0,
 	currency: ' €',
+	basketToCheckout: null,
+	basketMessages: null,
 
 	init: function() {
+		this.basketToCheckout = document.getElementById('basket-to-checkout'),
+		this.basketMessages = document.getElementById('basket-flash-messages'),
 		this.bindEvents();
 		this.createDropper();
 		this.updateBasketCount();
@@ -152,6 +156,35 @@ var vinouShop = {
 							summary.gross += item.quantity * item.item.gross;
 						}
 					}))
+
+					ctrl.basketAction('checkquantity', {
+						quantity: summary.quantity
+					},(function(){
+						if (ctrl.basketMessages)
+							ctrl.basketMessages.setAttribute('data-status', 'hidden');
+						if (this.status == 200) {
+							if (ctrl.basketToCheckout)
+								ctrl.basketToCheckout.setAttribute('data-status', 'visible');
+						}
+						else {
+							if (ctrl.basketToCheckout)
+								ctrl.basketToCheckout.setAttribute('data-status', 'hidden');
+
+							response = JSON.parse(this.responseText);
+
+							console.log(response);
+
+							toast.screentime = 4000;
+
+							if ((response[0]).minBasketSize)
+								toast.show('Mindestbestellmenge nicht erreicht', 'Sie haben nicht die notwendige Mindestbestellmenge von <strong>' + (response[0]).minBasketSize + ' Flaschen</strong> erreicht.');
+
+							if ((response[0]).packageSteps)
+								toast.show('Versandgröße nicht passend', 'Bitte beachten Sie unsere Versandgrößen von <strong>' + (response[0]).packageSteps + ' Flaschen</strong>.');
+
+							toast.screentime = 2000;
+						}
+					}));
 
 					ctrl.basketAction('findPackage',{
 						type: 'bottles',

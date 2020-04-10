@@ -603,6 +603,12 @@
 			<trans-unit id="message.content.cancelPaypalError">
 				<source>Cancellation corrupted, please contact system administrator.</source>
 			</trans-unit>
+			<trans-unit id="message.content.minBasketSize">
+				<source>The basket amount did not reach the minimum value.</source>
+			</trans-unit>
+			<trans-unit id="message.content.packageSteps">
+				<source>The basket amount did not match any package size.</source>
+			</trans-unit>
 
 			<trans-unit id="tasks.cacheexpertise.title">
 				<source>Cache Vinou expertise</source>

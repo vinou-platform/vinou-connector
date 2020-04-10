@@ -22,6 +22,7 @@ class AjaxActions {
     protected $errors = [];
     protected $output = false;
     protected $data = [];
+    protected $settings = [];
 
     public function __construct($TYPO3_CONF_VARS) {
 
@@ -61,6 +62,11 @@ class AjaxActions {
         $GLOBALS['TSFE']->determineId();
         $GLOBALS['TSFE']->initTemplate();
         $GLOBALS['TSFE']->getConfigArray();
+
+        $typoScriptService = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
+        $shopconfig = $typoScriptService->convertTypoScriptArrayToPlainArray($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_vinouconnector_shop.']);
+
+        $this->settings = $shopconfig['settings'];
     }
 
     private function initVinou() {
@@ -112,6 +118,30 @@ class AjaxActions {
 
             case 'findPackage':
                 $this->output = $this->api->getBasketPackage();
+                break;
+
+            case 'checkquantity':
+                if (!isset($this->data['quantity'])) {
+                    array_push($this->errors, 'no quantity given');
+                    return false;
+                }
+
+                $basketSettings = $this->settings['basket'];
+                if (isset($basketSettings['minBasketSize']) && $this->data['quantity'] < $basketSettings['minBasketSize']) {
+                    array_push($this->errors, [
+                        'minBasketSize' => $basketSettings['minBasketSize']
+                    ]);
+                    return false;
+                }
+
+                if (isset($basketSettings['packageSteps']) && !in_array($this->data['quantity'], explode(',', preg_replace('/\s/', '', $basketSettings['packageSteps'])))) {
+                    array_push($this->errors, [
+                        'packageSteps' => $basketSettings['packageSteps']
+                    ]);
+                    return false;
+                }
+
+                $this->output = 'checked';
                 break;
 
             default:
