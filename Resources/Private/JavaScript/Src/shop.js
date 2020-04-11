@@ -56,12 +56,9 @@ var vinouShop = {
 				if (!result.nextRange)
 					result.nextRange = ctrl.packageRanges[i];
 				else {
-					console.log('range-exists');
 					if (parseInt(result.nextRange.from) > parseInt(ctrl.packageRanges[i].from))
 						result.nextRange = ctrl.packageRanges[i];
 				}
-
-				console.log(result.nextRange);
 			}
 
 			if (quantity >= ctrl.packageRanges[i].from && quantity <= ctrl.packageRanges[i].to) {
@@ -80,7 +77,6 @@ var vinouShop = {
 	},
 
 	addItemToBasket: function(item) {
-		console.log(item);
 		var ctrl = this;
 		var detail = document.querySelector('.wine-details');
 		var listitem = document.getElementById('shop-list-item-' + item.item_id);

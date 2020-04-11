@@ -62,8 +62,6 @@ var vTools = {
 	detectOrientation: function(element) {
 		var w = element.offsetWidth;
 		var h = element.offsetHeight;
-		console.log(w);
-		console.log(h);
 		if (w < h) {
 			element.setAttribute('data-orientation','portrait');
 		} else if (w === h) {
