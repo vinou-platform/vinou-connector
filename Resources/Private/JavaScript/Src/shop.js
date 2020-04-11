@@ -11,14 +11,59 @@ var vinouShop = {
 	tempquantity: 0,
 	currency: ' €',
 	basketToCheckout: null,
-	basketMessages: null,
+	basketMessage: null,
+	nextRangeHint: null,
+	packageRanges: null,
 
 	init: function() {
 		this.basketToCheckout = document.getElementById('basket-to-checkout'),
-		this.basketMessages = document.getElementById('basket-flash-messages'),
+		this.basketMessage = document.getElementById('basket-flash-message'),
+		this.nextRangeHint = document.getElementById('next-range-hint'),
 		this.bindEvents();
 		this.createDropper();
 		this.updateBasketCount();
+		this.buildPackageRanges();
+	},
+
+	buildPackageRanges: function() {
+		var ranges = document.querySelectorAll('#package-steps-table .range');
+		if (ranges.length == 0)
+			return false;
+
+		this.packageRanges = [];
+		for (var i = 0; i < ranges.length; i++) {
+			this.packageRanges.push({
+				from: ranges[i].getAttribute('data-from'),
+				to: ranges[i].getAttribute('data-to'),
+			});
+		}
+	},
+
+	detectPackageRange: function(quantity) {
+		var ctrl = this;
+		var result = {
+			valid: false,
+			current: null,
+			prevRange: null,
+			nextRange: null
+		};
+		for (var i = 0; i < ctrl.packageRanges.length; i++) {
+			if (quantity > parseInt(ctrl.packageRanges[i].from) && quantity > parseInt(ctrl.packageRanges[i].to))
+				result.prevRange = ctrl.packageRanges[i];
+
+			if (quantity < parseInt(ctrl.packageRanges[i].from) && quantity < parseInt(ctrl.packageRanges[i].to)) {
+				if ((result.nextRange && result.nextRange.from > ctrl.packageRanges[i].from) || !result.nextRange)
+					result.nextRange = ctrl.packageRanges[i];
+			}
+
+			if (quantity >= parseInt(ctrl.packageRanges[i].from) && quantity <= parseInt(ctrl.packageRanges[i].to)) {
+				result.valid = true;
+				result.current = ctrl.packageRanges[i];
+			}
+		}
+
+		console.log(result);
+		return result;
 	},
 
 	createDropper: function() {
@@ -146,15 +191,17 @@ var vinouShop = {
 					response.basketItems.forEach((function(item){
 						summary.quantity += item.quantity;
 
-						if (item.item.prices && item.item.prices[0]) {
-							summary.tax += item.quantity * item.item.prices[0].tax;
-							summary.net += item.quantity * item.item.prices[0].net;
-							summary.gross += item.quantity * item.item.prices[0].gross;
-						} else {
-							summary.tax += item.quantity * item.item.tax;
-							summary.net += item.quantity * item.item.net;
-							summary.gross += item.quantity * item.item.gross;
-						}
+						var gross = item.quantity * item.item.gross;
+						if (item.item.prices && item.item.prices[0])
+							gross = item.item.prices[0].gross;
+
+						var net = gross / (1 + item.item.taxrate / 100)
+						net = Math.round(net * 100) / 100;;
+						var tax = gross - net;
+
+						summary.gross += gross;
+						summary.tax += tax;
+						summary.net += net;
 					}))
 
 					ctrl.basketAction('checkquantity', {
@@ -163,27 +210,33 @@ var vinouShop = {
 						if (!document.getElementById('basket-table') || summary.quantity == 0)
 							return true;
 
-						if (ctrl.basketMessages)
-							ctrl.basketMessages.setAttribute('data-status', 'hidden');
+						var checkout = 'disabled';
+						var message = 'visible';
 						if (this.status == 200) {
-							if (ctrl.basketToCheckout)
-								ctrl.basketToCheckout.setAttribute('data-status', 'visible');
+							checkout = 'ready';
+							message = 'hidden';
 						}
-						else {
-							if (ctrl.basketToCheckout)
-								ctrl.basketToCheckout.setAttribute('data-status', 'hidden');
 
-							response = JSON.parse(this.responseText);
+						if (ctrl.basketToCheckout)
+							ctrl.basketToCheckout.setAttribute('data-status', checkout);
+						if (ctrl.basketMessage)
+							ctrl.basketMessage.setAttribute('data-status', message);
 
-							toast.screentime = 4000;
+						if (ctrl.nextRangeHint) {
+							var range = ctrl.detectPackageRange(summary.quantity);
+							if (range.valid) {
+								ctrl.nextRangeHint.innerText = '';
+								ctrl.nextRangeHint.setAttribute('data-status', 'hidden');
+							}
+							else {
+								var diff = range.nextRange.from - summary.quantity;
+								var text = 'Noch ' + parseInt(diff) + ' Flasche';
+								if (diff > 1)
+									text += 'n';
+								ctrl.nextRangeHint.innerText = text;
+								ctrl.nextRangeHint.setAttribute('data-status', 'visible');
+							}
 
-							if ((response[0]).minBasketSize)
-								toast.show('Mindestbestellmenge nicht erreicht', 'Sie haben nicht die notwendige Mindestbestellmenge von <strong>' + (response[0]).minBasketSize + ' Flaschen</strong> erreicht.');
-
-							if ((response[0]).packageSteps)
-								toast.show('Versandgröße nicht passend', 'Bitte beachten Sie unsere Versandgrößen von <strong>' + (response[0]).packageSteps + ' Flaschen</strong>.');
-
-							toast.screentime = 2000;
 						}
 					}));
 
