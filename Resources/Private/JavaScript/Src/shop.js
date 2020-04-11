@@ -48,21 +48,28 @@ var vinouShop = {
 			nextRange: null
 		};
 		for (var i = 0; i < ctrl.packageRanges.length; i++) {
-			if (quantity > parseInt(ctrl.packageRanges[i].from) && quantity > parseInt(ctrl.packageRanges[i].to))
+			if (quantity > ctrl.packageRanges[i].from && quantity > ctrl.packageRanges[i].to)
 				result.prevRange = ctrl.packageRanges[i];
 
-			if (quantity < parseInt(ctrl.packageRanges[i].from) && quantity < parseInt(ctrl.packageRanges[i].to)) {
-				if ((result.nextRange && result.nextRange.from > ctrl.packageRanges[i].from) || !result.nextRange)
+			if (quantity < ctrl.packageRanges[i].from && quantity < ctrl.packageRanges[i].to) {
+
+				if (!result.nextRange)
 					result.nextRange = ctrl.packageRanges[i];
+				else {
+					console.log('range-exists');
+					if (parseInt(result.nextRange.from) > parseInt(ctrl.packageRanges[i].from))
+						result.nextRange = ctrl.packageRanges[i];
+				}
+
+				console.log(result.nextRange);
 			}
 
-			if (quantity >= parseInt(ctrl.packageRanges[i].from) && quantity <= parseInt(ctrl.packageRanges[i].to)) {
+			if (quantity >= ctrl.packageRanges[i].from && quantity <= ctrl.packageRanges[i].to) {
 				result.valid = true;
 				result.current = ctrl.packageRanges[i];
 			}
 		}
 
-		console.log(result);
 		return result;
 	},
 
@@ -215,6 +222,9 @@ var vinouShop = {
 						if (this.status == 200) {
 							checkout = 'ready';
 							message = 'hidden';
+							var staticMessages = document.getElementById('flash-messages');
+							if (staticMessages)
+								staticMessages.parentNode.removeChild(staticMessages);
 						}
 
 						if (ctrl.basketToCheckout)
