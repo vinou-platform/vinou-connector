@@ -73,11 +73,11 @@
 		'Vinou.'.$_EXTKEY,
 		'Shop',
 		array(
-			'Shop' => 'list, basket, order, finish',
+			'Shop' => 'list, basket, order, finish, finishPaypal, cancelPaypal',
 		),
 		// non-cacheable actions
 		array(
-			'Shop' => 'list, basket, order, finish',
+			'Shop' => 'list, basket, order, finish, finishPaypal, cancelPaypal',
 		)
 	);
 
