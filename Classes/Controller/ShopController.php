@@ -7,7 +7,7 @@ use \TYPO3\CMS\Core\Utility\PathUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use \Vinou\VinouConnector\Utility\PaypalUtility;#
+use \Vinou\VinouConnector\Utility\PaypalUtility;
 use \Vinou\ApiConnector\Api;
 use \Vinou\ApiConnector\Session\Session;
 
@@ -124,7 +124,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if(!is_dir($this->absLocalDir)){
 			mkdir($this->absLocalDir, 0777, true);
 		}
-	    $this->translations = new \Vinou\VinouConnector\Utility\Translation();
+	    $this->translations = new \Vinou\Translations\Utilities\Translation();
 
 	    $loggedIn = FALSE;
 		if($GLOBALS['TSFE']->loginUser) {
@@ -248,39 +248,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	/**
-	 *
-	 * localize wine
-	 *
-	 * @param array $wine
-	 * @return array
-	 */
-	private function localizeWine($wine = NULL) {
-		foreach ($wine as $property => $value) {
-			switch ($property) {
-				case 'grapetypes':
-					$grapetypes = [];
-					foreach ($value as $grapetype) {
-						$grapetypes[$grapetype] = $this->translations->grapetypes[$grapetype];
-					}
-					$wine[$property] = $grapetypes;
-					break;
-				case 'type':
-					$wine[$property] = $this->translations->winetypes[$value];
-					break;
-				case 'tastes_id':
-					$wine[$property] = $this->translations->tastes[$value];
-					break;
-				case 'region':
-					$wine[$property] = $this->translations->regions[$value];
-					break;
-				default:
-					$wine[$property] = $value;
-			}
-		}
-		return $wine;
-	}
-
-	/**
 	 * action basket
 	 *
 	 * @return void
@@ -325,6 +292,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		/* Collect Settings for orderView */
 		$this->view->assign('required', $this->getRequiredFields());
 		$this->view->assign('settings', $this->settings);
+		$this->view->assign('customer', $this->api->getCustomer());
 
 		/* get basket data */
 		$basket = $this->detectOrCreateBasket();
@@ -495,6 +463,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		if ($addedOrder) {
 
+			Session::setValue('order_uuid', $addedOrder['uuid']);
+
 			$recipient = [
 				$billing['email'] => $billing['firstname'] . " " . $billing['lastname']
 			];
@@ -506,7 +476,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$recipient,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$addedOrder['number'],
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).': '.$addedOrder['number']. ' - ' . $this->translations->get('de', 'order.paymenttypes.'.$addedOrder['payment_type']),
 				'CreateOrderClient',
 				$mailContent,
 				$this->settings['mail']['attachements']
@@ -515,7 +485,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$this->admin,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$addedOrder['number'],
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).': '.$addedOrder['number']. ' - ' . $this->translations->get('de', 'order.paymenttypes.'.$addedOrder['payment_type']),
 				'CreateOrderAdmin',
 				$mailContent
 			);
@@ -552,7 +522,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$recipient,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$order['number'],
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).': '.$order['number'],
 				'CreateOrderClient',
 				$mailContent,
 				$this->settings['mail']['attachements']
@@ -561,7 +531,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$this->admin,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$order['number'],
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).': '.$order['number'],
 				'CreateOrderAdmin',
 				$mailContent
 			);
@@ -574,7 +544,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 	public function cancelPaypalAction() {
 		$this->initialize();
-		$this->view->assign('settings', $this->settings);	
+		$this->view->assign('settings', $this->settings);
 		$this->view->assign('order', $this->api->getSessionOrder());
 		$error = false;
 
@@ -659,7 +629,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		Session::deleteValue('deliveryAdress');
 		Session::deleteValue('message');
 		Session::deleteValue('account');
-		Session::deleteValue('paymentMethod');
 	}
 
 	/**
@@ -673,6 +642,9 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		// ToDo add ne finish action
 
 		$this->view->assign('action', 'finish');
+		$this->view->assign('paymentMethod', Session::getValue('paymentMethod'));
+		$this->view->assign('customer', $this->api->getCustomer());
+		$this->view->assign('order', $this->api->getSessionOrder());
 	}
 
 	protected function Alert($titlecode, $messagecode, $type){

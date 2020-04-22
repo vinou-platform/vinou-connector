@@ -71,6 +71,34 @@
 			<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.gross}</f:format.currency></td>
 		</tr>
 	</table>
-	<p>Ihre Bestellung wird schnellstmöglich bearbeitet.</p>
-	
+	<f:if condition="{order.payment_type}=='prepaid'">
+		<f:then>
+			<p class="text-align: center"><br><b>Sie haben als Zahlungsart Vorkasse gewählt. Bis zur vollständigen Bezahlung verbleibt die Ware bei uns im Hause. Bitte überweisen Sie den fälligen Gesamtbetrag von <f:format.currency currencySign=" EUR" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.gross}</f:format.currency> auf folgendes Konto:</b><br><br></p>
+			<table border="0" cellspacing="0" cellpadding="10" style="border: 1px solid #999999; border-collapse: collapse; width: 100%">
+				<tr>
+					<td colspan="2" style="border: 1px solid #999999;">IBAN:</td>
+					<td colspan="2" style="border: 1px solid #999999;">{customer.settings.bank.iban}</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="border: 1px solid #999999;">BIC:</td>
+					<td colspan="2" style="border: 1px solid #999999;">{customer.settings.bank.bic}</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="border: 1px solid #999999;">Kreditinstitut:</td>
+					<td colspan="2" style="border: 1px solid #999999;">{customer.settings.bank.bankname}</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="border: 1px solid #999999;">Kontoinhaber:</td>
+					<td colspan="2" style="border: 1px solid #999999;">{customer.settings.bank.owner}</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="border: 1px solid #999999;">Verwendungszweck:</td>
+					<td colspan="2" style="border: 1px solid #999999;">{order.number}</td>
+				</tr>
+			</table>
+		</f:then>
+		<f:else>
+			<p>Ihre Bestellung wird schnellstmöglich bearbeitet.</p>
+		</f:else>
+	</f:if>
 </f:section>
