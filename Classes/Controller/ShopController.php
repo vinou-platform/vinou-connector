@@ -522,7 +522,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$recipient,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).': '.$order['number'],
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).': '.$order['number']. ' - ' . $this->translations->get('de', 'order.paymenttypes.'.$order['payment_type']),
 				'CreateOrderClient',
 				$mailContent,
 				$this->settings['mail']['attachements']
@@ -531,7 +531,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$this->admin,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).': '.$order['number'],
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).': '.$order['number']. ' - ' . $this->translations->get('de', 'order.paymenttypes.'.$order['payment_type']),
 				'CreateOrderAdmin',
 				$mailContent
 			);
