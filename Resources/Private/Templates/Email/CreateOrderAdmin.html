@@ -46,7 +46,7 @@
 		</tr>
 		<f:for each="{order.positions}" as="item">
 			<tr>
-				<td style="border: 1px solid #999999;">{item.item.name}</td>
+				<td style="border: 1px solid #999999;"><f:if condition="{item.item.vintage}">{item.item.vintage} </f:if>{item.item.name}</td>
 				<td style="border: 1px solid #999999;">{item.item.articlenumber}</td>
 				<td style="border: 1px solid #999999;">{item.quantity}</td>
 				<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{vin:priceCalc(price:item.item.gross,quantity:item.quantity)}</f:format.currency></td>
