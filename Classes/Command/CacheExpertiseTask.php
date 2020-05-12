@@ -1,9 +1,12 @@
-<?php 
+<?php
 namespace Vinou\VinouConnector\Command;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Vinou\VinouConnector\Utility\Api;
-use Vinou\VinouConnector\Utility\Pdf;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
+use \Vinou\ApiConnector\Api;
+use \Vinou\ApiConnector\FileHandler\Pdf;
+
+define('VINOU_MODE', 'cli');
 
 /***************************************************************
  *  Copyright notice
@@ -71,6 +74,7 @@ class CacheExpertiseTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
         $this->api = new Api(
           $this->extConf['token'],
           $this->extConf['authId'],
+          true,
           $dev
         );
     }
@@ -81,22 +85,23 @@ class CacheExpertiseTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
         $this->reportData['itemsPerTask'] = $this->itemsPerTask;
         $this->reportData['imported'] = 0;
 
-        $allWines = $this->api->getWinesAll();
+        $data = $this->api->getWinesAll();
+        $wines = isset($data['wines']) ? $data['wines'] : $data['data'];
         $startAgain = FALSE;
-        for ($i=0; $i < count($allWines); $i++) {
 
-            $expertise = $allWines[$i]['expertisePDF'];
-            $status = $allWines[$i]['expertiseStatus'];
+        for ($i=0; $i < count($wines); $i++) {
+            $wine = $wines[$i];
+
+            $status = $wine['expertiseStatus'];
             if ($status != 'OK') {
-                $this->api->getExpertise($allWines[$i]['id']);
-                $cachePDFProcess = Pdf::storeApiPDF($expertise,$this->absoluteTempDirectory,$allWines[$i]['id'].'-',$allWines[$i]['chstamp'],true);
+                $cachePDFProcess = Pdf::storeApiPDF($wine['expertisePdf'],$this->absoluteTempDirectory.'/',$wine['id'].'-',$wine['chstamp'],true);
             } else {
-                $cachePDFProcess = Pdf::storeApiPDF($expertise,$this->absoluteTempDirectory,$allWines[$i]['id'].'-',$allWines[$i]['chstamp']);
+                $cachePDFProcess = Pdf::storeApiPDF($wine['expertisePdf'],$this->absoluteTempDirectory.'/',$wine['id'].'-',$wine['chstamp']);
             }
 
             if ($cachePDFProcess['requestStatus'] === 404) {
-                $recreatedExpertise = $this->api->getExpertise($allWines[$i]['id']);
-                $cachePDFProcess = Pdf::storeApiPDF($recreatedExpertise,$this->absoluteTempDirectory,$allWines[$i]['id'].'-',$allWines[$i]['chstamp']);
+                $recreatedExpertise = $this->api->getExpertise($wine['id']);
+                $cachePDFProcess = Pdf::storeApiPDF($recreatedExpertise,$this->absoluteTempDirectory,$wine['id'].'-',$wine['chstamp']);
             }
 
             if ($cachePDFProcess['fileFetched']) {

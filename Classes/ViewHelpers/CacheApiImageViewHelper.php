@@ -1,12 +1,12 @@
 <?php
 namespace Vinou\VinouConnector\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \Vinou\ApiConnector\FileHandler\Images;
 
 class CacheApiImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
-	const LOCALDIR = 'typo3temp/vinou_connector/';
+	const LOCALDIR = 'vinou/cache/images/';
 
     /**
      * @param string $image
@@ -20,7 +20,7 @@ class CacheApiImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
             mkdir($absLocalDir, 0777, true);
         }
 
-        $cacheImageProcess = \Vinou\VinouConnector\Utility\Images::storeApiImage($image,$absLocalDir,$tstamp);
+        $cacheImageProcess = Images::storeApiImage($image,$tstamp,$absLocalDir);
         $fileName = $cacheImageProcess['fileName'];
 
 		return self::LOCALDIR.$fileName;

@@ -6,6 +6,7 @@ use \TYPO3\CMS\Extbase\Object\ObjectManager;
 use \TYPO3\CMS\Core\Utility\PathUtility;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use \Vinou\ApiConnector\Api;
 
 class EnquiryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -96,9 +97,10 @@ class EnquiryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	      $dev = true;
 	    }
 
-	    $this->api = new \Vinou\VinouConnector\Utility\Api(
+	    $this->api = new Api(
 	      $this->extConf['token'],
 	      $this->extConf['authId'],
+	      true,
 	      $dev
 	    );
 
@@ -248,7 +250,7 @@ class EnquiryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 				$message->attach(\Swift_Attachment::fromPath($file));
 			}
 		}
-		
+
 		$message->send();
 		return $message->isSent();
 	}

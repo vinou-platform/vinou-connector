@@ -7,6 +7,7 @@ use \TYPO3\CMS\Core\Utility\PathUtility;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
+use \Vinou\ApiConnector\Api;
 
 class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -82,9 +83,10 @@ class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	      $dev = true;
 	    }
 
-	    $this->api = new \Vinou\VinouConnector\Utility\Api(
+	    $this->api = new Api(
 	      $this->extConf['token'],
 	      $this->extConf['authId'],
+	      true,
 	      $dev
 	    );
 
@@ -118,11 +120,7 @@ class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	public function listAction() {
 		$this->initialize();
 
-		$products = $this->api->getProductsAll();
-
-		$products = isset($products['products']) ? $products['products'] : $products['data'];
-		$this->view->assign('products', $products);
-
+		$this->view->assign('products', $this->api->getProductsAll());
 		$this->view->assign('settings', $this->settings);
 	}
 
@@ -138,7 +136,7 @@ class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$productId = $this->request->getArgument('product');
 			$product = $this->api->getProduct($productId);
 
-			$this->view->assign('product', $product['data']);
+			$this->view->assign('product', $product);
 		}
 
 		$this->view->assign('backPid', $this->backPid);

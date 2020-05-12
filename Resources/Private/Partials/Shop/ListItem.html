@@ -20,8 +20,8 @@
 							<div class="form-group">
 								<span class="price-form-label">Preis:</span>
 								<span class="price-form-value">{item.gross -> f:format.number(decimals:2,decimalSeparator:',')} €</span>
-								<input type="number" id="quantity" name="quantity" class="form-control" step="1" min="1"value="6"/>
-								<button type="submit"><span class="fa fa-shopping-cart"></span></button>
+								<input type="number" name="quantity" class="form-control" step="1" min="1"value="6"/>
+								<button type="submit" class="add-basket"><span class="fa fa-shopping-cart"></span></button>
 							</div>
 						</form>
 					</div>
@@ -50,8 +50,8 @@
 							<div class="form-group">
 								<span class="price-form-label">Preis:</span>
 								<span class="price-form-value">{item.price -> f:format.number(decimals:2,decimalSeparator:',')} €</span>
-								<input type="number" id="quantity" name="quantity" class="form-control" step="1" min="1"value="6"/>
-								<button type="submit"><span class="fa fa-shopping-cart"></span></button>
+								<input type="number" name="quantity" class="form-control" step="1" min="1"value="6"/>
+								<button type="submit" class="add-basket"><span class="fa fa-shopping-cart"></span></button>
 							</div>
 						</form>
 					</div>

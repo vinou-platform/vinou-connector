@@ -48,11 +48,6 @@ var vinouList = {
 			}
 		);
 		$this.list.update();
-		// $this.list.on('updated', function(event){
-		// 	console.log(event);
-		// 	var element = document.getElementById($this.containerId);
-		// 	window.scrollTo(element.offsetLeft,element.offsetTop);
-		// });
 	},
 
 	isEmpty: function (obj) {
@@ -66,7 +61,7 @@ var vinouList = {
 	loadFilter: function () {
 		$this = this;
 		var url = new URL(window.location.href);
-		$this.allowedFilter.forEach(function(filter){
+		$this.allowedFilter.forEach((function(filter){
 			var value = url.searchParams.get(filter);
 			if (value) {
 				var checkboxId = 'cluster[' + filter + '][' + value + ']';
@@ -80,7 +75,7 @@ var vinouList = {
 				groupList.style.display = 'block';
 
 			}
-		});
+		}));
 		$this.filterList();
 	},
 
@@ -96,17 +91,17 @@ var vinouList = {
 
 	filterList: function() {
 		$this = this;
-		$this.list.filter(function(item) {
+		$this.list.filter((function(item) {
 
 			for (var property in $this.searchMap) {
 				if ($this.arrayProperties.indexOf(property) > -1 && item.values()[property]) {
 					var string = item.values()[property];
 					var searchArr = string.split(', ');
 					var check = false;
-					searchArr.forEach(function(word){
+					searchArr.forEach((function(word){
 						if ($this.searchMap[property].indexOf(word) > -1)
 							check = true;
-					});
+					}));
 					if (!check)
 						return false;
 				} else {
@@ -118,7 +113,7 @@ var vinouList = {
 			}
 			return true;
 
-		});
+		}));
 		$this.list.update();
 	},
 
@@ -127,7 +122,7 @@ var vinouList = {
 		var clusters = document.querySelectorAll($this.clusterSelector);
 		for (var i = 0; i < clusters.length; i++) {
 
-			clusters[i].addEventListener('change',function(){
+			clusters[i].addEventListener('change',(function(){
 
 				// prepare search map array
 				var identifier = this.getAttribute('data-name');
@@ -151,22 +146,22 @@ var vinouList = {
 						delete $this.searchMap[identifier];
 				}
 				$this.filterList();
-			});
+			}));
 		}
 
 		var paginations = document.querySelectorAll('.pagination');
 		for (var i = 0; i < paginations.length; i++) {
-			paginations[i].addEventListener('click',function(e){
+			paginations[i].addEventListener('click',(function(e){
 				if(e.target && e.target.className == 'page'){
 					var element = document.getElementById($this.containerId);
 					window.scrollTo(element.offsetLeft,element.offsetTop);
 				}
-			});
+			}));
 		}
 
-		document.getElementById('search-phrase').addEventListener("keyup", function(){
+		document.getElementById('search-phrase').addEventListener("keyup", (function(){
 			$this.list.search(this.value);
-		});
+		}));
 	}
 }
 vinouList.init();

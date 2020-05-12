@@ -33,7 +33,7 @@ class Translation {
 			$grapetypes[$id] = $grapetype['name'];
 		}
 		$this->grapetypes = $grapetypes;
-		
+
 	}
 
 	public static function getRegion($id,$llPath,$countryCode = 'de'){
@@ -50,7 +50,7 @@ class Translation {
 		$tastes = json_decode(file_get_contents($llPath.'tastes.json'),true);
 		return $tastes[$countryCode][$id];
 	}
-	
+
 	public static function getGrapeType($id,$llPath){
 		$grapetypes = array();
 		foreach (json_decode(file_get_contents($llPath.'grapetypes.json'),true) as $number => $grapetype) {

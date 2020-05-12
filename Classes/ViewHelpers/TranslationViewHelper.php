@@ -1,8 +1,7 @@
 <?php
 namespace Vinou\VinouConnector\ViewHelpers;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
+use \Vinou\Translations\Utilities\Translation;
 
 class TranslationViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
@@ -13,7 +12,7 @@ class TranslationViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
      */
 	public function render($key,$countrycode = 'de') {
 
-        $translation = new \Vinou\Translations\Utilities\Translation($countrycode);
+        $translation = new Translation($countrycode);
 
         return $translation->get($countrycode,$key);
 	}

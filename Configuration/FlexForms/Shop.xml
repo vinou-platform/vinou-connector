@@ -33,6 +33,14 @@
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.mode.finish</numIndex>
                                         <numIndex index="1">Shop->finish;Shop->list;Shop->basket;Shop->order;</numIndex>
                                     </numIndex>
+                                    <numIndex index="4">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.mode.finishPaypal</numIndex>
+                                        <numIndex index="1">Shop->finishPaypal;</numIndex>
+                                    </numIndex>
+                                    <numIndex index="5">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.mode.cancelPaypal</numIndex>
+                                        <numIndex index="1">Shop->cancelPaypal;</numIndex>
+                                    </numIndex>
                                 </items>
                             </config>
                         </TCEforms>
@@ -58,12 +66,20 @@
                                         <numIndex index="1">vintage</numIndex>
                                     </numIndex>
                                     <numIndex index="3" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.clusters.taste</numIndex>
+                                        <numIndex index="1">tastes_id</numIndex>
+                                    </numIndex>
+                                    <numIndex index="4" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.clusters.place</numIndex>
                                         <numIndex index="1">place</numIndex>
                                     </numIndex>
-                                    <numIndex index="4" type="array">
+                                    <numIndex index="5" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.clusters.country</numIndex>
                                         <numIndex index="1">country</numIndex>
+                                    </numIndex>
+                                    <numIndex index="6" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.clusters.grapetype</numIndex>
+                                        <numIndex index="1">grapetypeIds</numIndex>
                                     </numIndex>
                                 </items>
                             </config>
@@ -90,6 +106,77 @@
                             </config>
                         </TCEforms>
                     </settings.showTypes>
+                    <settings.category>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.category</label>
+                            <config>
+                                <type>select</type>
+                                <eval>int</eval>
+                                <itemsProcFunc>Vinou\VinouConnector\Hooks\WinesFlexForm->vinouCategories</itemsProcFunc>
+                                <items>
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.category.empty</numIndex>
+                                        <numIndex index="1"></numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.category>
+                    <settings.sortBy>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortBy</label>
+                            <config>
+                                <type>select</type>
+                                <items>
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortBy.empty</numIndex>
+                                        <numIndex index="1"></numIndex>
+                                    </numIndex>
+                                    <numIndex index="1" type="array">
+                                        <numIndex index="0">articlenumber</numIndex>
+                                        <numIndex index="1">articlenumber</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2" type="array">
+                                        <numIndex index="0">id</numIndex>
+                                        <numIndex index="1">id</numIndex>
+                                    </numIndex>
+                                    <numIndex index="3" type="array">
+                                        <numIndex index="0">tastes_id</numIndex>
+                                        <numIndex index="1">tastes_id</numIndex>
+                                    </numIndex>
+                                    <numIndex index="4" type="array">
+                                        <numIndex index="0">price</numIndex>
+                                        <numIndex index="1">price</numIndex>
+                                    </numIndex>
+                                    <numIndex index="5" type="array">
+                                        <numIndex index="0">sorting</numIndex>
+                                        <numIndex index="1">sorting</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.sortBy>
+                    <settings.sortDirection>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortDirection</label>
+                            <config>
+                                <type>select</type>
+                                <items>
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortDirection.asc</numIndex>
+                                        <numIndex index="1">ASC</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortDirection.desc</numIndex>
+                                        <numIndex index="1">DESC</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.sortDirection>
                     <settings.detailPid>
                         <TCEforms>
                             <displayCond>
@@ -191,6 +278,46 @@
                             </config>
                         </TCEforms>
                     </settings.finishPid>
+                    <settings.finishPaypalPid>
+                        <TCEforms>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Shop->finish;Shop->list;Shop->basket;Shop->order;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+                                </OR>
+                            </displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.finishPaypalPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.finishPaypalPid>
+                    <settings.cancelPaypalPid>
+                        <TCEforms>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Shop->finish;Shop->list;Shop->basket;Shop->order;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+                                </OR>
+                            </displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.cancelPaypalPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.cancelPaypalPid>
                 </el>
             </ROOT>
         </sDEF>

@@ -1,10 +1,7 @@
-<html>
+{namespace vin=Vinou\VinouConnector\ViewHelpers}
+<f:layout name="DefaultMail" />
 
-<head>
-    <title>{title} {age}</title>
-</head>
-
-<body style="font-family: Arial;">
+<f:section name="mailcontent">
 	<p><b>Kundendaten:</b><br>
 		Name: {customer.firstname} {customer.lastname} <br>
 		Straße: {customer.address}<br>
@@ -43,6 +40,4 @@
 			<td>{gross}</td>
 		</tr>
 	</table>
-</body>
-
-</html>
+</f:section>

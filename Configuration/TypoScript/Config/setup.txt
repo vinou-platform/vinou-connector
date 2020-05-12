@@ -1,34 +1,55 @@
 # add Vinou-Toasts if it was turned on in the constants
 [globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.toasts}]
 page.includeCSS.toasts = EXT:vinou_connector/Resources/Public/Styles/toasts.css
-page.includeJSFooterlibs.toasts = EXT:vinou_connector/Resources/Public/JavaScript/Src/toast.js
+page.includeJSFooterlibs.toasts = EXT:vinou_connector/Resources/Public/Scripts/toast.min.js
 
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.toasts}] && [applicationContext = Development]
+page.includeJSFooterlibs.toasts = EXT:vinou_connector/Resources/Private/JavaScript/Src/toast.js
+
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.dialogs}]
+page.includeCSS.dialogs = EXT:vinou_connector/Resources/Public/Styles/dialogs.css
+page.includeJSFooterlibs.dialogs = EXT:vinou_connector/Resources/Public/Scripts/dialog.min.js
+
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.dialogs}] && [applicationContext = Development]
+page.includeJSFooterlibs.dialogs = EXT:vinou_connector/Resources/Private/JavaScript/Src/dialog.js
 
 # add Vinou-JS (Shop,Enquiry,List) if it was turned on in the constants
 [globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.vinou}]
 page.includeJSFooterlibs {
 	listjs = EXT:vinou_connector/Vendor/listjs/list.js
-	vinou = EXT:vinou_connector/Resources/Public/JavaScript/Src/vinou.js
+	enquiry = EXT:vinou_connector/Resources/Public/Scripts/enquiry.min.js
+	shop = EXT:vinou_connector/Resources/Public/Scripts/shop.min.js
+	list = EXT:vinou_connector/Resources/Public/Scripts/list.min.js
+}
+
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.vinou}] && [applicationContext = Development]
+page.includeJSFooterlibs {
+	listjs = EXT:vinou_connector/Vendor/listjs/list.js
+	enquiry = EXT:vinou_connector/Resources/Private/JavaScript/Src/enquiry.js
+	shop = EXT:vinou_connector/Resources/Private/JavaScript/Src/shop.js
+	list = EXT:vinou_connector/Resources/Private/JavaScript/Src/list.js
 }
 
 # add only shop javascript if it was turned on in the constants
 [globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.shop}]
 page.includeJSFooterlibs {
 	listjs = EXT:vinou_connector/Vendor/listjs/list.js
-	shop = EXT:vinou_connector/Resources/Public/JavaScript/Src/shop.js
+	shop = EXT:vinou_connector/Resources/Public/Scripts/shop.min.js
 }
+
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.shop}] && [applicationContext = Development]
+page.includeJSFooterlibs.shop = EXT:vinou_connector/Resources/Private/JavaScript/Src/shop.js
 
 # add only enquiry javascript if it was turned on in the constants
 [globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.enquiry}]
-page.includeJSFooterlibs {
-	enquiry = EXT:vinou_connector/Resources/Public/JavaScript/Src/enquiry.js
-}
+page.includeJSFooterlibs.enquiry = EXT:vinou_connector/Resources/Public/Scripts/enquiry.min.js
+
+[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.enquiry}] && [applicationContext = Development]
+page.includeJSFooterlibs.enquiry = EXT:vinou_connector/Resources/Private/JavaScript/Src/enquiry.js
 
 # add only list javascript if it was turned on in the constants
 [globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.list}]
-page.includeJSFooterlibs {
-	list = EXT:vinou_connector/Resources/Public/JavaScript/Src/list.js
-}
+page.includeJSFooterlibs.list = EXT:vinou_connector/Resources/Public/Scripts/list.min.js
 
 [end]
 
@@ -259,3 +280,21 @@ plugin.tx_vinouconnector_shop {
 }
 
 module.tx_vinouconnector_shop < plugin.tx_vinouconnector_shop
+
+page.headerData {
+	999 = TEXT
+	999.value (
+<script type="text/javascript">
+var xhr = new XMLHttpRequest();
+xhr.open("POST", '/?eID=vinouActions', true);
+xhr.setRequestHeader("Content-Type", "application/json");
+xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+        var json = JSON.parse(xhr.responseText);
+    }
+};
+var data = JSON.stringify({"action": "init"});
+xhr.send(data);
+</script>
+	)
+}

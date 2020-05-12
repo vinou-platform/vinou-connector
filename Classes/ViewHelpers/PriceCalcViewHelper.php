@@ -1,8 +1,6 @@
 <?php
 namespace Vinou\VinouConnector\ViewHelpers;
 
-use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
-
 class PriceCalcViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
     /**

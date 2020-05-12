@@ -7,7 +7,9 @@ use \TYPO3\CMS\Core\Utility\PathUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use \Vinou\VinouConnector\Utility\PaypalUtility;
+use \Vinou\VinouConnector\Utility\PaypalUtility;#
+use \Vinou\ApiConnector\Api;
+use \Vinou\ApiConnector\Session\Session;
 
 class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -111,9 +113,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	      $dev = true;
 	    }
 
-	    $this->api = new \Vinou\VinouConnector\Utility\Api(
+	    $this->api = new Api(
 	      $this->extConf['token'],
 	      $this->extConf['authId'],
+	      true,
 	      $dev
 	    );
 
@@ -160,9 +163,15 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			if (!is_null($clusters))
 				$postData['cluster'] = $clusters;
 
-			$data = $this->api->getWinesAll($postData);
+			if ((int)$this->settings['category'] > 0) {
+				$data = $this->api->getCategoryWines((int)$this->settings['category'], $postData);
+				$wines = isset($data['data']) ? $data['data'] : false;
 
-			$wines = isset($data['wines']) ? $data['wines'] : $data['data'];
+			} else {
+				$data = $this->api->getWinesAll($postData);
+				$wines = isset($data['wines']) ? $data['wines'] : $data['data'];
+			}
+
 			foreach ($wines as &$wine) {
 				$wine['object_type'] = 'wine';
 			}
@@ -206,8 +215,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @return void
 	 */
 	public function getPaymentMethods() {
-		$this->storeArgumentInSession('paymentMethod');
-		$selectedMethod = $this->getArgumentInSession('paymentMethod');
+		$selectedMethod = $this->storeAndGetArgument('paymentMethod');
 		$availableMethods = explode(',',$this->settings['payment']['methods']);
 
 		if (!$selectedMethod) {
@@ -216,7 +224,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		if (!in_array($selectedMethod,$availableMethods) && $selectedMethod !== $this->settings['payment']['default']) {
 			$selectedMethod = $this->settings['payment']['default'];
-			$this->writeValueInSession('paymentMethod',$selectedMethod);
+			Session::setValue('paymentMethod',$selectedMethod);
 		}
 
 		$this->paymentType = $selectedMethod;
@@ -335,7 +343,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		} else {
 			/* set billing as delivery if no separate address was defined  */
 			$delivery = $billing;
-			$this->api->removeSessionData('delivery');
+			Session::deleteValue('delivery');
 		}
 
 		/* get message if was set */
@@ -396,21 +404,25 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			'source' => 'shop',
 			'payment_type' => $paymentMethod,
 			'basket' => $basket['uuid'],
+			'billing_type' => 'client',
 			'billing' => [
-				'firstname' => $billing['firstname'],
-				'lastname' => $billing['lastname'],
+				'first_name' => $billing['firstname'],
+				'last_name' => $billing['lastname'],
 				'address' => $billing['address'],
 				'zip' => $billing['zip'],
 				'city' => $billing['city'],
-				'email' => $billing['email'],
+				'mail' => $billing['email'],
 			],
+			'delivery_type' => 'address',
 			'delivery' => [
-				'firstname' => $delivery['firstname'],
-				'lastname' => $delivery['lastname'],
+				'first_name' => $delivery['firstname'],
+				'last_name' => $delivery['lastname'],
 				'address' => $delivery['address'],
 				'zip' => $delivery['zip'],
 				'city' => $delivery['city'],
 			],
+			'invoice_type' => isset($this->settings['checkout']['invoice_type']) ? $this->settings['checkout']['invoice_type'] : 'gross',
+            'payment_period' => isset($this->settings['checkout']['payment_period']) ? (int)$this->settings['checkout']['payment_period'] : 14,
 			'note' => $note
 		];
 
@@ -426,25 +438,57 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$order['delivery'][$label] = $delivery[$label];
 		}
 
-		$sendResult = $this->api->addOrder($order);
+		$check = $this->api->checkClientMail($order['billing']);
+        if ($check) {
+            $order['client_id'] = $check;
+            $order['billing_type'] = 'address';
+        } else {
+            unset($order['billing_type']);
+        }
+
+		if ($paymentMethod == 'paypal') {
+
+			if (!isset($this->settings['finishPaypalPid']))
+				$this->Alert('error','nofinishPaypalPid',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+
+			$order['return_url'] = $this->uriBuilder
+				->reset()
+				->setTargetPageUid($this->settings['finishPaypalPid'])
+				->setCreateAbsoluteUri(TRUE)
+				->setNoCache(TRUE)
+				->build();
+
+			if (!isset($this->settings['cancelPaypalPid']))
+				$this->Alert('error','nocancelPaypalPid',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+
+			$order['cancel_url'] = $this->uriBuilder
+				->reset()
+				->setTargetPageUid($this->settings['cancelPaypalPid'])
+				->setCreateAbsoluteUri(TRUE)
+				->setNoCache(TRUE)
+				->build();
+
+		}
+
 		file_put_contents($this->orderDir .'/order-'.time().'.json', json_encode($order));
 
-		if ($sendResult) {
+		// addOrder will do the redirect if paypal was set
+		$addedOrder = $this->api->addOrder($order);
 
-			// file_put_contents($this->orderDir .'/order-'.time().'.json', json_encode($order));
+		if ($addedOrder) {
 
 			$recipient = [
 				$billing['email'] => $billing['firstname'] . " " . $billing['lastname']
 			];
 
-			$mailContent = $order;
-			$mailContent['items'] = $items;
-			$mailContent['summary'] = $summary;
+			$mailContent = [
+				'order' => $this->api->getOrder($addedOrder['id'])
+			];
 
 			$this->sendTemplateEmail(
 				$recipient,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$sendResult['data']['number'],
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$addedOrder['number'],
 				'CreateOrderClient',
 				$mailContent,
 				$this->settings['mail']['attachements']
@@ -453,7 +497,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$this->admin,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$sendResult['data']['number'],
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$addedOrder['number'],
 				'CreateOrderAdmin',
 				$mailContent
 			);
@@ -465,6 +509,68 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		return true;
 	}
 
+	public function finishPaypalAction() {
+		$this->initialize();
+		$error = false;
+
+		$this->view->assign('settings', $this->settings);
+		$order = $this->api->getSessionOrder();
+		$this->view->assign('order', $order);
+
+		$paypalresult = $this->api->finishPaypalPayment(GeneralUtility::_GET());
+		$this->view->assign('paypalresult', $paypalresult);
+
+		if (!$paypalresult) {
+			$error = true;
+		} else {
+			$recipient = [
+				$order['client']['mail'] => $order['client']['first_name'] . " " . $order['client']['last_name']
+			];
+
+			$mailContent = [
+				'order' => $order
+			];
+
+			$this->sendTemplateEmail(
+				$recipient,
+				$this->sender,
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$order['number'],
+				'CreateOrderClient',
+				$mailContent,
+				$this->settings['mail']['attachements']
+			);
+
+			$this->sendTemplateEmail(
+				$this->admin,
+				$this->sender,
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$order['number'],
+				'CreateOrderAdmin',
+				$mailContent
+			);
+
+			$this->clearAllSessionData();
+		}
+
+		$this->view->assign('error', $error);
+	}
+
+	public function cancelPaypalAction() {
+		$this->initialize();
+		$this->view->assign('settings', $this->settings);	
+		$this->view->assign('order', $this->api->getSessionOrder());
+		$error = false;
+
+		$cancelresult = $this->api->cancelPaypalPayment();
+
+		if (!$cancelresult) {
+			$error = true;
+		} else {
+			$this->view->assign('cancelresult', $cancelresult);
+		}
+
+		$this->view->assign('error', $error);
+	}
+
 	private function getRequiredFields() {
 		$required = [];
 		$required['billing'] = $this->switchFieldValues(explode(',',$this->settings['billing']['required']));
@@ -474,19 +580,19 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	private function detectOrCreateBasket() {
-		$basketUuid = $this->api->readSessionData('basket');
-		if (is_null($basketUuid) && isset($_COOKIE['basket'])) {
+		$basketUuid = Session::getValue('basket');
+		if (!$basketUuid && isset($_COOKIE['basket'])) {
 			$basketUuid = $_COOKIE['basket'];
 		}
 
-		return !is_null($basketUuid) ? $this->api->getBasket($basketUuid) : false;
+		return $basketUuid ? $this->api->getBasket($basketUuid) : false;
 	}
 
 	private function storeAndGetArgument($argument) {
 		if ($this->request->hasArgument($argument)) {
-			$this->api->writeSessionData($argument,$this->request->getArgument($argument));
+			Session::setValue($argument,$this->request->getArgument($argument));
 		}
-		return $this->api->readSessionData($argument);
+		return Session::getValue($argument);
 	}
 
 	private function calculateSum(&$items) {
@@ -499,10 +605,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		foreach ($items as $item) {
 			$summary['quantity'] += $item['quantity'];
-			if (isset($item['object']['price'])) {
-				$summary['gross'] += ($item['quantity'] * $item['object']['price']);
+			if (isset($item['item']['price'])) {
+				$summary['gross'] += ($item['quantity'] * $item['item']['price']);
 			} else {
-				$summary['gross'] += ($item['quantity'] * $item['object']['gross']);
+				$summary['gross'] += ($item['quantity'] * $item['item']['gross']);
 			}
 		}
 
@@ -529,45 +635,13 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		return $fields;
 	}
 
-	private function storeArgumentInSession($name) {
-		if ($this->request->hasArgument($name)) {
-			$argument = $this->request->getArgument($name);
-			$this->writeValueInSession($name,$argument);
-		} else {
-			$argument = $this->getArgumentInSession($name);
-		}
-		return $argument;
-	}
-
-	private function writeValueInSession($name,$value) {
-		if ($GLOBALS['TSFE']->loginUser) {
-			$GLOBALS['TSFE']->fe_user->setKey('user', $name, $value);
-		} else {
-			$GLOBALS['TSFE']->fe_user->setKey('ses', $name, $value);
-		}
-		return $argument;
-	}
-
-	private function getArgumentInSession($name) {
-		if (isset($GLOBALS['TSFE']->fe_user->sesData[$name])) {
-			if ($GLOBALS['TSFE']->loginUser) {
-				$argument = $GLOBALS['TSFE']->fe_user->getKey('user', $name);
-			} else {
-				$argument = $GLOBALS['TSFE']->fe_user->getKey('ses', $name);
-			}
-		} else {
-			$argument = FALSE;
-		}
-		return $argument;
-	}
-
 	private function clearAllSessionData() {
-		$this->api->removeSessionData('billing');
-		$this->api->removeSessionData('delivery');
-		$this->api->removeSessionData('deliveryAdress');
-		$this->api->removeSessionData('message');
-		$this->api->removeSessionData('account');
-		$this->api->removeSessionData('paymentMethod');
+		Session::deleteValue('billing');
+		Session::deleteValue('delivery');
+		Session::deleteValue('deliveryAdress');
+		Session::deleteValue('message');
+		Session::deleteValue('account');
+		Session::deleteValue('paymentMethod');
 	}
 
 	/**
@@ -611,23 +685,24 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	* @return boolean TRUE on success, otherwise false
 	*/
 	protected function sendTemplateEmail(array $recipient, array $sender, $subject, $templateName, array $variables = array(), array $attachement = array()) {
-		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $emailView */
+
+		$extPath = 'typo3conf/ext/vinou_connector/Resources/Private/';
+		
 		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-		$message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$emailView->setLayoutRootPaths([PATH_site . $extPath . 'Layouts/Email/']);
+		$emailView->setTemplateRootPaths([PATH_site . $extPath . 'Templates/Email/']);
+		$emailView->setTemplate($templateName . '.html');
 
-		$templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPaths']['']);
-
-		$templatePathAndFilename = PATH_site . 'typo3conf/ext/vinou_connector/Resources/Private/Templates/Email/' . $templateName . '.html';
-		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
+		$variables['title'] = $subject;
+		$variables['customer'] = $this->api->getCustomer();		
 		$emailView->assignMultiple($variables);
 		$emailHtmlBody = $emailView->render();
+
+		$message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 		$message->addPart($emailHtmlBody, 'text/html');
-
-		$subject = '=?utf-8?B?'. base64_encode($subject) .'?=';
-
 		$message->setTo($recipient)
 				->setFrom($sender)
-				->setSubject($subject);
+				->setSubject('=?utf-8?B?'. base64_encode($subject) .'?=');
 
 		if (count($attachement) > 0) {
 			foreach ($attachement as $file) {

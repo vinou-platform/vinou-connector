@@ -2,11 +2,13 @@
 namespace Vinou\VinouConnector\Controller;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Object\ObjectManager;
 use \TYPO3\CMS\Core\Utility\PathUtility;
+use \TYPO3\CMS\Extbase\Object\ObjectManager;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
+use \Vinou\ApiConnector\Api;
+use \Vinou\ApiConnector\FileHandler\Pdf;
 
 class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -82,9 +84,10 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	      $dev = true;
 	    }
 
-	    $this->api = new \Vinou\VinouConnector\Utility\Api(
+	    $this->api = new Api(
 	      $this->extConf['token'],
 	      $this->extConf['authId'],
+	      true,
 	      $dev
 	    );
 
@@ -194,7 +197,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		if ($this->settings['cacheExpertise']) {
 			if ($wine['expertiseStatus']=='OK') {
 				$expertiseFile = $fileName = array_values(array_slice(explode('/',$wine['expertisePDF']), -1))[0];
-				$convertedFileName = \Vinou\VinouConnector\Utility\Pdf::convertFileName($wine['id'].'-'.$fileName);
+				$convertedFileName = Pdf::convertFileName($wine['id'].'-'.$fileName);
 				$localFile = $this->absLocalDir .$convertedFileName;
 
 				$dateTimeZone = new \DateTimeZone(date_default_timezone_get());
