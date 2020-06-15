@@ -14,16 +14,20 @@
 					<p class="small-text">{item.description -> f:format.crop(maxCharacters: 75, append: '...', respectWordBoundaries: true)}<br>
 						</p>
 					<div>
-						<form class="price-form add-item-form" method="POST">
-							<input type="hidden" name="item_id" value="{item.id}"/>
-							<input type="hidden" name="item_type" value="product"/>
-							<div class="form-group">
-								<span class="price-form-label">Preis:</span>
-								<span class="price-form-value">{item.gross -> f:format.number(decimals:2,decimalSeparator:',')} €</span>
-								<input type="number" name="quantity" class="form-control" step="1" min="1"value="6"/>
-								<button type="submit" class="add-basket"><span class="fa fa-shopping-cart"></span></button>
-							</div>
-						</form>
+						<f:if condition="{item.nostock}==0">
+							<f:then>
+								<form class="price-form add-item-form" method="POST">
+									<input type="hidden" name="item_id" value="{item.id}"/>
+									<input type="hidden" name="item_type" value="product"/>
+									<div class="form-group">
+										<span class="price-form-label">Preis:</span>
+										<span class="price-form-value">{item.gross -> f:format.number(decimals:2,decimalSeparator:',')} €</span>
+										<input type="number" name="quantity" class="form-control" step="1" min="1"value="6"/>
+										<button type="submit" class="add-basket"><span class="fa fa-shopping-cart"></span></button>
+									</div>
+								</form>
+							</f:then>
+						</f:if>
 					</div>
 				</div>
 			</div>
