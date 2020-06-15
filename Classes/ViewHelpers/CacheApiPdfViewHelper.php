@@ -3,6 +3,7 @@ namespace Vinou\VinouConnector\ViewHelpers;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \Vinou\ApiConnector\FileHandler\Pdf;
+use \Vinou\ApiConnector\Tools\Helper;
 
 class CacheApiPdfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
@@ -21,7 +22,7 @@ class CacheApiPdfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
             mkdir($absLocalDir, 0777, true);
         }
 
-        $cachePDFProcess = Pdf::storeApiPDF($pdf,$absLocalDir,$id.'-',$tstamp);
+        $cachePDFProcess = Pdf::storeApiPDF($pdf,$tstamp,$absLocalDir,$id.'-');
         $fileName = $cachePDFProcess['fileName'];
 
 		return self::LOCALDIR.$fileName;

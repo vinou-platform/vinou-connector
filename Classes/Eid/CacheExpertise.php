@@ -33,11 +33,12 @@ class CacheExpertise {
      * @return \string      from action
      */
     public function run() {
+
         if (GeneralUtility::_GET('wineID')) {
             $wine = $this->api->getExpertise(GeneralUtility::_GET('wineID'));
             $wine = $this->api->getWine(GeneralUtility::_GET('wineID'));
             if ($this->extConf['cacheExpertise'] == 1) {
-                $cachePDFProcess = Pdf::storeApiPDF($wine['expertisePdf'],$this->absoluteTempDirectory.'/',$wine['id'].'-',$wine['chstamp'],true);
+                $cachePDFProcess = Pdf::storeApiPDF($wine['expertisePdf'],$wine['chstamp'],$this->absoluteTempDirectory.'/',$wine['id'].'-',true);
                 $redirectURL = '/'.$this->extConf['cachingFolder'].'/'.$cachePDFProcess['fileName'];
             } else {
                 $redirectURL = 'https://api.vinou.de'.$wine['expertisePdf'];
