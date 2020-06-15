@@ -19,8 +19,20 @@
     ],
     "require": {
         "typo3/cms-core": ">=8.7.0,<9.0",
-        "facebook/graph-sdk": "*"
+        "facebook/graph-sdk": "*",
+        "vinou/api-connector": ">=1.1.4",
+        "vinou/translations": "2.*"
     },
+    "repositories": [
+        {
+            "url": "git@git.vinou.de:utilities/api-connector.git",
+            "type": "vcs"
+        },
+        {
+            "url": "git@git.vinou.de:libraries/translations.git",
+            "type": "vcs"
+        }
+    ],
     "config": {
         "vendor-dir": ".Build/vendor",
         "bin-dir": ".Build/bin"

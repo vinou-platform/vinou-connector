@@ -195,9 +195,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		if (in_array('products',$objectTypes)) {
 
-			$data = $this->api->getProductsAll();
-
-			$products = isset($data['products']) ? $data['products'] : $data['data'];
+			$products = $this->api->getProductsAll();
 			foreach ($products as &$product) {
 				$product['object_type'] = 'product';
 			}
