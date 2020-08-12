@@ -100,7 +100,18 @@
 							</div>
 						</div>
 						<div class="cell">
-							<f:form.submit value="{f:translate(key: 'register.submit')}" />
+							<div class="field-wrap">
+								<input type="checkbox" name="tx_vinouconnector_office[cop]" id="cop" required>
+								<label for="cop">
+									<span class="status"></span>
+									<span class="inner-label">Ich habe die <a href="http://www.vinou.de/agb" target="blank">Allgemeinen Geschäftsbedingungen</a> gelesen und akzeptiere diese.</span>
+								</label>
+							</div>
+						</div>
+						<div class="cell">
+							<div class="field-wrap align-center">
+								<f:form.submit value="{f:translate(key: 'register.submit')}" />
+							</div>
 						</div>
 					</div>
 				</fieldset>
