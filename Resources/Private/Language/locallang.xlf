@@ -33,6 +33,12 @@
 			<trans-unit id="be.shop.description">
 				<source>Show basket, orderform and finish action for vinou wines</source>
 			</trans-unit>
+			<trans-unit id="be.office.title">
+				<source>Vinou-Office</source>
+			</trans-unit>
+			<trans-unit id="be.office.description">
+				<source>Show special plugins for Vinou-Office for example registration form.</source>
+			</trans-unit>
 
 			<trans-unit id="shop.list.clusters">
 				<source>Filter options</source>
@@ -280,6 +286,46 @@
 			</trans-unit>
 			<trans-unit id="mail.paymentnotification.subjectprepaid">
 				<source>Prepaid order</source>
+			</trans-unit>
+
+			<trans-unit id="register.customerType">
+				<source>My company is a</source>
+			</trans-unit>
+			<trans-unit id="register.customerType.winery">
+				<source>Winery</source>
+			</trans-unit>
+			<trans-unit id="register.customerType.merchant">
+				<source>Merchant</source>
+			</trans-unit>
+			<trans-unit id="register.company">
+				<source>Company</source>
+			</trans-unit>
+			<trans-unit id="register.name">
+				<source>Contact Person</source>
+			</trans-unit>
+			<trans-unit id="register.address">
+				<source>Address</source>
+			</trans-unit>
+			<trans-unit id="register.zip">
+				<source>Zip</source>
+			</trans-unit>
+			<trans-unit id="register.city">
+				<source>City</source>
+			</trans-unit>
+			<trans-unit id="register.mail">
+				<source>E-Mail</source>
+			</trans-unit>
+			<trans-unit id="register.voucher">
+				<source>Voucher</source>
+			</trans-unit>
+			<trans-unit id="register.submit">
+				<source>Register now</source>
+			</trans-unit>
+			<trans-unit id="register.success.title">
+				<source>Registration successful</source>
+			</trans-unit>
+			<trans-unit id="register.success.description">
+				<source>We send you an activation link via e-mail to start usage.</source>
 			</trans-unit>
 
 			<trans-unit id="flexform.wines.general">
@@ -561,6 +607,37 @@
 				<source>Template</source>
 			</trans-unit>
 
+			<trans-unit id="flexform.office.general">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="flexform.office.mode">
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="flexform.office.mode.register">
+				<source>Register</source>
+			</trans-unit>
+			<trans-unit id="flexform.office.mode.support">
+				<source>Support-Request</source>
+			</trans-unit>
+			<trans-unit id="flexform.office.customerType">
+				<source>Customer type to register</source>
+			</trans-unit>
+			<trans-unit id="flexform.office.customerType.selectable">
+				<source>Selectable</source>
+			</trans-unit>
+			<trans-unit id="flexform.office.customerType.winery">
+				<source>Winery</source>
+			</trans-unit>
+			<trans-unit id="flexform.office.customerType.merchant">
+				<source>Merchant</source>
+			</trans-unit>
+			<trans-unit id="flexform.office.finishPID">
+				<source>Finish Page</source>
+			</trans-unit>
+			<trans-unit id="flexform.office.errorPID">
+				<source>Error Page (if empty use plugin page)</source>
+			</trans-unit>
+
 			<trans-unit id="message.title.error">
 				<source>Error</source>
 			</trans-unit>
@@ -602,6 +679,9 @@
 			</trans-unit>
 			<trans-unit id="message.content.cancelPaypalError">
 				<source>Cancellation corrupted, please contact system administrator.</source>
+			</trans-unit>
+			<trans-unit id="message.content.registrationError">
+				<source>Registration not successful, a customer or user with this mail already exists.</source>
 			</trans-unit>
 
 			<trans-unit id="tasks.cacheexpertise.title">

@@ -82,6 +82,21 @@
 	);
 
 	/**
+     * plugin for shop actions
+     */
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+		'Vinou.'.$_EXTKEY,
+		'Office',
+		array(
+			'Office' => 'register',
+		),
+		// non-cacheable actions
+		array(
+			'Office' => 'register',
+		)
+	);
+
+	/**
      * eID to cache expertises
      */
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['cacheExpertise'] = 'EXT:'.$_EXTKEY.'/Classes/Eid/CacheExpertise.php';

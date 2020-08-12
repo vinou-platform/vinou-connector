@@ -281,6 +281,31 @@ plugin.tx_vinouconnector_shop {
 
 module.tx_vinouconnector_shop < plugin.tx_vinouconnector_shop
 
+plugin.tx_vinouconnector_office {
+	view {
+		templateRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Templates/
+			1 = {$plugin.tx_vinouconnector_office.view.templateRootPath}
+		}
+		partialRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Partials/
+			1 = {$plugin.tx_vinouconnector_office.view.partialRootPath}
+		}
+		layoutRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Layouts/
+			1 = {$plugin.tx_vinouconnector_office.view.layoutRootPath}
+		}
+	}
+	settings {
+		register {
+			required = company,name,address,zip,city,mail
+		}
+		mandatorySign = *
+	}
+}
+
+module.tx_vinouconnector_office < plugin.tx_vinouconnector_office
+
 page.headerData {
 	999 = TEXT
 	999.value (

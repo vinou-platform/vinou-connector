@@ -124,3 +124,28 @@
 	$shop = str_replace('_','',$_EXTKEY) . '_shop';
 	$TCA['tt_content']['types']['list']['subtypes_addlist'][$shop] = 'pi_flexform';
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($shop, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/Shop.xml');
+
+
+	/*
+	 * Office
+	 */
+
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+		$_EXTKEY,
+		'Office',
+		'Vinou Office',
+		'EXT:vinou_connector/Resources/Public/Icons/office.svg'
+	);
+
+	// Add Flexform for Plugin Wines
+	$office = str_replace('_','',$_EXTKEY) . '_office';
+	$TCA['tt_content']['types']['list']['subtypes_addlist'][$office] = 'pi_flexform';
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($office, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/Office.xml');
+
+    $iconRegistry =
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+    $iconRegistry->registerIcon(
+        'extension-vinouconnector-office',
+        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        ['source' => 'EXT:vinou_connector/Resources/Public/Icons/office.svg']
+    );
