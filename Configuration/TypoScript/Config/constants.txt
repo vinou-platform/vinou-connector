@@ -75,3 +75,16 @@ plugin.tx_vinouconnector_shop {
 		layoutRootPath = EXT:vinou_connector/Resources/Private/Layouts/
 	}
 }
+
+plugin.tx_vinouconnector_office {
+	view {
+		# cat=tx_vinouconnector_office/file; type=string; label= Path to template root (FE)
+		templateRootPath = EXT:vinou_connector/Resources/Private/Templates/
+
+		# cat=tx_vinouconnector_office/file; type=string; label= Path to template partials (FE)
+		partialRootPath = EXT:vinou_connector/Resources/Private/Partials/
+
+		# cat=tx_vinouconnector_office/file; type=string; label= Path to template layouts (FE)
+		layoutRootPath = EXT:vinou_connector/Resources/Private/Layouts/
+	}
+}
