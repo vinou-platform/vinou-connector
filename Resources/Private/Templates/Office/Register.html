@@ -40,7 +40,7 @@
 									name="customer[company]"
 									required="{f:if(condition:required.company,then:'TRUE',else:'FALSE')}"
 									value="{customer.company}"
-									placeholder="{f:translate(key: 'register.company')}"
+									placeholder="{f:translate(key: 'register.company.placeholder')}"
 									class="form-field" />
 							</div>
 						</div>
@@ -51,7 +51,7 @@
 									name="customer[name]"
 									required="{f:if(condition:required.name,then:'TRUE',else:'FALSE')}"
 									value="{customer.name}"
-									placeholder="{f:translate(key: 'register.name')}"
+									placeholder="{f:translate(key: 'register.name.placeholder')}"
 									class="form-field" />
 							</div>
 						</div>
@@ -62,7 +62,7 @@
 									name="customer[address]"
 									required="{f:if(condition:required.address,then:'TRUE',else:'FALSE')}"
 									value="{customer.address}"
-									placeholder="{f:translate(key: 'register.address')}"
+									placeholder="{f:translate(key: 'register.address.placeholder')}"
 									class="form-field" />
 							</div>
 						</div>
@@ -73,7 +73,7 @@
 									name="customer[zip]"
 									required="{f:if(condition:required.zip,then:'TRUE',else:'FALSE')}"
 									value="{customer.zip}"
-									placeholder="{f:translate(key: 'register.zip')}"
+									placeholder="{f:translate(key: 'register.zip.placeholder')}"
 									class="form-field" />
 							</div>
 						</div>
@@ -84,21 +84,36 @@
 									name="customer[city]"
 									required="{f:if(condition:required.city,then:'TRUE',else:'FALSE')}"
 									value="{customer.city}"
-									placeholder="{f:translate(key: 'register.city')}"
+									placeholder="{f:translate(key: 'register.city.placeholder')}"
 									class="form-field" />
 							</div>
 						</div>
-						<div class="cell">
+						<div class="cell {f:if(condition:'{settings.showVoucher}', then: 'medium-6', else: '')}">
 							<div class="field-wrap">
 								<label class="field-label"><f:translate key="register.mail"/>:{f:if(condition:required.mail,then:'{required.mandatorySign}')}</label>
 								<f:form.textfield
 									name="customer[mail]"
 									required="{f:if(condition:required.mail,then:'TRUE',else:'FALSE')}"
 									value="{customer.mail}"
-									placeholder="{f:translate(key: 'register.mail')}"
+									placeholder="{f:translate(key: 'register.mail.placeholder')}"
 									class="form-field" />
 							</div>
 						</div>
+						<f:if condition="{settings.showVoucher}">
+							<f:then>
+								<div class="cell medium-6">
+									<div class="field-wrap">
+										<label class="field-label"><f:translate key="register.voucher"/>:</label>
+										<f:form.textfield
+											name="customer[voucher]"
+											required="{f:if(condition:required.voucher,then:'TRUE',else:'FALSE')}"
+											value="{customer.voucher}"
+											placeholder="{f:translate(key: 'register.voucher.placeholder')}"
+											class="form-field" />
+									</div>
+								</div>
+							</f:then>
+						</f:if>
 						<div class="cell">
 							<div class="field-wrap">
 								<input type="checkbox" name="tx_vinouconnector_office[cop]" id="cop" required>

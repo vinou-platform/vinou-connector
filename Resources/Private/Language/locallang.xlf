@@ -300,23 +300,44 @@
 			<trans-unit id="register.company">
 				<source>Company</source>
 			</trans-unit>
+			<trans-unit id="register.company.placeholder">
+				<source>ACME</source>
+			</trans-unit>
 			<trans-unit id="register.name">
 				<source>Contact Person</source>
+			</trans-unit>
+			<trans-unit id="register.name.placeholder">
+				<source>John Doe</source>
 			</trans-unit>
 			<trans-unit id="register.address">
 				<source>Address</source>
 			</trans-unit>
+			<trans-unit id="register.address.placeholder">
+				<source>First St;</source>
+			</trans-unit>
 			<trans-unit id="register.zip">
 				<source>Zip</source>
+			</trans-unit>
+			<trans-unit id="register.zip.placeholder">
+				<source>12345</source>
 			</trans-unit>
 			<trans-unit id="register.city">
 				<source>City</source>
 			</trans-unit>
+			<trans-unit id="register.city.placeholder">
+				<source>Capital City</source>
+			</trans-unit>
 			<trans-unit id="register.mail">
 				<source>E-Mail</source>
 			</trans-unit>
+			<trans-unit id="register.mail.placeholder">
+				<source>john.doe@domain.com</source>
+			</trans-unit>
 			<trans-unit id="register.voucher">
 				<source>Voucher</source>
+			</trans-unit>
+			<trans-unit id="register.voucher.placeholder">
+				<source>CAMPAIGN</source>
 			</trans-unit>
 			<trans-unit id="register.submit">
 				<source>Register now</source>
@@ -630,6 +651,9 @@
 			</trans-unit>
 			<trans-unit id="flexform.office.customerType.merchant">
 				<source>Merchant</source>
+			</trans-unit>
+			<trans-unit id="flexform.office.showVoucher">
+				<source>Show Voucher field</source>
 			</trans-unit>
 			<trans-unit id="flexform.office.finishPID">
 				<source>Finish Page</source>

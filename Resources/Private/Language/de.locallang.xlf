@@ -396,29 +396,57 @@
 				<source>Company</source>
 				<target>Firmenbezeichnung</target>
 			</trans-unit>
+			<trans-unit id="register.company.placeholder">
+				<source>ACME</source>
+				<target>Musterweingut GbR</target>
+			</trans-unit>
 			<trans-unit id="register.name">
 				<source>Contact Person</source>
 				<target>Ansprechpartner</target>
+			</trans-unit>
+			<trans-unit id="register.name.placeholder">
+				<source>John Doe</source>
+				<target>Martina Winzerin</target>
 			</trans-unit>
 			<trans-unit id="register.address">
 				<source>Address</source>
 				<target>Straße und Hausnummer</target>
 			</trans-unit>
+			<trans-unit id="register.address.placeholder">
+				<source>First St;</source>
+				<target>Am Weinweg 1a</target>
+			</trans-unit>
 			<trans-unit id="register.zip">
 				<source>Zip</source>
 				<target>PLZ</target>
+			</trans-unit>
+			<trans-unit id="register.zip.placeholder">
+				<source>12345</source>
+				<target>12345</target>
 			</trans-unit>
 			<trans-unit id="register.city">
 				<source>City</source>
 				<target>Stadt</target>
 			</trans-unit>
+			<trans-unit id="register.city.placeholder">
+				<source>Capital City</source>
+				<target>Musterhausen</target>
+			</trans-unit>
 			<trans-unit id="register.mail">
 				<source>E-Mail</source>
 				<target>E-Mail</target>
 			</trans-unit>
+			<trans-unit id="register.mail.placeholder">
+				<source>john.doe@domain.com</source>
+				<target>martina.winzerin@domain.de</target>
+			</trans-unit>
 			<trans-unit id="register.voucher">
 				<source>Voucher</source>
-				<target>Ich habe einen Gutschein-Code</target>
+				<target>Ich habe einen Aktions-Code</target>
+			</trans-unit>
+			<trans-unit id="register.voucher.placeholder">
+				<source>CAMPAIGN</source>
+				<target>Aktions-Code</target>
 			</trans-unit>
 			<trans-unit id="register.submit">
 				<source>Register now</source>
@@ -833,6 +861,10 @@
 			<trans-unit id="flexform.office.customerType.merchant">
 				<source>Merchant</source>
 				<target>Händler</target>
+			</trans-unit>
+			<trans-unit id="flexform.office.showVoucher">
+				<source>Show Voucher field</source>
+				<target>Zeige Feld für Gutschein-Code</target>
 			</trans-unit>
 			<trans-unit id="flexform.office.finishPID">
 				<source>Finish Page</source>

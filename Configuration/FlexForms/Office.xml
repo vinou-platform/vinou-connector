@@ -52,6 +52,15 @@
                             </config>
                         </TCEforms>
                     </settings.customerType>
+                    <settings.showVoucher>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Office->register;Office->support;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.showVoucher</label>
+                            <config>
+                              <type>check</type>
+                            </config>
+                        </TCEforms>
+                    </settings.showVoucher>
                     <settings.finishPID>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Office->register;Office->support;</displayCond>
