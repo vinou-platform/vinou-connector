@@ -20,8 +20,8 @@
     "require": {
         "typo3/cms-core": ">=8.7.0,<9.0",
         "facebook/graph-sdk": "*",
-        "vinou/api-connector": ">=1.1.4",
-        "vinou/translations": "2.*"
+        "vinou/api-connector": "2.*",
+        "vinou/translations": "3.1.*"
     },
     "autoload": {
         "psr-4": {
