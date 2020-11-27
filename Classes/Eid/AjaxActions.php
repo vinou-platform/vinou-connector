@@ -7,6 +7,9 @@ use \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use \TYPO3\CMS\Frontend\Utility\EidUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \Vinou\ApiConnector\Api;
+use \Vinou\VinouConnector\Utility\Render;
+use \Vinou\VinouConnector\Utility\Shop;
+use \Vinou\VinouConnector\Utility\TypoScriptHelper;
 
 /**
  * This class could called with AJAX via eID
@@ -17,32 +20,22 @@ class AjaxActions {
      * extConf
      * @var array
      */
-    protected $extConf;
     protected $api = null;
     protected $errors = [];
-    protected $output = false;
-    protected $data = [];
+    protected $result = false;
+    protected $request = [];
+    protected $extConf = null;
+    protected $settings = [];
 
     public function __construct($TYPO3_CONF_VARS) {
 
         $this->extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf']['vinou_connector']);
 
-        $this->setHeader();
+        $this->request = array_merge($_POST, (array)json_decode(trim(file_get_contents('php://input')), true));
+
         $this->initTYPO3Frontend();
         $this->initVinou();
-
-    }
-
-    public function run() {
-        $this->loadInput();
-        $this->handleActions();
-        $this->renderOutput();
-    }
-
-    private function setHeader() {
-        header('Content-type: application/json');
-        header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-        header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+        $this->settings = TypoScriptHelper::extractSettings('tx_vinouconnector_shop');
     }
 
     private function initTYPO3Frontend() {
@@ -81,65 +74,99 @@ class AjaxActions {
         $this->data = array_merge($_POST, (array)json_decode(trim(file_get_contents('php://input')), true));
     }
 
-    private function handleActions() {
-        if (empty($this->data) || !isset($this->data['action'])) {
-            array_push($this->errors, 'no action defined');
-            return false;
-        }
+    public function run() {
 
-        $action = $this->data['action'];
-        unset($this->data['action']);
+        if (empty($this->request) || !isset($this->request['action']))
+            $this->sendResult(false, 'no action defined');
+
+        $action = $this->request['action'];
+        unset($this->request['action']);
         switch ($action) {
             case 'init':
-                $this->output = $this->api->initBasket();
+                $this->sendResult($this->api->initBasket($this->request), 'basket could not be initialized');
                 break;
 
             case 'get':
-                $this->output = $this->api->getBasket();
+                $result = $this->api->getBasket();
+                if (!$result)
+                    $this->sendResult(false, 'basket not found');
+                else {
+                    $result['quantity'] = Shop::calcCardQuantity($result['basketItems']);
+                    $result['valid'] = Shop::quantityIsAllowed($result['quantity'], $this->settings, true);
+                }
+
+                $this->sendResult($result);
                 break;
 
             case 'addItem':
-                $this->output = $this->api->addItemToBasket($this->data);
+                $this->sendResult($this->api->addItemToBasket($this->request), 'item could not be added');
                 break;
 
             case 'editItem':
-                $this->output = $this->api->editItemInBasket($this->data);
+                $this->sendResult($this->api->editItemInBasket($this->request), 'item could not be updated');
                 break;
 
             case 'deleteItem':
-                $this->output = $this->api->deleteItemFromBasket($this->data['id']);
+                $this->sendResult($this->api->deleteItemFromBasket($this->request['id']), 'item could not be deleted');
                 break;
 
             case 'findPackage':
-                $this->output = $this->api->getBasketPackage();
+                $this->sendResult($this->api->getBasketPackage());
+                break;
+
+            case 'findCampaign':
+                $result = $this->api->findCampaign($this->request);
+                $campaign = Session::getValue('campaign');
+                if ($this->result && $campaign && $this->result['uuid'] == $campaign['uuid'])
+                    $this->sendResult(false, 'campaign already activated');
+                else
+                    $this->sendResult($result, 'campaign could not be resolved');
+                break;
+
+            case 'loadCampaign':
+                $result = $this->api->findCampaign($this->request);
+                if ($result) {
+                    Session::setValue('campaign', $result);
+                    $this->sendResult($result);
+                }
+                else
+                    $this->sendResult(false, 'campaign could not be resolved');
+                break;
+
+            case 'removeCampaign':
+                $this->sendResult(Session::deleteValue('campaign'), 'campaign could not be deleted');
+                break;
+
+            case 'campaignDiscount':
+                $processor = new Shop($this->api);
+                $this->sendResult($processor->campaignDiscount(), 'discount could not be fetched');
                 break;
 
             default:
-                array_push($this->errors, 'action could not be resolved');
+                $this->sendResult(false, 'action could not be resolved');
                 break;
         }
 
-        if (!$this->output)
-            array_push($this->errors, 'no result created');
     }
 
-    private function renderOutput() {
+    private function sendResult($result, $errorMessage = null) {
+
+        if (!$result) {
+            if (is_null($errorMessage))
+                $result = ['no result created'];
+            else
+                array_push($this->errors, $errorMessage);
+        }
+
         if (count($this->errors) > 0)
-            $this->sendError($this->errors);
+            Render::sendJSON([
+                'info' => 'error',
+                'errors' => $this->errors,
+                'request' => $this->request
+            ], 'error');
         else
-            $this->sendResult();
+            Render::sendJSON($result);
 
-    }
-
-    private function sendError($data) {
-        header('HTTP/1.0 400 Bad Request');
-        echo json_encode($data);
-        exit();
-    }
-
-    private function sendResult() {
-        header('HTTP/1.1 200 OK');
-        echo json_encode($this->output);
         exit();
     }
 }

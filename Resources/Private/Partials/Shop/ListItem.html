@@ -33,6 +33,36 @@
 			</div>
 		</li>
 	</f:case>
+	<f:case value="bundle">
+		<li class="item bundle" data-name="{item.name}" data-categories="{vin:categoryNames(categories:'{item.categories}')}" data-sorting="{item.topseller}-{item.sorting}" id="shop-list-item-{item.id}">
+			<div class="inner-item">
+				<div class="image">
+					<f:if condition="{item.image}">
+						<f:link.action pluginName="wines" controller="Wines" action="detail" pageUid="{settings.detailPid}" arguments="{wine:item.id}"><img src="https://api.vinou.de{item.image}?height=300"/></f:link.action>
+					</f:if>
+				</div>
+				<div class="description">
+					<h3><f:link.action pluginName="wines" controller="Wines" action="detail" pageUid="{settings.detailPid}" arguments="{wine:item.id}">{item.vintage}{f:if(condition:'{item.vintage}>0',then:' - ',else:'')}{item.name}</f:link.action></h3>
+					<f:if condition="{item.topseller}"><span class="tag">Topseller</span></f:if>
+					<f:link.action pluginName="wines" controller="Wines" action="detail" pageUid="{settings.detailPid}" arguments="{wine:item.id}" class="btn-link">Details</f:link.action>
+					<p class="small-text">{item.description -> f:format.crop(maxCharacters: 75, append: '...', respectWordBoundaries: true)}<br>
+						</p>
+					<div>
+						<form class="price-form add-item-form" method="POST">
+							<input type="hidden" name="item_id" value="{item.id}"/>
+							<input type="hidden" name="item_type" value="wine"/>
+							<div class="form-group">
+								<span class="price-form-label">Preis:</span>
+								<span class="price-form-value">{item.price -> f:format.number(decimals:2,decimalSeparator:',')} €</span>
+								<input type="number" name="quantity" class="form-control" step="1" min="1"value="1"/>
+								<button type="submit" class="add-basket"><span class="fa fa-shopping-cart"></span></button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</li>
+	</f:case>
 	<f:defaultCase>
 		<li class="item wine" data-vintage="{item.vintage}" data-place="{item.place}" data-name="{item.name}" data-type="{item.type}" data-categories="{vin:categoryNames(categories:'{item.categories}')}" data-sorting="{item.topseller}-{item.sorting}" id="shop-list-item-{item.id}">
 			<div class="inner-item">

@@ -20,6 +20,15 @@ mod.wizards.newContentElement.wizardItems {
                     list_type = vinouconnector_products
                 }
             }
+            bundles {
+                iconIdentifier = extension-vinouconnector-bundles
+                title = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.bundles.title
+                description = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.bundles.description
+                tt_content_defValues {
+                    CType = list
+                    list_type = vinouconnector_bundles
+                }
+            }
             facebook {
                 iconIdentifier = extension-vinouconnector-facebook
                 title = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.facebook.title
@@ -57,6 +66,6 @@ mod.wizards.newContentElement.wizardItems {
                 }
             }
         }
-    	show := addToList(wines,products,facebook,enquiry,shop,office)
+    	show := addToList(wines,products,bundles,facebook,enquiry,shop,office)
 	}
 }

@@ -4,17 +4,55 @@ var vinouShop = {
 	updateForms: 'form.edit-item-form',
 	deleteItemButtons: 'a.delete-basket-item',
 	quantityEditInputs: 'form.basket-edit-form input[name="quantity"]',
+	card: document.querySelector('.basket-status'),
+	campaign: {
+		hashInput: document.querySelector('input#campaign-code'),
+		check: null,
+		addButton: document.querySelector('a#add-campaign'),
+		removeButton: document.querySelector('a#remove-campaign'),
+		discount: false,
+		data: false
+	},
 	token: null,
 	dropper: null,
+	settings: {
+		minBasketSize: null,
+		packageSteps: null,
+	},
 	quantity: 0,
 	timeout: null,
 	tempquantity: 0,
-	currency: ' €',
+	temphash: '',
+	errors: {
+		minBasketSize: {
+			title: 'Mindestbestellmenge nicht erreicht',
+			description: 'Du hast noch nicht die nötige Mindestbestellmenge von <strong>###value### Flaschen</strong> im Warenkorb',
+			type: 'warning',
+			checkout: 'hidden'
+		},
+		packageSteps: {
+			title: 'Falsche Bestellmenge',
+			description: 'Die größe Deines Warenkorbes entspricht nicht unseren Versandstaffeln. <strong>Wir versenden unsere Ware nur in ###value###er Kartons</strong>.',
+			type: 'warning',
+			checkout: 'hidden'
+		}
+	},
 
 	init: function() {
 		this.bindEvents();
+		this.loadSettings();
 		this.createDropper();
-		this.updateBasketCount();
+		this.initBasket();
+	},
+
+	loadSettings: function() {
+		var ctrl = this;
+		minBasketSize = ctrl.card.getAttribute('data-minbasketsize');
+		if (minBasketSize && parseInt(minBasketSize) > 0)
+			ctrl.settings.minBasketSize = minBasketSize;
+		packageSteps = ctrl.card.getAttribute('data-packagesteps');
+		if (packageSteps && packageSteps != '')
+			ctrl.settings.packageSteps = packageSteps.split(',');
 	},
 
 	createDropper: function() {
@@ -23,8 +61,24 @@ var vinouShop = {
 		document.body.appendChild(this.dropper);
 	},
 
+	initBasket: function() {
+		var ctrl = this;
+		campaignRow = document.getElementById('campaign-row')
+		if (campaignRow && campaignRow.getAttribute('data-hash')) {
+			ctrl.basketAction('loadCampaign', {
+				hash: campaignRow.getAttribute('data-hash')
+			}, function() {
+				if (this.status === 200) {
+					ctrl.campaign.data = JSON.parse(this.responseText);
+					ctrl.updateBasketCount();
+				}
+			});
+		} else {
+			ctrl.updateBasketCount();
+		}
+	},
+
 	addItemToBasket: function(item) {
-		console.log(item);
 		var ctrl = this;
 		var detail = document.querySelector('.wine-details');
 		var listitem = document.getElementById('shop-list-item-' + item.item_id);
@@ -38,7 +92,7 @@ var vinouShop = {
 		ctrl.dropper.innerHTML = '';
 		ctrl.dropper.appendChild(image);
 
-		var offset = parent.getBoundingClientRect();
+		var offset = parent.querySelector('.add-item-form').getBoundingClientRect();
 		ctrl.dropper.style.top = parseInt(offset.top) + 'px';
 		ctrl.dropper.style.left = parseInt(offset.left) + 'px';
 
@@ -57,7 +111,7 @@ var vinouShop = {
 
 		ctrl.basketAction('addItem',postData,(function(){
 			if (this.status === 200) {
-				toast.show('Erfolgreich','Ihre Position wurde in den Warenkorb gelegt');
+				toast.show('Erfolgreich','Deine Position wurde in den Warenkorb gelegt');
 				ctrl.updateBasketCount();
 				var overlay = document.querySelector('#shop-list-item-' + item.item_id + ' .basket-overlay');
 				if (overlay) {
@@ -82,7 +136,7 @@ var vinouShop = {
 		if (row) row.setAttribute('data-status', 'hidden');
 		ctrl.basketAction('deleteItem',postData,(function(){
 			if (this.status === 200) {
-				toast.show('Erfolgreich','Ihre Position wurde gelöscht');
+				toast.show('Erfolgreich','Deine Position wurde gelöscht');
 				ctrl.updateBasketCount();
 				if (row) row.parentNode.removeChild(row);
 				var overlay = document.querySelector('#shop-list-item-' + wineid + ' .basket-overlay');
@@ -103,18 +157,18 @@ var vinouShop = {
 			var row = document.getElementById('basket-row-' + form.id);
 			if (row) {
 				var price = form.quantity * parseFloat(form.price);
-				row.querySelector('.price strong').innerHTML = price.toFixed(2).replace('.',',') + ctrl.currency;
+				row.querySelector('.price strong').innerHTML = price.toFixed(2).replace('.',',') + ' €';
 			}
 			ctrl.basketAction('editItem',postData,(function(){
 				if (this.status === 200) {
-					toast.show('Erfolgreich','Ihre Position wurde geändert');
+					toast.show('Erfolgreich','Deine Position wurde geändert');
 					ctrl.updateBasketCount();
 				}
 			}));
 		} else {
 			ctrl.basketAction('deleteItem',{id:form.id},(function(){
 				if (this.status === 200) {
-					toast.show('Erfolgreich','Ihre Position wurde gelöscht');
+					toast.show('Erfolgreich','Deine Position wurde gelöscht');
 					ctrl.updateBasketCount();
 					var row = document.getElementById('basket-row-' + form.id);
 					if (row)
@@ -126,8 +180,7 @@ var vinouShop = {
 
 	updateBasketCount: function(){
 		var ctrl = this;
-		var card = document.querySelector('.basket-status');
-		card.setAttribute('data-status','normal');
+		ctrl.card.setAttribute('data-status','normal');
 		ctrl.basketAction('get',{},(function(){
 			if (this.status == 200) {
 				response = JSON.parse(this.responseText);
@@ -135,12 +188,19 @@ var vinouShop = {
 					quantity: 0,
 					net: 0,
 					tax: 0,
-					gross: 0
+					gross: 0,
+					valid: response.valid ? response.valid : false
 				};
 
 				if (response.basketItems) {
 					response.basketItems.forEach((function(item){
-						summary.quantity += item.quantity;
+
+						if (item.item_type == 'bundle' && parseInt(item.item.package_quantity) > 0) {
+							summary.quantity += parseInt(item.quantity) * parseInt(item.item.package_quantity);
+						}
+						else
+							summary.quantity += item.quantity;
+
 
 						if (item.item.prices && item.item.prices[0]) {
 							summary.tax += item.quantity * item.item.prices[0].tax;
@@ -164,28 +224,34 @@ var vinouShop = {
 							summary.tax += 1 * response.tax;
 							summary.net += 1 * response.net;
 							summary.gross += 1 * response.gross;
-							packageGross = response.gross.replace('.',',') + ctrl.currency;
+							packageGross = response.gross.replace('.',',') + ' €';
 						} else {
-							packageGross = '0,00' + ctrl.currency;
+							packageGross = '0,00 €';
 						}
 
 						if (packagePrice)
 							packagePrice.innerHTML = packageGross;
 
-						document.querySelector('.basket-status .juwel').innerHTML = summary.quantity;
-						ctrl.quantity = summary.quantity;
-						card.setAttribute('data-status','updated');
-						ctrl.updateBasketSum(summary);
-
-						var basketTable = document.getElementById('basket-table');
-						if (basketTable && ctrl.quantity === 0) {
-							basketTable.parentNode.removeChild(basketTable);
+						if (ctrl.campaign.data) {
+							ctrl.basketAction('campaignDiscount', {
+							}, function() {
+								discount = JSON.parse(this.responseText);
+								if (this.status === 200) {
+									ctrl.campaign.discount = discount;
+									ctrl.toggleCampaignRow();
+									summary.tax += 1 * discount.tax;
+									summary.net += 1 * discount.net;
+									summary.gross += 1 * discount.gross;
+									ctrl.updateBasketSum(summary);
+								}
+							});
+						} else {
+							ctrl.toggleCampaignRow();
+							ctrl.updateBasketSum(summary);
 						}
+
 					}));
 				} else {
-					document.querySelector('.basket-status .juwel').innerHTML = summary.quantity;
-					ctrl.quantity = summary.quantity;
-					card.setAttribute('data-status','updated');
 					ctrl.updateBasketSum(summary);
 				}
 			}
@@ -194,22 +260,61 @@ var vinouShop = {
 
 	updateBasketSum: function(sum) {
 		var ctrl = this;
+		document.querySelector('.basket-status .juwel').innerHTML = sum.quantity;
+		ctrl.quantity = sum.quantity;
+		ctrl.card.setAttribute('data-status','updated');
+
 		for (var key in sum) {
 			if (sum.hasOwnProperty(key)) {
 				el = document.querySelector('#basket-table #basket-sum-' + key);
 				if (el)
-					el.innerHTML = sum[key].toFixed(2).replace('.',',') + ctrl.currency;
+					el.innerHTML = sum[key].toFixed(2).replace('.',',') + ' €';
 			}
 		}
 
-		var quantityWarning = document.getElementById('quantity-warning');
-		var basketControls = document.querySelector('.basket-controls');
+		ctrl.setBasketError(sum.valid);
 
-		if (quantityWarning && basketControls && basketControls.hasAttribute('data-minbasketsize')) {
-			var minquantity = basketControls.getAttribute('data-minbasketsize');
-			var status = sum.quantity < minquantity ? 'hidden' : 'visible';
-			quantityWarning.setAttribute('data-checkout', status);
-			basketControls.setAttribute('data-status', status);
+		var basketTable = document.getElementById('basket-table');
+		if (basketTable && ctrl.quantity === 0) {
+			basketTable.parentNode.removeChild(basketTable);
+		}
+	},
+
+	setBasketError: function(error) {
+		var ctrl = this;
+		var container = document.getElementById('basket-errors');
+		var controls = document.querySelector('.basket-controls');
+		if (container) {
+			container.innerHTML = '';
+			var status = 'visible';
+			if (ctrl.errors[error]) {
+				var message = document.createElement("P");
+				message.className = 'inline-message basket-warnings';
+				message.setAttribute('data-type', ctrl.errors[error].type);
+
+				var title = document.createElement("SPAN");
+				title.className = 'title';
+				title.innerHTML = ctrl.errors[error].title;
+				message.appendChild(title);
+
+				var setting = ctrl.settings[error];
+				var description = document.createElement("SPAN");
+				description.className = 'description';
+				if (typeof setting != 'string')
+					setting = ctrl.settings[error].join(', ');
+				description.innerHTML = ctrl.errors[error].description.replace('###value###', setting);
+
+				message.appendChild(description);
+
+				container.appendChild(message);
+				message.setAttribute('data-status', 'visible');
+
+				status = ctrl.errors[error].checkout;
+			}
+
+			if (controls)
+				controls.setAttribute('data-status', status);
+
 		}
 	},
 
@@ -218,6 +323,12 @@ var vinouShop = {
 		var request = new XMLHttpRequest();
 		request.onload = function() {
 			if (request.readyState === 4) {
+				if (request.status != 200) {
+					console.log(action);
+					console.log(data);
+					console.log(request);
+				}
+
 				switch (request.status) {
 					case 200:
 						callback.apply(request, args);
@@ -244,7 +355,7 @@ var vinouShop = {
 		if (ctrl.quantity === 0) {
 			new vDialog({
 				title: 'Altersabfrage',
-				description: 'Gerne liefern wir Ihnen Ihre Weine. Bitte bestätigen Sie uns, dass Sie dafür die notwendigen Altersbeschränkungen erfüllen.',
+				description: 'Gerne liefern wir Dir Deine Weine. Bitte bestätige uns, dass Du dafür die notwendigen Altersbeschränkungen erfüllst.',
 				yes: 'Ja, ich bin 18',
 				no: 'Abbrechen',
 				ok: function() {
@@ -278,7 +389,7 @@ var vinouShop = {
 			var addButton = addForms[i].querySelector('.add-basket');
 			addButton.addEventListener('click',function(event) {
 				event.preventDefault();
-				ctrl.submitAddForm(this.form);
+				ctrl.submitAddForm(this.parentNode);
 			});
 		}
 
@@ -370,20 +481,143 @@ var vinouShop = {
 				}
 			}));
 		}
+
+		if (ctrl.campaign.hashInput) {
+			ctrl.campaign.hashInput.addEventListener('input', function(event) {
+				ctrl.setCampaignTimeout(this);
+			});
+		}
+
+		if (ctrl.campaign.addButton) {
+			ctrl.campaign.addButton.addEventListener('click', function(event) {
+				event.preventDefault();
+				ctrl.addCampaign();
+				return false;
+			});
+		}
+
+		if (ctrl.campaign.removeButton) {
+			ctrl.campaign.removeButton.addEventListener('click', function(event) {
+				event.preventDefault();
+				ctrl.removeCampaign();
+				return false;
+			});
+		}
 	},
 
 	setUpdateTimeout: function(field) {
 		var ctrl = this;
-		if (ctrl.timeout) {
-			clearTimeout(ctrl.timeout);
-			ctrl.timeout = null;
-		}
+		clearTimeout(ctrl.timeout);
 		ctrl.timeout = setTimeout(function(){
 			if (ctrl.tempquantity != field.value && field.value > 0) {
 				ctrl.tempquantity = null;
 				ctrl.updateBasketItem(ctrl.serializeForm(field.form));
 			}
-		}, 500);
+		}, 250);
+	},
+
+	setCampaignTimeout: function(field) {
+		var ctrl = this;
+		clearTimeout(ctrl.campaign.check);
+		ctrl.campaign.check = setTimeout(function(){
+			if (ctrl.temphash != field.value && field.value != '') {
+				ctrl.temphash = field.value;
+				ctrl.basketAction('findCampaign', {
+					hash: field.value
+				}, function(){
+					campaign = JSON.parse(this.responseText);
+					if (this.status == 200) {
+						ctrl.campaign.data = campaign;
+						ctrl.campaign.addButton.setAttribute('data-status', 'enabled');
+					}
+					else
+						ctrl.campaign.addButton.setAttribute('data-status', 'disabled');
+				});
+			}
+		}, 750);
+	},
+
+	addCampaign: function() {
+		var ctrl = this;
+		var hash = ctrl.campaign.hashInput ? ctrl.campaign.hashInput.value : false;
+		if (!hash)
+			return false;
+
+		ctrl.basketAction('loadCampaign', {
+			hash: hash
+		}, function() {
+			if (this.status === 200) {
+				toast.show('Erfolgreich','Die Kampagne wurde erfolgreich aktiviert');
+
+				var data = JSON.parse(this.responseText);
+				if (data.rebate_type == 'absolute') {
+					data.net = -1 * data.net;
+					data.tax = -1 * data.tax;
+					data.gross = -1 * data.gross;
+				}
+
+				ctrl.campaign.data = data;
+				ctrl.updateBasketCount();
+			}
+		});
+	},
+
+	removeCampaign: function() {
+		var ctrl = this;
+		ctrl.campaign.data = false;
+		ctrl.campaign.discount = false;
+		ctrl.basketAction('removeCampaign', {
+		}, function() {
+			if (this.status === 200) {
+				ctrl.updateBasketCount();
+			}
+
+		});
+	},
+
+	toggleCampaignRow: function() {
+		var ctrl = this;
+		var row = document.getElementById('campaign-row');
+		var properties = [
+			{field: 'name'},
+			{field: 'hash'},
+			{field: 'id'},
+			{field: 'gross'},
+			{field: 'description'},
+			{field: 'gross', target: 'attribute'},
+			{field: 'hash', target: 'attribute'}
+		];
+
+		if (!row)
+			return false;
+
+		properties.forEach(function(property){
+			var field = property.field;
+			var target = row.querySelector('[data-property="campaign-' + field + '"]');
+
+			if (field == 'description');
+				console.log(target);
+
+
+			if (field == 'gross')
+				var value = ctrl.campaign.discount[field] ? ctrl.campaign.discount[field].replace('.',',') + ' €'  : '';
+			else
+				var value = ctrl.campaign.data[field] ? ctrl.campaign.data[field] : '';
+
+			if (property.target == 'attribute') {
+				target = row;
+				if (target) {
+					row.setAttribute('data-' + field, value);
+				}
+			}
+
+			else if (target) {
+				target.innerHTML = value;
+			}
+		});
+
+		row.setAttribute('data-status', !ctrl.campaign.data ? 'hidden' : 'visible');
+		return true;
 	},
 
 	serializeForm: function(form){

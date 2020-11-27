@@ -6,6 +6,9 @@
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY,'Configuration/TypoScript/Config','Vinou Connector - Config');
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY,'Configuration/TypoScript/Styles','Vinou Connector - Styles');
 
+	$iconRegistry =
+        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
+
 	/*
 	 * Wines
 	 */
@@ -13,7 +16,7 @@
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 		$_EXTKEY,
 		'Wines',
-		'Vinou Weinliste',
+		'LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.wines.title',
 		'EXT:vinou_connector/Resources/Public/Icons/wines.svg'
 	);
 
@@ -22,8 +25,6 @@
 	$TCA['tt_content']['types']['list']['subtypes_addlist'][$wines] = 'pi_flexform';
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($wines, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/Wines.xml');
 
-    $iconRegistry =
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
     $iconRegistry->registerIcon(
         'extension-vinouconnector-wines',
         \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
@@ -38,7 +39,7 @@
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 		$_EXTKEY,
 		'Products',
-		'Vinou Produkte',
+		'LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.products.title',
 		'EXT:vinou_connector/Resources/Public/Icons/products.svg'
 	);
 
@@ -47,12 +48,33 @@
 	$TCA['tt_content']['types']['list']['subtypes_addlist'][$products] = 'pi_flexform';
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($products, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/Products.xml');
 
-    $iconRegistry =
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
     $iconRegistry->registerIcon(
         'extension-vinouconnector-products',
         \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
         ['source' => 'EXT:vinou_connector/Resources/Public/Icons/products.svg']
+    );
+
+
+    /*
+	 * Bundles
+	 */
+
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+		$_EXTKEY,
+		'Bundles',
+		'LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.bundles.title',
+		'EXT:vinou_connector/Resources/Public/Icons/bundles.svg'
+	);
+
+	// Add Flexform for Plugin Wines
+	$bundles = str_replace('_','',$_EXTKEY) . '_bundles';
+	$TCA['tt_content']['types']['list']['subtypes_addlist'][$bundles] = 'pi_flexform';
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($bundles, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/Bundles.xml');
+
+    $iconRegistry->registerIcon(
+        'extension-vinouconnector-bundles',
+        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        ['source' => 'EXT:vinou_connector/Resources/Public/Icons/bundles.svg']
     );
 
     /*
@@ -62,7 +84,7 @@
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 		$_EXTKEY,
 		'Facebook',
-		'Vinou Facebook',
+		'LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.facebook.title',
 		'EXT:vinou_connector/Resources/Public/Icons/facebook.svg'
 	);
 
@@ -71,8 +93,6 @@
 	$TCA['tt_content']['types']['list']['subtypes_addlist'][$facebook] = 'pi_flexform';
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($facebook, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/Facebook.xml');
 
-    $iconRegistry =
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
     $iconRegistry->registerIcon(
         'extension-vinouconnector-facebook',
         \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
@@ -87,7 +107,7 @@
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 		$_EXTKEY,
 		'Enquiry',
-		'Vinou Anfrageformular',
+		'LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.enquiry.title',
 		'EXT:vinou_connector/Resources/Public/Icons/enquiry.svg'
 	);
 
@@ -110,7 +130,7 @@
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 		$_EXTKEY,
 		'Shop',
-		'Vinou Shop',
+		'LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.shop.title',
 		'EXT:vinou_connector/Resources/Public/Icons/shop.svg'
 	);
 
@@ -133,7 +153,7 @@
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 		$_EXTKEY,
 		'Office',
-		'Vinou Office',
+		'LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.office.title',
 		'EXT:vinou_connector/Resources/Public/Icons/office.svg'
 	);
 
@@ -142,8 +162,6 @@
 	$TCA['tt_content']['types']['list']['subtypes_addlist'][$office] = 'pi_flexform';
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($office, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/Office.xml');
 
-    $iconRegistry =
-        \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
     $iconRegistry->registerIcon(
         'extension-vinouconnector-office',
         \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,

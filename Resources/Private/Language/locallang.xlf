@@ -15,6 +15,12 @@
 			<trans-unit id="be.products.description">
 				<source>Display products from Vinou as list or detail</source>
 			</trans-unit>
+			<trans-unit id="be.bundles.title">
+				<source>Bundles</source>
+			</trans-unit>
+			<trans-unit id="be.bundles.description">
+				<source>Display bundles from Vinou as list or detail</source>
+			</trans-unit>
 			<trans-unit id="be.facebook.title">
 				<source>Facebook-Content</source>
 			</trans-unit>
@@ -456,6 +462,37 @@
 				<source>Template</source>
 			</trans-unit>
 
+			<trans-unit id="flexform.bundles.general">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.mode">
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.mode.list">
+				<source>List all bundles</source>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.mode.detail">
+				<source>Show bundle details</source>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.itemsPerRow">
+				<source>Items in one Row</source>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.detailPid">
+				<source>Bundle detail page</source>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.backPid">
+				<source>Back to page</source>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.template">
+				<source>Layout</source>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.template.default">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.templateLayout">
+				<source>Template</source>
+			</trans-unit>
+
 			<trans-unit id="flexform.facebook.general">
 				<source>General</source>
 			</trans-unit>
@@ -544,7 +581,7 @@
 				<source>Mode</source>
 			</trans-unit>
 			<trans-unit id="flexform.shop.mode.list">
-				<source>Winelist</source>
+				<source>List of shop articles</source>
 			</trans-unit>
 			<trans-unit id="flexform.shop.mode.basket">
 				<source>Basket</source>
@@ -594,11 +631,20 @@
 			<trans-unit id="flexform.shop.showTypes.products">
 				<source>Products</source>
 			</trans-unit>
+			<trans-unit id="flexform.shop.showTypes.bundles">
+				<source>Bundles</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.pages">
+				<source>Pages</source>
+			</trans-unit>
 			<trans-unit id="flexform.shop.detailPid">
 				<source>Wine detail page</source>
 			</trans-unit>
 			<trans-unit id="flexform.shop.productPid">
 				<source>Product detail page</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.bundlePid">
+				<source>Bundle detail page</source>
 			</trans-unit>
 			<trans-unit id="flexform.shop.backPid">
 				<source>Back to Page</source>

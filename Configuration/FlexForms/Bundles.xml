@@ -1,0 +1,104 @@
+<T3DataStructure>
+    <meta>
+    <langDisable>1</langDisable>
+    </meta>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.general</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <switchableControllerActions>
+                        <TCEforms>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.mode</label>
+                            <onChange>reload</onChange>
+                            <config>
+                                <type>select</type>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.mode.list</numIndex>
+                                        <numIndex index="1">Bundles->list;Bundles->detail;</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.mode.detail</numIndex>
+                                        <numIndex index="1">Bundles->detail;Bundles->list;</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </switchableControllerActions>
+                    <settings.itemsPerRow>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Bundles->list;Bundles->detail;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.itemsPerRow</label>
+                            <config>
+                              <type>input</type>
+                              <size>10</size>
+                              <max>2</max>
+                              <eval>trim,int</eval>
+                            </config>
+                        </TCEforms>
+                    </settings.itemsPerRow>
+                    <settings.detailPid>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Bundles->list;Bundles->detail;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.detailPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.detailPid>
+                    <settings.backPid>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Bundles->detail;Bundles->list;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.backPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.backPid>
+                </el>
+            </ROOT>
+        </sDEF>
+        <template>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.template</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <settings.templateLayout>
+                        <TCEforms>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.templateLayout</label>
+                            <config>
+                                <type>select</type>
+                                <itemsProcFunc>Vinou\VinouConnector\Hooks\WinesFlexForm->user_templateLayout</itemsProcFunc>
+                                <renderType>selectSingle</renderType>
+                                <items>
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.template.default</numIndex>
+                                        <numIndex index="1"></numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.templateLayout>
+                </el>
+            </ROOT>
+        </template>
+    </sheets>
+</T3DataStructure>

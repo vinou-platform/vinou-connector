@@ -4,48 +4,56 @@
 		<header/>
 		<body>
 			<trans-unit id="be.wines.title">
-				<source>Wines</source>
-				<target>Weine</target>
+				<source>Wines (Vinou)</source>
+				<target>Weine (Vinou)</target>
 			</trans-unit>
 			<trans-unit id="be.wines.description">
 				<source>Display wines from Vinou as list or detail</source>
 				<target>Zeigt die Vinou-Weine als Weinliste oder Detailansicht</target>
 			</trans-unit>
 			<trans-unit id="be.products.title">
-				<source>Products</source>
-				<target>Produkte</target>
+				<source>Products (Vinou)</source>
+				<target>Produkte (Vinou)</target>
 			</trans-unit>
 			<trans-unit id="be.products.description">
 				<source>Display products from Vinou as list or detail</source>
 				<target>Zeigt die Produkte aus Vinou als Liste oder Detailansicht</target>
 			</trans-unit>
+			<trans-unit id="be.bundles.title">
+				<source>Bundles (Vinou)</source>
+				<target>Weinpakete (Vinou)</target>
+			</trans-unit>
+			<trans-unit id="be.bundles.description">
+				<source>Display bundles from Vinou as list or detail</source>
+				<target>Zeigt die Weinpakete aus Vinou als Liste oder Detailansicht</target>
+			</trans-unit>
 			<trans-unit id="be.facebook.title">
-				<source>Facebook-Content</source>
-				<target>Facebook-Inhalte</target>
+				<source>Facebook-Content (Vinou)</source>
+				<target>Facebook-Inhalte (Vinou)</target>
 			</trans-unit>
 			<trans-unit id="be.facebook.description">
 				<source>Creates a plugin that shows events or feed of a special facebook page</source>
 				<target>Zeigt Veranstaltungen und News-Feed einer Facebook-Seite an</target>
 			</trans-unit>
 			<trans-unit id="be.enquiry.title">
-				<source>Enquiry</source>
-				<target>Anfrageformular</target>
+				<source>Enquiry (Vinou)</source>
+				<target>Anfrageformular (Vinou)</target>
 			</trans-unit>
 			<trans-unit id="be.enquiry.description">
 				<source>Display an enquiry form an submit enquiry via mail</source>
 				<target>Zeigt ein Anfrageformular und sendet die Anfrage per mail</target>
 			</trans-unit>
 			<trans-unit id="be.shop.title">
-				<source>Shop</source>
-				<target>Shop</target>
+				<source>Shop (Vinou)</source>
+				<target>Shop (Vinou)</target>
 			</trans-unit>
 			<trans-unit id="be.shop.description">
 				<source>Show basket, orderform and finish action for vinou wines</source>
 				<target>Zeigt Warenkorn, Bestellformular, Zahlungsmethoden und Checkout action für Vinou-Weine</target>
 			</trans-unit>
 			<trans-unit id="be.office.title">
-				<source>Vinou-Office</source>
-				<target>Vinou-Office</target>
+				<source>Vinou-Office (Vinou)</source>
+				<target>Vinou-Office (Vinou)</target>
 			</trans-unit>
 			<trans-unit id="be.office.description">
 				<source>Show special plugins for Vinou-Office for example registration form.</source>
@@ -603,6 +611,47 @@
 				<target>Vorlage wählen</target>
 			</trans-unit>
 
+			<trans-unit id="flexform.bundles.general">
+				<source>Settings</source>
+				<target>Einstellungen</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.mode">
+				<source>Mode</source>
+				<target>Modus</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.mode.list">
+				<source>List all bundles</source>
+				<target>Listenansicht</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.mode.detail">
+				<source>Show bundle details</source>
+				<target>Weinpaketdetails</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.itemsPerRow">
+				<source>Items in one row</source>
+				<target>Anzahl Weinpakete in einer Zeile</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.detailPid">
+				<source>Bundle detail page</source>
+				<target>Detailseite</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.backPid">
+				<source>Back to page</source>
+				<target>Zurück zu Seite</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.template">
+				<source>Layout</source>
+				<target>Layout</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.template.default">
+				<source>Default</source>
+				<target>Standard</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.templateLayout">
+				<source>Template</source>
+				<target>Vorlage wählen</target>
+			</trans-unit>
+
 			<trans-unit id="flexform.facebook.general">
 				<source>General</source>
 				<target>Allgemein</target>
@@ -718,8 +767,8 @@
 				<target>Modus</target>
 			</trans-unit>
 			<trans-unit id="flexform.shop.mode.list">
-				<source>Winelist</source>
-				<target>Weinliste</target>
+				<source>List of shop articles</source>
+				<target>Artikelliste</target>
 			</trans-unit>
 			<trans-unit id="flexform.shop.mode.basket">
 				<source>Basket</source>
@@ -741,6 +790,10 @@
 				<source>Cancel Paypal</source>
 				<target>Paypal-Bestellung abbrechen</target>
 			</trans-unit>
+			<trans-unit id="flexform.shop.pages">
+				<source>Pages</source>
+				<target>Seiten</target>
+			</trans-unit>
 			<trans-unit id="flexform.shop.detailPid">
 				<source>Wine detail page</source>
 				<target>Wein-Detailseite</target>
@@ -748,6 +801,10 @@
 			<trans-unit id="flexform.shop.productPid">
 				<source>Product detail page</source>
 				<target>Produkt-Detailseite</target>
+			</trans-unit>
+			<trans-unit id="flexform.shop.bundlePid">
+				<source>Bundle detail page</source>
+				<target>Weinpaket-Detailseite</target>
 			</trans-unit>
 			<trans-unit id="flexform.shop.clusters">
 				<source>Filter options</source>
@@ -792,6 +849,10 @@
 			<trans-unit id="flexform.shop.showTypes.products">
 				<source>Products</source>
 				<target>Produkte</target>
+			</trans-unit>
+			<trans-unit id="flexform.shop.showTypes.bundles">
+				<source>Bundles</source>
+				<target>Weinpakete</target>
 			</trans-unit>
 			<trans-unit id="flexform.shop.backPid">
 				<source>Back to Page</source>

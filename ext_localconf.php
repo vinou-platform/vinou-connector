@@ -37,6 +37,21 @@
 	);
 
 	/**
+     * plugin for bundles actions
+     */
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+		'Vinou.'.$_EXTKEY,
+		'Bundles',
+		array(
+			'Bundles' => 'list, detail',
+		),
+		// non-cacheable actions
+		array(
+			'Bundles' => 'list, detail',
+		)
+	);
+
+	/**
      * plugin for facebook actions
      */
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(

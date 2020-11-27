@@ -91,8 +91,7 @@
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.showTypes</label>
                             <config>
                                 <type>select</type>
-                                <renderType>selectCheckBox</renderType>
-                                <default>wines</default>
+                                <renderType>selectMultipleSideBySide</renderType>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.showTypes.wines</numIndex>
@@ -101,6 +100,10 @@
                                     <numIndex index="1" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.showTypes.products</numIndex>
                                         <numIndex index="1">products</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2" type="array">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.showTypes.bundles</numIndex>
+                                        <numIndex index="1">bundles</numIndex>
                                     </numIndex>
                                 </items>
                             </config>
@@ -177,13 +180,23 @@
                             </config>
                         </TCEforms>
                     </settings.sortDirection>
+                </el>
+            </ROOT>
+        </sDEF>
+        <pages>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.pages</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
                     <settings.detailPid>
                         <TCEforms>
                             <displayCond>
                                 <OR>
-                                    <numIndex index="0">FIELD:switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;Shop->list;</numIndex>
-                                    <numIndex index="1">FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
-                                    <numIndex index="2">FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+                                    <numIndex index="0">FIELD:sDEF.switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;Shop->list;</numIndex>
+                                    <numIndex index="1">FIELD:sDEF.switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
+                                    <numIndex index="2">FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
                                 </OR>
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.detailPid</label>
@@ -202,9 +215,9 @@
                         <TCEforms>
                             <displayCond>
                                 <OR>
-                                    <numIndex index="0">FIELD:switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;Shop->list;</numIndex>
-                                    <numIndex index="1">FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
-                                    <numIndex index="2">FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+                                    <numIndex index="0">FIELD:sDEF.switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;Shop->list;</numIndex>
+                                    <numIndex index="1">FIELD:sDEF.switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
+                                    <numIndex index="2">FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
                                 </OR>
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.productPid</label>
@@ -219,6 +232,27 @@
                             </config>
                         </TCEforms>
                     </settings.productPid>
+                    <settings.bundlePid>
+                        <TCEforms>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:sDEF.switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;Shop->list;</numIndex>
+                                    <numIndex index="1">FIELD:sDEF.switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
+                                    <numIndex index="2">FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+                                </OR>
+                            </displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.bundlePid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.bundlePid>
                     <settings.backPid>
                         <TCEforms>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.backPid</label>
@@ -235,7 +269,7 @@
                     </settings.backPid>
                     <settings.basketPid>
                         <TCEforms>
-                            <displayCond>FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</displayCond>
+                            <displayCond>FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.basketPid</label>
                             <config>
                                 <type>group</type>
@@ -250,7 +284,7 @@
                     </settings.basketPid>
                     <settings.orderPid>
                         <TCEforms>
-                            <displayCond>FIELD:switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;Shop->list;</displayCond>
+                            <displayCond>FIELD:sDEF.switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;Shop->list;</displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.orderPid</label>
                             <config>
                                 <type>group</type>
@@ -265,7 +299,7 @@
                     </settings.orderPid>
                     <settings.finishPid>
                         <TCEforms>
-                            <displayCond>FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</displayCond>
+                            <displayCond>FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.finishPid</label>
                             <config>
                                 <type>group</type>
@@ -282,8 +316,8 @@
                         <TCEforms>
                             <displayCond>
                                 <OR>
-                                    <numIndex index="0">FIELD:switchableControllerActions:=:Shop->finish;Shop->list;Shop->basket;Shop->order;</numIndex>
-                                    <numIndex index="1">FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+                                    <numIndex index="0">FIELD:sDEF.switchableControllerActions:=:Shop->finish;Shop->list;Shop->basket;Shop->order;</numIndex>
+                                    <numIndex index="1">FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
                                 </OR>
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.finishPaypalPid</label>
@@ -302,8 +336,8 @@
                         <TCEforms>
                             <displayCond>
                                 <OR>
-                                    <numIndex index="0">FIELD:switchableControllerActions:=:Shop->finish;Shop->list;Shop->basket;Shop->order;</numIndex>
-                                    <numIndex index="1">FIELD:switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+                                    <numIndex index="0">FIELD:sDEF.switchableControllerActions:=:Shop->finish;Shop->list;Shop->basket;Shop->order;</numIndex>
+                                    <numIndex index="1">FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
                                 </OR>
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.cancelPaypalPid</label>
@@ -320,7 +354,7 @@
                     </settings.cancelPaypalPid>
                 </el>
             </ROOT>
-        </sDEF>
+        </pages>
         <template>
             <ROOT>
                 <TCEforms>

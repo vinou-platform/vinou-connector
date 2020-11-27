@@ -163,7 +163,62 @@ plugin.tx_vinouconnector_products {
 	}
 }
 
-module.tx_vinouconnector_products < plugin.tx_vinouconnector_products
+module.tx_vinouconnector_bundles < plugin.tx_vinouconnector_bundles
+
+plugin.tx_vinouconnector_bundles {
+	view {
+		templateRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Templates/
+			1 = {$plugin.tx_vinouconnector_bundles.view.templateRootPath}
+		}
+		partialRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Partials/
+			1 = {$plugin.tx_vinouconnector_bundles.view.partialRootPath}
+		}
+		layoutRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Layouts/
+			1 = {$plugin.tx_vinouconnector_bundles.view.layoutRootPath}
+		}
+	}
+
+	settings {
+		list {
+			regular {
+				image {
+					maxWidth = 100
+					maxHeight = 200
+				}
+				text {
+					crop = 150
+					append = ...
+				}
+			}
+			slider {
+				image {
+					maxWidth = 150
+					maxHeight = 400
+				}
+				text {
+					crop = 100
+					append = ...
+				}
+			}
+		}
+
+		detail {
+			image {
+				maxWidth = 200
+				maxHeight = 600
+			}
+		}
+	}
+
+	persistence {
+		storagePid = 1
+	}
+}
+
+module.tx_vinouconnector_bundles < plugin.tx_vinouconnector_bundles
 
 plugin.tx_vinouconnector_facebook {
 	view {
@@ -266,6 +321,8 @@ plugin.tx_vinouconnector_shop {
 			default = prepaid
 		}
 		mandatorySign = *
+		minBasketSize = 1
+		# packageSteps = 6,12,18,24,30
 		manualFilter {
 			type {
 				10 = secco
