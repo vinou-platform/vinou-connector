@@ -186,6 +186,7 @@ var vinouShop = {
 				response = JSON.parse(this.responseText);
 				var summary = {
 					quantity: 0,
+					bottles: 0,
 					net: 0,
 					tax: 0,
 					gross: 0,
@@ -197,10 +198,14 @@ var vinouShop = {
 
 						if (item.item_type == 'bundle' && parseInt(item.item.package_quantity) > 0) {
 							summary.quantity += parseInt(item.quantity) * parseInt(item.item.package_quantity);
+							summary.bottles += parseInt(item.quantity) * parseInt(item.item.package_quantity);
 						}
-						else
-							summary.quantity += item.quantity;
+						else {
+							if (item.item_type == 'wine')
+								summary.bottles += item.quantity;
 
+							summary.quantity += item.quantity;
+						}
 
 						if (item.item.prices && item.item.prices[0]) {
 							summary.tax += item.quantity * item.item.prices[0].tax;
@@ -215,7 +220,7 @@ var vinouShop = {
 
 					ctrl.basketAction('findPackage',{
 						type: 'bottles',
-						quantity: summary.quantity
+						quantity: summary.bottles
 					},(function(){
 						response = JSON.parse(this.responseText);
 						packagePrice = document.querySelector('#package-row .package-price');

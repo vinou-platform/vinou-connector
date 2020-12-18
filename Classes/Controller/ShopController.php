@@ -627,14 +627,21 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			'tax' => 0,
 			'gross' => 0,
 			'quantity' => 0,
+			'bottles' => 0
 		];
 
 		foreach ($items as $item) {
 
-			if ($item['item_type'] == 'bundle')
+			if ($item['item_type'] == 'bundle'){
                 $summary['quantity'] += $item['quantity'] * $item['item']['package_quantity'];
-            else
+                $summary['bottles'] += $item['quantity'] * $item['item']['package_quantity'];
+			}
+            else {
+            	if ($item['item_type'] == 'wine')
+            		$summary['bottles'] += $item['quantity'];
+
                 $summary['quantity'] += $item['quantity'];
+            }
 
 			if (isset($item['item']['price'])) {
 				$summary['gross'] += ($item['quantity'] * $item['item']['price']);
@@ -643,7 +650,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			}
 		}
 
-		$package = $this->api->findPackage('bottles',$summary['quantity']);
+		$package = $this->api->findPackage('bottles',$summary['bottles']);
 		$items[] = [
 			'item_type' => 'package',
 			'item_id' => $package['id'],
