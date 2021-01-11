@@ -27,14 +27,6 @@
 				<source>Display bundles from Vinou as list or detail</source>
 				<target>Zeigt die Weinpakete aus Vinou als Liste oder Detailansicht</target>
 			</trans-unit>
-			<trans-unit id="be.facebook.title">
-				<source>Facebook-Content (Vinou)</source>
-				<target>Facebook-Inhalte (Vinou)</target>
-			</trans-unit>
-			<trans-unit id="be.facebook.description">
-				<source>Creates a plugin that shows events or feed of a special facebook page</source>
-				<target>Zeigt Veranstaltungen und News-Feed einer Facebook-Seite an</target>
-			</trans-unit>
 			<trans-unit id="be.enquiry.title">
 				<source>Enquiry (Vinou)</source>
 				<target>Anfrageformular (Vinou)</target>
@@ -650,31 +642,6 @@
 			<trans-unit id="flexform.bundles.templateLayout">
 				<source>Template</source>
 				<target>Vorlage wählen</target>
-			</trans-unit>
-
-			<trans-unit id="flexform.facebook.general">
-				<source>General</source>
-				<target>Allgemein</target>
-			</trans-unit>
-			<trans-unit id="flexform.facebook.mode">
-				<source>Mode</source>
-				<target>Modus</target>
-			</trans-unit>
-			<trans-unit id="flexform.facebook.mode.events">
-				<source>Events</source>
-				<target>Veranstaltungen</target>
-			</trans-unit>
-			<trans-unit id="flexform.facebook.mode.feed">
-				<source>Feed</source>
-				<target>Feed</target>
-			</trans-unit>
-			<trans-unit id="flexform.facebook.pageId">
-				<source>ID of Facebook-Page</source>
-				<target>ID der Facebook-Seite</target>
-			</trans-unit>
-			<trans-unit id="flexform.facebook.limit">
-				<source>Limit of entries to show</source>
-				<target>Maximale Anzahl der Beiträge</target>
 			</trans-unit>
 
 			<trans-unit id="flexform.enquiry.general">

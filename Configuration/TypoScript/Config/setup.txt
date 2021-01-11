@@ -220,34 +220,6 @@ plugin.tx_vinouconnector_bundles {
 
 module.tx_vinouconnector_bundles < plugin.tx_vinouconnector_bundles
 
-plugin.tx_vinouconnector_facebook {
-	view {
-		templateRootPaths {
-			0 = EXT:vinou_connector/Resources/Private/Templates/
-			1 = {$plugin.tx_vinouconnector_facebook.view.templateRootPath}
-		}
-		partialRootPaths {
-			0 = EXT:vinou_connector/Resources/Private/Partials/
-			1 = {$plugin.tx_vinouconnector_facebook.view.partialRootPath}
-		}
-		layoutRootPaths {
-			0 = EXT:vinou_connector/Resources/Private/Layouts/
-			1 = {$plugin.tx_vinouconnector_facebook.view.layoutRootPath}
-		}
-	}
-	settings {
-		limit = 10
-		feed {
-			image {
-				width = 400
-				height = 400
-			}
-		}
-	}
-}
-
-module.tx_vinouconnector_facebook < plugin.tx_vinouconnector_facebook
-
 plugin.tx_vinouconnector_enquiry {
 	view {
 		templateRootPaths {

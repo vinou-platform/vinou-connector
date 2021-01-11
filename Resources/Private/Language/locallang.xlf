@@ -21,12 +21,6 @@
 			<trans-unit id="be.bundles.description">
 				<source>Display bundles from Vinou as list or detail</source>
 			</trans-unit>
-			<trans-unit id="be.facebook.title">
-				<source>Facebook-Content</source>
-			</trans-unit>
-			<trans-unit id="be.facebook.description">
-				<source>Creates a plugin that shows events or feed of a special facebook page</source>
-			</trans-unit>
 			<trans-unit id="be.enquiry.title">
 				<source>Enquiry</source>
 			</trans-unit>
@@ -491,25 +485,6 @@
 			</trans-unit>
 			<trans-unit id="flexform.bundles.templateLayout">
 				<source>Template</source>
-			</trans-unit>
-
-			<trans-unit id="flexform.facebook.general">
-				<source>General</source>
-			</trans-unit>
-			<trans-unit id="flexform.facebook.mode">
-				<source>Mode</source>
-			</trans-unit>
-			<trans-unit id="flexform.facebook.mode.events">
-				<source>Events</source>
-			</trans-unit>
-			<trans-unit id="flexform.facebook.mode.feed">
-				<source>Feed</source>
-			</trans-unit>
-			<trans-unit id="flexform.facebook.pageId">
-				<source>ID of Facebook-Page</source>
-			</trans-unit>
-			<trans-unit id="flexform.facebook.limit">
-				<source>Limit of entries to show</source>
 			</trans-unit>
 
 			<trans-unit id="flexform.enquiry.general">

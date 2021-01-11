@@ -77,28 +77,6 @@
         ['source' => 'EXT:vinou_connector/Resources/Public/Icons/bundles.svg']
     );
 
-    /*
-	 * Facebook
-	 */
-
-	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-		$_EXTKEY,
-		'Facebook',
-		'LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.facebook.title',
-		'EXT:vinou_connector/Resources/Public/Icons/facebook.svg'
-	);
-
-	// Add Flexform for Plugin Wines
-	$facebook = str_replace('_','',$_EXTKEY) . '_facebook';
-	$TCA['tt_content']['types']['list']['subtypes_addlist'][$facebook] = 'pi_flexform';
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($facebook, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/Facebook.xml');
-
-    $iconRegistry->registerIcon(
-        'extension-vinouconnector-facebook',
-        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        ['source' => 'EXT:vinou_connector/Resources/Public/Icons/facebook.svg']
-    );
-
 
     /*
 	 * Enquiry

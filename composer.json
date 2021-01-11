@@ -19,7 +19,6 @@
     ],
     "require": {
         "typo3/cms-core": ">=8.7.0,<9.0",
-        "facebook/graph-sdk": "*",
         "vinou/api-connector": "2.*",
         "vinou/translations": "3.1.*"
     },
