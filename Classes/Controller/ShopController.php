@@ -7,7 +7,6 @@ use \TYPO3\CMS\Core\Utility\PathUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use \Vinou\VinouConnector\Utility\PaypalUtility;#
 use \Vinou\ApiConnector\Api;
 use \Vinou\ApiConnector\Session\Session;
 
@@ -58,8 +57,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected $errors = [];
 	protected $messages = [];
 
-	protected $paypalToken = '';
-
 	protected $paymentType = 'prepaid';
 	protected $payments = [];
 	protected $paymentView = TRUE;
@@ -107,7 +104,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		];
 
 		$this->getPaymentMethods();
-		$this->paypalToken = PaypalUtility::getPaypalToken($this->extConf['clientId'],$this->extConf['secret'],$this->extConf['mode']);
 
 		$dev = false;
 	    if ($this->extConf['vinouMode'] == 'dev') {

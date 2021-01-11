@@ -53,8 +53,6 @@ class EnquiryController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	protected $errors = [];
 	protected $messages = [];
 
-	protected $paypalToken = '';
-
 	protected $paymentType = 'prepaid';
 	protected $payments = [];
 	protected $paymentView = TRUE;
