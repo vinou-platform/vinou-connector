@@ -1,0 +1,27 @@
+{namespace vin=Vinou\VinouConnector\ViewHelpers}
+<f:layout name="Bundles" />
+
+<f:section name="main">
+	<div class="vinou-bundle-details">
+		<h1>{bundle.name}</h1>
+		<div class="overview">
+			<div class="image">
+				<f:image src="{vin:CacheApiImage(image:bundle.image,tstamp:bundle.chstamp)}" maxWidth="{settings.detail.image.maxWidth}" maxHeight="{settings.detail.image.maxHeight}"/>
+			</div>
+			<div class="description">
+				<f:if condition="{bundle.description}">
+					<f:then>
+						<p>{bundle.description -> f:format.nl2br()}</p>
+					</f:then>
+				</f:if>
+				<p>
+					<f:if condition="{backPid}">
+						<f:then>
+							<f:link.page pageUid="{backPid}" class="vinou-button back"><f:translate key="detail.back"/></f:link.page>
+						</f:then>
+					</f:if>
+				</p>
+			</div>
+		</div>
+	</div>
+</f:section>

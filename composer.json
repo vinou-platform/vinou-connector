@@ -1,7 +1,7 @@
 {
     "name": "vinou/vinou-connector",
     "type": "typo3-cms-extension",
-    "version": "5.1.3",
+    "version": "5.5.0",
     "description": "Extension that provides a connection for vinou.de and display wines and winelists via fluid templates",
     "keywords": [
         "TYPO3",
@@ -19,33 +19,12 @@
     ],
     "require": {
         "typo3/cms-core": ">=8.7.0,<9.0",
-        "facebook/graph-sdk": "*",
-        "vinou/api-connector": ">=1.1.4",
-        "vinou/translations": "2.*"
-    },
-    "repositories": [
-        {
-            "url": "git@git.vinou.de:utilities/api-connector.git",
-            "type": "vcs"
-        },
-        {
-            "url": "git@git.vinou.de:libraries/translations.git",
-            "type": "vcs"
-        }
-    ],
-    "config": {
-        "vendor-dir": ".Build/vendor",
-        "bin-dir": ".Build/bin"
+        "vinou/api-connector": "2.*",
+        "vinou/translations": "3.1.*"
     },
     "autoload": {
         "psr-4": {
             "Vinou\\VinouConnector\\": "Classes"
-        }
-    },
-    "extra": {
-        "typo3/cms": {
-            "cms-package-dir": "{$vendor-dir}/typo3/cms",
-            "web-dir": ".Build/Web"
         }
     }
 }

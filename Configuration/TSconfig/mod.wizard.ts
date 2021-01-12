@@ -20,13 +20,13 @@ mod.wizards.newContentElement.wizardItems {
                     list_type = vinouconnector_products
                 }
             }
-            facebook {
-                iconIdentifier = extension-vinouconnector-facebook
-                title = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.facebook.title
-                description = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.facebook.description
+            bundles {
+                iconIdentifier = extension-vinouconnector-bundles
+                title = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.bundles.title
+                description = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.bundles.description
                 tt_content_defValues {
                     CType = list
-                    list_type = vinouconnector_facebook
+                    list_type = vinouconnector_bundles
                 }
             }
             enquiry {
@@ -47,7 +47,16 @@ mod.wizards.newContentElement.wizardItems {
                     list_type = vinouconnector_shop
                 }
             }
+            office {
+                iconIdentifier = extension-vinouconnector-office
+                title = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.office.title
+                description = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.office.description
+                tt_content_defValues {
+                    CType = list
+                    list_type = vinouconnector_office
+                }
+            }
         }
-    	show := addToList(wines,products,facebook,enquiry,shop)
+    	show := addToList(wines,products,bundles,enquiry,shop,office)
 	}
 }

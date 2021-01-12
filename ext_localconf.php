@@ -37,17 +37,17 @@
 	);
 
 	/**
-     * plugin for facebook actions
+     * plugin for bundles actions
      */
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
 		'Vinou.'.$_EXTKEY,
-		'Facebook',
+		'Bundles',
 		array(
-			'Facebook' => 'events, feed',
+			'Bundles' => 'list, detail',
 		),
 		// non-cacheable actions
 		array(
-			'Facebook' => 'events, feed',
+			'Bundles' => 'list, detail',
 		)
 	);
 
@@ -78,6 +78,21 @@
 		// non-cacheable actions
 		array(
 			'Shop' => 'list, basket, order, finish',
+		)
+	);
+
+	/**
+     * plugin for shop actions
+     */
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+		'Vinou.'.$_EXTKEY,
+		'Office',
+		array(
+			'Office' => 'register',
+		),
+		// non-cacheable actions
+		array(
+			'Office' => 'register',
 		)
 	);
 

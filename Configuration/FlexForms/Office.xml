@@ -1,0 +1,98 @@
+<T3DataStructure>
+    <meta>
+    <langDisable>1</langDisable>
+    </meta>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.general</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <switchableControllerActions>
+                        <TCEforms>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.mode</label>
+                            <onChange>reload</onChange>
+                            <config>
+                                <type>select</type>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.mode.register</numIndex>
+                                        <numIndex index="1">Office->register;Office->support;</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.mode.support</numIndex>
+                                        <numIndex index="1">Office->support;Office->register;</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </switchableControllerActions>
+                    <settings.customerType>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Office->register;Office->support;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.customerType</label>
+                            <config>
+                                <type>select</type>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.customerType.selectable</numIndex>
+                                        <numIndex index="1">selectable</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.customerType.winery</numIndex>
+                                        <numIndex index="1">winery</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.customerType.merchant</numIndex>
+                                        <numIndex index="1">merchant</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.customerType>
+                    <settings.showVoucher>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Office->register;Office->support;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.showVoucher</label>
+                            <config>
+                              <type>check</type>
+                            </config>
+                        </TCEforms>
+                    </settings.showVoucher>
+                    <settings.finishPID>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Office->register;Office->support;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.finishPID</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.finishPID>
+                    <settings.errorPID>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Office->register;Office->support;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.errorPID</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.errorPID>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3DataStructure>

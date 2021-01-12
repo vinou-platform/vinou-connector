@@ -7,9 +7,9 @@ use \TYPO3\CMS\Core\Utility\PathUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use \Vinou\VinouConnector\Utility\PaypalUtility;#
 use \Vinou\ApiConnector\Api;
 use \Vinou\ApiConnector\Session\Session;
+use \Vinou\VinouConnector\Utility\Shop;
 
 class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -54,10 +54,9 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected $absLocalDir = '';
 	protected $translations;
 
+	protected $settings = [];
 	protected $errors = [];
 	protected $messages = [];
-
-	protected $paypalToken = '';
 
 	protected $paymentType = 'prepaid';
 	protected $payments = [];
@@ -106,7 +105,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		];
 
 		$this->getPaymentMethods();
-		$this->paypalToken = PaypalUtility::getPaypalToken($this->extConf['clientId'],$this->extConf['secret'],$this->extConf['mode']);
 
 		$dev = false;
 	    if ($this->extConf['vinouMode'] == 'dev') {
@@ -203,6 +201,33 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		}
 
+		if (in_array('bundles',$objectTypes)) {
+
+
+			$bundles = $this->api->getBundlesAll();
+
+			foreach ($bundles['data'] as &$bundle) {
+				$bundle['object_type'] = 'bundle';
+			}
+			$items = array_merge($items,$bundles['data']);
+
+		}
+
+		$sortProperty = strlen($this->settings['sortBy']) > 0 ? $this->settings['sortBy'] : 'sorting';
+
+		$sortDirection = $this->settings['sortDirection'];
+
+		usort($items, function($a, $b) use ($sortProperty, $sortDirection) {
+			if ($a['topseller'] == $b['topseller']) {
+				if (strcmp($sortDirection, 'ASC') == 0)
+					return $a[$sortProperty] < $b[$sortProperty];
+				else
+					return $a[$sortProperty] > $b[$sortProperty];
+			}
+			return $a['topseller'] < $b['topseller'];
+		});
+
+		$this->view->assign('settings',$this->settings);
 		$this->view->assign('items',$items);
 
 	}
@@ -291,7 +316,12 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		if (isset($basket['basketItems']) && count($basket['basketItems']) > 0) {
 			$items = $basket['basketItems'];
-			$this->view->assign('summary', $this->calculateSum($items));
+			$summary = $this->calculateSum($items);
+
+			$validation = Shop::quantityIsAllowed($summary['bottles'], $this->settings['basket'], true);
+
+			$this->view->assign('summary', $summary);
+			$this->view->assign('validation', $validation);
 			$this->view->assign('items', $items);
 		}
 
@@ -327,6 +357,14 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		/* detect for package and calculate summary*/
 		$items = $basket['basketItems'];
 		$summary = $this->calculateSum($items);
+
+		$basketSettings = $this->settings['basket'];
+		if (isset($basketSettings['minBasketSize']) && $summary['bottles'] < $basketSettings['minBasketSize'])
+			$this->redirect(NULL, NULL, NULL, [], $this->basketPid);
+
+		if (isset($basketSettings['packageSteps']) && !in_array($summary['bottles'], explode(',',$basketSettings['packageSteps'])))
+			$this->redirect(NULL, NULL, NULL, [], $this->basketPid);
+
 		$this->view->assign('summary', $summary);
 		$this->view->assign('items', $items);
 
@@ -599,10 +637,22 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			'tax' => 0,
 			'gross' => 0,
 			'quantity' => 0,
+			'bottles' => 0
 		];
 
 		foreach ($items as $item) {
-			$summary['quantity'] += $item['quantity'];
+
+			if ($item['item_type'] == 'bundle'){
+                $summary['quantity'] += $item['quantity'] * $item['item']['package_quantity'];
+                $summary['bottles'] += $item['quantity'] * $item['item']['package_quantity'];
+			}
+            else {
+            	if ($item['item_type'] == 'wine')
+            		$summary['bottles'] += $item['quantity'];
+
+                $summary['quantity'] += $item['quantity'];
+            }
+
 			if (isset($item['item']['price'])) {
 				$summary['gross'] += ($item['quantity'] * $item['item']['price']);
 			} else {
@@ -610,7 +660,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			}
 		}
 
-		$package = $this->api->findPackage('bottles',$summary['quantity']);
+		$package = $this->api->findPackage('bottles',$summary['bottles']);
 		$items[] = [
 			'item_type' => 'package',
 			'item_id' => $package['id'],
@@ -620,7 +670,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		$summary['gross'] += $package['price'];
 
-		$summary['net'] = $summary['gross'] / 1.19;
+		$summary['net'] = $summary['gross'] / 1.16;
 		$summary['tax'] = $summary['gross'] - $summary['net'];
 		return $summary;
 	}

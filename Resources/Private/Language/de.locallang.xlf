@@ -4,44 +4,52 @@
 		<header/>
 		<body>
 			<trans-unit id="be.wines.title">
-				<source>Wines</source>
-				<target>Weine</target>
+				<source>Wines (Vinou)</source>
+				<target>Weine (Vinou)</target>
 			</trans-unit>
 			<trans-unit id="be.wines.description">
 				<source>Display wines from Vinou as list or detail</source>
 				<target>Zeigt die Vinou-Weine als Weinliste oder Detailansicht</target>
 			</trans-unit>
 			<trans-unit id="be.products.title">
-				<source>Products</source>
-				<target>Produkte</target>
+				<source>Products (Vinou)</source>
+				<target>Produkte (Vinou)</target>
 			</trans-unit>
 			<trans-unit id="be.products.description">
 				<source>Display products from Vinou as list or detail</source>
 				<target>Zeigt die Produkte aus Vinou als Liste oder Detailansicht</target>
 			</trans-unit>
-			<trans-unit id="be.facebook.title">
-				<source>Facebook-Content</source>
-				<target>Facebook-Inhalte</target>
+			<trans-unit id="be.bundles.title">
+				<source>Bundles (Vinou)</source>
+				<target>Weinpakete (Vinou)</target>
 			</trans-unit>
-			<trans-unit id="be.facebook.description">
-				<source>Creates a plugin that shows events or feed of a special facebook page</source>
-				<target>Zeigt Veranstaltungen und News-Feed einer Facebook-Seite an</target>
+			<trans-unit id="be.bundles.description">
+				<source>Display bundles from Vinou as list or detail</source>
+				<target>Zeigt die Weinpakete aus Vinou als Liste oder Detailansicht</target>
 			</trans-unit>
 			<trans-unit id="be.enquiry.title">
-				<source>Enquiry</source>
-				<target>Anfrageformular</target>
+				<source>Enquiry (Vinou)</source>
+				<target>Anfrageformular (Vinou)</target>
 			</trans-unit>
 			<trans-unit id="be.enquiry.description">
 				<source>Display an enquiry form an submit enquiry via mail</source>
 				<target>Zeigt ein Anfrageformular und sendet die Anfrage per mail</target>
 			</trans-unit>
 			<trans-unit id="be.shop.title">
-				<source>Shop</source>
-				<target>Shop</target>
+				<source>Shop (Vinou)</source>
+				<target>Shop (Vinou)</target>
 			</trans-unit>
 			<trans-unit id="be.shop.description">
 				<source>Show basket, orderform and finish action for vinou wines</source>
 				<target>Zeigt Warenkorn, Bestellformular, Zahlungsmethoden und Checkout action für Vinou-Weine</target>
+			</trans-unit>
+			<trans-unit id="be.office.title">
+				<source>Vinou-Office (Vinou)</source>
+				<target>Vinou-Office (Vinou)</target>
+			</trans-unit>
+			<trans-unit id="be.office.description">
+				<source>Show special plugins for Vinou-Office for example registration form.</source>
+				<target>Plugins um spezielle Vinou-Office direkt verfügbar zu machen, z.B. Registrierungsformular</target>
 			</trans-unit>
 
 			<trans-unit id="shop.list.clusters">
@@ -371,7 +379,88 @@
 				<source>Prepaid order</source>
 				<target>Vorkassebestellung eingeleitet - Zahlung prüfen</target>
 			</trans-unit>
-			
+
+			<trans-unit id="register.customerType">
+				<source>My company is a</source>
+				<target>Ich bin ein</target>
+			</trans-unit>
+			<trans-unit id="register.customerType.winery">
+				<source>Winery</source>
+				<target>Weingut</target>
+			</trans-unit>
+			<trans-unit id="register.customerType.merchant">
+				<source>Merchant</source>
+				<target>Fachhändler</target>
+			</trans-unit>
+			<trans-unit id="register.company">
+				<source>Company</source>
+				<target>Firmenbezeichnung</target>
+			</trans-unit>
+			<trans-unit id="register.company.placeholder">
+				<source>ACME</source>
+				<target>Musterweingut GbR</target>
+			</trans-unit>
+			<trans-unit id="register.name">
+				<source>Contact Person</source>
+				<target>Ansprechpartner</target>
+			</trans-unit>
+			<trans-unit id="register.name.placeholder">
+				<source>John Doe</source>
+				<target>Martina Winzerin</target>
+			</trans-unit>
+			<trans-unit id="register.address">
+				<source>Address</source>
+				<target>Straße und Hausnummer</target>
+			</trans-unit>
+			<trans-unit id="register.address.placeholder">
+				<source>First St;</source>
+				<target>Am Weinweg 1a</target>
+			</trans-unit>
+			<trans-unit id="register.zip">
+				<source>Zip</source>
+				<target>PLZ</target>
+			</trans-unit>
+			<trans-unit id="register.zip.placeholder">
+				<source>12345</source>
+				<target>12345</target>
+			</trans-unit>
+			<trans-unit id="register.city">
+				<source>City</source>
+				<target>Stadt</target>
+			</trans-unit>
+			<trans-unit id="register.city.placeholder">
+				<source>Capital City</source>
+				<target>Musterhausen</target>
+			</trans-unit>
+			<trans-unit id="register.mail">
+				<source>E-Mail</source>
+				<target>E-Mail</target>
+			</trans-unit>
+			<trans-unit id="register.mail.placeholder">
+				<source>john.doe@domain.com</source>
+				<target>martina.winzerin@domain.de</target>
+			</trans-unit>
+			<trans-unit id="register.voucher">
+				<source>Voucher</source>
+				<target>Ich habe einen Aktions-Code</target>
+			</trans-unit>
+			<trans-unit id="register.voucher.placeholder">
+				<source>CAMPAIGN</source>
+				<target>Aktions-Code</target>
+			</trans-unit>
+			<trans-unit id="register.submit">
+				<source>Register now</source>
+				<target>Jetzt Registrieren</target>
+			</trans-unit>
+			<trans-unit id="register.success.title">
+				<source>Registration successful</source>
+				<target>Registrierung erfolgreich</target>
+			</trans-unit>
+			<trans-unit id="register.success.description">
+				<source>We send you an activation link via e-mail to start usage.</source>
+				<target>Wir haben dir einen Aktivierungs-Link via E-Mail gesendet, danach kannst du mit der Benutzung deiner Software beginnen.</target>
+			</trans-unit>
+
 			<trans-unit id="flexform.wines.general">
 				<source>Settings</source>
 				<target>Einstellungen</target>
@@ -514,29 +603,45 @@
 				<target>Vorlage wählen</target>
 			</trans-unit>
 
-			<trans-unit id="flexform.facebook.general">
-				<source>General</source>
-				<target>Allgemein</target>
+			<trans-unit id="flexform.bundles.general">
+				<source>Settings</source>
+				<target>Einstellungen</target>
 			</trans-unit>
-			<trans-unit id="flexform.facebook.mode">
+			<trans-unit id="flexform.bundles.mode">
 				<source>Mode</source>
 				<target>Modus</target>
 			</trans-unit>
-			<trans-unit id="flexform.facebook.mode.events">
-				<source>Events</source>
-				<target>Veranstaltungen</target>
+			<trans-unit id="flexform.bundles.mode.list">
+				<source>List all bundles</source>
+				<target>Listenansicht</target>
 			</trans-unit>
-			<trans-unit id="flexform.facebook.mode.feed">
-				<source>Feed</source>
-				<target>Feed</target>
+			<trans-unit id="flexform.bundles.mode.detail">
+				<source>Show bundle details</source>
+				<target>Weinpaketdetails</target>
 			</trans-unit>
-			<trans-unit id="flexform.facebook.pageId">
-				<source>ID of Facebook-Page</source>
-				<target>ID der Facebook-Seite</target>
+			<trans-unit id="flexform.bundles.itemsPerRow">
+				<source>Items in one row</source>
+				<target>Anzahl Weinpakete in einer Zeile</target>
 			</trans-unit>
-			<trans-unit id="flexform.facebook.limit">
-				<source>Limit of entries to show</source>
-				<target>Maximale Anzahl der Beiträge</target>
+			<trans-unit id="flexform.bundles.detailPid">
+				<source>Bundle detail page</source>
+				<target>Detailseite</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.backPid">
+				<source>Back to page</source>
+				<target>Zurück zu Seite</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.template">
+				<source>Layout</source>
+				<target>Layout</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.template.default">
+				<source>Default</source>
+				<target>Standard</target>
+			</trans-unit>
+			<trans-unit id="flexform.bundles.templateLayout">
+				<source>Template</source>
+				<target>Vorlage wählen</target>
 			</trans-unit>
 
 			<trans-unit id="flexform.enquiry.general">
@@ -629,8 +734,8 @@
 				<target>Modus</target>
 			</trans-unit>
 			<trans-unit id="flexform.shop.mode.list">
-				<source>Winelist</source>
-				<target>Weinliste</target>
+				<source>List of shop articles</source>
+				<target>Artikelliste</target>
 			</trans-unit>
 			<trans-unit id="flexform.shop.mode.basket">
 				<source>Basket</source>
@@ -652,6 +757,10 @@
 				<source>Cancel Paypal</source>
 				<target>Paypal-Bestellung abbrechen</target>
 			</trans-unit>
+			<trans-unit id="flexform.shop.pages">
+				<source>Pages</source>
+				<target>Seiten</target>
+			</trans-unit>
 			<trans-unit id="flexform.shop.detailPid">
 				<source>Wine detail page</source>
 				<target>Wein-Detailseite</target>
@@ -659,6 +768,10 @@
 			<trans-unit id="flexform.shop.productPid">
 				<source>Product detail page</source>
 				<target>Produkt-Detailseite</target>
+			</trans-unit>
+			<trans-unit id="flexform.shop.bundlePid">
+				<source>Bundle detail page</source>
+				<target>Weinpaket-Detailseite</target>
 			</trans-unit>
 			<trans-unit id="flexform.shop.clusters">
 				<source>Filter options</source>
@@ -704,6 +817,10 @@
 				<source>Products</source>
 				<target>Produkte</target>
 			</trans-unit>
+			<trans-unit id="flexform.shop.showTypes.bundles">
+				<source>Bundles</source>
+				<target>Weinpakete</target>
+			</trans-unit>
 			<trans-unit id="flexform.shop.backPid">
 				<source>Back to Page</source>
 				<target>Zurück zu Seite</target>
@@ -739,6 +856,51 @@
 			<trans-unit id="flexform.shop.templateLayout">
 				<source>Template</source>
 				<target>Vorlage wählen</target>
+			</trans-unit>
+
+			<trans-unit id="flexform.office.general">
+				<source>General</source>
+				<target>Allgemein</target>
+			</trans-unit>
+			<trans-unit id="flexform.office.mode">
+				<source>Mode</source>
+				<target>Modus</target>
+			</trans-unit>
+			<trans-unit id="flexform.office.mode.register">
+				<source>Register</source>
+				<target>Registrierung</target>
+			</trans-unit>
+			<trans-unit id="flexform.office.mode.support">
+				<source>Support-Request</source>
+				<target>Support-Anfrage</target>
+			</trans-unit>
+			<trans-unit id="flexform.office.customerType">
+				<source>Customer type to register</source>
+				<target>Kundentyp für Registrierung</target>
+			</trans-unit>
+			<trans-unit id="flexform.office.customerType.selectable">
+				<source>Selectable</source>
+				<target>Selektierbar</target>
+			</trans-unit>
+			<trans-unit id="flexform.office.customerType.winery">
+				<source>Winery</source>
+				<target>Weingut</target>
+			</trans-unit>
+			<trans-unit id="flexform.office.customerType.merchant">
+				<source>Merchant</source>
+				<target>Händler</target>
+			</trans-unit>
+			<trans-unit id="flexform.office.showVoucher">
+				<source>Show Voucher field</source>
+				<target>Zeige Feld für Gutschein-Code</target>
+			</trans-unit>
+			<trans-unit id="flexform.office.finishPID">
+				<source>Finish Page</source>
+				<target>Danke-Seite</target>
+			</trans-unit>
+			<trans-unit id="flexform.office.errorPID">
+				<source>Error Page (if empty use plugin page)</source>
+				<target>Fehler-Seite (wenn leer Plugin-Seite)</target>
 			</trans-unit>
 
 			<trans-unit id="message.title.error">
@@ -796,6 +958,26 @@
 			<trans-unit id="message.content.cancelPaypalError">
 				<source>Cancellation corrupted, please contact system administrator.</source>
 				<target>Der Abbruch war nicht erfolgreich, Bitte kontaktiere einen System-Administrator.</target>
+			</trans-unit>
+			<trans-unit id="message.content.registrationError">
+				<source>Registration not successful, a customer or user with this mail already exists.</source>
+				<target>Registrierung fehlgeschlagen, ein Weingut oder Weinhändler mit dieser Mail-Adress existiert bereits.</target>
+			</trans-unit>
+			<trans-unit id="message.title.minBasketSize">
+				<source>Minimum basket size not reached</source>
+				<target>Mindestbestellmenge nicht erreicht</target>
+			</trans-unit>
+			<trans-unit id="message.content.minBasketSize">
+				<source>You did not reach the minimum size of a basket.</source>
+				<target>Dein Warenkorb hat noch nicht die kleinste Menge an Flaschen erreicht.</target>
+			</trans-unit>
+			<trans-unit id="message.title.packageSteps">
+				<source>Basket size not right</source>
+				<target>Falsche Warenkorbgröße</target>
+			</trans-unit>
+			<trans-unit id="message.content.packageSteps">
+				<source>Your basket size did not match the size of packages we send.</source>
+				<target>Dein Warenkorb hat nicht die erforderliche Größe erreicht.</target>
 			</trans-unit>
 
 			<trans-unit id="tasks.cacheexpertise.title">

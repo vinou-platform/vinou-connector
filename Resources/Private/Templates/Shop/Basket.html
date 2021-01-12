@@ -50,8 +50,32 @@
 						</tr>
 					</tbody>
 				</table>
-				<f:link.action action="basket" arguments="{delete:'all'}" class="clearall regular-button"><i class="fa fa-trash-o" aria-hidden="true"></i> <f:translate key="basket.clearall"/></f:link.action>
-				<f:link.action action="order" class="order regular-button" pageUid="{settings.orderPid}"><i class="fa fa-shopping-cart" aria-hidden="true"></i> <f:translate key="basket.order"/></f:link.action>
+
+				<div id="basket-errors">
+					<f:switch expression="{validation}">
+						<f:case value="minBasketSize">
+							<p class="inline-message basket-warnings" data-type="warning" data-status="visible">
+								<span class="title">Mindestbestellmenge nicht erreicht</span>
+								<span class="description">Du hast noch nicht die nötige Mindestbestellmenge von <strong>{settings.basket.minBasketSize} Flaschen</strong> im Warenkorb</span>
+							</p>
+						</f:case>
+						<f:case value="packageSteps">
+							<p class="inline-message basket-warnings" data-type="warning"  data-status="visible">
+								<span class="title">Falsche Bestellmenge</span>
+								<span class="description">Die größe Deines Warenkorbes entspricht nicht unseren Versandstaffeln. <strong>Wir versenden unsere Ware nur in <f:for each="{vin:explode(string: settings.basket.packageSteps)}" as="step" iteration="i">{step}{f:if(condition:'{i.isLast}', then: 'er', else: ', ')}</f:for> er Kartons</strong>.</span>
+							</p>
+						</f:case>
+					</f:switch>
+				</div>
+
+				<div class="basket-control inline-table basket-controls bottom" data-status="{f:if(condition: '{validation}==\'valid\'',then:'visible',else:'hidden')}">
+					<div class="table-cell align-left">
+						<f:link.action action="basket" arguments="{delete:'all'}" class="clearall regular-button"><i class="fa fa-trash-o" aria-hidden="true"></i> <f:translate key="basket.clearall"/></f:link.action>
+					</div>
+					<div class="table-cell align-right">
+						<f:link.action action="order" class="order regular-button" pageUid="{settings.orderPid}"><i class="fa fa-shopping-cart" aria-hidden="true"></i> <f:translate key="basket.order"/></f:link.action>
+					</div>
+				</div>
 			</f:then>
 			<f:else>
 				<p><f:translate key="basket.empty"/></p>
