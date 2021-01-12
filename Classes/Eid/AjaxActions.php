@@ -92,7 +92,7 @@ class AjaxActions {
                     $this->sendResult(false, 'basket not found');
                 else {
                     $result['quantity'] = Shop::calcCardQuantity($result['basketItems']);
-                    $result['valid'] = Shop::quantityIsAllowed($result['quantity'], $this->settings, true);
+                    $result['valid'] = Shop::quantityIsAllowed($result['quantity'], $this->settings['basket'], true);
                 }
 
                 $this->sendResult($result);

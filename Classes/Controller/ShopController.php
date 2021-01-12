@@ -9,6 +9,7 @@ use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \Vinou\ApiConnector\Api;
 use \Vinou\ApiConnector\Session\Session;
+use \Vinou\VinouConnector\Utility\Shop;
 
 class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -315,7 +316,12 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		if (isset($basket['basketItems']) && count($basket['basketItems']) > 0) {
 			$items = $basket['basketItems'];
-			$this->view->assign('summary', $this->calculateSum($items));
+			$summary = $this->calculateSum($items);
+
+			$validation = Shop::quantityIsAllowed($summary['bottles'], $this->settings['basket'], true);
+
+			$this->view->assign('summary', $summary);
+			$this->view->assign('validation', $validation);
 			$this->view->assign('items', $items);
 		}
 
@@ -351,6 +357,14 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		/* detect for package and calculate summary*/
 		$items = $basket['basketItems'];
 		$summary = $this->calculateSum($items);
+
+		$basketSettings = $this->settings['basket'];
+		if (isset($basketSettings['minBasketSize']) && $summary['bottles'] < $basketSettings['minBasketSize'])
+			$this->redirect(NULL, NULL, NULL, [], $this->basketPid);
+
+		if (isset($basketSettings['packageSteps']) && !in_array($summary['bottles'], explode(',',$basketSettings['packageSteps'])))
+			$this->redirect(NULL, NULL, NULL, [], $this->basketPid);
+
 		$this->view->assign('summary', $summary);
 		$this->view->assign('items', $items);
 

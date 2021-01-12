@@ -963,6 +963,22 @@
 				<source>Registration not successful, a customer or user with this mail already exists.</source>
 				<target>Registrierung fehlgeschlagen, ein Weingut oder Weinhändler mit dieser Mail-Adress existiert bereits.</target>
 			</trans-unit>
+			<trans-unit id="message.title.minBasketSize">
+				<source>Minimum basket size not reached</source>
+				<target>Mindestbestellmenge nicht erreicht</target>
+			</trans-unit>
+			<trans-unit id="message.content.minBasketSize">
+				<source>You did not reach the minimum size of a basket.</source>
+				<target>Dein Warenkorb hat noch nicht die kleinste Menge an Flaschen erreicht.</target>
+			</trans-unit>
+			<trans-unit id="message.title.packageSteps">
+				<source>Basket size not right</source>
+				<target>Falsche Warenkorbgröße</target>
+			</trans-unit>
+			<trans-unit id="message.content.packageSteps">
+				<source>Your basket size did not match the size of packages we send.</source>
+				<target>Dein Warenkorb hat nicht die erforderliche Größe erreicht.</target>
+			</trans-unit>
 
 			<trans-unit id="tasks.cacheexpertise.title">
 				<source>Cache Vinou expertise</source>
