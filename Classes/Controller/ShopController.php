@@ -220,9 +220,9 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		usort($items, function($a, $b) use ($sortProperty, $sortDirection) {
 			if ($a['topseller'] == $b['topseller']) {
 				if (strcmp($sortDirection, 'ASC') == 0)
-					return $a[$sortProperty] < $b[$sortProperty];
-				else
 					return $a[$sortProperty] > $b[$sortProperty];
+				else
+					return $a[$sortProperty] < $b[$sortProperty];
 			}
 			return $a['topseller'] < $b['topseller'];
 		});
