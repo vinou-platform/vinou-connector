@@ -7,16 +7,14 @@ $EM_CONF[$_EXTKEY] = array(
 	'author' => 'Vinou development team',
 	'author_email' => 'kontakt@vinou.de',
 	'author_company' => 'Vinou GmbH',
-	'state' => 'alpha',
+	'state' => 'beta',
 	'uploadfolder' => NULL,
 	'createDirs' => NULL,
 	'clearCacheOnLoad' => true,
 	'version' => '5.6.3',
 	'constraints' => array(
 		'depends' => array(
-			'extbase' => '8.7',
-			'fluid' => '8.7',
-			'typo3' => '8.7',
+			'typo3' => '8.7.0-8.7.99',
 		),
 		'conflicts' => array(
 		),
