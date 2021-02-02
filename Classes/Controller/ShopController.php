@@ -647,10 +647,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
                 $summary['bottles'] += $item['quantity'] * $item['item']['package_quantity'];
 			}
             else {
-            	if ($item['item_type'] == 'wine')
-            		$summary['bottles'] += $item['quantity'];
-
                 $summary['quantity'] += $item['quantity'];
+            	$summary['bottles'] += $item['quantity'];
             }
 
 			if (isset($item['item']['price'])) {
