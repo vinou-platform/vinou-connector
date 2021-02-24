@@ -232,6 +232,75 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 	}
 
+
+	public function topsellerAction() {
+		$this->initialize();
+
+		$objectTypes = explode(',',$this->settings['showTypes']);
+		$items = [];
+		$postData = [
+			'inshop' => true,
+			'filter' => [
+				'topseller' => true
+			],
+			'orderBy' => 'sorting ASC'
+		];
+
+		if (in_array('wines',$objectTypes)) {
+
+			$data = $this->api->getWinesAll($postData);
+			$wines = isset($data['wines']) ? $data['wines'] : $data['data'];
+			foreach ($wines as &$wine) {
+				if ($wine['topseller'] == 0)
+					continue;
+
+				$wine['object_type'] = 'wine';
+				array_push($items, $wine);
+			}
+		}
+
+		if (in_array('products',$objectTypes)) {
+
+			$products = $this->api->getProductsAll($postData);
+			foreach ($products as &$product) {
+				if ($product['topseller'] == 0)
+					continue;
+
+				$product['object_type'] = 'product';
+				array_push($items, $product);
+			}
+		}
+
+		if (in_array('bundles',$objectTypes)) {
+
+			$bundles = $this->api->getBundlesAll($postData);
+			foreach ($bundles['data'] as &$bundle) {
+				if ($bundle['topseller'] == 0)
+					continue;
+
+				$bundle['object_type'] = 'bundle';
+				array_push($items, $bundle);
+			}
+		}
+
+		$sortProperty = strlen($this->settings['sortBy']) > 0 ? $this->settings['sortBy'] : 'sorting';
+		$sortDirection = $this->settings['sortDirection'];
+
+		usort($items, function($a, $b) use ($sortProperty, $sortDirection) {
+			if ($a['topseller'] == $b['topseller']) {
+				if (strcmp($sortDirection, 'ASC') == 0)
+					return $a[$sortProperty] > $b[$sortProperty];
+				else
+					return $a[$sortProperty] < $b[$sortProperty];
+			}
+			return $a['topseller'] < $b['topseller'];
+		});
+
+		$this->view->assign('settings',$this->settings);
+		$this->view->assign('items',$items);
+
+	}
+
 	/**
 	 * create payment array
 	 *

@@ -25,6 +25,10 @@
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.mode.detail</numIndex>
                                         <numIndex index="1">Wines->detail;Wines->list;</numIndex>
                                     </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.mode.topseller</numIndex>
+                                        <numIndex index="1">Wines->topseller;</numIndex>
+                                    </numIndex>
                                 </items>
                             </config>
                         </TCEforms>
@@ -72,7 +76,12 @@
                     </settings.category>
                     <settings.sortBy>
                         <TCEforms>
-                            <displayCond>FIELD:settings.listMode:=:category</displayCond>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:settings.listMode:=:category</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Wines->topseller;</numIndex>
+                                </OR>
+                            </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortBy</label>
                             <config>
                                 <type>select</type>
@@ -107,7 +116,12 @@
                     </settings.sortBy>
                     <settings.sortDirection>
                         <TCEforms>
-                            <displayCond>FIELD:settings.listMode:=:category</displayCond>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:settings.listMode:=:category</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Wines->topseller;</numIndex>
+                                </OR>
+                            </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortDirection</label>
                             <config>
                                 <type>select</type>
@@ -174,7 +188,12 @@
                     </settings.type>
                     <settings.itemsPerRow>
                         <TCEforms>
-                            <displayCond>FIELD:switchableControllerActions:=:Wines->list;Wines->detail;</displayCond>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Wines->list;Wines->detail;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Wines->topseller;</numIndex>
+                                </OR>
+                            </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.itemsPerRow</label>
                             <config>
                               <type>input</type>
@@ -186,7 +205,12 @@
                     </settings.itemsPerRow>
                     <settings.detailPid>
                         <TCEforms>
-                            <displayCond>FIELD:switchableControllerActions:=:Wines->list;Wines->detail;</displayCond>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Wines->list;Wines->detail;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Wines->topseller;</numIndex>
+                                </OR>
+                            </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.detailPid</label>
                             <config>
                                 <type>group</type>

@@ -174,11 +174,39 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		if ($this->request->hasArgument('wine')) {
 			$wineId = $this->request->getArgument('wine');
 			$wine = $this->api->getWine($wineId);
-
-			$this->view->assign('wine', $this->localizeWine($wine));
-
-			$this->view->assign('expertise', $expertise);
+		} else if ($this->request->hasArgument('path_segment')) {
+			$pathSegment = $this->request->getArgument('path_segment');
+			$wine = $this->api->getWine($pathSegment);
 		}
+		$this->view->assign('wine', $this->localizeWine($wine));
+
+		$this->view->assign('backPid', $this->backPid);
+		$this->view->assign('settings', $this->settings);
+	}
+
+	/**
+	 * action detail
+	 *
+	 * @return void
+	 */
+	public function topsellerAction() {
+
+		$postData = [];
+
+		if (isset($this->settings['sortBy']) && !empty($this->settings['sortBy'])) {
+			$postData['sortBy'] = $this->settings['sortBy'];
+		}
+		if (isset($this->settings['sortDirection']) && !empty($this->settings['sortDirection'])) {
+			$postData['sortDirection'] = $this->settings['sortDirection'];
+		}
+
+
+		$wines = $this->api->getWinesAll($postData);
+		$topseller = array_filter($wines, function($item) {
+			return $item['topseller'] == 1;
+		});
+
+		$this->view->assign('topseller', $topseller);
 
 		$this->view->assign('backPid', $this->backPid);
 		$this->view->assign('settings', $this->settings);

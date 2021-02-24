@@ -41,6 +41,10 @@
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.mode.cancelPaypal</numIndex>
                                         <numIndex index="1">Shop->cancelPaypal;</numIndex>
                                     </numIndex>
+                                    <numIndex index="6">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.mode.topseller</numIndex>
+                                        <numIndex index="1">Shop->topseller;</numIndex>
+                                    </numIndex>
                                 </items>
                             </config>
                         </TCEforms>
@@ -87,7 +91,12 @@
                     </settings.clusters>
                     <settings.showTypes>
                         <TCEforms>
-                            <displayCond>FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</displayCond>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Shop->topseller;</numIndex>
+                                </OR>
+                            </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.showTypes</label>
                             <config>
                                 <type>select</type>
@@ -128,7 +137,12 @@
                     </settings.category>
                     <settings.sortBy>
                         <TCEforms>
-                            <displayCond>FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</displayCond>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Shop->topseller;</numIndex>
+                                </OR>
+                            </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortBy</label>
                             <config>
                                 <type>select</type>
@@ -163,7 +177,12 @@
                     </settings.sortBy>
                     <settings.sortDirection>
                         <TCEforms>
-                            <displayCond>FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</displayCond>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Shop->topseller;</numIndex>
+                                </OR>
+                            </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortDirection</label>
                             <config>
                                 <type>select</type>
@@ -197,6 +216,7 @@
                                     <numIndex index="0">FIELD:sDEF.switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;Shop->list;</numIndex>
                                     <numIndex index="1">FIELD:sDEF.switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
                                     <numIndex index="2">FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+                                    <numIndex index="3">FIELD:sDEF.switchableControllerActions:=:Shop->topseller;</numIndex>
                                 </OR>
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.detailPid</label>
@@ -218,6 +238,7 @@
                                     <numIndex index="0">FIELD:sDEF.switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;Shop->list;</numIndex>
                                     <numIndex index="1">FIELD:sDEF.switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
                                     <numIndex index="2">FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+                                    <numIndex index="3">FIELD:sDEF.switchableControllerActions:=:Shop->topseller;</numIndex>
                                 </OR>
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.productPid</label>
@@ -239,6 +260,7 @@
                                     <numIndex index="0">FIELD:sDEF.switchableControllerActions:=:Shop->basket;Shop->order;Shop->finish;Shop->list;</numIndex>
                                     <numIndex index="1">FIELD:sDEF.switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</numIndex>
                                     <numIndex index="2">FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+                                    <numIndex index="3">FIELD:sDEF.switchableControllerActions:=:Shop->topseller;</numIndex>
                                 </OR>
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.bundlePid</label>

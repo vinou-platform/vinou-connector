@@ -139,10 +139,12 @@ class BundlesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 		if ($this->request->hasArgument('bundle')) {
 			$bundleId = $this->request->getArgument('bundle');
 			$bundle = $this->api->getBundle($bundleId);
-
-			$this->view->assign('bundle', $bundle);
+		} else if ($this->request->hasArgument('path_segment')) {
+			$pathSegment = $this->request->getArgument('path_segment');
+			$bundle = $this->api->getBundle($pathSegment);
 		}
 
+		$this->view->assign('bundle', $bundle);
 		$this->view->assign('backPid', $this->backPid);
 		$this->view->assign('settings', $this->settings);
 	}
