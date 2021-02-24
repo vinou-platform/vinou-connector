@@ -135,10 +135,12 @@ class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		if ($this->request->hasArgument('product')) {
 			$productId = $this->request->getArgument('product');
 			$product = $this->api->getProduct($productId);
-
-			$this->view->assign('product', $product);
+		} else if ($this->request->hasArgument('path_segment')) {
+			$pathSegment = $this->request->getArgument('path_segment');
+			$product = $this->api->getProduct($pathSegment);
 		}
 
+		$this->view->assign('product', $product);
 		$this->view->assign('backPid', $this->backPid);
 		$this->view->assign('settings', $this->settings);
 	}

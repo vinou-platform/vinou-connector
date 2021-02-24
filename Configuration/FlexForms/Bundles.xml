@@ -25,13 +25,22 @@
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.mode.detail</numIndex>
                                         <numIndex index="1">Bundles->detail;Bundles->list;</numIndex>
                                     </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.mode.topseller</numIndex>
+                                        <numIndex index="1">Bundles->topseller;</numIndex>
+                                    </numIndex>
                                 </items>
                             </config>
                         </TCEforms>
                     </switchableControllerActions>
                     <settings.itemsPerRow>
                         <TCEforms>
-                            <displayCond>FIELD:switchableControllerActions:=:Bundles->list;Bundles->detail;</displayCond>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Bundles->list;Bundles->detail;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Bundles->topseller;</numIndex>
+                                </OR>
+                            </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.itemsPerRow</label>
                             <config>
                               <type>input</type>
@@ -43,7 +52,12 @@
                     </settings.itemsPerRow>
                     <settings.detailPid>
                         <TCEforms>
-                            <displayCond>FIELD:switchableControllerActions:=:Bundles->list;Bundles->detail;</displayCond>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Bundles->list;Bundles->detail;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Bundles->topseller;</numIndex>
+                                </OR>
+                            </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.bundles.detailPid</label>
                             <config>
                                 <type>group</type>

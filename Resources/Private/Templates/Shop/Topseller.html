@@ -1,0 +1,13 @@
+<f:layout name="Wines" />
+
+<f:section name="main">
+	<div class="vinou-shop">
+		<div class="vinou-topseller-list regular" id="vinou-list">
+			<ul class="list">
+				<f:for each="{items}" as="item" iteration="index">
+					<f:render partial="Shop/ListItem" arguments="{item: item,settings:settings}" />
+				</f:for>
+			</ul>
+		</div>
+	</div>
+</f:section>

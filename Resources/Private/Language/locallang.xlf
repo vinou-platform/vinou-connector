@@ -573,6 +573,9 @@
 			<trans-unit id="flexform.shop.mode.cancelPaypal">
 				<source>Cancel Paypal</source>
 			</trans-unit>
+			<trans-unit id="flexform.shop.mode.topseller">
+				<source>Show topseller</source>
+			</trans-unit>
 			<trans-unit id="flexform.shop.clusters">
 				<source>Filter options</source>
 			</trans-unit>

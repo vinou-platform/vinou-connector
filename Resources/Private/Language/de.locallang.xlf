@@ -757,6 +757,10 @@
 				<source>Cancel Paypal</source>
 				<target>Paypal-Bestellung abbrechen</target>
 			</trans-unit>
+			<trans-unit id="flexform.shop.mode.topseller">
+				<source>Show topseller</source>
+				<target>Topseller-Liste</target>
+			</trans-unit>
 			<trans-unit id="flexform.shop.pages">
 				<source>Pages</source>
 				<target>Seiten</target>
