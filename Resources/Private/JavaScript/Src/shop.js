@@ -19,6 +19,7 @@ var vinouShop = {
 		minBasketSize: null,
 		packageSteps: null,
 	},
+	config: false,
 	quantity: 0,
 	timeout: null,
 	tempquantity: 0,
@@ -39,10 +40,16 @@ var vinouShop = {
 	},
 
 	init: function() {
+		this.loadConfig();
 		this.bindEvents();
 		this.loadSettings();
 		this.createDropper();
 		this.initBasket();
+	},
+
+	loadConfig: function() {
+		if (typeof vinouConfig != 'undefined')
+			this.config = vinouConfig;
 	},
 
 	loadSettings: function() {
@@ -111,7 +118,43 @@ var vinouShop = {
 
 		ctrl.basketAction('addItem',postData,(function(){
 			if (this.status === 200) {
-				toast.show('Erfolgreich','Deine Position wurde in den Warenkorb gelegt');
+
+				var messageType = typeof ctrl.config.basket.messageType == 'string' ? ctrl.config.basket.messageType : 'toast';
+
+				switch (messageType) {
+					case 'dialog':
+						switch (item.item_type) {
+							case 'bundle':
+								var quantityText = item.quantity + ' Weinpaket(e) ';
+								break;
+
+							case 'product':
+								var quantityText = item.quantity + ' Stück ';
+								break;
+
+							default:
+								var quantityText = item.quantity + ' Flasche(n) ';
+								break;
+						}
+
+
+						new vDialog({
+							title: '<span class="fa fa-shopping-cart"></span> Warenkorb',
+							description: '<strong>' + quantityText + '</strong> wurde(n) in den Warenkorb gelegt.',
+							yes: 'OK',
+							type: 'OK',
+							ok: function() {
+
+							}
+						});
+						break;
+
+					case 'toast':
+						toast.show('Erfolgreich','Deine Position wurde in den Warenkorb gelegt');
+						break;
+				}
+
+
 				ctrl.updateBasketCount();
 				var overlay = document.querySelector('#shop-list-item-' + item.item_id + ' .basket-overlay');
 				if (overlay) {

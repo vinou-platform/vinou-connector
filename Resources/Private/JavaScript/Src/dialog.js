@@ -7,6 +7,7 @@ function vDialog(params) {
 	this.params.no = params.no || 'Nein';
 	this.params.title = params.title || 'Dialog';
 	this.params.description = params.description || 'Description';
+	this.params.type = params.type || 'YesNo'
 
 	this.init();
 }
@@ -24,12 +25,17 @@ vDialog.prototype = {
 		$ctrl.wrapper = document.createElement( "div" );
 		$ctrl.wrapper.id = $ctrl.wrapperId;
 		$ctrl.wrapper.setAttribute('data-status', 'hidden');
-		var html = "<div id='dialog'>";
-			html += "<h3 id='dialog-title'>" + $ctrl.params.title + "</h3>";
-			html += "<div id='dialog-description'>";
-			html += "<p>" + $ctrl.params.description + "</p>";
-			html += "<button id='dialog-cancel'>" + $ctrl.params.no + "</button><button type='button' id='dialog-ok'>" + $ctrl.params.yes + "</button>";
-			html += "</div></div>";
+		var html = "<div id='dialog' class='" + $ctrl.params.type.toLowerCase() + "-dialog'>";
+
+		html += "<h3 id='dialog-title'>" + $ctrl.params.title + "</h3>";
+		html += "<div id='dialog-description'>";
+		html += "<p>" + $ctrl.params.description + "</p>";
+
+		if ($ctrl.params.type == 'YesNo')
+			html += "<button id='dialog-cancel'>" + $ctrl.params.no + "</button>";
+
+		html += "<button type='button' id='dialog-ok'>" + $ctrl.params.yes + "</button>";
+		html += "</div></div>";
 
 		$ctrl.wrapper.innerHTML = html;
 
@@ -54,12 +60,13 @@ vDialog.prototype = {
 			}, 1000);
 		}, false);
 
-
-		$ctrl.wrapper.querySelector( "#dialog-cancel" ).addEventListener( "click", function() {
-			$ctrl.exit();
-			setTimeout(function() {
-				$ctrl.params.cancel();
-			}, 1000);
-		}, false);
+		if ($ctrl.params.type == 'YesNo') {
+			$ctrl.wrapper.querySelector( "#dialog-cancel" ).addEventListener( "click", function() {
+				$ctrl.exit();
+				setTimeout(function() {
+					$ctrl.params.cancel();
+				}, 1000);
+			}, false);
+		}
 	}
 };
