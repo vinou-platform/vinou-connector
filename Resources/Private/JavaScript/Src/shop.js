@@ -430,10 +430,12 @@ var vinouShop = {
 			}
 
 			var addButton = addForms[i].querySelector('.add-basket');
-			addButton.addEventListener('click',function(event) {
-				event.preventDefault();
-				ctrl.submitAddForm(this.form);
-			});
+			if (addButton) {
+				addButton.addEventListener('click',function(event) {
+					event.preventDefault();
+					ctrl.submitAddForm(this.form);
+				});
+			}
 		}
 
 		var incButtons = document.querySelectorAll('button.inc');
