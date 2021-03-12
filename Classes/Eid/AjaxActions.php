@@ -10,6 +10,7 @@ use \Vinou\ApiConnector\Api;
 use \Vinou\VinouConnector\Utility\Render;
 use \Vinou\VinouConnector\Utility\Shop;
 use \Vinou\VinouConnector\Utility\TypoScriptHelper;
+use \Vinou\ApiConnector\Session\Session;
 
 /**
  * This class could called with AJAX via eID
@@ -164,6 +165,8 @@ class AjaxActions {
                 'errors' => $this->errors,
                 'request' => $this->request
             ], 'error');
+        else if ($result['info'] == 'error')
+            Render::sendJSON(array_merge($result, ['request' => $this->request]), 'error');
         else
             Render::sendJSON($result);
 

@@ -56,6 +56,8 @@
                             <config>
                                 <type>select</type>
                                 <renderType>selectMultipleSideBySide</renderType>
+                                <minitems>0</minitems>
+                                <maxitems>999</maxitems>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.clusters.category</numIndex>
@@ -100,7 +102,9 @@
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.showTypes</label>
                             <config>
                                 <type>select</type>
-                                <renderType>selectMultipleSideBySide</renderType>
+                                <renderType>selectCheckBox</renderType>
+                                <minitems>0</minitems>
+                                <maxitems>999</maxitems>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.showTypes.wines</numIndex>
