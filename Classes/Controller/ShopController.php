@@ -194,22 +194,23 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if (in_array('products',$objectTypes)) {
 
 			$products = $this->api->getProductsAll();
-			foreach ($products as &$product) {
-				$product['object_type'] = 'product';
+			if ($products) {
+				foreach ($products as &$product) {
+					$product['object_type'] = 'product';
+				}
+				$items = array_merge($items,$products);
 			}
-			$items = array_merge($items,$products);
-
 		}
 
 		if (in_array('bundles',$objectTypes)) {
 
-
 			$bundles = $this->api->getBundlesAll();
-
-			foreach ($bundles['data'] as &$bundle) {
-				$bundle['object_type'] = 'bundle';
+			if ($bundles) {
+				foreach ($bundles['data'] as &$bundle) {
+					$bundle['object_type'] = 'bundle';
+				}
+				$items = array_merge($items,$bundles['data']);
 			}
-			$items = array_merge($items,$bundles['data']);
 
 		}
 
@@ -380,24 +381,32 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function basketAction() {
 		$this->initialize();
 
+		if ($this->request->hasArgument('removecampaign') && $this->request->getArgument('removecampaign') == 1)
+			Session::deleteValue('campaign');
+
 		$basket = $this->detectOrCreateBasket();
 		$this->view->assign('basket',$basket);
 
 		if (isset($basket['basketItems']) && count($basket['basketItems']) > 0) {
 			$items = $basket['basketItems'];
-			$summary = $this->calculateSum($items);
+			$this->view->assign('items', $items);
 
+			$summary = $this->calculateSum($items);
 			$validation = Shop::quantityIsAllowed($summary['bottles'], $this->settings['basket'], true);
 
-			$this->view->assign('summary', $summary);
+			foreach ($items as $item) {
+				if ($item['item_type'] == 'package')
+					$this->view->assign('package', $package);
+			}
+
 			$this->view->assign('validation', $validation);
-			$this->view->assign('items', $items);
+			$this->view->assign('summary', $summary);
 		}
 
 		$packagings = $this->api->getAllPackages();
 		$this->view->assign('packagings', $packagings);
-
 		$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
+		$this->view->assign('customer', $this->api->getCustomer());
 		$this->view->assign('settings', $this->settings);
 	}
 
@@ -421,7 +430,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->redirect('basket', NULL, NULL, [], $this->basketPid);
 
 		$this->view->assign('basket', $basket);
-
 
 		/* detect for package and calculate summary*/
 		$items = $basket['basketItems'];
@@ -505,6 +513,17 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	private function sendOrderByBasket($basket,$items,$summary,$billing,$delivery,$paymentMethod,$account,$note) {
+
+		$campaign = Session::getValue('campaign');
+
+        if ($campaign && $campaign['data']['id'] > 0) {
+        	$this->api->addItemToBasket(['data' => [
+                'quantity' => 1,
+                'item_type' => 'campaign',
+                'item_id' => $campaign['data']['id']
+            ]]);
+        }
+
 		$order = [
 			'source' => 'shop',
 			'payment_type' => $paymentMethod,
@@ -581,6 +600,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$addedOrder = $this->api->addOrder($order);
 
 		if ($addedOrder) {
+
+			Session::setValue('order_uuid', $addedOrder['uuid']);
 
 			$recipient = [
 				$billing['email'] => $billing['firstname'] . " " . $billing['lastname']
@@ -720,24 +741,66 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
             	$summary['bottles'] += $item['quantity'];
             }
 
-			if (isset($item['item']['price'])) {
-				$summary['gross'] += ($item['quantity'] * $item['item']['price']);
-			} else {
-				$summary['gross'] += ($item['quantity'] * $item['item']['gross']);
-			}
+			$summary['gross'] += ($item['quantity'] * $item['item']['gross']);
 		}
 
+		// load and append package
 		$package = $this->api->findPackage('bottles',$summary['bottles']);
 		$items[] = [
 			'item_type' => 'package',
 			'item_id' => $package['id'],
 			'quantity' => 1,
-			'object' => $package
+			'object' => $package,
+			'gross' => $package && isset($package['gross']) ? $package['gross'] : 0,
+			'tax' =>  $package && isset($package['tax']) ? $package['tax'] : 0,
+			'net' =>  $package && isset($package['net']) ? $package['net'] : 0,
+			'taxrate' =>  $package && isset($package['taxrate']) ? $package['taxrate'] : 19,
 		];
+		$summary['gross'] += $package['gross'];
 
-		$summary['gross'] += $package['price'];
+		// load and append campaign
+		$campaign = Session::getValue('campaign');
 
-		$summary['net'] = $summary['gross'] / 1.16;
+		if (isset($campaign['data'])) {
+			$data = $campaign['data'];
+			$campaignItems = [];
+			foreach ($items as $item) {
+				if (isset($item['item_id']) && !is_null($item['item_id'])) {
+					array_push($campaignItems, [
+						'item_id' => $item['item_id'],
+						'item_type' => $item['item_type'],
+						'quantity' => $item['quantity'],
+						'net' => $item['net'],
+						'tax' => $item['tax'],
+						'gross' => $item['gross'],
+						'taxrate' => isset($item['object']['taxrate']) ? $item['object']['taxrate'] : 19
+					]);
+				}
+			}
+
+			// reload and calculate campaign
+			$new = $this->api->findCampaign([
+				'hash' => $data['hash'],
+				'items' => $campaignItems
+			]);
+
+			if ($new && isset($new['data'])) {
+				Session::setValue('campaign', $new);
+				$campaign = $new;
+			}
+
+			if (isset($campaign['summary']) && isset($campaign['summary']['gross']))
+				$summary['gross'] = $summary['gross'] + $campaign['summary']['gross'];
+
+		}
+
+		$this->view->assign('campaign', isset($campaign['data']) ? $campaign['data'] : $campaign);
+		$this->view->assign('campaignDiscount', isset($campaign['summary']) ? $campaign['summary'] : false);
+
+
+
+
+		$summary['net'] = $summary['gross'] / 1.19;
 		$summary['tax'] = $summary['gross'] - $summary['net'];
 		return $summary;
 	}
@@ -756,7 +819,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		Session::deleteValue('deliveryAdress');
 		Session::deleteValue('message');
 		Session::deleteValue('account');
-		Session::deleteValue('paymentMethod');
+		Session::deleteValue('campaign');
+		Session::deleteValue('note');
 	}
 
 	/**
@@ -768,8 +832,11 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->initialize();
 
 		// ToDo add ne finish action
-
 		$this->view->assign('action', 'finish');
+		$this->view->assign('paymentMethod', Session::getValue('paymentMethod'));
+		$this->view->assign('customer', $this->api->getCustomer());
+		$this->view->assign('order', $this->api->getSessionOrder());
+
 	}
 
 	protected function Alert($titlecode, $messagecode, $type){

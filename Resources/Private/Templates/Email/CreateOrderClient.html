@@ -58,6 +58,12 @@
 				<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.package.gross}</f:format.currency></td>
 			</tr>
 		</f:if>
+		<f:for each="{order.campaigns}" as="campaign">
+			<tr>
+				<td colspan="3" style="border: 1px solid #999999;">Rabatt-Aktion: {campaign.item.name} ({campaign.item.hash})<br>{campaign.item.description}</td>
+				<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{campaign.gross}</f:format.currency></td>
+			</tr>
+		</f:for>
 		<tr>
 			<td colspan="3" style="border: 1px solid #999999;"><b>Gesamtsumme (Netto)</b></td>
 			<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.net}</f:format.currency></td>
