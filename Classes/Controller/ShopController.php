@@ -433,6 +433,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		/* detect for package and calculate summary*/
 		$items = $basket['basketItems'];
+
+
 		$summary = $this->calculateSum($items);
 
 		$basketSettings = $this->settings['basket'];
@@ -515,7 +517,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	private function sendOrderByBasket($basket,$items,$summary,$billing,$delivery,$paymentMethod,$account,$note) {
 
 		$campaign = Session::getValue('campaign');
-
         if ($campaign && $campaign['data']['id'] > 0) {
         	$this->api->addItemToBasket(['data' => [
                 'quantity' => 1,
@@ -629,6 +630,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			);
 
 			$this->clearAllSessionData();
+
 			$this->redirect(NULL, NULL, NULL, [], $this->finishPid);
 		}
 
@@ -722,6 +724,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	private function calculateSum(&$items) {
+
 		$summary = [
 			'net' => 0,
 			'tax' => 0,
@@ -746,17 +749,25 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		// load and append package
 		$package = $this->api->findPackage('bottles',$summary['bottles']);
-		$items[] = [
+
+		$customer = $this->api->getCustomer();
+		$fflimit = $customer['settings']['freightfreelimit'] ?? false;
+		$applyfflimit = floatval($summary['gross']) >= floatval($fflimit);
+
+		$package = [
 			'item_type' => 'package',
 			'item_id' => $package['id'],
 			'quantity' => 1,
-			'object' => $package,
-			'gross' => $package && isset($package['gross']) ? $package['gross'] : 0,
-			'tax' =>  $package && isset($package['tax']) ? $package['tax'] : 0,
-			'net' =>  $package && isset($package['net']) ? $package['net'] : 0,
+			'item' => $package,
+			'gross' => $package && isset($package['gross']) && !$applyfflimit ? $package['gross'] : 0,
+			'tax' =>  $package && isset($package['tax']) && !$applyfflimit ? $package['tax'] : 0,
+			'net' =>  $package && isset($package['net']) && !$applyfflimit ? $package['net'] : 0,
 			'taxrate' =>  $package && isset($package['taxrate']) ? $package['taxrate'] : 19,
 		];
+
+		$items[] = $package;
 		$summary['gross'] += $package['gross'];
+
 
 		// load and append campaign
 		$campaign = Session::getValue('campaign');
@@ -796,9 +807,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		$this->view->assign('campaign', isset($campaign['data']) ? $campaign['data'] : $campaign);
 		$this->view->assign('campaignDiscount', isset($campaign['summary']) ? $campaign['summary'] : false);
-
-
-
 
 		$summary['net'] = $summary['gross'] / 1.19;
 		$summary['tax'] = $summary['gross'] - $summary['net'];
