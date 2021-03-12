@@ -1,7 +1,7 @@
 {
     "name": "vinou/vinou-connector",
     "type": "typo3-cms-extension",
-    "version": "5.7.2",
+    "version": "5.8.0",
     "description": "Extension that provides a connection for vinou.de and display wines and winelists via fluid templates",
     "keywords": [
         "TYPO3",
@@ -19,7 +19,7 @@
     ],
     "require": {
         "typo3/cms-core": ">=8.7.0,<9.0",
-        "vinou/api-connector": "2.*",
+        "vinou/api-connector": "^2.1.2",
         "vinou/translations": "3.1.*"
     },
     "autoload": {
