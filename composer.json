@@ -19,8 +19,8 @@
     ],
     "require": {
         "typo3/cms-core": ">=9.5.27,<11.0",
-        "vinou/api-connector": "^2.3",
-        "vinou/translations": "^3.3"
+        "vinou/api-connector": "dev-master",
+        "vinou/translations": "*"
     },
     "autoload": {
         "psr-4": {
