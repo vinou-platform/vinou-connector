@@ -19,7 +19,7 @@
     ],
     "require": {
         "typo3/cms-core": ">=9.5.27,<11.0",
-        "vinou/api-connector": "dev-master",
+        "vinou/api-connector": "dev-master@dev",
         "vinou/translations": "*"
     },
     "autoload": {
