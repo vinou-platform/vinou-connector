@@ -163,7 +163,7 @@ plugin.tx_vinouconnector_products {
 	}
 }
 
-module.tx_vinouconnector_bundles < plugin.tx_vinouconnector_bundles
+module.tx_vinouconnector_products < plugin.tx_vinouconnector_products
 
 plugin.tx_vinouconnector_bundles {
 	view {
@@ -219,32 +219,6 @@ plugin.tx_vinouconnector_bundles {
 }
 
 module.tx_vinouconnector_bundles < plugin.tx_vinouconnector_bundles
-
-plugin.tx_vinouconnector_enquiry {
-	view {
-		templateRootPaths {
-			0 = EXT:vinou_connector/Resources/Private/Templates/
-			1 = {$plugin.tx_vinouconnector_enquiry.view.templateRootPath}
-		}
-		partialRootPaths {
-			0 = EXT:vinou_connector/Resources/Private/Partials/
-			1 = {$plugin.tx_vinouconnector_enquiry.view.partialRootPath}
-		}
-		layoutRootPaths {
-			0 = EXT:vinou_connector/Resources/Private/Layouts/
-			1 = {$plugin.tx_vinouconnector_enquiry.view.layoutRootPath}
-		}
-	}
-	settings {
-		mail {
-			wineFields = name,articlenumber,quantity,price
-			senderMailTemplate = EXT:vinou_connector/Resources/Private/Templates/Email/EnquirySenderMail.html
-			adminMailTemplate = EXT:vinou_connector/Resources/Private/Templates/Email/EnquiryAdminMail.html
-		}
-	}
-}
-
-module.tx_vinouconnector_enquiry < plugin.tx_vinouconnector_enquiry
 
 plugin.tx_vinouconnector_shop {
 	view {
@@ -334,6 +308,85 @@ plugin.tx_vinouconnector_office {
 }
 
 module.tx_vinouconnector_office < plugin.tx_vinouconnector_office
+
+plugin.tx_vinouconnector_wineries {
+	view {
+		templateRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Templates/
+			1 = {$plugin.tx_vinouconnector_wineries.view.templateRootPath}
+		}
+		partialRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Partials/
+			1 = {$plugin.tx_vinouconnector_wineries.view.partialRootPath}
+		}
+		layoutRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Layouts/
+			1 = {$plugin.tx_vinouconnector_wineries.view.layoutRootPath}
+		}
+	}
+
+	settings {
+		list {
+			image {
+				maxWidth = 100
+				maxHeight = 200
+			}
+			text {
+				crop = 150
+				append = ...
+			}
+		}
+
+		detail {
+			image {
+				maxWidth = 200
+				maxHeight = 600
+			}
+		}
+	}
+}
+
+module.tx_vinouconnector_wineries < plugin.tx_vinouconnector_wineries
+
+
+plugin.tx_vinouconnector_merchants {
+	view {
+		templateRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Templates/
+			1 = {$plugin.tx_vinouconnector_merchants.view.templateRootPath}
+		}
+		partialRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Partials/
+			1 = {$plugin.tx_vinouconnector_merchants.view.partialRootPath}
+		}
+		layoutRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Layouts/
+			1 = {$plugin.tx_vinouconnector_merchants.view.layoutRootPath}
+		}
+	}
+
+	settings {
+		list {
+			image {
+				maxWidth = 100
+				maxHeight = 200
+			}
+			text {
+				crop = 150
+				append = ...
+			}
+		}
+
+		detail {
+			image {
+				maxWidth = 200
+				maxHeight = 600
+			}
+		}
+	}
+}
+
+module.tx_vinouconnector_merchants < plugin.tx_vinouconnector_merchants
 
 page.headerData {
 	999 = TEXT
