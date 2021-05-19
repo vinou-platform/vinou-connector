@@ -29,15 +29,6 @@ mod.wizards.newContentElement.wizardItems {
                     list_type = vinouconnector_bundles
                 }
             }
-            enquiry {
-                iconIdentifier = extension-vinouconnector-enquiry
-                title = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.enquiry.title
-                description = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.enquiry.description
-                tt_content_defValues {
-                    CType = list
-                    list_type = vinouconnector_enquiry
-                }
-            }
             shop {
                 iconIdentifier = extension-vinouconnector-shop
                 title = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.shop.title
@@ -56,7 +47,25 @@ mod.wizards.newContentElement.wizardItems {
                     list_type = vinouconnector_office
                 }
             }
+            wineries {
+                iconIdentifier = extension-vinouconnector-wineries
+                title = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.wineries.title
+                description = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.wineries.description
+                tt_content_defValues {
+                    CType = list
+                    list_type = vinouconnector_wineries
+                }
+            }
+            merchants {
+                iconIdentifier = extension-vinouconnector-merchants
+                title = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.merchants.title
+                description = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.merchants.description
+                tt_content_defValues {
+                    CType = list
+                    list_type = vinouconnector_merchants
+                }
+            }
         }
-    	show := addToList(wines,products,bundles,enquiry,shop,office)
+    	show := addToList(wines,products,bundles,shop,office,wineries,merchants)
 	}
 }

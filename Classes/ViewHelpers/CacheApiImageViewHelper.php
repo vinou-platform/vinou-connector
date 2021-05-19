@@ -1,28 +1,36 @@
 <?php
 namespace Vinou\VinouConnector\ViewHelpers;
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
+use \Vinou\VinouConnector\Utility\Helper;
 use \Vinou\ApiConnector\FileHandler\Images;
 
-class CacheApiImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class CacheApiImageViewHelper extends AbstractViewHelper {
 
 	const LOCALDIR = 'vinou/cache/images/';
 
-    /**
-     * @param string $image
-     * @param string $tstamp
-     * @return string
-     */
-	public function render($image,$tstamp) {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
 
-		$absLocalDir = GeneralUtility::getFileAbsFileName(self::LOCALDIR);
-        if(!is_dir($absLocalDir)){
-            mkdir($absLocalDir, 0777, true);
-        }
+        if (!$arguments['image'])
+            return;
 
-        $cacheImageProcess = Images::storeApiImage($image,$tstamp,$absLocalDir);
-        $fileName = $cacheImageProcess['fileName'];
+        $cacheDir = 'vinou/cache/images/';
+        $absLocalDir = Helper::ensureDir($cacheDir);
+        $cacheImageProcess = Images::storeApiImage($arguments['image'], $arguments['tstamp'] ?? null, $absLocalDir);
 
-		return self::LOCALDIR.$fileName;
-	}
+        return $cacheDir . $cacheImageProcess['fileName'];
+
+    }
+
+    public function initializeArguments() {
+        $this->registerArgument('image', 'string', 'The api image string', true);
+
+        $this->registerArgument('tstamp', 'string', 'The timestamp of api object to use for get cache significance', true);
+    }
 }

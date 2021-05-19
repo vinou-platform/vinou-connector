@@ -4,40 +4,46 @@
 		<header/>
 		<body>
 			<trans-unit id="be.wines.title">
-				<source>Wines</source>
+				<source>Wines (Vinou)</source>
 			</trans-unit>
 			<trans-unit id="be.wines.description">
 				<source>Display wines from Vinou as list or detail</source>
 			</trans-unit>
 			<trans-unit id="be.products.title">
-				<source>Products</source>
+				<source>Products (Vinou)</source>
 			</trans-unit>
 			<trans-unit id="be.products.description">
 				<source>Display products from Vinou as list or detail</source>
 			</trans-unit>
 			<trans-unit id="be.bundles.title">
-				<source>Bundles</source>
+				<source>Bundles (Vinou)</source>
 			</trans-unit>
 			<trans-unit id="be.bundles.description">
 				<source>Display bundles from Vinou as list or detail</source>
 			</trans-unit>
-			<trans-unit id="be.enquiry.title">
-				<source>Enquiry</source>
-			</trans-unit>
-			<trans-unit id="be.enquiry.description">
-				<source>Display an enquiry form an submit enquiry via mail</source>
-			</trans-unit>
 			<trans-unit id="be.shop.title">
-				<source>Shop</source>
+				<source>Shop (Vinou)</source>
 			</trans-unit>
 			<trans-unit id="be.shop.description">
 				<source>Show basket, orderform and finish action for vinou wines</source>
 			</trans-unit>
 			<trans-unit id="be.office.title">
-				<source>Vinou-Office</source>
+				<source>Vinou-Office (Vinou)</source>
 			</trans-unit>
 			<trans-unit id="be.office.description">
 				<source>Show special plugins for Vinou-Office for example registration form.</source>
+			</trans-unit>
+			<trans-unit id="be.wineries.title">
+				<source>Wineries (Vinou)</source>
+			</trans-unit>
+			<trans-unit id="be.wineries.description">
+				<source>Display wineries from Vinou as list or detail</source>
+			</trans-unit>
+			<trans-unit id="be.merchants.title">
+				<source>Merchants (Vinou)</source>
+			</trans-unit>
+			<trans-unit id="be.merchants.description">
+				<source>Display merchants from Vinou as list or detail</source>
 			</trans-unit>
 
 			<trans-unit id="shop.list.clusters">
@@ -487,68 +493,6 @@
 				<source>Template</source>
 			</trans-unit>
 
-			<trans-unit id="flexform.enquiry.general">
-				<source>Settings</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.mode">
-				<source>Mode</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.mode.form">
-				<source>Show request form</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.detailPid">
-				<source>Product Detail Page</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.finishPid">
-				<source>Landingpage after Submit</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.sortBy">
-				<source>Sort Property</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.sortBy.empty">
-				<source>-- Please Choose --</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.sortDirection">
-				<source>Sort Direction</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.mailsettings">
-				<source>Mail-Settings</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.requestTo">
-				<source>Receiver Mail</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.requestCc">
-				<source>CC for request</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.requestBcc">
-				<source>BCC for request</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.copyToSender">
-				<source>Send copy to Sender</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.serverMail">
-				<source>Server mailadress</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.serverName">
-				<source>Server name</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.senderMailSubject">
-				<source>Subject for mail to sender</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.adminMailSubject">
-				<source>Subject for mail to admin</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.template">
-				<source>Layout</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.template.default">
-				<source>Default</source>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.templateLayout">
-				<source>Template</source>
-			</trans-unit>
-
-
 			<trans-unit id="flexform.shop.general">
 				<source>Settings</source>
 			</trans-unit>
@@ -684,6 +628,68 @@
 			</trans-unit>
 			<trans-unit id="flexform.office.errorPID">
 				<source>Error Page (if empty use plugin page)</source>
+			</trans-unit>
+
+			<trans-unit id="flexform.wineries.general">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.mode">
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.mode.list">
+				<source>List all wineries</source>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.mode.detail">
+				<source>Show winery details</source>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.itemsPerRow">
+				<source>Items in one Row</source>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.detailPid">
+				<source>Winery detail page</source>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.backPid">
+				<source>Back to page</source>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.template">
+				<source>Layout</source>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.template.default">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.templateLayout">
+				<source>Template</source>
+			</trans-unit>
+
+			<trans-unit id="flexform.merchants.general">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.mode">
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.mode.list">
+				<source>List all merchants</source>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.mode.detail">
+				<source>Show merchant details</source>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.itemsPerRow">
+				<source>Items in one Row</source>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.detailPid">
+				<source>Merchant detail page</source>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.backPid">
+				<source>Back to page</source>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.template">
+				<source>Layout</source>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.template.default">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.templateLayout">
+				<source>Template</source>
 			</trans-unit>
 
 			<trans-unit id="message.title.error">

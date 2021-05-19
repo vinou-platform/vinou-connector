@@ -15,7 +15,6 @@ class TypoScriptHelper {
         $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
         $extbaseFrameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
-
         if (!array_key_exists($pluginKey . '.', $extbaseFrameworkConfiguration['plugin.']))
             return false;
 

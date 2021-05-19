@@ -5,7 +5,7 @@ use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \Vinou\VinouConnector\Utility\Helper;
 
-class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class MerchantsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
@@ -44,28 +44,28 @@ class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 */
 	public function listAction() {
 		$this->initialize();
-		$this->view->assign('products', $this->api->getProductsAll());
+		$this->view->assign('merchants', $this->api->getMerchantsAll());
 	}
 
 	/**
 	 * action detail
 	 *
-	 * @param int $product
+	 * @param int $merchant
 	 * @return void
 	 */
-	public function detailAction($product = NULL) {
+	public function detailAction($merchant = NULL) {
 		$this->initialize();
 		$identifier = null;
 
-		if ($this->request->hasArgument('product'))
-			$identifier = $this->request->getArgument('product');
+		if ($this->request->hasArgument('merchant'))
+			$identifier = $this->request->getArgument('merchant');
 		if ($this->request->hasArgument('path_segment'))
 			$identifier = $this->request->getArgument('path_segment');
 
 		if (is_null($identifier))
 			return;
 
-		$this->view->assign('product', $this->api->getProduct($identifier));
+		$this->view->assign('merchant', $this->api->getMerchant($identifier));
 	}
 
 }

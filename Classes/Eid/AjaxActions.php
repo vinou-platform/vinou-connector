@@ -2,11 +2,10 @@
 namespace Vinou\VinouConnector\Eid;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Core\Bootstrap;
 use \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use \TYPO3\CMS\Frontend\Utility\EidUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
-use \Vinou\ApiConnector\Api;
+use \Vinou\VinouConnector\Utility\Helper;
 use \Vinou\VinouConnector\Utility\Render;
 use \Vinou\VinouConnector\Utility\Shop;
 use \Vinou\VinouConnector\Utility\TypoScriptHelper;
@@ -25,18 +24,15 @@ class AjaxActions {
     protected $errors = [];
     protected $result = false;
     protected $request = [];
-    protected $extConf = null;
     protected $settings = [];
 
-    public function __construct($TYPO3_CONF_VARS) {
-
-        $this->extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf']['vinou_connector']);
+    public function __construct() {
 
         $this->request = array_merge($_POST, (array)json_decode(trim(file_get_contents('php://input')), true));
+        $this->api = Helper::initApi();
+        $this->settings = TypoScriptHelper::extractSettings('tx_vinouconnector_shop');
 
         $this->initTYPO3Frontend();
-        $this->initVinou();
-        $this->settings = TypoScriptHelper::extractSettings('tx_vinouconnector_shop');
     }
 
     private function initTYPO3Frontend() {
@@ -55,20 +51,6 @@ class AjaxActions {
         $GLOBALS['TSFE']->determineId();
         $GLOBALS['TSFE']->initTemplate();
         $GLOBALS['TSFE']->getConfigArray();
-    }
-
-    private function initVinou() {
-        $dev = false;
-        if ($this->extConf['vinouMode'] == 'dev') {
-            $dev = true;
-        }
-
-        $this->api = new Api (
-            $this->extConf['token'],
-            $this->extConf['authId'],
-            true,
-            $dev
-        );
     }
 
     private function loadInput() {
@@ -179,5 +161,5 @@ error_reporting(E_ALL & ~E_NOTICE);
 ini_set("display_errors", 1);
 global $TYPO3_CONF_VARS;
 
-$eid = GeneralUtility::makeInstance(AjaxActions::class, $TYPO3_CONF_VARS);
+$eid = GeneralUtility::makeInstance(AjaxActions::class);
 echo $eid->run();
