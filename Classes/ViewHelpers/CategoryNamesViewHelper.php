@@ -1,19 +1,26 @@
 <?php
 namespace Vinou\VinouConnector\ViewHelpers;
 
-class CategoryNamesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-    /**
-     * @param array $categories
-     * @return string
-     */
-	public function render($categories) {
+class CategoryNamesViewHelper extends AbstractViewHelper {
 
-		$names = [];
-		foreach ($categories as $key => $category) {
-			array_push($names,$category['name']);
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+    	$names = [];
+		foreach ($arguments['categories'] as $key => $category) {
+			array_push($names, $category['name']);
 		}
 
         return implode(', ',$names);
-	}
+    }
+
+
+    public function initializeArguments() {
+        $this->registerArgument('categories', 'array', 'The categories of given item', true);
+    }
 }

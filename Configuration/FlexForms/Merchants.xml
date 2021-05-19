@@ -15,7 +15,7 @@
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.mode</label>
                             <onChange>reload</onChange>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <items>
                                     <numIndex index="0">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.mode.list</numIndex>
@@ -95,9 +95,8 @@
                         <TCEforms>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.templateLayout</label>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\TCA->user_templateLayout</itemsProcFunc>
-                                <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.template.default</numIndex>

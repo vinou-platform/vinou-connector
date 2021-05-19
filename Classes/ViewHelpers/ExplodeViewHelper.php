@@ -1,13 +1,24 @@
 <?php
 namespace Vinou\VinouConnector\ViewHelpers;
 
-class ExplodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-    /**
-     * @param string $string
-     * @return array
-     */
-	public function render($string) {
-        return explode(',', $string);
-	}
+class ExplodeViewHelper extends AbstractViewHelper {
+
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
+
+    	$delimiter = $arguments['delimiter'] ?? ',';
+		return explode($delimiter, $arguments['string']);
+    }
+
+
+    public function initializeArguments() {
+        $this->registerArgument('string', 'string', 'The string to explode', true);
+        $this->registerArgument('delimiter', 'string', 'The delimiter to explode');
+    }
 }

@@ -1,17 +1,23 @@
 <?php
 namespace Vinou\VinouConnector\ViewHelpers;
 
-use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-class BasePriceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class BasePriceViewHelper extends AbstractViewHelper {
 
-    /**
-     * @param string $price
-     * @param string $size
-     * @return string
-     */
-	public function render($price, $size) {
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
 
-		return $price / $size;
-	}
+		return $arguments['price'] / $arguments['size'];
+    }
+
+
+    public function initializeArguments() {
+        $this->registerArgument('price', 'string', 'The item price', true);
+        $this->registerArgument('size', 'string', 'The item size', true);
+    }
 }

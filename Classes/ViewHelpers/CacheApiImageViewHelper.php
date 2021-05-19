@@ -9,16 +9,11 @@ use \Vinou\ApiConnector\FileHandler\Images;
 
 class CacheApiImageViewHelper extends AbstractViewHelper {
 
-	const LOCALDIR = 'vinou/cache/images/';
-
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-
-        if (!$arguments['image'])
-            return;
 
         $cacheDir = 'vinou/cache/images/';
         $absLocalDir = Helper::ensureDir($cacheDir);
@@ -31,6 +26,6 @@ class CacheApiImageViewHelper extends AbstractViewHelper {
     public function initializeArguments() {
         $this->registerArgument('image', 'string', 'The api image string', true);
 
-        $this->registerArgument('tstamp', 'string', 'The timestamp of api object to use for get cache significance', true);
+        $this->registerArgument('tstamp', 'string', 'The timestamp of api object to use for get cache significance');
     }
 }

@@ -1,30 +1,33 @@
 <?php
 namespace Vinou\VinouConnector\ViewHelpers;
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
+use \Vinou\VinouConnector\Utility\Helper;
 use \Vinou\ApiConnector\FileHandler\Pdf;
-use \Vinou\ApiConnector\Tools\Helper;
 
-class CacheApiPdfViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class CacheApiPdfViewHelper extends AbstractViewHelper {
 
-	const LOCALDIR = 'typo3temp/vinou_connector/';
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    ) {
 
-    /**
-     * @param string $pdf
-     * @param string $tstamp
-     * @param int $id
-     * @return string
-     */
-	public function render($pdf,$tstamp,$id) {
+        $cacheDir = 'typo3temp/vinou_connector/';
+        $absLocalDir = Helper::ensureDir($cacheDir);
+        $cachePDFProcess = Pdf::storeApiPDF($arguments['pdf'], $arguments['tstamp'], $absLocalDir, $arguments['id'].'-');
 
-		$absLocalDir = GeneralUtility::getFileAbsFileName(self::LOCALDIR);
-        if(!is_dir($absLocalDir)){
-            mkdir($absLocalDir, 0777, true);
-        }
+        return $cacheDir . $cachePDFProcess['fileName'];
 
-        $cachePDFProcess = Pdf::storeApiPDF($pdf,$tstamp,$absLocalDir,$id.'-');
-        $fileName = $cachePDFProcess['fileName'];
+    }
 
-		return self::LOCALDIR.$fileName;
-	}
+    public function initializeArguments() {
+        $this->registerArgument('pdf', 'string', 'The api pdf string', true);
+
+        $this->registerArgument('tstamp', 'string', 'The timestamp of api object to use for get cache significance');
+
+        $this->registerArgument('id', 'integer', 'The id of api object to use for get cache significance', true);
+    }
 }

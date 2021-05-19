@@ -4,7 +4,7 @@ namespace Vinou\VinouConnector\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-class UnserializeViewHelper extends AbstractViewHelper {
+class ImplodeViewHelper extends AbstractViewHelper {
 
     public static function renderStatic(
         array $arguments,
@@ -12,11 +12,13 @@ class UnserializeViewHelper extends AbstractViewHelper {
         RenderingContextInterface $renderingContext
     ) {
 
-    	return unserialize($arguments['string']);
+    	$glue = $arguments['glue'] ?? ', ';
+		return explode($glue, $arguments['items']);
     }
 
 
     public function initializeArguments() {
-        $this->registerArgument('string', 'string', 'The string to unserialize', true);
+        $this->registerArgument('items', 'array', 'The items to implode', true);
+        $this->registerArgument('glue', 'string', 'The glue to implode');
     }
 }

@@ -15,7 +15,7 @@
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.mode</label>
                             <onChange>reload</onChange>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <items>
                                     <numIndex index="0">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.mode.list</numIndex>
@@ -54,8 +54,7 @@
                             <displayCond>FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.clusters</label>
                             <config>
-                                <type>select</type>
-                                <renderType>selectMultipleSideBySide</renderType>
+                                <type>selectMultipleSideBySide</type>
                                 <minitems>0</minitems>
                                 <maxitems>999</maxitems>
                                 <items>
@@ -101,8 +100,7 @@
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.showTypes</label>
                             <config>
-                                <type>select</type>
-                                <renderType>selectCheckBox</renderType>
+                                <type>selectCheckBox</type>
                                 <minitems>0</minitems>
                                 <maxitems>999</maxitems>
                                 <items>
@@ -127,7 +125,7 @@
                             <displayCond>FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.category</label>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <eval>int</eval>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\TCA->vinouCategories</itemsProcFunc>
                                 <items>
@@ -149,7 +147,7 @@
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortBy</label>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortBy.empty</numIndex>
@@ -189,7 +187,7 @@
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortDirection</label>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortDirection.asc</numIndex>
@@ -392,9 +390,8 @@
                         <TCEforms>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.templateLayout</label>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\TCA->user_templateLayout</itemsProcFunc>
-                                <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.template.default</numIndex>

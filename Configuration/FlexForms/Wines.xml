@@ -1,6 +1,6 @@
 <T3DataStructure>
     <meta>
-    <langDisable>1</langDisable>
+        <langDisable>1</langDisable>
     </meta>
     <sheets>
         <sDEF>
@@ -15,7 +15,7 @@
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.mode</label>
                             <onChange>reload</onChange>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <items>
                                     <numIndex index="0">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.mode.list</numIndex>
@@ -39,7 +39,7 @@
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.listmode</label>
                             <onChange>reload</onChange>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <items>
                                     <numIndex index="0">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.listmode.empty</numIndex>
@@ -62,7 +62,7 @@
                             <displayCond>FIELD:settings.listMode:=:category</displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.category</label>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <eval>int,required</eval>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\TCA->vinouCategories</itemsProcFunc>
                                 <items>
@@ -84,7 +84,7 @@
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortBy</label>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortBy.empty</numIndex>
@@ -124,7 +124,7 @@
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortDirection</label>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.sortDirection.asc</numIndex>
@@ -143,7 +143,7 @@
                             <displayCond>FIELD:settings.listMode:=:category</displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.groupBy</label>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.groupBy.empty</numIndex>
@@ -174,7 +174,7 @@
                             <displayCond>FIELD:settings.listMode:=:type</displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.type</label>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <eval>int,required</eval>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\TCA->vinouTypes</itemsProcFunc>
                                 <items>
@@ -252,9 +252,8 @@
                         <TCEforms>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.templateLayout</label>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\TCA->user_templateLayout</itemsProcFunc>
-                                <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0" type="array">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wines.template.default</numIndex>
