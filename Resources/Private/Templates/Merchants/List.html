@@ -1,0 +1,15 @@
+<f:layout name="Merchants" />
+
+<f:section name="main">
+	<f:switch expression="{settings.templateLayout}">
+		<f:defaultCase>
+			<div class="vinou-merchants-list regular" data-count="{f:if(condition:'{settings.itemsPerRow}',then:'{settings.itemsPerRow}',else:'5')}">
+				<ul>
+					<f:for each="{merchants}" as="merchant">
+						<li>{merchant.company}</li>
+					</f:for>
+				</ul>
+			</div>
+		</f:defaultCase>
+	</f:switch>
+</f:section>

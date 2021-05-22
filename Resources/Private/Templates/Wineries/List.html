@@ -1,0 +1,15 @@
+<f:layout name="Wineries" />
+
+<f:section name="main">
+	<f:switch expression="{settings.templateLayout}">
+		<f:defaultCase>
+			<div class="vinou-wineries-list regular" data-count="{f:if(condition:'{settings.itemsPerRow}',then:'{settings.itemsPerRow}',else:'5')}">
+				<ul>
+					<f:for each="{wineries}" as="winery">
+						<li>{winery.company}</li>
+					</f:for>
+				</ul>
+			</div>
+		</f:defaultCase>
+	</f:switch>
+</f:section>

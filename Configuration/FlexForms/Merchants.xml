@@ -6,28 +6,24 @@
         <sDEF>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.products.general</sheetTitle>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.general</sheetTitle>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <switchableControllerActions>
                         <TCEforms>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.products.mode</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.mode</label>
                             <onChange>reload</onChange>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <items>
                                     <numIndex index="0">
-                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.products.mode.list</numIndex>
-                                        <numIndex index="1">Products->list;Products->detail;</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.mode.list</numIndex>
+                                        <numIndex index="1">Merchants->list;Merchants->detail;</numIndex>
                                     </numIndex>
                                     <numIndex index="1">
-                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.products.mode.detail</numIndex>
-                                        <numIndex index="1">Products->detail;Products->list;</numIndex>
-                                    </numIndex>
-                                    <numIndex index="2">
-                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.products.mode.detail</numIndex>
-                                        <numIndex index="1">Products->topseller;</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.mode.detail</numIndex>
+                                        <numIndex index="1">Merchants->detail;Merchants->list;</numIndex>
                                     </numIndex>
                                 </items>
                             </config>
@@ -37,11 +33,11 @@
                         <TCEforms>
                             <displayCond>
                                 <OR>
-                                    <numIndex index="0">FIELD:switchableControllerActions:=:Products->list;Products->detail;</numIndex>
-                                    <numIndex index="1">FIELD:switchableControllerActions:=:Products->topseller;</numIndex>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Merchants->list;Merchants->detail;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Merchants->topseller;</numIndex>
                                 </OR>
                             </displayCond>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.products.itemsPerRow</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.itemsPerRow</label>
                             <config>
                               <type>input</type>
                               <size>10</size>
@@ -54,11 +50,11 @@
                         <TCEforms>
                             <displayCond>
                                 <OR>
-                                    <numIndex index="0">FIELD:switchableControllerActions:=:Products->list;Products->detail;</numIndex>
-                                    <numIndex index="1">FIELD:switchableControllerActions:=:Products->topseller;</numIndex>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Merchants->list;Merchants->detail;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Merchants->topseller;</numIndex>
                                 </OR>
                             </displayCond>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.products.detailPid</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.detailPid</label>
                             <config>
                                 <type>group</type>
                                 <internal_type>db</internal_type>
@@ -72,8 +68,8 @@
                     </settings.detailPid>
                     <settings.backPid>
                         <TCEforms>
-                            <displayCond>FIELD:switchableControllerActions:=:Products->detail;Products->list;</displayCond>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.products.backPid</label>
+                            <displayCond>FIELD:switchableControllerActions:=:Merchants->detail;Merchants->list;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.backPid</label>
                             <config>
                                 <type>group</type>
                                 <internal_type>db</internal_type>
@@ -91,20 +87,19 @@
         <template>
             <ROOT>
                 <TCEforms>
-                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.products.template</sheetTitle>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.template</sheetTitle>
                 </TCEforms>
                 <type>array</type>
                 <el>
                     <settings.templateLayout>
                         <TCEforms>
-                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.products.templateLayout</label>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.templateLayout</label>
                             <config>
-                                <type>select</type>
+                                <type>selectSingle</type>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\TCA->user_templateLayout</itemsProcFunc>
-                                <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0" type="array">
-                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.products.template.default</numIndex>
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.merchants.template.default</numIndex>
                                         <numIndex index="1"></numIndex>
                                     </numIndex>
                                 </items>

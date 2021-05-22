@@ -2,27 +2,15 @@
 namespace Vinou\VinouConnector\Controller;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Core\Utility\PathUtility;
-use \TYPO3\CMS\Extbase\Object\ObjectManager;
-use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
-use \Vinou\ApiConnector\Api;
 use \Vinou\ApiConnector\FileHandler\Pdf;
+use \Vinou\Translations\Utilities\Translation;
+use \Vinou\VinouConnector\Utility\Helper;
 
-class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
-
-	/**
-	 * extKey
-	 * @var string
-	 */
-	protected $extKey;
-
-	/**
-	 * extConf
-	 * @var array
-	 */
-	protected $extConf;
+class WinesController extends ActionController {
 
 	/**
 	 * objectManager
@@ -36,80 +24,36 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 * @inject
 	 */
-	protected $persistenceManager; 
+	protected $persistenceManager;
 
 	/**
-	 * configurationManager
-	 *
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
-	 */
-	protected $configurationManager;
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     */
+    protected $configurationManager;
 
 	protected $api;
-	protected $llPath = 'Resources/Private/Language/';
-	protected $localDir = 'typo3temp/vinou/';
-	protected $absLocalDir = '';
 	protected $translations;
-
-	protected $errors = [];
-	protected $messages = [];
 
 	protected $detailPid;
 	protected $backPid;
 
 
 	public function initialize() {
-		$this->extKey = $this->request->getControllerExtensionKey();
-		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-		$this->llPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey).$this->llPath;
 
-		$settings = $this->configurationManager->getConfiguration(
-			\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
+		$this->api = Helper::initApi();
+	    $this->translations = new Translation();
+
+		$this->settings = $this->configurationManager->getConfiguration(
+			ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
 		);
 
-		$this->settings = $settings;
 		isset($this->settings['detailPid']) ? $this->detailPid = $this->settings['detailPid'] : $this->detailPid = NULL;
 		isset($this->settings['backPid']) ? $this->backPid = $this->settings['backPid'] : $this->backPid = NULL;
 		if ($this->request->hasArgument('backPid')) {
 			$this->backPid = $this->request->getArgument('backPid');
 		}
 		$this->settings['currentPage'] = $GLOBALS['TSFE']->id;
-		$this->settings['cacheExpertise'] = (bool)$this->extConf['cacheExpertise'];
-
-		$dev = false;
-	    if ($this->extConf['vinouMode'] == 'dev') {
-	      $dev = true;
-	    }
-
-	    $this->api = new Api(
-	      $this->extConf['token'],
-	      $this->extConf['authId'],
-	      true,
-	      $dev
-	    );
-
-	    if (isset($this->extConf['cachingFolder'])) {
-	    	$this->localDir = $this->extConf['cachingFolder'];
-            if (substr($this->localDir, -1) != '/') {
-                $this->localDir = $this->localDir . '/';
-            }
-	    }
-		$this->absLocalDir = GeneralUtility::getFileAbsFileName($this->localDir);
-
-
-		if(!is_dir($this->absLocalDir)){
-			mkdir($this->absLocalDir, 0777, true);
-		}
-	    $this->translations = new \Vinou\VinouConnector\Utility\Translation();
-
-	    $loggedIn = FALSE;
-		if($GLOBALS['TSFE']->loginUser) {
-			$loggedIn = TRUE;
-		}
-		$this->view->assign('loggedIn', $loggedIn);
+		$this->settings['cacheExpertise'] = Helper::getExtConfValue('cacheExpertise');
 
 	}
 
@@ -220,25 +164,26 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @return string
 	 */
 	private function detectExpertise($wine) {
-		$src = "https://api.vinou.de".$wine['expertisePDF'];
+		$src = 'https://api.vinou.de' . $wine['expertisePDF'];
 
 		if ($this->settings['cacheExpertise']) {
 			if ($wine['expertiseStatus']=='OK') {
 				$expertiseFile = $fileName = array_values(array_slice(explode('/',$wine['expertisePDF']), -1))[0];
 				$convertedFileName = Pdf::convertFileName($wine['id'].'-'.$fileName);
-				$localFile = $this->absLocalDir .$convertedFileName;
+				$localFile = Helper::getPdfCacheDir() . $convertedFileName;
 
 				$dateTimeZone = new \DateTimeZone(date_default_timezone_get());
-				$timeOffset = $dateTimeZone->getOffset(new \DateTime("now",$dateTimeZone));
+				$timeOffset = $dateTimeZone->getOffset(new \DateTime("now", $dateTimeZone));
 
-				if(!file_exists($localFile) || strtotime($wine['chstamp'] . ' + ' . $timeOffset / 3600 .' hours') > filemtime($localFile)){
+				if(!file_exists($localFile) || strtotime($wine['chstamp'] . ' + ' . $timeOffset / 3600 .' hours') > filemtime($localFile))
 					$src = '/?eID=cacheExpertise&wineID='.$wine['id'];
-				} else {
-					$src = '/'. $this->localDir . $convertedFileName. '?' .time();
-				}
-			} else {
-				$src = '/?eID=cacheExpertise&wineID='.$wine['id'];
+
+				else
+					$src = '/'. Helper::getPdfCacheDir(false) . $convertedFileName. '?' .time();
 			}
+
+			else
+				$src = '/?eID=cacheExpertise&wineID='.$wine['id'];
 		}
 
 		return $src;
@@ -260,19 +205,19 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 				case 'grapetypes':
 					$grapetypes = [];
 					foreach ($value as $grapetype) {
-						$grapetypes[$grapetype] = $this->translations->grapetypes[$grapetype];
+						$grapetypes[$grapetype] = $this->translations->getGrapeType($grapetype);
 					}
 					$wine[$property] = $grapetypes;
 					break;
 				case 'type':
 					$wine['winetype'] = $value;
-					$wine[$property] = $this->translations->winetypes[$value];
+					$wine[$property] = $this->translations->getType($value);
 					break;
 				case 'tastes_id':
-					$wine[$property] = $this->translations->tastes[$value];
+					$wine[$property] = $this->translations->getTaste($value);
 					break;
 				case 'region':
-					$wine[$property] = $this->translations->regions[$value];
+					$wine[$property] = $this->translations->getRegion($value);
 					break;
 				default:
 					$wine[$property] = $value;

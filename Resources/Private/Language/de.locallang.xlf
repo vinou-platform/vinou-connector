@@ -27,14 +27,6 @@
 				<source>Display bundles from Vinou as list or detail</source>
 				<target>Zeigt die Weinpakete aus Vinou als Liste oder Detailansicht</target>
 			</trans-unit>
-			<trans-unit id="be.enquiry.title">
-				<source>Enquiry (Vinou)</source>
-				<target>Anfrageformular (Vinou)</target>
-			</trans-unit>
-			<trans-unit id="be.enquiry.description">
-				<source>Display an enquiry form an submit enquiry via mail</source>
-				<target>Zeigt ein Anfrageformular und sendet die Anfrage per mail</target>
-			</trans-unit>
 			<trans-unit id="be.shop.title">
 				<source>Shop (Vinou)</source>
 				<target>Shop (Vinou)</target>
@@ -50,6 +42,22 @@
 			<trans-unit id="be.office.description">
 				<source>Show special plugins for Vinou-Office for example registration form.</source>
 				<target>Plugins um spezielle Vinou-Office direkt verfügbar zu machen, z.B. Registrierungsformular</target>
+			</trans-unit>
+			<trans-unit id="be.wineries.title">
+				<source>Wineries (Vinou)</source>
+				<target>Weingüter (Vinou)</target>
+			</trans-unit>
+			<trans-unit id="be.wineries.description">
+				<source>Display wineries from Vinou as list or detail</source>
+				<target>Zeigt die Weingüter aus Vinou als Liste oder Detailansicht</target>
+			</trans-unit>
+			<trans-unit id="be.merchants.title">
+				<source>Merchants (Vinou)</source>
+				<target>Händler (Vinou)</target>
+			</trans-unit>
+			<trans-unit id="be.merchants.description">
+				<source>Display merchants from Vinou as list or detail</source>
+				<target>Zeigt die Händler aus Vinou als Liste oder Detailansicht</target>
 			</trans-unit>
 
 			<trans-unit id="shop.list.clusters">
@@ -644,87 +652,6 @@
 				<target>Vorlage wählen</target>
 			</trans-unit>
 
-			<trans-unit id="flexform.enquiry.general">
-				<source>Settings</source>
-				<target>Einstellungen</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.mode">
-				<source>Mode</source>
-				<target>Modus</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.mode.form">
-				<source>Show request form</source>
-				<target>Anfrageformular</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.sortBy">
-				<source>Sort Property</source>
-				<target>Sortiert nach</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.sortBy.empty">
-				<source>-- Please Choose --</source>
-				<target>-- Bitte wählen --</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.sortDirection">
-				<source>Sort Direction</source>
-				<target>Sortierrichtung</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.detailPid">
-				<source>Product Detail Page</source>
-				<target>Detailseite</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.finishPid">
-				<source>Landingpage after Submit</source>
-				<target>Seite nach dem Abschicken</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.mailsettings">
-				<source>Mail-Settings</source>
-				<target>Email-Einstellungen</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.requestTo">
-				<source>Receiver Mail</source>
-				<target>Empfänger</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.requestCc">
-				<source>CC for request</source>
-				<target>CC</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.requestBcc">
-				<source>BCC for request</source>
-				<target>BCC</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.copyToSender">
-				<source>Send copy to Sender</source>
-				<target>Kopie an Sender</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.serverMail">
-				<source>Server mailadress</source>
-				<target>Server-Mailadresse</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.serverName">
-				<source>Server name</source>
-				<target>Server-Name</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.senderMailSubject">
-				<source>Subject for mail to sender</source>
-				<target>Betreff für Email an Sender</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.adminMailSubject">
-				<source>Subject for mail to admin</source>
-				<target>Betreff für Email an Weingut</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.template">
-				<source>Layout</source>
-				<target>Layout</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.template.default">
-				<source>Default</source>
-				<target>Standard</target>
-			</trans-unit>
-			<trans-unit id="flexform.enquiry.templateLayout">
-				<source>Template</source>
-				<target>Vorlage wählen</target>
-			</trans-unit>
-
 			<trans-unit id="flexform.shop.general">
 				<source>Settings</source>
 				<target>Einstellungen</target>
@@ -905,6 +832,88 @@
 			<trans-unit id="flexform.office.errorPID">
 				<source>Error Page (if empty use plugin page)</source>
 				<target>Fehler-Seite (wenn leer Plugin-Seite)</target>
+			</trans-unit>
+
+			<trans-unit id="flexform.wineries.general">
+				<source>Settings</source>
+				<target>Einstellungen</target>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.mode">
+				<source>Mode</source>
+				<target>Modus</target>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.mode.list">
+				<source>List all wineries</source>
+				<target>Listenansicht</target>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.mode.detail">
+				<source>Show winery details</source>
+				<target>Weingutdetails</target>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.itemsPerRow">
+				<source>Items in one row</source>
+				<target>Anzahl Weingüter in einer Zeile</target>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.detailPid">
+				<source>Winery detail page</source>
+				<target>Detailseite</target>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.backPid">
+				<source>Back to page</source>
+				<target>Zurück zu Seite</target>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.template">
+				<source>Layout</source>
+				<target>Layout</target>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.template.default">
+				<source>Default</source>
+				<target>Standard</target>
+			</trans-unit>
+			<trans-unit id="flexform.wineries.templateLayout">
+				<source>Template</source>
+				<target>Vorlage wählen</target>
+			</trans-unit>
+
+			<trans-unit id="flexform.merchants.general">
+				<source>Settings</source>
+				<target>Einstellungen</target>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.mode">
+				<source>Mode</source>
+				<target>Modus</target>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.mode.list">
+				<source>List all merchants</source>
+				<target>Listenansicht</target>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.mode.detail">
+				<source>Show merchant details</source>
+				<target>Händlerdetails</target>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.itemsPerRow">
+				<source>Items in one row</source>
+				<target>Anzahl Händler in einer Zeile</target>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.detailPid">
+				<source>Winery detail page</source>
+				<target>Detailseite</target>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.backPid">
+				<source>Back to page</source>
+				<target>Zurück zu Seite</target>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.template">
+				<source>Layout</source>
+				<target>Layout</target>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.template.default">
+				<source>Default</source>
+				<target>Standard</target>
+			</trans-unit>
+			<trans-unit id="flexform.merchants.templateLayout">
+				<source>Template</source>
+				<target>Vorlage wählen</target>
 			</trans-unit>
 
 			<trans-unit id="message.title.error">

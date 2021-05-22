@@ -17,7 +17,6 @@ page.includeJSFooterlibs.dialogs = EXT:vinou_connector/Resources/Private/JavaScr
 [globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.vinou}]
 page.includeJSFooterlibs {
 	listjs = EXT:vinou_connector/Vendor/listjs/list.js
-	enquiry = EXT:vinou_connector/Resources/Public/Scripts/enquiry.min.js
 	shop = EXT:vinou_connector/Resources/Public/Scripts/shop.min.js
 	list = EXT:vinou_connector/Resources/Public/Scripts/list.min.js
 }
@@ -25,7 +24,6 @@ page.includeJSFooterlibs {
 [globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.vinou}] && [applicationContext = Development]
 page.includeJSFooterlibs {
 	listjs = EXT:vinou_connector/Vendor/listjs/list.js
-	enquiry = EXT:vinou_connector/Resources/Private/JavaScript/Src/enquiry.js
 	shop = EXT:vinou_connector/Resources/Private/JavaScript/Src/shop.js
 	list = EXT:vinou_connector/Resources/Private/JavaScript/Src/list.js
 }
@@ -39,13 +37,6 @@ page.includeJSFooterlibs {
 
 [globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.shop}] && [applicationContext = Development]
 page.includeJSFooterlibs.shop = EXT:vinou_connector/Resources/Private/JavaScript/Src/shop.js
-
-# add only enquiry javascript if it was turned on in the constants
-[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.enquiry}]
-page.includeJSFooterlibs.enquiry = EXT:vinou_connector/Resources/Public/Scripts/enquiry.min.js
-
-[globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.enquiry}] && [applicationContext = Development]
-page.includeJSFooterlibs.enquiry = EXT:vinou_connector/Resources/Private/JavaScript/Src/enquiry.js
 
 # add only list javascript if it was turned on in the constants
 [globalVar = LIT:0 < {$plugin.tx_vinou.settings.javascript.list}]
@@ -220,32 +211,6 @@ plugin.tx_vinouconnector_bundles {
 
 module.tx_vinouconnector_bundles < plugin.tx_vinouconnector_bundles
 
-plugin.tx_vinouconnector_enquiry {
-	view {
-		templateRootPaths {
-			0 = EXT:vinou_connector/Resources/Private/Templates/
-			1 = {$plugin.tx_vinouconnector_enquiry.view.templateRootPath}
-		}
-		partialRootPaths {
-			0 = EXT:vinou_connector/Resources/Private/Partials/
-			1 = {$plugin.tx_vinouconnector_enquiry.view.partialRootPath}
-		}
-		layoutRootPaths {
-			0 = EXT:vinou_connector/Resources/Private/Layouts/
-			1 = {$plugin.tx_vinouconnector_enquiry.view.layoutRootPath}
-		}
-	}
-	settings {
-		mail {
-			wineFields = name,articlenumber,quantity,price
-			senderMailTemplate = EXT:vinou_connector/Resources/Private/Templates/Email/EnquirySenderMail.html
-			adminMailTemplate = EXT:vinou_connector/Resources/Private/Templates/Email/EnquiryAdminMail.html
-		}
-	}
-}
-
-module.tx_vinouconnector_enquiry < plugin.tx_vinouconnector_enquiry
-
 plugin.tx_vinouconnector_shop {
 	view {
 		templateRootPaths {
@@ -334,6 +299,84 @@ plugin.tx_vinouconnector_office {
 }
 
 module.tx_vinouconnector_office < plugin.tx_vinouconnector_office
+
+plugin.tx_vinouconnector_wineries {
+	view {
+		templateRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Templates/
+			1 = {$plugin.tx_vinouconnector_wineries.view.templateRootPath}
+		}
+		partialRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Partials/
+			1 = {$plugin.tx_vinouconnector_wineries.view.partialRootPath}
+		}
+		layoutRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Layouts/
+			1 = {$plugin.tx_vinouconnector_wineries.view.layoutRootPath}
+		}
+	}
+
+	settings {
+		list {
+			image {
+				maxWidth = 100
+				maxHeight = 200
+			}
+			text {
+				crop = 150
+				append = ...
+			}
+		}
+
+		detail {
+			image {
+				maxWidth = 200
+				maxHeight = 600
+			}
+		}
+	}
+}
+
+module.tx_vinouconnector_wineries < plugin.tx_vinouconnector_wineries
+
+plugin.tx_vinouconnector_merchants {
+	view {
+		templateRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Templates/
+			1 = {$plugin.tx_vinouconnector_merchants.view.templateRootPath}
+		}
+		partialRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Partials/
+			1 = {$plugin.tx_vinouconnector_merchants.view.partialRootPath}
+		}
+		layoutRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Layouts/
+			1 = {$plugin.tx_vinouconnector_merchants.view.layoutRootPath}
+		}
+	}
+
+	settings {
+		list {
+			image {
+				maxWidth = 100
+				maxHeight = 200
+			}
+			text {
+				crop = 150
+				append = ...
+			}
+		}
+
+		detail {
+			image {
+				maxWidth = 200
+				maxHeight = 600
+			}
+		}
+	}
+}
+
+module.tx_vinouconnector_merchants < plugin.tx_vinouconnector_merchants
 
 page.headerData {
 	999 = TEXT

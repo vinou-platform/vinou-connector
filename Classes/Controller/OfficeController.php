@@ -1,129 +1,40 @@
 <?php
 namespace Vinou\VinouConnector\Controller;
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Core\Utility\PathUtility;
-use \TYPO3\CMS\Extbase\Object\ObjectManager;
-use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use \TYPO3\CMS\Core\Messaging\FlashMessage;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
-use \Vinou\ApiConnector\Api;
+use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \Vinou\ApiConnector\PublicApi;
-use \Vinou\ApiConnector\Session\Session;
+use \Vinou\VinouConnector\Utility\Helper;
 
 class OfficeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-	 * extKey
-	 * @var string
-	 */
-	protected $extKey;
-
-	/**
-	 * extConf
-	 * @var array
-	 */
-	protected $extConf;
-
-	/**
-	 * objectManager
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-	 */
-	protected $objectManager;
-
-	/**
-	 * persistence manager
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-	 * @inject
-	 */
-	protected $persistenceManager;
-
-	/**
-	 * configurationManager
-	 *
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-	 * @inject
-	 */
-	protected $configurationManager;
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     */
+    protected $configurationManager;
 
 	protected $api = null;
-	protected $llPath = 'Resources/Private/Language/';
-	protected $localDir = 'typo3temp/vinou/';
 	protected $registrationDir = 'vinou/registrations';
-	protected $absLocalDir = '';
-	protected $translations;
-
-	protected $errors = [];
-	protected $messages = [];
 
 	protected $detailPid;
 	protected $backPid;
 
 
 	public function initialize() {
-		$this->extKey = $this->request->getControllerExtensionKey();
-		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-		$this->llPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey).$this->llPath;
+
+		$this->api = Helper::initApi();
 
 		$settings = $this->configurationManager->getConfiguration(
-			\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
+			ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
 		);
 
 		$this->settings = $settings;
 		$this->settings['currentPage'] = $GLOBALS['TSFE']->id;
 
-		$this->checkFolders();
+		$this->registrationDir = Helper::ensureDir($this->registrationDir, true);
 
-		$dev = false;
-	    if ($this->extConf['vinouMode'] == 'dev') {
-	      $dev = true;
-	    }
-
-	    if (!empty($this->extConf['token']) && !empty($this->extConf['authId'])) {
-	    	$this->api = new Api(
-			  $this->extConf['token'],
-			  $this->extConf['authId'],
-			  true,
-			  $dev
-			);
-	    }
-
-	    if (isset($this->extConf['cachingFolder'])) {
-	    	$this->localDir = $this->extConf['cachingFolder'];
-            if (substr($this->localDir, -1) != '/') {
-                $this->localDir = $this->localDir . '/';
-            }
-	    }
-		$this->absLocalDir = GeneralUtility::getFileAbsFileName($this->localDir);
-
-
-		if(!is_dir($this->absLocalDir)){
-			mkdir($this->absLocalDir, 0777, true);
-		}
-	    $this->translations = new \Vinou\VinouConnector\Utility\Translation();
-
-	    $loggedIn = FALSE;
-		if($GLOBALS['TSFE']->loginUser) {
-			$loggedIn = TRUE;
-		}
-		$this->view->assign('loggedIn', $loggedIn);
-
-	}
-
-	private function checkFolders() {
-		$registrationDir = PATH_site . $this->registrationDir;
-
-		if (!is_dir($registrationDir))
-			mkdir($registrationDir, 0777, true);
-
-		$htaccess = $registrationDir .'/.htaccess';
-		if (!is_file($htaccess)) {
-			$content = 'Deny from all';
-			file_put_contents($htaccess, $content);
-		}
 	}
 
 	/**
@@ -157,7 +68,7 @@ class OfficeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				}
 			}
 			else {
-				$this->Alert('error','registrationError',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$this->Alert('error','registrationError',FlashMessage::ERROR);
 				$this->view->assign('customer', $arguments['customer']);
 			}
 
@@ -177,14 +88,14 @@ class OfficeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 	protected function Alert($titlecode, $messagecode, $type){
 
-		$messageTitle = LocalizationUtility::translate( 'message.title.'.$titlecode , $this->extKey);
-		$messageContent = LocalizationUtility::translate( 'message.content.'.$messagecode , $this->extKey);
+		$messageTitle = LocalizationUtility::translate( 'message.title.'.$titlecode , Helper::getExtKey());
+		$messageContent = LocalizationUtility::translate( 'message.content.'.$messagecode , Helper::getExtKey());
 
 		if (substr($_SERVER['HTTP_HOST'],-4,4) == '.dev') {
 			$messageContent .= ' '.$messagecode;
 		}
 
-		$msg = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+		$msg = GeneralUtility::makeInstance(FlashMessage::class,
 			$messageContent,
 			$messageTitle,
 			$type,

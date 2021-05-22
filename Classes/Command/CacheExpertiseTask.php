@@ -1,123 +1,62 @@
 <?php
 namespace Vinou\VinouConnector\Command;
 
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
-use \Vinou\ApiConnector\Api;
+use \TYPO3\CMS\Scheduler\Task\AbstractTask;
+use \Vinou\VinouConnector\Utility\Helper;
 use \Vinou\ApiConnector\FileHandler\Pdf;
 
 define('VINOU_MODE', 'cli');
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2018 Vinou GmbH, christian@vinou.de
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+class CacheExpertiseTask extends AbstractTask {
 
-/**
- *
- *
- * @package scheduler_tasks
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
- */
-class CacheExpertiseTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+	protected $cacheDir = null;
+	protected $api = null;
+	protected $reportData = [];
 
-    protected $extKey = 'vinou_connector';
-    protected $objectManager;
-    protected $persistenceManager; 
-    protected $extConf = NULL;
-    protected $absoluteTempDirectory = '';
-    protected $api = NULL;
-    protected $reportData = [];
+	public function init() {
 
-    /**
-     * Taskdata
-     * @var array
-     */
-    public $data;
+		$this->api = Helper::initApi();
 
-    public function init() {
+		$this->reportData = [
+			'itemsPerTask' => $this->itemsPerTask,
+			'imported' => 0
+		];
+	}
 
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
-        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+	public function execute(){
+		$this->init();
 
-        $this->absoluteTempDirectory = GeneralUtility::getFileAbsFileName($this->extConf['cachingFolder']);
-        if(!is_dir($this->absoluteTempDirectory)){
-            mkdir($this->absoluteTempDirectory, 0777, true);
-        }
+		$data = $this->api->getWinesAll();
+		$wines = isset($data['wines']) ? $data['wines'] : $data['data'];
 
-        $dev = false;
-        if ($this->extConf['vinouMode'] == 'dev') {
-          $dev = true;
-        }
+		for ($i=0; $i < count($wines); $i++) {
+			$wine = $wines[$i];
+			$cachePDFProcess = Pdf::storeApiPDF(
+				$wine['expertisePdf'],
+				$wine['chstamp'],
+				Helper::getPdfCacheDir(),
+				$wine['id'] . '-',
+				$wine['expertiseStatus'] != 'OK'
+			);
 
-        $this->api = new Api(
-          $this->extConf['token'],
-          $this->extConf['authId'],
-          true,
-          $dev
-        );
-    }
 
-    public function execute(){
-        $this->init();
+			if ($cachePDFProcess['requestStatus'] === 404)
+				$cachePDFProcess = Pdf::storeApiPDF(
+					$this->api->getExpertise($wine['id']),
+					$wine['chstamp'],
+					Helper::getPdfCacheDir(),
+					$wine['id'] . '-',
+					strtotime($wine['chstamp'])
+				);
 
-        $this->reportData['itemsPerTask'] = $this->itemsPerTask;
-        $this->reportData['imported'] = 0;
+			if ($cachePDFProcess['fileFetched'])
+				$this->reportData['imported']++;
 
-        $data = $this->api->getWinesAll();
-        $wines = isset($data['wines']) ? $data['wines'] : $data['data'];
-        $startAgain = FALSE;
+			if ($this->reportData['imported'] == $this->itemsPerTask)
+				break;
+		}
 
-        for ($i=0; $i < count($wines); $i++) {
-            $wine = $wines[$i];
-
-            $status = $wine['expertiseStatus'];
-            if ($status != 'OK') {
-                $cachePDFProcess = Pdf::storeApiPDF($wine['expertisePdf'],$this->absoluteTempDirectory.'/',$wine['id'].'-',$wine['chstamp'],true);
-            } else {
-                $cachePDFProcess = Pdf::storeApiPDF($wine['expertisePdf'],$this->absoluteTempDirectory.'/',$wine['id'].'-',$wine['chstamp']);
-            }
-
-            if ($cachePDFProcess['requestStatus'] === 404) {
-                $recreatedExpertise = $this->api->getExpertise($wine['id']);
-                $cachePDFProcess = Pdf::storeApiPDF($recreatedExpertise,$this->absoluteTempDirectory,$wine['id'].'-',$wine['chstamp']);
-            }
-
-            if ($cachePDFProcess['fileFetched']) {
-                $this->reportData['imported']++;
-            }
-
-            if ($this->reportData['imported'] == $this->itemsPerTask) {
-                $startAgain = TRUE;
-                break;
-            }
-        }
-
-        if ($startAgain) {
-            // THINGS TO DO IF MORE IMAGES MUST BE FETCHED
-        }
-
-        return true;
-    }
+		return true;
+	}
 }

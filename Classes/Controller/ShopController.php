@@ -1,29 +1,19 @@
 <?php
 namespace Vinou\VinouConnector\Controller;
 
+use \TYPO3\CMS\Core\Messaging\FlashMessage;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use \TYPO3\CMS\Extbase\Object\ObjectManager;
-use \TYPO3\CMS\Core\Utility\PathUtility;
-use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use \Vinou\ApiConnector\Api;
 use \Vinou\ApiConnector\Session\Session;
+use \Vinou\VinouConnector\Utility\Helper;
 use \Vinou\VinouConnector\Utility\Shop;
 
-class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
-
-	/**
-	 * extKey
-	 * @var string
-	 */
-	protected $extKey;
-
-	/**
-	 * extConf
-	 * @var array
-	 */
-	protected $extConf;
+class ShopController extends ActionController {
 
 	/**
 	 * objectManager
@@ -37,7 +27,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 * @inject
 	 */
-	protected $persistenceManager; 
+	protected $persistenceManager;
 
 	/**
 	 * configurationManager
@@ -48,11 +38,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected $configurationManager;
 
 	protected $api;
-	protected $llPath = 'Resources/Private/Language/';
-	protected $localDir = 'typo3temp/vinou/';
-	protected $orderDir = 'vinou/orders';
-	protected $absLocalDir = '';
-	protected $translations;
 
 	protected $settings = [];
 	protected $errors = [];
@@ -73,17 +58,14 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 
 	public function initialize() {
-		$this->extKey = $this->request->getControllerExtensionKey();
-		$this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$this->extKey]);
-		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-		$this->llPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($this->extKey).$this->llPath;
 
-		$settings = $this->configurationManager->getConfiguration(
-			\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
+		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+
+		$this->api = Helper::initApi();
+		$this->settings = $this->configurationManager->getConfiguration(
+			ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
 		);
 
-		$this->settings = $settings;
 		isset($this->settings['detailPid']) ? $this->detailPid = $this->settings['detailPid'] : $this->detailPid = NULL;
 		isset($this->settings['backPid']) ? $this->backPid = $this->settings['backPid'] : $this->backPid = NULL;
 		if ($this->request->hasArgument('backPid')) {
@@ -95,7 +77,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->settings['currentPage'] = $GLOBALS['TSFE']->id;
 		$this->settings['cacheExpertise'] = (bool)$this->extConf['cacheExpertise'];
 
-		$this->checkFolders();
 
 		$this->sender = [
 			$this->settings['mail']['senderEmail'] => $this->settings['mail']['senderName']
@@ -105,44 +86,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		];
 
 		$this->getPaymentMethods();
-
-		$dev = false;
-	    if ($this->extConf['vinouMode'] == 'dev') {
-	      $dev = true;
-	    }
-
-	    $this->api = new Api(
-	      $this->extConf['token'],
-	      $this->extConf['authId'],
-	      true,
-	      $dev
-	    );
-
-		$this->absLocalDir = GeneralUtility::getFileAbsFileName($this->localDir);
-		if(!is_dir($this->absLocalDir)){
-			mkdir($this->absLocalDir, 0777, true);
-		}
-	    $this->translations = new \Vinou\VinouConnector\Utility\Translation();
-
-	    $loggedIn = FALSE;
-		if($GLOBALS['TSFE']->loginUser) {
-			$loggedIn = TRUE;
-		}
-		$this->view->assign('loggedIn', $loggedIn);
-
-	}
-
-	private function checkFolders() {
-		$orderDir = PATH_site . $this->orderDir;
-
-		if (!is_dir($orderDir))
-			mkdir($orderDir, 0777, true);
-
-		$htaccess = $orderDir .'/.htaccess';
-		if (!is_file($htaccess)) {
-			$content = 'Deny from all';
-			file_put_contents($htaccess, $content);
-		}
 	}
 
 	public function listAction() {
@@ -341,39 +284,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	/**
-	 *
-	 * localize wine
-	 *
-	 * @param array $wine
-	 * @return array
-	 */
-	private function localizeWine($wine = NULL) {
-		foreach ($wine as $property => $value) {
-			switch ($property) {
-				case 'grapetypes':
-					$grapetypes = [];
-					foreach ($value as $grapetype) {
-						$grapetypes[$grapetype] = $this->translations->grapetypes[$grapetype];
-					}
-					$wine[$property] = $grapetypes;
-					break;
-				case 'type':
-					$wine[$property] = $this->translations->winetypes[$value];
-					break;
-				case 'tastes_id':
-					$wine[$property] = $this->translations->tastes[$value];
-					break;
-				case 'region':
-					$wine[$property] = $this->translations->regions[$value];
-					break;
-				default:
-					$wine[$property] = $value;
-			}
-		}
-		return $wine;
-	}
-
-	/**
 	 * action basket
 	 *
 	 * @return void
@@ -490,11 +400,11 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				break;
 			case 'submit':
 				if ($this->request->getArgument('conditionsOfPurchase') !== 'yes') {
-					$this->Alert('error','noCop',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$this->Alert('error','noCop', FlashMessage::ERROR);
 				} else if ($this->request->getArgument('gdpr') !== 'yes') {
-					$this->Alert('error','noGdpr',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$this->Alert('error','noGdpr', FlashMessage::ERROR);
 				} else {
-					//$this->Alert('error','noConnection',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					//$this->Alert('error','noConnection', FlashMessage::ERROR);
 					$this->sendOrderByBasket(
 						$basket,
 						$items,
@@ -574,7 +484,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if ($paymentMethod == 'paypal') {
 
 			if (!isset($this->settings['finishPaypalPid']))
-				$this->Alert('error','nofinishPaypalPid',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$this->Alert('error','nofinishPaypalPid', FlashMessage::ERROR);
 
 			$order['return_url'] = $this->uriBuilder
 				->reset()
@@ -584,7 +494,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				->build();
 
 			if (!isset($this->settings['cancelPaypalPid']))
-				$this->Alert('error','nocancelPaypalPid',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$this->Alert('error','nocancelPaypalPid', FlashMessage::ERROR);
 
 			$order['cancel_url'] = $this->uriBuilder
 				->reset()
@@ -595,7 +505,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		}
 
-		file_put_contents($this->orderDir .'/order-'.time().'.json', json_encode($order));
+		file_put_contents(Helper::getOrderCacheDir() . '/order-'. time() . '.json', json_encode($order));
 
 		// addOrder will do the redirect if paypal was set
 		$addedOrder = $this->api->addOrder($order);
@@ -615,7 +525,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$recipient,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$addedOrder['number'],
+				LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$addedOrder['number'],
 				'CreateOrderClient',
 				$mailContent,
 				$this->settings['mail']['attachements']
@@ -624,7 +534,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$this->admin,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$addedOrder['number'],
+				LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$addedOrder['number'],
 				'CreateOrderAdmin',
 				$mailContent
 			);
@@ -662,7 +572,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$recipient,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$order['number'],
+				LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$order['number'],
 				'CreateOrderClient',
 				$mailContent,
 				$this->settings['mail']['attachements']
@@ -671,7 +581,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->sendTemplateEmail(
 				$this->admin,
 				$this->sender,
-				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$order['number'],
+				LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$order['number'],
 				'CreateOrderAdmin',
 				$mailContent
 			);
@@ -877,14 +787,14 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected function sendTemplateEmail(array $recipient, array $sender, $subject, $templateName, array $variables = array(), array $attachement = array()) {
 
 		$extPath = 'typo3conf/ext/vinou_connector/Resources/Private/';
-		
+
 		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		$emailView->setLayoutRootPaths([PATH_site . $extPath . 'Layouts/Email/']);
 		$emailView->setTemplateRootPaths([PATH_site . $extPath . 'Templates/Email/']);
 		$emailView->setTemplate($templateName . '.html');
 
 		$variables['title'] = $subject;
-		$variables['customer'] = $this->api->getCustomer();		
+		$variables['customer'] = $this->api->getCustomer();
 		$emailView->assignMultiple($variables);
 		$emailHtmlBody = $emailView->render();
 

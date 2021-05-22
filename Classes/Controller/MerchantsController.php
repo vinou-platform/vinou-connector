@@ -6,7 +6,7 @@ use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \Vinou\VinouConnector\Utility\Helper;
 
-class BundlesController extends ActionController {
+class MerchantsController extends ActionController {
 
 	/**
 	 * objectManager
@@ -43,11 +43,13 @@ class BundlesController extends ActionController {
 
 		isset($this->settings['detailPid']) ? $this->detailPid = $this->settings['detailPid'] : $this->detailPid = NULL;
 		isset($this->settings['backPid']) ? $this->backPid = $this->settings['backPid'] : $this->backPid = NULL;
-		if ($this->request->hasArgument('backPid')) {
+		if ($this->request->hasArgument('backPid'))
 			$this->backPid = $this->request->getArgument('backPid');
-		}
+
 		$this->settings['currentPage'] = $GLOBALS['TSFE']->id;
 
+		$this->view->assign('backPid', $this->backPid);
+		$this->view->assign('settings', $this->settings);
 	}
 
 	/**
@@ -57,34 +59,28 @@ class BundlesController extends ActionController {
 	 */
 	public function listAction() {
 		$this->initialize();
-
-		$result = $this->api->getBundlesAll();
-		$bundles = array_key_exists('data', $result) ? $result['data'] : $result;
-
-		$this->view->assign('bundles', $bundles);
-		$this->view->assign('settings', $this->settings);
+		$this->view->assign('merchants', $this->api->getMerchantsAll());
 	}
 
 	/**
 	 * action detail
 	 *
-	 * @param int $bundle
+	 * @param int $merchant
 	 * @return void
 	 */
-	public function detailAction($bundle = NULL) {
+	public function detailAction($merchant = NULL) {
 		$this->initialize();
+		$identifier = null;
 
-		if ($this->request->hasArgument('bundle')) {
-			$bundleId = $this->request->getArgument('bundle');
-			$bundle = $this->api->getBundle($bundleId);
-		} else if ($this->request->hasArgument('path_segment')) {
-			$pathSegment = $this->request->getArgument('path_segment');
-			$bundle = $this->api->getBundle($pathSegment);
-		}
+		if ($this->request->hasArgument('merchant'))
+			$identifier = $this->request->getArgument('merchant');
+		if ($this->request->hasArgument('path_segment'))
+			$identifier = $this->request->getArgument('path_segment');
 
-		$this->view->assign('bundle', $bundle);
-		$this->view->assign('backPid', $this->backPid);
-		$this->view->assign('settings', $this->settings);
+		if (is_null($identifier))
+			return;
+
+		$this->view->assign('merchant', $this->api->getMerchant($identifier));
 	}
 
 }
