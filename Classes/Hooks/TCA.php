@@ -2,22 +2,21 @@
 namespace Vinou\VinouConnector\Hooks;
 
 use \Vinou\ApiConnector\Api;
+use \Vinou\Translations\Utilities\Translation;
 use \Vinou\VinouConnector\Utility\Helper;
-use \TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 
 
 class TCA {
 
-	protected $extConf = null;
 	protected $api = null;
+	protected $translations = null;
 
 	public function init() {
 
-		$this->extConf = Helper::getExtConf();
 		$this->api = Helper::initApi();
+		$this->translations = new Translation();
 
 	}
 
@@ -29,6 +28,17 @@ class TCA {
 		$wineries = $this->api->getWineriesAll();
 		foreach ($wineries as $winery) {
 			array_push($config['items'], array($winery['company'],$winery['id']));
+		}
+	}
+
+	/**
+	 * @param array $config
+	 */
+	public function getMerchants(array &$config) {
+		$this->init();
+		$merchants = $this->api->getMerchantsAll();
+		foreach ($merchants as $merchant) {
+			array_push($config['items'], array($merchant['company'],$merchant['id']));
 		}
 	}
 
@@ -66,8 +76,9 @@ class TCA {
 	 */
 	public function vinouTypes(array &$config) {
 		$this->init();
-		$winetypes = json_decode(file_get_contents(Helper::getLLPath() . 'winetypes.json'),true);
-		isset($winetypes[$GLOBALS['BE_USER']->uc['lang']]) ? $winetypes = $winetypes[$GLOBALS['BE_USER']->uc['lang']] : $winetypes = $winetypes['en'];
+		$winetypes = $this->translations->get($GLOBALS['BE_USER']->uc['lang'], 'winetypes');
+		if (!$winetypes)
+			$winetypes = $this->translations->get('en', 'winetypes');
 		foreach ($winetypes as $key => $label) {
 			array_push($config['items'], array($label,$key));
 		}

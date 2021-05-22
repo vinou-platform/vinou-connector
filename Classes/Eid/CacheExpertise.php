@@ -2,16 +2,12 @@
 namespace Vinou\VinouConnector\Eid;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
+use \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use \TYPO3\CMS\Frontend\Utility\EidUtility;
 use \Vinou\ApiConnector\FileHandler\Pdf;
 use \Vinou\VinouConnector\Utility\Helper;
 
-/**
- * This class could called with AJAX via eID
- *
- * @author  Christian Händel <christian@vinou.de>, Vinou.
- * @package TYPO3
- * @subpackage  EidCacheExpertise
- */
 class CacheExpertise {
 
     protected $api;
@@ -21,39 +17,59 @@ class CacheExpertise {
         header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
         header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
+        $this->initTYPO3Frontend();
         $this->api = Helper::initApi();
+
     }
 
-    /**
-     * Run cache and redirect
-     */
     public function run() {
 
         if (GeneralUtility::_GET('wineID')) {
             $wine = $this->api->getExpertise(GeneralUtility::_GET('wineID'));
             $wine = $this->api->getWine(GeneralUtility::_GET('wineID'));
 
-            $redirectURL = 'https://api.vinou.de' . $wine['expertisePdf'];
-
             if (Helper::getExtConfValue('cacheExpertise') == 1) {
-                $cacheResult = Pdf::storeApiPDF(
+                $cachePDFProcess = Pdf::storeApiPDF(
                     $wine['expertisePdf'],
                     $wine['chstamp'],
-                    Helper::ensureCacheDir(),
-                    $wine['id'].'-',true);
-                $redirectURL = '/'. Helper::$cacheDir .'/'. $cacheResult['fileName'];
+                    Helper::getPdfCacheDir(),
+                    $wine['id'].'-',
+                    true
+                );
+                $redirectURL = '/' . Helper::getPdfCacheDir(false) . $cachePDFProcess['fileName'];
             }
+
+            else
+                $redirectURL = 'https://api.vinou.de' . $wine['expertisePdf'];
 
             header('Location: '.$redirectURL);
         }
+
+        exit;
     }
 
+    private function initTYPO3Frontend() {
+        $userObj = EidUtility::initFeUser();
+        $pid = (GeneralUtility::_GET('id') ? GeneralUtility::_GET('id') : 1);
+        $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
+            TypoScriptFrontendController::class,
+            $TYPO3_CONF_VARS,
+            $pid,
+            0,
+            true
+        );
+        $GLOBALS['TSFE']->connectToDB();
+        $GLOBALS['TSFE']->fe_user = $userObj;
+        $GLOBALS['TSFE']->id = $pid;
+        $GLOBALS['TSFE']->determineId();
+        $GLOBALS['TSFE']->initTemplate();
+        $GLOBALS['TSFE']->getConfigArray();
+    }
 }
 
-error_reporting(E_ALL);
+// error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_NOTICE);
 ini_set("display_errors", 1);
-define('VINOU_MODE','Ajax');
 
-$eid = GeneralUtility::makeInstance(CacheExpertise::class);
+$eid = GeneralUtility::makeInstance('Vinou\VinouConnector\Eid\CacheExpertise');
 echo $eid->run();
-?>

@@ -7,11 +7,10 @@ use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use \TYPO3\CMS\Extbase\Object\ObjectManager;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use LocalizationUtility;
+use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \Vinou\ApiConnector\Session\Session;
 use \Vinou\VinouConnector\Utility\Helper;
 use \Vinou\VinouConnector\Utility\Shop;
-use \Vinou\VinouConnector\Utility\Translation;
 
 class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -27,9 +26,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
     protected $configurationManager;
 
 	protected $api;
-	protected $orderDir = 'vinou/orders';
-	protected $absLocalDir = '';
-	protected $translations;
 
 	protected $settings = [];
 	protected $errors = [];
@@ -54,7 +50,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
 		$this->api = Helper::initApi();
-		$this->translations = new Translation();
 
 		$this->settings = $this->configurationManager->getConfiguration(
 			ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
@@ -79,8 +74,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		];
 
 		$this->getPaymentMethods();
-
-		$this->orderDir = Helper::ensureDir($this->orderDir);
 	}
 
 	public function listAction() {
@@ -500,7 +493,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		}
 
-		file_put_contents($this->orderDir .'/order-'.time().'.json', json_encode($order));
+		file_put_contents(Helper::getOrderCacheDir() . '/order-'. time() . '.json', json_encode($order));
 
 		// addOrder will do the redirect if paypal was set
 		$addedOrder = $this->api->addOrder($order);

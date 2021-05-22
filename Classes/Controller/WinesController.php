@@ -6,8 +6,8 @@ use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \Vinou\ApiConnector\FileHandler\Pdf;
+use \Vinou\Translations\Utilities\Translation;
 use \Vinou\VinouConnector\Utility\Helper;
-use \Vinou\VinouConnector\Utility\Translation;
 
 class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -191,19 +191,19 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 				case 'grapetypes':
 					$grapetypes = [];
 					foreach ($value as $grapetype) {
-						$grapetypes[$grapetype] = $this->translations->grapetypes[$grapetype];
+						$grapetypes[$grapetype] = $this->translations->getGrapeType($grapetype);
 					}
 					$wine[$property] = $grapetypes;
 					break;
 				case 'type':
 					$wine['winetype'] = $value;
-					$wine[$property] = $this->translations->winetypes[$value];
+					$wine[$property] = $this->translations->getType($value);
 					break;
 				case 'tastes_id':
-					$wine[$property] = $this->translations->tastes[$value];
+					$wine[$property] = $this->translations->getTaste($value);
 					break;
 				case 'region':
-					$wine[$property] = $this->translations->regions[$value];
+					$wine[$property] = $this->translations->getRegion($value);
 					break;
 				default:
 					$wine[$property] = $value;

@@ -1,12 +1,12 @@
 {namespace vin=Vinou\VinouConnector\ViewHelpers}
-<f:layout name="Wineries" />
+<f:layout name="Merchants" />
 
 <f:section name="main">
 
-	<div class="vinou-winery-details">
-		<f:if condition="{winery}">
+	<div class="vinou-merchant-details">
+		<f:if condition="{merchant}">
 			<f:then>
-				<h1>{winery.company}</h1>
+				<h1>{merchant.company}</h1>
 			</f:then>
 			<f:else>
 				<h1>Kein Weingut gefunden</h1>

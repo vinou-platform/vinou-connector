@@ -2,59 +2,34 @@
 namespace Vinou\VinouConnector\Eid;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use \TYPO3\CMS\Frontend\Utility\EidUtility;
-use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
+use \Vinou\ApiConnector\Session\Session;
 use \Vinou\VinouConnector\Utility\Helper;
 use \Vinou\VinouConnector\Utility\Render;
 use \Vinou\VinouConnector\Utility\Shop;
 use \Vinou\VinouConnector\Utility\TypoScriptHelper;
-use \Vinou\ApiConnector\Session\Session;
 
 /**
  * This class could called with AJAX via eID
  */
 class AjaxActions {
 
-    /**
-     * extConf
-     * @var array
-     */
-    protected $api = null;
-    protected $errors = [];
-    protected $result = false;
     protected $request = [];
+    protected $result = false;
     protected $settings = [];
+    protected $errors = [];
+    protected $api = null;
 
     public function __construct() {
 
         $this->request = array_merge($_POST, (array)json_decode(trim(file_get_contents('php://input')), true));
+        $this->initTYPO3Frontend();
+
         $this->api = Helper::initApi();
         $this->settings = TypoScriptHelper::extractSettings('tx_vinouconnector_shop');
 
-        $this->initTYPO3Frontend();
-    }
-
-    private function initTYPO3Frontend() {
-        $userObj = EidUtility::initFeUser();
-        $pid = (GeneralUtility::_GET('id') ? GeneralUtility::_GET('id') : 1);
-        $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            $TYPO3_CONF_VARS,
-            $pid,
-            0,
-            true
-        );
-        $GLOBALS['TSFE']->connectToDB();
-        $GLOBALS['TSFE']->fe_user = $userObj;
-        $GLOBALS['TSFE']->id = $pid;
-        $GLOBALS['TSFE']->determineId();
-        $GLOBALS['TSFE']->initTemplate();
-        $GLOBALS['TSFE']->getConfigArray();
-    }
-
-    private function loadInput() {
-        $this->data = array_merge($_POST, (array)json_decode(trim(file_get_contents('php://input')), true));
     }
 
     public function run() {
@@ -132,6 +107,24 @@ class AjaxActions {
 
     }
 
+    private function initTYPO3Frontend() {
+        $userObj = EidUtility::initFeUser();
+        $pid = (GeneralUtility::_GET('id') ? GeneralUtility::_GET('id') : 1);
+        $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
+            TypoScriptFrontendController::class,
+            $TYPO3_CONF_VARS,
+            $pid,
+            0,
+            true
+        );
+        $GLOBALS['TSFE']->connectToDB();
+        $GLOBALS['TSFE']->fe_user = $userObj;
+        $GLOBALS['TSFE']->id = $pid;
+        $GLOBALS['TSFE']->determineId();
+        $GLOBALS['TSFE']->initTemplate();
+        $GLOBALS['TSFE']->getConfigArray();
+    }
+
     private function sendResult($result, $errorMessage = null) {
 
         if (!$result) {
@@ -159,7 +152,6 @@ class AjaxActions {
 //error_reporting(E_ALL);
 error_reporting(E_ALL & ~E_NOTICE);
 ini_set("display_errors", 1);
-global $TYPO3_CONF_VARS;
 
 $eid = GeneralUtility::makeInstance(AjaxActions::class);
 echo $eid->run();

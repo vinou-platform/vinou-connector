@@ -9,13 +9,13 @@
 	TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.'/Configuration/TSconfig/templateLayouts.ts">');
 
 	$plugins = [
-    	'Wines' => 'list, detail',
-    	'Products' => 'list, detail',
-    	'Bundles' => 'list, detail',
-    	'Shop' => 'list, basket, order, finish, topseller',
-    	'Office' => 'register',
-    	'Wineries' => 'list, detail',
-    	'Merchants' => 'list, detail'
+		'Wines' => 'list, detail',
+		'Products' => 'list, detail',
+		'Bundles' => 'list, detail',
+		'Shop' => 'list, basket, order, finish, topseller',
+		'Office' => 'register',
+		'Wineries' => 'list, detail',
+		'Merchants' => 'list, detail'
 	];
 
 
@@ -32,33 +32,28 @@
 	}
 
 	/**
-     * eID to cache expertises
-     */
+	 * eID to cache expertises
+	 */
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['cacheExpertise'] = 'EXT:'.$extKey.'/Classes/Eid/CacheExpertise.php';
 
 	/**
-     * eID to create token for login the current client
-     */
-    $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['clientLogin'] = 'EXT:'.$extKey.'/Classes/Eid/ClientLogin.php';
-
-    /**
-     * eID to manage ajax actions
-     */
-    $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['vinouActions'] = 'EXT:'.$extKey.'/Classes/Eid/AjaxActions.php';
+	 * eID to manage ajax actions
+	 */
+	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['vinouActions'] = 'EXT:'.$extKey.'/Classes/Eid/AjaxActions.php';
 
 
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Vinou\\VinouConnector\\Command\\CacheExpertiseTask'] = array(
-	    'extension' => $extKey,
-	    'title' => 'LLL:EXT:'.$extKey.'/Resources/Private/Language/locallang.xlf:tasks.cacheexpertise.title',
-	    'description' => 'LLL:EXT:'.$extKey.'/Resources/Private/Language/locallang.xlf:tasks.cacheexpertise.description',
-	    'additionalFields' => 'Vinou\VinouConnector\Command\CacheExpertiseTaskAdditionalFieldProvider'
+		'extension' => $extKey,
+		'title' => 'LLL:EXT:'.$extKey.'/Resources/Private/Language/locallang.xlf:tasks.cacheexpertise.title',
+		'description' => 'LLL:EXT:'.$extKey.'/Resources/Private/Language/locallang.xlf:tasks.cacheexpertise.description',
+		'additionalFields' => 'Vinou\VinouConnector\Command\CacheExpertiseTaskAdditionalFieldProvider'
 	);
 
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Vinou\\VinouConnector\\Command\\CacheImagesTask'] = array(
-	    'extension' => $extKey,
-	    'title' => 'LLL:EXT:'.$extKey.'/Resources/Private/Language/locallang.xlf:tasks.cacheimages.title',
-	    'description' => 'LLL:EXT:'.$extKey.'/Resources/Private/Language/locallang.xlf:tasks.cacheimages.description',
-	    'additionalFields' => 'Vinou\VinouConnector\Command\CacheImagesTaskAdditionalFieldProvider'
+		'extension' => $extKey,
+		'title' => 'LLL:EXT:'.$extKey.'/Resources/Private/Language/locallang.xlf:tasks.cacheimages.title',
+		'description' => 'LLL:EXT:'.$extKey.'/Resources/Private/Language/locallang.xlf:tasks.cacheimages.description',
+		'additionalFields' => 'Vinou\VinouConnector\Command\CacheImagesTaskAdditionalFieldProvider'
 	);
 
 ?>
