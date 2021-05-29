@@ -15,11 +15,8 @@ class CacheApiPdfViewHelper extends AbstractViewHelper {
         RenderingContextInterface $renderingContext
     ) {
 
-        $cacheDir = 'typo3temp/vinou_connector/';
-        $absLocalDir = Helper::ensureDir($cacheDir);
-        $cachePDFProcess = Pdf::storeApiPDF($arguments['pdf'], $arguments['tstamp'], $absLocalDir, $arguments['id'].'-');
-
-        return $cacheDir . $cachePDFProcess['fileName'];
+        $cachePDFProcess = Pdf::storeApiPDF($arguments['pdf'], $arguments['tstamp'], Helper::getPdfCacheDir(), $arguments['id'].'-');
+        return Helper::getPdfCacheDir(false) . $cachePDFProcess['fileName'];
 
     }
 

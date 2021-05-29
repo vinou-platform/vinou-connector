@@ -15,11 +15,8 @@ class CacheApiImageViewHelper extends AbstractViewHelper {
         RenderingContextInterface $renderingContext
     ) {
 
-        $cacheDir = 'vinou/cache/images/';
-        $absLocalDir = Helper::ensureDir($cacheDir);
-        $cacheImageProcess = Images::storeApiImage($arguments['image'], $arguments['tstamp'] ?? null, $absLocalDir);
-
-        return $cacheDir . $cacheImageProcess['fileName'];
+        $cacheImageProcess = Images::storeApiImage($arguments['image'], $arguments['tstamp'] ?? null, Helper::getImageCacheDir());
+        return Helper::getImageCacheDir(false) . $cacheImageProcess['fileName'];
 
     }
 

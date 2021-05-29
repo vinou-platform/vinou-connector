@@ -65,7 +65,17 @@ class MerchantsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 		if (is_null($identifier))
 			return;
 
-		$this->view->assign('merchant', $this->api->getMerchant($identifier));
+		$merchant = $this->api->getMerchant($identifier);
+		$this->view->assign('merchant', $merchant);
+		if ($merchant['files'] && count($merchant['files']) > 0) {
+			$this->view->assign('images', array_filter($merchant['files'], function($file) {
+			    return $file['type'] == 'image';
+			}));
+
+			$this->view->assign('files', array_filter($merchant['files'], function($file) {
+			    return $file['type'] != 'image';
+			}));
+		}
 	}
 
 }
