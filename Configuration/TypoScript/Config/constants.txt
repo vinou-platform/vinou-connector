@@ -7,8 +7,20 @@ plugin.tx_vinou {
 			list = 0
 			shop = 0
 		}
+		pages {
+			loginPid = 1
+			registerPid = 1
+			ordersPid = 1
+			profilePid = 1
+			generalBusinessTerms = 1
+			gdpr = 1
+		}
+		mail {
+			gdprcontact = datenschutz@domain.de
+		}
 	}
 }
+
 
 plugin.tx_vinouconnector_wines {
 	view {
@@ -97,6 +109,19 @@ plugin.tx_vinouconnector_merchants {
 		partialRootPath = EXT:vinou_connector/Resources/Private/Partials/
 
 		# cat=tx_vinouconnector_merchants/file; type=string; label= Path to template layouts (FE)
+		layoutRootPath = EXT:vinou_connector/Resources/Private/Layouts/
+	}
+}
+
+plugin.tx_vinouconnector_client {
+	view {
+		# cat=tx_vinouconnector_office/file; type=string; label= Path to template root (FE)
+		templateRootPath = EXT:vinou_connector/Resources/Private/Templates/
+
+		# cat=tx_vinouconnector_office/file; type=string; label= Path to template partials (FE)
+		partialRootPath = EXT:vinou_connector/Resources/Private/Partials/
+
+		# cat=tx_vinouconnector_office/file; type=string; label= Path to template layouts (FE)
 		layoutRootPath = EXT:vinou_connector/Resources/Private/Layouts/
 	}
 }

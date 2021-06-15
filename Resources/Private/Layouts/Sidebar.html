@@ -1,0 +1,16 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:v="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<div class="tx-vinou">
+	<div class="grid-x grid-margin-x">
+		<div class="cell medium-4 large-3 sidebar">
+			<f:render partial="Client/Menu" arguments="{pages: settings.pages}" />
+		</div>
+		<div class="cell medium-8 large-9">
+			<f:render section="main" />
+		</div>
+	</div>
+</div>
+
+</html>

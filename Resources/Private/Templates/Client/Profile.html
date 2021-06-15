@@ -1,0 +1,91 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:v="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Sidebar" />
+
+<f:section name="main">
+
+	<h1 class="page-title">Dein Profil</h1>
+	<f:flashMessages />
+	<f:form action="profile" enctype="multipart/form-data">
+		<fieldset class="grid-x grid-margin-x grid-margin-y form-section">
+			<div class="cell">
+				<h4>Persönliche Daten</h4>
+			</div>
+			<div class="form-field cell medium-6">
+				<label for="gender"><v:translation key="general.fields.gender" /></label>
+				<f:form.select name="client[gender]" id="gender" options="{v:translation(key: 'general.gender')}" prependOptionLabel="{v:translation(key: 'general.fields.empty')}" value="{client.gender}" />
+			</div>
+			<div class="form-field cell medium-6">
+				<label for="type"><v:translation key="client.field.type" /></label>
+				<f:form.select disabled="true" name="client[type]" id="type" options="{v:translation(key: 'client.types')}" value="{client.type}" />
+			</div>
+			<div class="form-field cell medium-6">
+				<label for="first_name"><v:translation key="general.fields.first_name" /></label>
+				<f:form.textfield name="client[first_name]" id="first_name" value="{client.first_name}" />
+			</div>
+			<div class="form-field cell medium-6">
+				<label for="last_name"><v:translation key="general.fields.last_name" /></label>
+				<f:form.textfield name="client[last_name]" id="last_name" value="{client.last_name}" />
+			</div>
+			<div class="form-field cell medium-6">
+				<label for="mail"><v:translation key="client.field.mail" /></label>
+				<f:form.textfield name="client[mail]" id="mail" value="{client.mail}" />
+			</div>
+			<div class="form-field cell medium-6">
+				<label for="phone"><v:translation key="client.field.phone" /></label>
+				<f:form.textfield name="client[phone]" id="phone" value="{client.phone}" />
+			</div>
+			<div class="form-field cell medium-6">
+				<label for="password"><v:translation key="user.fields.password" /></label>
+				<f:form.password name="client[password]" id="password" value="" />
+			</div>
+			<div class="form-field cell medium-6">
+				<label for="password_repeat"><v:translation key="user.fields.password_repeat" /></label>
+				<f:form.password name="client[password_repeat]" id="password_repeat" value="" />
+			</div>
+		</fieldset>
+
+		<fieldset class="grid-x grid-margin-x grid-margin-y form-section">
+			<div class="cell">
+				<h4>Rechnungsangaben</h4>
+			</div>
+			<div class="form-field cell">
+				<label for="company"><v:translation key="client.field.company" /></label>
+				<f:form.textfield name="client[company]" id="company" value="{client.company}" />
+			</div>
+			<div class="form-field cell medium-9">
+				<label for="address"><v:translation key="client.field.address" /></label>
+				<f:form.textfield name="client[address]" id="address" value="{client.address}" />
+			</div>
+			<div class="form-field cell medium-3">
+				<label for="address_supplement"><v:translation key="client.field.address_supplement" /></label>
+				<f:form.textfield name="client[address_supplement]" id="address_supplement" value="{client.address_supplement}" />
+			</div>
+			<div class="form-field cell medium-3">
+				<label for="zip"><v:translation key="client.field.zip" /></label>
+				<f:form.textfield name="client[zip]" id="zip" value="{client.zip}" />
+			</div>
+			<div class="form-field cell medium-9">
+				<label for="city"><v:translation key="client.field.city" /></label>
+				<f:form.textfield name="client[city]" id="city" value="{client.city}" />
+			</div>
+			<div class="form-field cell medium-6">
+				<label for="countrycode"><v:translation key="client.field.country" /></label>
+				<f:form.select name="client[countrycode]" id="countrycode" options="{v:translation(key: 'countries')}" value="{client.countrycode}" />
+			</div>
+		</fieldset>
+
+		<fieldset class="grid-x grid-margin-x grid-margin-y form-section">
+			<div class="form-field cell">
+				<f:form.submit value="Änderungen speichern" />
+			</div>
+		</fieldset>
+
+	</f:form>
+
+
+</f:section>
+
+</html>

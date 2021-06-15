@@ -1,0 +1,23 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:v="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Small" />
+
+<f:section name="main">
+
+	<f:flashMessages />
+	<f:if condition="{success}">
+		<f:then>
+			<h3>Aktivierung erfolgreich</h3>
+			<p>Dein Account wurde erfolgreich aktiviert<br><br><f:link.page pageUid="{settings.pages.loginPid}" class="button">Jetzt Anmelden</f:link.page></p>
+		</f:then>
+		<f:else>
+			<h3>Deine Aktivierung ist fehlgeschlagen</h3>
+			<f:flashMessages />
+		</f:else>
+	</f:if>
+
+</f:section>
+
+</html>

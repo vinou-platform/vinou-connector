@@ -19,7 +19,8 @@
 		'Shop',
 		'Office',
 		'Wineries',
-		'Merchants'
+		'Merchants',
+		'Client'
 	];
 
 	foreach ($plugins as $pluginName) {

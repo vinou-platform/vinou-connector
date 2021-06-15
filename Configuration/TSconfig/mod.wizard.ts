@@ -65,7 +65,16 @@ mod.wizards.newContentElement.wizardItems {
                     list_type = vinouconnector_merchants
                 }
             }
+            client {
+                iconIdentifier = extension-vinouconnector-client
+                title = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.client.title
+                description = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.client.description
+                tt_content_defValues {
+                    CType = list
+                    list_type = vinouconnector_client
+                }
+            }
         }
-    	show := addToList(wines,products,bundles,shop,office,wineries,merchants)
+    	show := addToList(wines,products,bundles,shop,office,wineries,merchants,client)
 	}
 }

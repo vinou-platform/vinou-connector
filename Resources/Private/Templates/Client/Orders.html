@@ -1,0 +1,45 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:v="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Sidebar" />
+
+<f:section name="main">
+
+	<h1 class="page-title">Deine Bestellungen</h1>
+	<f:if condition="{orders -> f:count()}>0">
+		<f:then>
+			<div class="flex-table" id="vinou-order-table">
+				<div class="table-header">
+					<div class="table-row">
+						<div class="table-cell status"><span class="label">Status:</span></div>
+						<div class="table-cell number"><span class="label">Nummer:</span></div>
+						<div class="table-cell date"><span class="label">Bestellt am:</span></div>
+						<div class="table-cell sum"><span class="label">Summe:</span></div>
+						<div class="table-cell link"></div>
+					</div>
+				</div>
+				<div class="table-body">
+					<f:for each="{orders}" as="order">
+						<div class="table-row">
+							<div class="table-cell status"><v:translation key="order.states.{order.status}"/></div>
+							<div class="table-cell number">{order.number}</div>
+							<div class="table-cell date"><f:format.date format="d.m.Y H:i">{order.crstamp}</f:format.date> Uhr</div>
+							<div class="table-cell sum"><f:format.number decimals="2" decimalSeparator="," thousandsSeparator=".">{order.gross}</f:format.number> EUR</div>
+							<div class="table-cell link align-right"><f:link.action action="orderDetails" controller="Client" class="button" arguments="{order: order.uuid}">Details anzeigen</f:link.action></div>
+						</div>
+					</f:for>
+				</div>
+			</div>
+		</f:then>
+		<f:else>
+			<p class="inline-message" data-type="error">
+				<span class="title">Es konnten keine Bestellungen gefunden werden</span>
+			</p>
+		</f:else>
+	</f:if>
+
+
+</f:section>
+
+</html>

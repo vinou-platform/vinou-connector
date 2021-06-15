@@ -1,0 +1,45 @@
+<T3DataStructure>
+    <meta>
+    <langDisable>1</langDisable>
+    </meta>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.client.general</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <switchableControllerActions>
+                        <TCEforms>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.client.mode</label>
+                            <onChange>reload</onChange>
+                            <config>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
+                                <items>
+                                    <numIndex index="0">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.client.mode.login</numIndex>
+                                        <numIndex index="1">Client->login;Client->lostPassword;Client->resetPassword;</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.client.mode.register</numIndex>
+                                        <numIndex index="1">Client->register;Client->activate;</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.client.mode.profile</numIndex>
+                                        <numIndex index="1">Client->profile;</numIndex>
+                                    </numIndex>
+                                    <numIndex index="3">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.client.mode.orders</numIndex>
+                                        <numIndex index="1">Client->orders;Client->orderDetails;</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </switchableControllerActions>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3DataStructure>

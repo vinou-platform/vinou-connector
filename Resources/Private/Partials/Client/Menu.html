@@ -1,0 +1,17 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:v="Vinou\VinouConnector\ViewHelpers"
+	data-namespace-typo3-fluid="true">
+
+	<h3>Kundenmenü</h3>
+	<ul>
+		<f:if condition="{pages.ordersPid}">
+			<li><f:link.action action="orders" controller="Client" pageUid="{pages.ordersPid}">Meine Bestellungen</f:link.action></li>
+		</f:if>
+		<f:if condition="{pages.profilePid}">
+			<li><f:link.action action="profile" controller="Client" pageUid="{pages.profilePid}">Mein Profil</f:link.action></li>
+		</f:if>
+		<li><f:link.action action="login" controller="Client" pageUid="{pages.loginPid}" arguments="{mode: 'logout'}">Abmelden</f:link.action></li>
+	</ul>
+
+
+</html>

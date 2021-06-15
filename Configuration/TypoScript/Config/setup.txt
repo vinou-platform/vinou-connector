@@ -270,6 +270,9 @@ plugin.tx_vinouconnector_shop {
 				60 = general
 			}
 		}
+		basket {
+			minBasketSize = 1
+		}
 	}
 }
 
@@ -377,6 +380,52 @@ plugin.tx_vinouconnector_merchants {
 }
 
 module.tx_vinouconnector_merchants < plugin.tx_vinouconnector_merchants
+
+plugin.tx_vinouconnector_client {
+	view {
+		templateRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Templates/
+			1 = {$plugin.tx_vinouconnector_client.view.templateRootPath}
+		}
+		partialRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Partials/
+			1 = {$plugin.tx_vinouconnector_client.view.partialRootPath}
+		}
+		layoutRootPaths {
+			0 = EXT:vinou_connector/Resources/Private/Layouts/
+			1 = {$plugin.tx_vinouconnector_client.view.layoutRootPath}
+		}
+	}
+	settings {
+		edit {
+			allowed = gender,first_name,last_name,address,address_supplement,zip,city,countrycode,phone,mail,username,password
+		}
+		register {
+			required = gender,first_name,last_name,address,zip,city,countrycode,mail,password
+			defaults {
+				gender = m
+				countrycode = de
+			}
+			constraints {
+				countrycode = de,at,nl,lu
+			}
+		}
+		mandatorySign = *
+		pages {
+			loginPid = {$plugin.tx_vinou.settings.pages.loginPid}
+			registerPid = {$plugin.tx_vinou.settings.pages.registerPid}
+			ordersPid = {$plugin.tx_vinou.settings.pages.ordersPid}
+			profilePid = {$plugin.tx_vinou.settings.pages.profilePid}
+			generalBusinessTerms = {$plugin.tx_vinou.settings.pages.generalBusinessTerms}
+			gdpr = {$plugin.tx_vinou.settings.pages.gdpr}
+		}
+		mail {
+			gdprcontact = {$plugin.tx_vinou.settings.mail.gdprcontact}
+		}
+	}
+}
+
+module.tx_vinouconnector_client < plugin.tx_vinouconnector_client
 
 page.headerData {
 	999 = TEXT

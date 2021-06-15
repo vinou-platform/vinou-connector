@@ -38,6 +38,7 @@ class ShopController extends ActionController {
 	protected $configurationManager;
 
 	protected $api;
+	protected $extKey;
 
 	protected $settings = [];
 	protected $errors = [];
@@ -61,7 +62,9 @@ class ShopController extends ActionController {
 
 		$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 
+		$this->extKey = Helper::getExtKey();
 		$this->api = Helper::initApi();
+
 		$this->settings = $this->configurationManager->getConfiguration(
 			ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS
 		);
@@ -594,7 +597,7 @@ class ShopController extends ActionController {
 
 	public function cancelPaypalAction() {
 		$this->initialize();
-		$this->view->assign('settings', $this->settings);	
+		$this->view->assign('settings', $this->settings);
 		$this->view->assign('order', $this->api->getSessionOrder());
 		$error = false;
 
@@ -633,6 +636,10 @@ class ShopController extends ActionController {
 		return Session::getValue($argument);
 	}
 
+	/**
+	* @param array $items items to calculate
+	* @return array $summary
+	*/
 	private function calculateSum(&$items) {
 
 		$summary = [
@@ -723,6 +730,10 @@ class ShopController extends ActionController {
 		return $summary;
 	}
 
+	/**
+	* @param array $fields fields to modify
+	* @return array $fields
+	*/
 	private function switchFieldValues($fields){
 		foreach ($fields as $key => $field) {
 			$fields[$field] = true;

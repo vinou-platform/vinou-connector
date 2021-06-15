@@ -1,0 +1,106 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:v="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<tr class="item-row" id="basket-row-{item.id}">
+	<td class="index-cell align-left">{index.cycle}</td>
+	<td class="article-cell">
+		<span class="image">
+			<f:if condition="{item.item.image}">
+				<f:then>
+					<f:image src="{v:cacheApiImage(image:'{item.item.image}{imageSuffix}',tstamp:item.item.chstamp)}" maxWidth="{settings.basket.image.maxWidth}" maxHeight="{settings.basket.image.maxHeight}"/>
+				</f:then>
+				<f:else>
+					<f:image src="/typo3conf/ext/if_weintor/Resources/Public/Assets/demo-bottle.png" maxWidth="{settings.basket.image.maxWidth}" maxHeight="{settings.basket.image.maxHeight}"/>
+				</f:else>
+			</f:if>
+		</span>
+		<span class="name">
+			<f:if condition="{settings.detailPid}">
+				<f:then>
+					<f:link.action pluginName="wines" controller="Wines" action="detail" pageUid="{settings.detailPid}" arguments="{wine:item.item.id}"><span class="item-name">{f:if(condition:'{item.item.vintage} > 0',then:'{item.item.vintage}er - ',else:'')}{item.item.name}</span></f:link.action>
+				</f:then>
+				<f:else>
+					<span class="item-name">{f:if(condition:'{item.item.vintage} > 0',then:'{item.item.vintage}er - ',else:'')}{item.item.name}</span>
+				</f:else>
+			</f:if>
+			<span class="sub-line">
+				<f:if condition="{item.item.articlenumber}">
+					<span class="sub-info"><v:translation key="wine.field.articlenumber" />: {item.item.articlenumber}</span>
+				</f:if>
+				<f:if condition="{item.item.countrycode}">
+					<span class="sub-info"><v:translation key="countries.{item.item.countrycode}" /></span>
+				</f:if>
+				<f:if condition="{item.item.region}">
+					<span class="sub-info"><v:translation key="wineregions.{item.item.countrycode}.{item.item.region}" /></span>
+				</f:if>
+				<f:if condition="{item.item.place}">
+					<span class="item"><v:translation key="wine.field.place" />: {{item.item.place}}</span>
+				</f:if>
+				<f:if condition="{item.item.quality}">
+					<span class="sub-info"><v:translation key="qualitytypes.{item.item.countrycode}.{item.item.quality}"/> {item.quality_note}</span>
+				</f:if>
+				<f:if condition="{item.item.bottling_type}">
+					<span class="sub-info"><v:translation key="bottlingTypes.{item.item.bottling_type}"/></span>
+				</f:if>
+			</span>
+			<span class="sub-line">
+				<f:if condition="{item.item.alcohol}">
+					<span class="sub-info"><v:translation key="wine.field.alcohol" />: <f:format.number decimals="1" decimalSeparator=",">{item.item.alcohol}</f:format.number> Vol. %</span>
+				</f:if>
+				<span class="sub-info">Flaschengröße: {item.item.bottlesize -> f:format.number(decimalSeparator:',')} l</span>
+				<span class="sub-info">Preis pro Liter: <f:format.number decimals="2" decimalSeparator=",">{v:basePrice(price:item.item.gross,size:item.item.bottlesize)}</f:format.number> €</span>
+			</span>
+			<span class="sub-line">
+				<f:if condition="{item.item.maturation}">
+					<span class="sub-info">{item.item.maturation}</span>
+				</f:if>
+				<f:if condition="{item.item.grapetypeIds -> f:count()}>0">
+					<span class="sub-info">
+						<v:translation key="wine.field.grapetypes.label" />: <f:for each="{item.item.grapetypeIds}" as="grapetype" iteration="grapeIndex"><v:translation key="grapetypes.{grapetype}.name" /><f:if condition="{grapeIndex.isLast}"><f:else>, </f:else></f:if></f:for>
+					</span>
+				</f:if>
+				<f:if condition="{item.item.allergenIds -> f:count()}>0">
+					<span class="sub-info">
+						<v:translation key="wine.field.allergens.label" />: <f:for each="{item.item.allergenIds}" as="allergen" iteration="allergenIndex"><v:translation key="allergens.{allergen}.name" /><f:if condition="{allergenIndex.isLast}"><f:else>, </f:else></f:if></f:for>
+					</span>
+				</f:if>
+			</span>
+			<f:if condition="{editable}">
+				<span class="sub-line">
+					<a class="delete-basket-item text-link" data-id="{item.id}" data-wine-id="{item.item.id}"><i class="fa fa-trash"></i> Position löschen</a>
+				</span>
+			</f:if>
+		</span>
+	</td>
+	<td class="quantity-cell">
+		<f:if condition="{editable}">
+			<f:then>
+				<form class="basket-edit-form edit-item-form" method="POST">
+					<input type="hidden" name="id" value="{item.id}"/>
+					<input type="hidden" name="item_id" value="{item.item_id}"/>
+					<input type="hidden" name="item_type" value="{item.item_type}"/>
+					<input type="hidden" name="gross" value="{item.item.gross}"/>
+					<input type="hidden" name="tax" value="{item.item.tax}"/>
+					<input type="hidden" name="net" value="{item.item.net}"/>
+					<input type="hidden" name="taxrate" value="{item.item.taxrate}"/>
+					<input type="number" name="quantity" value="{item.quantity}" class="form-control"/>
+					<button type="submit" data-id="110984" class="update-basket-item btn btn-primary"><i class="fa fa-save" aria-hidden="true"></i></button>
+				</form>
+			</f:then>
+			<f:else>
+				{item.quantity} Flaschen
+			</f:else>
+		</f:if>
+	</td>
+	<td class="crimson price-cell align-right object-price">
+		<f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{item.item.price}</f:format.currency>
+	</td>
+	<td class="crimson price-cell align-right position-price price">
+		<strong>
+			<f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{v:priceCalc(price:item.item.price,quantity:item.quantity)}</f:format.currency>
+		</strong>
+	</td>
+</tr>
+
+</html>

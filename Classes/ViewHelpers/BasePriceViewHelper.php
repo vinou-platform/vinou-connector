@@ -12,6 +12,6 @@ class BasePriceViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
      */
 	public function render($price, $size) {
 
-		return $price / $size;
+		return (float)$size > 0 ? $price / $size : $price;
 	}
 }

@@ -1,0 +1,62 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:v="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Small" />
+
+<f:section name="main">
+
+	<f:if condition="{client}">
+		<f:then>
+			<h3>Anmelden</h3>
+			<p>Du bist derzeit angemeldet als <strong>{client.first_name} {client.last_name}</strong></p>
+			<f:flashMessages />
+			<f:form
+				action="login"
+				enctype="multipart/form-data">
+
+				<f:form.hidden name="mode" value="logout"/>
+
+				<fieldset>
+					<div class="form-field">
+						<f:form.submit value="Abmelden" />
+					</div>
+				</fieldset>
+			</f:form>
+		</f:then>
+		<f:else>
+			<h3>Anmelden</h3>
+			<f:flashMessages />
+			<f:form
+				action="login"
+				enctype="multipart/form-data">
+
+
+				<f:form.hidden name="mode" value="login"/>
+
+				<fieldset>
+					<div class="form-field">
+						<label>E-Mail-Adresse:</label>
+						<f:form.textfield name="mail" value="" required="TRUE" />
+					</div>
+					<div class="form-field">
+						<label>Passwort:</label>
+						<f:form.password name="password" value="" />
+					</div>
+					<div class="form-field">
+						<f:form.submit value="Anmelden" />
+						<f:if condition="{settings.pages.registerPid}">
+							<f:link.page pageUid="{settings.pages.registerPid}" class="button">Jetzt registrieren</f:link.page>
+						</f:if>
+					</div>
+					<div class="form-field">
+						<p>Du hast Dein Paswort vergessen? <f:link.action action="lostPassword">Jetzt Passwort zurücksetzen!</f:link.action></p>
+					</div>
+				</fieldset>
+			</f:form>
+		</f:else>
+	</f:if>
+
+</f:section>
+
+</html>
