@@ -7,7 +7,6 @@ var rename = require('gulp-rename');
 var concat = require('gulp-concat');
 var watchDirs = ['Src/**/*'];
 var vinouJsFiles = [
-	'../../Public/Scripts/enquiry.min.js',
 	'../../Public/Scripts/shop.min.js',
 	'../../Public/Scripts/list.min.js'
 ];
