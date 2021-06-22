@@ -57,34 +57,29 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 				$postData = [
 					'id' => $this->settings['category']
 				];
-				if (isset($this->settings['sortBy']) && !empty($this->settings['sortBy'])) {
+				if (isset($this->settings['sortBy']) && !empty($this->settings['sortBy']))
 					$postData['sortBy'] = $this->settings['sortBy'];
-				}
-				if (isset($this->settings['sortDirection']) && !empty($this->settings['sortDirection'])) {
+
+				if (isset($this->settings['sortDirection']) && !empty($this->settings['sortDirection']))
 					$postData['sortDirection'] = $this->settings['sortDirection'];
-				}
+
 				if (isset($this->settings['groupBy']) && !empty($this->settings['groupBy'])) {
 					$postData['groupBy'] = $this->settings['groupBy'];
 					$groups = $this->api->getWinesByCategory($postData);
 					foreach ($groups as $groupIndex => $group) {
 						foreach ($group as $index => $wine) {
-							$groups[$groupIndex][$index] = $this->localizeWine($wine);
+							$groups[$groupIndex][$index] = $wine;
 						}
 					}
-				} else {
+				} 
+				else
 					$wines = $this->api->getWinesByCategory($postData);
-					foreach ($wines as $index => $wine) {
-						$wines[$index] = $this->localizeWine($wine);
-					}
-				}
+					
 				$this->view->assign('category',$this->api->getCategory($this->settings['category']));
 				break;
 
 			case 'type':
 				$wines = $this->api->getWinesByType($this->settings['type']);
-				foreach ($wines as $index => $wine) {
-					$wines[$index] = $this->localizeWine($wine);
-				}
 				break;
 		}
 
@@ -102,14 +97,14 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 */
 	public function detailAction($wine = NULL) {
 		$this->initialize();
-		if ($this->request->hasArgument('wine')) {
-			$wineId = $this->request->getArgument('wine');
-			$wine = $this->api->getWine($wineId);
-		} else if ($this->request->hasArgument('path_segment')) {
-			$pathSegment = $this->request->getArgument('path_segment');
-			$wine = $this->api->getWine($pathSegment);
-		}
-		$this->view->assign('wine', $this->localizeWine($wine));
+
+		if ($this->request->hasArgument('wine'))
+			$identifier = $this->request->getArgument('wine');
+
+		if ($this->request->hasArgument('path_segment'))
+			$identifier = $this->request->getArgument('path_segment');
+
+		$this->view->assign('wine', $this->api->getWine($identifier));
 
 		$this->view->assign('backPid', $this->backPid);
 		$this->view->assign('settings', $this->settings);
@@ -141,76 +136,6 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 		$this->view->assign('backPid', $this->backPid);
 		$this->view->assign('settings', $this->settings);
-	}
-
-	/**
-	 *
-	 * localize wine
-	 *
-	 * @param array $wine
-	 * @return string
-	 */
-	private function detectExpertise($wine) {
-		$src = "https://api.vinou.de".$wine['expertisePDF'];
-
-		if ($this->settings['cacheExpertise']) {
-			if ($wine['expertiseStatus']=='OK') {
-				$expertiseFile = $fileName = array_values(array_slice(explode('/',$wine['expertisePDF']), -1))[0];
-				$convertedFileName = Pdf::convertFileName($wine['id'].'-'.$fileName);
-				$localFile = $this->absLocalDir .$convertedFileName;
-
-				$dateTimeZone = new \DateTimeZone(date_default_timezone_get());
-				$timeOffset = $dateTimeZone->getOffset(new \DateTime("now",$dateTimeZone));
-
-				if(!file_exists($localFile) || strtotime($wine['chstamp'] . ' + ' . $timeOffset / 3600 .' hours') > filemtime($localFile)){
-					$src = '/?eID=cacheExpertise&wineID='.$wine['id'];
-				} else {
-					$src = '/'. $this->localDir . $convertedFileName. '?' .time();
-				}
-			} else {
-				$src = '/?eID=cacheExpertise&wineID='.$wine['id'];
-			}
-		}
-
-		return $src;
-	}
-
-	/**
-	 *
-	 * localize wine
-	 *
-	 * @param array $wine
-	 * @return array
-	 */
-	private function localizeWine($wine = NULL) {
-		if ($wine['language'] != $GLOBALS['TSFE']->sys_language_isocode)
-			return null;
-
-		foreach ($wine as $property => $value) {
-			switch ($property) {
-				case 'grapetypes':
-					$grapetypes = [];
-					foreach ($value as $grapetype) {
-						$grapetypes[$grapetype] = $this->translations->getGrapeType($grapetype);
-					}
-					$wine[$property] = $grapetypes;
-					break;
-				case 'type':
-					$wine['winetype'] = $value;
-					$wine[$property] = $this->translations->getType($value);
-					break;
-				case 'tastes_id':
-					$wine[$property] = $this->translations->getTaste($value);
-					break;
-				case 'region':
-					$wine[$property] = $this->translations->getRegion($value);
-					break;
-				default:
-					$wine[$property] = $value;
-			}
-		}
-		$wine['expertiseFile'] = $this->detectExpertise($wine);
-		return $wine;
 	}
 
 }

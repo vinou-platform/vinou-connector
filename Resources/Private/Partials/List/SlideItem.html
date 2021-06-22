@@ -1,8 +1,15 @@
-{namespace vin=Vinou\VinouConnector\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
 <div class="item">
 	<div class="inner">
 		<div class="image">
-			<f:image src="{vin:CacheApiImage(image:wine.image,tstamp:wine.chstamp)}" maxWidth="{settings.list.slider.image.maxWidth}" maxHeight="{settings.list.slider.image.maxHeight}"/>
+			<f:if condition="{wine.image} && {wine.image}!=''">
+				<f:then>
+					<f:image src="{vin:CacheApiImage(image:wine.image,tstamp:wine.chstamp)}" maxWidth="{settings.list.slider.image.maxWidth}" maxHeight="{settings.list.slider.image.maxHeight}"/>
+				</f:then>
+			</f:if>
 		</div>
 		<div class="description">
 			<h2>{wine.name}</h2>
@@ -20,3 +27,5 @@
 		</div>
 	</div>
 </div>
+
+</html>

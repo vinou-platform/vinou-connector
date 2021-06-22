@@ -1,4 +1,8 @@
-<f:layout name="Shop" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
 
 <f:section name="main">
 	<f:flashMessages class="code_message" />
@@ -13,8 +17,10 @@
 		<f:case value="bill">
 			<p>Wir haben Ihre Bestellung erhalten. Wir werden Ihnen die Waren inklusive Rechnung schnellstmöglich zusenden.</p>
 		</f:case>
-		<f:case default="TRUE">
+		<f:defaultCase>
 			<p>Vielen Dank für Ihre Bestellung. Sie erhalten schnellstmöglich weitere Informationen zur Zahlung und Zusendung.</p>
-		</f:case>
+		</f:defaultCase>
 	</f:switch>
 </f:section>
+
+</html>

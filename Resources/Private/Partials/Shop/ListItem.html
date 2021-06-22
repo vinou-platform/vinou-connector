@@ -1,4 +1,7 @@
-{namespace vin=Vinou\VinouConnector\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
 <f:switch expression="{item.object_type}">
 	<f:case value="product">
 		<li class="item product" data-name="{item.name}" data-categories="Produkte" id="shop-list-item-{item.id}">
@@ -94,3 +97,5 @@
 		</li>
 	</f:defaultCase>
 </f:switch>
+
+</html>

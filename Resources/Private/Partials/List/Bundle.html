@@ -1,6 +1,13 @@
-{namespace vin=Vinou\VinouConnector\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
 <div class="item">
-	<f:image src="{vin:CacheApiImage(image:bundle.image,tstamp:bundle.chstamp)}" maxWidth="{settings.list.regular.image.maxWidth}" maxHeight="{settings.list.regular.image.maxHeight}"/>
+	<f:if condition="{bundle.image} && {bundle.image}!=''">
+		<f:then>
+			<f:image src="{vin:CacheApiImage(image:bundle.image,tstamp:bundle.chstamp)}" maxWidth="{settings.list.regular.image.maxWidth}" maxHeight="{settings.list.regular.image.maxHeight}"/>
+		</f:then>
+	</f:if>
 	<h2>{bundle.name}</h2>
 	<f:if condition="{settings.list.regular.text.crop}">
 		<f:then>
@@ -14,3 +21,5 @@
 		<f:translate key="LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:list.more"/>
 	</f:link.action>
 </div>
+
+</html>

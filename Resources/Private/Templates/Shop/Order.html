@@ -1,4 +1,8 @@
-<f:layout name="Shop" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
 
 <f:section name="main">
 	<div class="product-order">
@@ -328,16 +332,16 @@
 								<f:case value="debiting">
 									<f:link.action action="order" arguments="{back:'account'}" class="back regular-button">Zurück</f:link.action>
 								</f:case>
-								<f:case default="TRUE">
+								<f:defaultCase>
 									<f:link.action action="order" arguments="{back:'payment'}" class="back regular-button">Zurück</f:link.action>
-								</f:case>
+								</f:defaultCase>
 							</f:switch>
 							<f:form.submit value="Kostenpflichtig Bestellen" class="next" />
 						</div>
 					</fieldset>
 				</f:form>
 			</f:case>
-			<f:case default="TRUE">
+			<f:defaultCase>
 				<f:flashMessages class="code_message" />
 				<f:form
 					action="order"
@@ -452,7 +456,9 @@
 						</div>
 					</fieldset>
 				</f:form>
-			</f:case>
+			</f:defaultCase>
 		</f:switch>
 	</div>
 </f:section>
+
+</html>

@@ -1,4 +1,8 @@
-<f:layout name="Products" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
 
 <f:section name="main">
 	<f:switch expression="{settings.templateLayout}">
@@ -11,3 +15,5 @@
 		</f:defaultCase>
 	</f:switch>
 </f:section>
+
+</html>

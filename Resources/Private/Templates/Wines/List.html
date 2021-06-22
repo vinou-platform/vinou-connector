@@ -1,6 +1,11 @@
-<f:layout name="Wines" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
 
 <f:section name="main">
+
 	<f:switch expression="{settings.templateLayout}">
 		<f:case value="listSlider">
 			<div class="vinou-wine-list slider">
@@ -9,12 +14,14 @@
 				</f:for>
 			</div>
 		</f:case>
-		<f:case default="TRUE">
+		<f:defaultCase>
 			<div class="vinou-wine-list regular" data-count="{f:if(condition:'{settings.itemsPerRow}',then:'{settings.itemsPerRow}',else:'5')}">
 				<f:for each="{wines}" as="wine">
 					<f:render partial="List/Wine" arguments="{wine: wine,settings:settings}" />
 				</f:for>
 			</div>
-		</f:case>
+		</f:defaultCase>
 	</f:switch>
 </f:section>
+
+</html>

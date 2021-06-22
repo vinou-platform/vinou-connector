@@ -1,12 +1,19 @@
-{namespace vin=Vinou\VinouConnector\ViewHelpers}
-<f:layout name="Bundles" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
 
 <f:section name="main">
 	<div class="vinou-bundle-details">
 		<h1>{bundle.name}</h1>
 		<div class="overview">
 			<div class="image">
-				<f:image src="{vin:CacheApiImage(image:bundle.image,tstamp:bundle.chstamp)}" maxWidth="{settings.detail.image.maxWidth}" maxHeight="{settings.detail.image.maxHeight}"/>
+				<f:if condition="{bundle.image} && {bundle.image}!=''">
+					<f:then>
+						<f:image src="{vin:CacheApiImage(image:bundle.image,tstamp:bundle.chstamp)}" maxWidth="{settings.detail.image.maxWidth}" maxHeight="{settings.detail.image.maxHeight}"/>
+					</f:then>
+				</f:if>
 			</div>
 			<div class="description">
 				<f:if condition="{bundle.description}">
@@ -25,3 +32,5 @@
 		</div>
 	</div>
 </f:section>
+
+</html>

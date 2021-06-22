@@ -15,7 +15,8 @@
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wineries.mode</label>
                             <onChange>reload</onChange>
                             <config>
-                                <type>selectSingle</type>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wineries.mode.list</numIndex>
@@ -95,7 +96,8 @@
                         <TCEforms>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.wineries.templateLayout</label>
                             <config>
-                                <type>selectSingle</type>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
                                 <itemsProcFunc>Vinou\VinouConnector\Hooks\TCA->user_templateLayout</itemsProcFunc>
                                 <items>
                                     <numIndex index="0" type="array">

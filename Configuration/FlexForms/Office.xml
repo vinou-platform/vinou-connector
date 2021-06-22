@@ -15,7 +15,8 @@
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.mode</label>
                             <onChange>reload</onChange>
                             <config>
-                                <type>selectSingle</type>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.mode.register</numIndex>
@@ -34,7 +35,8 @@
                             <displayCond>FIELD:switchableControllerActions:=:Office->register;Office->support;</displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.customerType</label>
                             <config>
-                                <type>selectSingle</type>
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
                                 <items>
                                     <numIndex index="0">
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.office.customerType.selectable</numIndex>

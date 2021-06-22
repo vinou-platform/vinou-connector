@@ -1,12 +1,19 @@
-{namespace vin=Vinou\VinouConnector\ViewHelpers}
-<f:layout name="Products" />
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
 
 <f:section name="main">
 	<div class="vinou-product-details">
 		<h1>{product.name}</h1>
 		<div class="overview">
 			<div class="image">
-				<f:image src="{vin:CacheApiImage(image:product.image,tstamp:product.chstamp)}" maxWidth="{settings.detail.image.maxWidth}" maxHeight="{settings.detail.image.maxHeight}"/>
+				<f:if condition="{product.image} && {product.image}!=''">
+					<f:then>
+						<f:image src="{vin:CacheApiImage(image:product.image,tstamp:product.chstamp)}" maxWidth="{settings.detail.image.maxWidth}" maxHeight="{settings.detail.image.maxHeight}"/>
+					</f:then>
+				</f:if>
 			</div>
 			<div class="description">
 				<f:if condition="{product.description}">
@@ -25,3 +32,5 @@
 		</div>
 	</div>
 </f:section>
+
+</html>
