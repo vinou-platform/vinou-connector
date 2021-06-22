@@ -4,7 +4,7 @@ namespace Vinou\VinouConnector\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-class BasePriceViewHelper extends AbstractViewHelper {
+class ClientViewHelper extends AbstractViewHelper {
 
     public static function renderStatic(
         array $arguments,
@@ -12,12 +12,11 @@ class BasePriceViewHelper extends AbstractViewHelper {
         RenderingContextInterface $renderingContext
     ) {
 
-        return (float)$arguments['size'] > 0 ? $arguments['price'] / $arguments['size'] : $arguments['price'];
+        return Session::getValue('client');
     }
 
 
     public function initializeArguments() {
-        $this->registerArgument('price', 'string', 'The item price', true);
-        $this->registerArgument('size', 'string', 'The item size', true);
+
     }
 }

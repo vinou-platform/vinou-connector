@@ -1,0 +1,163 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Sidebar" />
+
+<f:section name="main">
+
+	<f:if condition="{order.id}">
+		<f:then>
+			<h1 class="page-title">Bestellung {order.number} vom <f:format.date format="d.m.Y H:i">{order.crstamp}</f:format.date></h1>
+			<div class="grid-x grid-margin-x grid-margin-y">
+				<div class="cell medium-6">
+					<h3><vin:translation key="order.fieldsets.billing"/>:</h3>
+					<p class="addressblock">
+						<vin:translation key="general.gender.{order.billing.gender}"/><br/>
+						{order.billing.first_name} {order.billing.last_name}<br/>
+						{f:if(condition:billing.company,then:'{order.billing.company}<br/>')}
+						{order.billing.address}<br/>
+						{order.billing.zip} {order.billing.city}<br/>
+						<f:if condition="{order.billing.countrycode}"><vin:translation key="countries.{order.billing.countrycode}"/><br/></f:if>
+						<br/>
+					</p>
+				</div>
+				<div class="cell medium-6">
+					<h3><vin:translation key="order.fields.deliveryaddress"/>:</h3>
+					<p class="addressblock">
+						<vin:translation key="general.gender.{order.delivery.gender}"/><br/>
+						{order.delivery.first_name} {order.delivery.last_name}<br/>
+						{f:if(condition:delivery.company,then:'{order.delivery.company}<br/>')}
+						{order.delivery.address}<br/>
+						{order.delivery.zip} {order.delivery.city}<br/>
+						<f:if condition="{order.delivery.countrycode}"><vin:translation key="countries.{order.delivery.countrycode}"/><br/></f:if>
+					</p>
+				</div>
+				<div class="cell medium-6">
+					<h3><vin:translation key="client.fieldSets.contact"/>:</h3>
+					<p class="addressblock">
+						<i class="fa fa-envelope"></i> {order.client.mail}<br/>
+						<f:if condition="{order.client.phone}">
+							<f:then>
+								<i class="fa fa-phone"></i> {order.client.phone}<br/>
+							</f:then>
+						</f:if>
+					</p>
+				</div>
+				<div class="cell medium-6">
+					<h3><vin:translation key="order.fields.payment_type"/>:</h3>
+					<p class="addressblock">
+						<f:translate key="payment.{order.payment_type}"/><br/>
+						<f:switch expression="{order.payment_type}">
+							<f:case value="debiting">
+								<p>
+									<f:if condition="{account.settings.bank.owner}"><vin:translation key="bank_owner"/>: {account.settings.bank.owner}<br/></f:if>
+									<f:if condition="{account.settings.bank.bank}"><vin:translation key="bank_bank"/>: {account.settings.bank.bank}<br/></f:if>
+									<f:if condition="{account.settings.bank.bic}"><vin:translation key="bank_bic"/>: {account.settings.bank.bic}<br/></f:if>
+									<f:if condition="{account.settings.bank.iban}"><vin:translation key="bank_iban"/>: {account.settings.bank.iban}<br/></f:if>
+								</p>
+							</f:case>
+						</f:switch>
+					</p>
+				</div>
+			</div>
+			<div class="summary" style="margin: 3em 0">
+				<h3><vin:translation key="order.fieldsets.positions"/>:</h3>
+				<table border="0" cellpadding="0" cellspacing="0" id="item-table">
+					<thead>
+						<tr class="head-row">
+							<th><f:translate key="basket.table.position"/></th>
+							<th><f:translate key="basket.table.product"/></th>
+							<th class="align-center"><f:translate key="basket.table.quantity"/></th>
+							<th class="align-right"><f:translate key="basket.table.pricenet"/></th>
+							<th class="align-right"><f:translate key="basket.table.pricegross"/></th>
+						</tr>
+					</thead>
+					<tbody>
+						<f:for each="{order.positions}" as="item" iteration="index">
+							<f:switch expression="{item.item_type}">
+								<f:case value="product">
+									<tr id="basket-row-{item.id}">
+										<td class="index-cell align-left">{index.cycle}</td>
+										<td class="article-cell">
+											<span class="image"><img src="https://api.vinou.de{item.item.image}?height=300"/></span>
+											<span class="name">
+												<f:if condition="{settings.productPid}">
+													<f:then>
+														<f:link.action pluginName="products" controller="Products" action="detail" pageUid="{settings.productPid}" arguments="{product:item.item.id}"><span class="item-name">{item.item.name}</span></f:link.action>
+													</f:then>
+													<f:else>
+														<span class="item-name">{item.item.name}</span>
+													</f:else>
+												</f:if>
+												<br>
+												<span class="sub-info">Artikelnummer: {item.item.articlenumber}</span>
+												<span class="sub-info">EAN: {item.item.gtin}</span>
+											</span>
+										</td>
+										<td class="quantity-cell align-right">{item.quantity}</td>
+										<td class="crimson price-cell single-price">
+											<f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{item.item.gross}</f:format.currency>
+										</td>
+										<td class="crimson price-cell position-price"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{item.gross}</f:format.currency></td>
+									</tr>
+								</f:case>
+								<f:case value="bundle">
+									<f:render partial="Shop/BasketPosition" arguments="{item: item, index: index, settings: settings, imageSuffix: '?width=150'}"/>
+								</f:case>
+								<f:defaultCase>
+									<f:render partial="Shop/BasketPosition" arguments="{item: item, index: index, settings: settings, imageSuffix: '?height=150'}"/>
+								</f:defaultCase>
+							</f:switch>
+						</f:for>
+						<f:if condition="{order.package}">
+							<tr id="package-row">
+								<td class="index-cell align-left">{index.cycle}</td>
+								<td class="article-cell">
+									<span class="image"></span>
+									<span class="name">
+										<span class="item-name">Versand und Verpackung</span>
+									</span>
+								</td>
+								<td class="quantity-cell"></td>
+								<td class="crimson price-cell single-price"></td>
+								<td class="crimson price-cell position-price"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.package.gross}</f:format.currency></td>
+							</tr>
+						</f:if>
+						<f:if condition="{order.rebates.0}">
+							<tr>
+								<td class="crimson summary-label" colspan="4" style="padding: 2em 0"><strong>Rabatt-Aktion: {campaign.name}</strong> (Verwendeter Code: {campaign.hash})<f:if condition="{campaign.description}!=''"><br>{campaign.description}</f:if></td>
+								<td class="crimson price-cell position-price" valign="top"><strong><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{campaignDiscount.gross}</f:format.currency></strong></td>
+							</tr>
+						</f:if>
+						<tr>
+							<td class="crimson summary-label" colspan="4"><strong><f:translate key="basket.sum.net"/></strong></td>
+							<td class="crimson price-cell position-price"><strong id="basket-sum-net"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.net}</f:format.currency></strong></td>
+						</tr>
+						<tr>
+							<td class="crimson summary-label" colspan="4"><f:translate key="basket.sum.tax"/></td>
+							<td class="crimson price-cell position-price" id="basket-sum-tax"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.tax}</f:format.currency></td>
+						</tr>
+						<tr>
+							<td class="crimson summary-label" colspan="4"><strong><f:translate key="basket.sum.gross"/></strong></td>
+							<td class="crimson price-cell position-price"><strong id="basket-sum-gross"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.gross}</f:format.currency></strong></td>
+						</tr>
+					</tbody>
+				</table>
+				<f:if condition="{order.note}">
+					<p style="margin: 1.5em 0"><strong>Ihre Nachricht an uns:</strong><br>{order.note}</p>
+				</f:if>
+			</div>
+		</f:then>
+		<f:else>
+			<p class="inline-message" data-type="error">
+				<span class="title">Es konnten keine Bestellung mit dieser ID gefunden werden</span>
+			</p>
+		</f:else>
+	</f:if>
+	<p><f:link.action action="orders" controller="Client" class="button">Zurück zur Liste</f:link.action></p>
+
+
+</f:section>
+
+</html>

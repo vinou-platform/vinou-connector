@@ -3,10 +3,10 @@
 		die ('Access denied.');
 	}
 
-	$extKey = 'vinou_connector';
+	$extKey = \Vinou\VinouConnector\Utility\Helper::getExtKey();
 
-	TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.'/Configuration/TSconfig/mod.wizard.ts">');
-	TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.'/Configuration/TSconfig/templateLayouts.ts">');
+	TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.'/Configuration/TSconfig/mod.wizard.tsconfig">');
+	TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:'.$extKey.'/Configuration/TSconfig/templateLayouts.tsconfig">');
 
 	$plugins = [
 		'Wines' => 'list, detail',
@@ -15,7 +15,8 @@
 		'Shop' => 'list, basket, order, finish, topseller',
 		'Office' => 'register',
 		'Wineries' => 'list, detail',
-		'Merchants' => 'list, detail'
+		'Merchants' => 'list, detail',
+		'Client' => 'login, lostPassword, resetPassword, activate, profile, orders, orderDetails'
 	];
 
 

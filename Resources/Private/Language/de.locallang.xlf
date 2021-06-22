@@ -59,6 +59,14 @@
 				<source>Display merchants from Vinou as list or detail</source>
 				<target>Zeigt die Händler aus Vinou als Liste oder Detailansicht</target>
 			</trans-unit>
+			<trans-unit id="be.client.title">
+				<source>Client (Vinou)</source>
+				<target>Kundenbereich (Vinou)</target>
+			</trans-unit>
+			<trans-unit id="be.client.description">
+				<source>Everything about login and authenticated information</source>
+				<target>Login, Bestellungen und Zugriff auf Authentifikations-basierte Informationen</target>
+			</trans-unit>
 
 			<trans-unit id="shop.list.clusters">
 				<source>Filter options</source>
@@ -484,6 +492,10 @@
 			<trans-unit id="flexform.wines.mode.detail">
 				<source>Show Wine Details</source>
 				<target>Winedetails</target>
+			</trans-unit>
+			<trans-unit id="flexform.wines.mode.topseller">
+				<source>Topseller list</source>
+				<target>Topseller-Liste</target>
 			</trans-unit>
 			<trans-unit id="flexform.wines.listmode">
 				<source>Listmode</source>
@@ -914,6 +926,92 @@
 			<trans-unit id="flexform.merchants.templateLayout">
 				<source>Template</source>
 				<target>Vorlage wählen</target>
+			</trans-unit>
+
+			<trans-unit id="flexform.client.general">
+				<source>Settings</source>
+				<target>Einstellungen</target>
+			</trans-unit>
+			<trans-unit id="flexform.client.mode">
+				<source>Mode</source>
+				<target>Modus</target>
+			</trans-unit>
+			<trans-unit id="flexform.client.mode.login">
+				<source>Login</source>
+				<target>Login</target>
+			</trans-unit>
+			<trans-unit id="flexform.client.mode.register">
+				<source>Register</source>
+				<target>Registrierung</target>
+			</trans-unit>
+			<trans-unit id="flexform.client.mode.profile">
+				<source>Profile</source>
+				<target>Profil</target>
+			</trans-unit>
+			<trans-unit id="flexform.client.mode.orders">
+				<source>Orders</source>
+				<target>Bestellungen</target>
+			</trans-unit>
+
+			<trans-unit id="message.error.title">
+				<source>Oops an error occurred</source>
+				<target>Ein Fehler ist aufgetreten</target>
+			</trans-unit>
+			<trans-unit id="message.success.title">
+				<source>Action successful</source>
+				<target>Aktion erfolgreich</target>
+			</trans-unit>
+			<trans-unit id="message.loginerror.title">
+				<source>Authentication error</source>
+				<target>Authentifizierungs-Fehler</target>
+			</trans-unit>
+			<trans-unit id="message.loginerror.content">
+				<source>Check your username and password.</source>
+				<target>Überprüfe deinen Benutzernamen und das Passwort.</target>
+			</trans-unit>
+			<trans-unit id="message.pwresetlinkerror.content">
+				<source>Your email could not be found in our database.</source>
+				<target>Deine E-Mail-Adresse konnte nicht in unserer Datenbank gefunden werden.</target>
+			</trans-unit>
+			<trans-unit id="message.resetlinkinvalid.content">
+				<source>Your password reset link is invalid.</source>
+				<target>Dein Reset-Link ist ungültig.</target>
+			</trans-unit>
+			<trans-unit id="message.passwordreseterror.content">
+				<source>Your password could not be set.</source>
+				<target>Dein Passwort konnte nicht zurück gesetzt werden.</target>
+			</trans-unit>
+			<trans-unit id="message.noPassword.content">
+				<source>No password given.</source>
+				<target>Kein Passwort gesetzt</target>
+			</trans-unit>
+			<trans-unit id="message.passwordLength.content">
+				<source>Password can not be empty.</source>
+				<target>Das Feld Passwort darf nicht leer sein.</target>
+			</trans-unit>
+			<trans-unit id="message.passwordMatch.content">
+				<source>Password and repeat does not match.</source>
+				<target>Passwort und Passwort-Wiederholung stimmen nicht überein.</target>
+			</trans-unit>
+			<trans-unit id="message.clientupdateerror.content">
+				<source>Client could not be updated.</source>
+				<target>Kundenkonto konnte nicht upgedated werden.</target>
+			</trans-unit>
+			<trans-unit id="message.clientupdatesuccess.content">
+				<source>Client successfully updated.</source>
+				<target>Kundenkonto erfolgreich bearbeitet.</target>
+			</trans-unit>
+			<trans-unit id="message.requiredfieldshacked.content">
+				<source>Missing postfields, seams that the register process was hacked.</source>
+				<target>Fehlende Postparameter festgestellt. Das hätte nicht passieren dürfen.</target>
+			</trans-unit>
+			<trans-unit id="message.clientvalidationerror.content">
+				<source>Client data not valid.</source>
+				<target>Kundendaten konnten nicht validiert werden.</target>
+			</trans-unit>
+			<trans-unit id="message.clientcreateerror.content">
+				<source>Client could not be registered.</source>
+				<target>Kundenaccount konnte nicht angelegt werden.</target>
 			</trans-unit>
 
 			<trans-unit id="message.title.error">

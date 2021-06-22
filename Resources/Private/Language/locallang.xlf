@@ -4,31 +4,31 @@
 		<header/>
 		<body>
 			<trans-unit id="be.wines.title">
-				<source>Wines (Vinou)</source>
+				<source>Wines</source>
 			</trans-unit>
 			<trans-unit id="be.wines.description">
 				<source>Display wines from Vinou as list or detail</source>
 			</trans-unit>
 			<trans-unit id="be.products.title">
-				<source>Products (Vinou)</source>
+				<source>Products</source>
 			</trans-unit>
 			<trans-unit id="be.products.description">
 				<source>Display products from Vinou as list or detail</source>
 			</trans-unit>
 			<trans-unit id="be.bundles.title">
-				<source>Bundles (Vinou)</source>
+				<source>Bundles</source>
 			</trans-unit>
 			<trans-unit id="be.bundles.description">
 				<source>Display bundles from Vinou as list or detail</source>
 			</trans-unit>
 			<trans-unit id="be.shop.title">
-				<source>Shop (Vinou)</source>
+				<source>Shop</source>
 			</trans-unit>
 			<trans-unit id="be.shop.description">
 				<source>Show basket, orderform and finish action for vinou wines</source>
 			</trans-unit>
 			<trans-unit id="be.office.title">
-				<source>Vinou-Office (Vinou)</source>
+				<source>Vinou-Office</source>
 			</trans-unit>
 			<trans-unit id="be.office.description">
 				<source>Show special plugins for Vinou-Office for example registration form.</source>
@@ -44,6 +44,12 @@
 			</trans-unit>
 			<trans-unit id="be.merchants.description">
 				<source>Display merchants from Vinou as list or detail</source>
+			</trans-unit>
+			<trans-unit id="be.client.title">
+				<source>Client (Vinou)</source>
+			</trans-unit>
+			<trans-unit id="be.client.description">
+				<source>Everything about login and authenticated information</source>
 			</trans-unit>
 
 			<trans-unit id="shop.list.clusters">
@@ -366,6 +372,9 @@
 			</trans-unit>
 			<trans-unit id="flexform.wines.mode.detail">
 				<source>Show Wine Details</source>
+			</trans-unit>
+			<trans-unit id="flexform.wines.mode.topseller">
+				<source>Topseller list</source>
 			</trans-unit>
 			<trans-unit id="flexform.wines.listmode">
 				<source>Listmode</source>
@@ -690,13 +699,64 @@
 			</trans-unit>
 			<trans-unit id="flexform.merchants.templateLayout">
 				<source>Template</source>
+			</trans-unit>			
+
+
+			<trans-unit id="message.error.title">
+				<source>Oops an error occurred</source>
 			</trans-unit>
+			<trans-unit id="message.success.title">
+				<source>Action successful</source>
+			</trans-unit>
+			<trans-unit id="message.loginerror.title">
+				<source>Authentication error</source>
+			</trans-unit>
+			<trans-unit id="message.loginerror.content">
+				<source>Check your username and password</source>
+			</trans-unit>
+			<trans-unit id="message.pwresetlinkerror.content">
+				<source>Your email could not be found in our database.</source>
+			</trans-unit>
+			<trans-unit id="message.resetlinkinvalid.content">
+				<source>Your password reset link is invalid.</source>
+			</trans-unit>
+			<trans-unit id="message.passwordreseterror.content">
+				<source>Your password could not be set.</source>
+			</trans-unit>
+			<trans-unit id="message.noPassword.content">
+				<source>No password given.</source>
+			</trans-unit>
+			<trans-unit id="message.passwordLength.content">
+				<source>Password can not be empty.</source>
+			</trans-unit>
+			<trans-unit id="message.passwordMatch.content">
+				<source>Password and repeat does not match.</source>
+			</trans-unit>
+			<trans-unit id="message.clientupdateerror.content">
+				<source>Client could not be updated.</source>
+			</trans-unit>
+			<trans-unit id="message.clientupdatesuccess.content">
+				<source>Client successfully updated.</source>
+			</trans-unit>
+			<trans-unit id="message.requiredfieldshacked.content">
+				<source>Missing postfields, seams that the register process was hacked.</source>
+			</trans-unit>
+			<trans-unit id="message.clientvalidationerror.content">
+				<source>Client data not valid.</source>
+			</trans-unit>
+			<trans-unit id="message.clientcreateerror.content">
+				<source>Client could not be registered.</source>
+			</trans-unit>
+
 
 			<trans-unit id="message.title.error">
 				<source>Error</source>
 			</trans-unit>
 			<trans-unit id="message.title.success">
 				<source>Success</source>
+			</trans-unit>
+			<trans-unit id="message.title.minBasketSize">
+				<source>Minimum basket size not reached</source>
 			</trans-unit>
 			<trans-unit id="message.content.noCop">
 				<source>You had to accept and read the conditions of purchase</source>
@@ -737,17 +797,17 @@
 			<trans-unit id="message.content.registrationError">
 				<source>Registration not successful, a customer or user with this mail already exists.</source>
 			</trans-unit>
-			<trans-unit id="message.title.minBasketSize">
-				<source>Minimum basket size not reached</source>
+			<trans-unit id="message.content.registrationError">
+				<source>Registration not successful, a customer or user with this mail already exists.</source>
+			</trans-unit>
+			<trans-unit id="message.content.registrationError">
+				<source>Registration not successful, a customer or user with this mail already exists.</source>
 			</trans-unit>
 			<trans-unit id="message.content.minBasketSize">
 				<source>You did not reach the minimum size of a basket.</source>
 			</trans-unit>
-			<trans-unit id="message.title.packageSteps">
-				<source>Basket size not right</source>
-			</trans-unit>
 			<trans-unit id="message.content.packageSteps">
-				<source>Your basket size did not match the size of packages we send.</source>
+				<source>Basket size not right</source>
 			</trans-unit>
 
 			<trans-unit id="tasks.cacheexpertise.title">

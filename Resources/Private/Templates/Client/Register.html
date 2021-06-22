@@ -1,0 +1,191 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+
+<f:section name="main">
+
+	<f:if condition="{success}">
+		<f:then>
+			<h1>Registrierung erfolgreich</h1>
+			<p>Du hast eine E-Mail erhalten. Bitte bestätige Deinen Account.</p>
+			<f:flashMessages />
+		</f:then>
+		<f:else>
+			<h1>Dein Account</h1>
+			<f:flashMessages />
+			<f:form action="register" enctype="multipart/form-data">
+				<fieldset class="grid-x grid-margin-x grid-margin-y form-section">
+					<div class="cell">
+						<h4>Persönliche Daten</h4>
+					</div>
+					<div class="form-field cell medium-6">
+						<label for="gender"><vin:translation key="general.fields.gender" />{f:if(condition: required.gender,then:' {settings.mandatorySign}')}</label>
+						<f:form.select 
+							name="client[gender]" 
+							id="gender" 
+							options="{vin:translation(key: 'general.gender')}" 
+							prependOptionLabel="{vin:translation(key: 'general.fields.empty')}" 
+							value="{f:if(condition: client.gender, then: client.gender, else: settings.register.defaults.gender)}"
+							additionalAttributes="{f:if(condition: required.gender, then: '{required: \'required\'}', else: '{}')}"
+							/>
+					</div>
+					<div class="form-field cell medium-6">&nbsp;</div>
+					<div class="form-field cell medium-6">
+						<label for="first_name"><vin:translation key="general.fields.first_name" />{f:if(condition: required.first_name,then:' {settings.mandatorySign}')}</label>
+						<f:form.textfield
+							name="client[first_name]"
+							id="first_name"
+							value="{f:if(condition: client.first_name, then: client.first_name, else: settings.register.defaults.first_name)}"
+							required="{required.first_name}"
+							/>
+					</div>
+					<div class="form-field cell medium-6">
+						<label for="last_name"><vin:translation key="general.fields.last_name" />{f:if(condition: required.last_name,then:' {settings.mandatorySign}')}</label>
+						<f:form.textfield
+							name="client[last_name]"
+							id="last_name"
+							value="{f:if(condition: client.last_name, then: client.last_name, else: settings.register.defaults.last_name)}"
+							required="{required.last_name}"
+							/>
+					</div>
+					<div class="form-field cell medium-6">
+						<label for="mail"><vin:translation key="client.field.mail" />{f:if(condition: required.mail,then:' {settings.mandatorySign}')}</label>
+						<f:form.textfield
+							name="client[mail]"
+							id="mail"
+							value="{f:if(condition: client.mail, then: client.mail, else: settings.register.defaults.mail)}"
+							required="{required.mail}"
+							/>
+					</div>
+					<div class="form-field cell medium-6">
+						<label for="phone"><vin:translation key="client.field.phone" />{f:if(condition: required.phone,then:' {settings.mandatorySign}')}</label>
+						<f:form.textfield
+							name="client[phone]"
+							id="phone"
+							value="{f:if(condition: client.phone, then: client.phone, else: settings.register.defaults.phone)}"
+							required="{required.phone}"
+							/>
+					</div>
+					<div class="form-field cell medium-6">
+						<label for="password"><vin:translation key="user.fields.password" />{f:if(condition: required.password,then:' {settings.mandatorySign}')}</label>
+						<f:form.password 
+							name="client[password]" 
+							id="password" 
+							value="" 
+							additionalAttributes="{f:if(condition: required.password, then: '{required: \'required\'}', else: '{}')}"
+							/>
+					</div>
+					<div class="form-field cell medium-6">
+						<label for="password_repeat"><vin:translation key="user.fields.password_repeat" />{f:if(condition: required.password,then:' {settings.mandatorySign}')}</label>
+						<f:form.password 
+							name="client[password_repeat]" 
+							id="password_repeat" 
+							value="" 
+							additionalAttributes="{f:if(condition: required.password, then: '{required: \'required\'}', else: '{}')}"
+							/>
+					</div>
+				</fieldset>
+
+				<fieldset class="grid-x grid-margin-x grid-margin-y form-section">
+					<div class="cell">
+						<h4>Rechnungsangaben</h4>
+					</div>
+					<div class="form-field cell">
+						<label for="company"><vin:translation key="client.field.company" />{f:if(condition: required.company,then:' {settings.mandatorySign}')}</label>
+						<f:form.textfield
+							name="client[company]"
+							id="company"
+							value="{f:if(condition: client.company, then: client.company, else: settings.register.defaults.company)}"
+							required="{required.company}"
+							/>
+					</div>
+					<div class="form-field cell medium-9">
+						<label for="address"><vin:translation key="client.field.address" />{f:if(condition: required.address,then:' {settings.mandatorySign}')}</label>
+						<f:form.textfield
+							name="client[address]"
+							id="address"
+							value="{f:if(condition: client.address, then: client.address, else: settings.register.defaults.address)}"
+							required="{required.address}"
+							/>
+					</div>
+					<div class="form-field cell medium-3">
+						<label for="address_supplement"><vin:translation key="client.field.address_supplement" />{f:if(condition: required.address_supplement,then:' {settings.mandatorySign}')}</label>
+						<f:form.textfield
+							name="client[address_supplement]"
+							id="address_supplement"
+							value="{f:if(condition: client.address_supplement, then: client.address_supplement, else: settings.register.defaults.address_supplement)}"
+							required="{required.address_supplement}"
+							/>
+					</div>
+					<div class="form-field cell medium-3">
+						<label for="zip"><vin:translation key="client.field.zip" />{f:if(condition: required.zip,then:' {settings.mandatorySign}')}</label>
+						<f:form.textfield
+							name="client[zip]"
+							id="zip"
+							value="{f:if(condition: client.zip, then: client.zip, else: settings.register.defaults.zip)}"
+							required="{required.zip}"
+							/>
+					</div>
+					<div class="form-field cell medium-9">
+						<label for="city"><vin:translation key="client.field.city" />{f:if(condition: required.city,then:' {settings.mandatorySign}')}</label>
+						<f:form.textfield
+							name="client[city]"
+							id="city"
+							value="{f:if(condition: client.city, then: client.city, else: settings.register.defaults.city)}"
+							required="{required.city}"
+							/>
+					</div>
+					<div class="form-field cell medium-6">
+						<label for="countrycode"><vin:translation key="client.field.country" />{f:if(condition: required.countrycode,then:' {settings.mandatorySign}')}</label>
+						<f:form.select
+							name="client[countrycode]"
+							id="countrycode"
+							options="{vin:filter(items: '{vin:translation(key: \'countries\')}', property: '{settings.register.constraints.countrycode}')}"
+							value="{f:if(condition: client.countrycode, then: client.countrycode, else: settings.register.defaults.countrycode)}"
+							additionalAttributes="{f:if(condition: required.countrycode, then: '{required: \'required\'}', else: '{}')}"
+							/>
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<div class="form-field">
+						<f:form.checkbox
+							name="conditionsOfPurchase"
+							id="conditionsOfPurchase"
+							value="yes"
+							additionalAttributes="{required:'required'}"
+							/>
+
+						<label for="conditionsOfPurchase">
+							<span class="status"></span>
+							<span>Ich habe die <f:link.page pageUid="{settings.pages.generalBusinessTerms}" target="_blank">Allgemeinen Geschäftsbedingungen</f:link.page> gelesen und akzeptiere diese!</span></label>
+					</div>
+					<div class="form-field">
+						<f:form.checkbox
+							name="gdpr"
+							id="gdpr"
+							value="yes"
+							additionalAttributes="{required:'required'}"
+							/>
+						<label for="gdpr">
+							<span class="status"></span>
+							<span>Ich willige ein, dass meine Angaben zur Kontaktaufnahme und Zuordnung für eventuelle Rückfragen dauerhaft gespeichert werden. Die Hinweise aus der <f:link.page pageUid="{settings.pages.gdpr}" target="_blank">Datenschutzerklärung</f:link.page> habe ich gelesen. Diese Einwilligung können Sie jederzeit mit Wirkung für die Zukunft widerrufen, indem Sie eine Mail an <f:link.email email="{settings.mail.gdprcontact}">{settings.mail.gdprcontact}</f:link.email> schicken. </span></label>
+					</div>
+				</fieldset>
+
+				<fieldset class="grid-x grid-margin-x grid-margin-y form-section">
+					<div class="form-field cell">
+						<f:form.submit value="Jetzt registrieren" />
+					</div>
+				</fieldset>
+
+			</f:form>
+		</f:else>
+	</f:if>
+
+
+</f:section>
+
+</html>
