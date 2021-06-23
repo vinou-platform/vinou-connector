@@ -55,7 +55,8 @@
                             <displayCond>FIELD:switchableControllerActions:=:Shop->list;Shop->basket;Shop->order;Shop->finish;</displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.clusters</label>
                             <config>
-                                <type>selectMultipleSideBySide</type>
+                                <type>select</type>
+                                <renderType>selectMultipleSideBySide</renderType>
                                 <minitems>0</minitems>
                                 <maxitems>999</maxitems>
                                 <items>
@@ -101,7 +102,8 @@
                             </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.showTypes</label>
                             <config>
-                                <type>selectCheckBox</type>
+                                <type>select</type>
+                                <renderType>selectCheckBox</renderType>
                                 <minitems>0</minitems>
                                 <maxitems>999</maxitems>
                                 <items>

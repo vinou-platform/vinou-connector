@@ -3,11 +3,16 @@ namespace Vinou\VinouConnector\Middleware;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
+use \TYPO3\CMS\Extbase\Object\ObjectManager;
+use \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use \TYPO3\CMS\Core\Site\Entity\Site;
+use \TYPO3\CMS\Core\TypoScript\TemplateService;
+use \TYPO3\CMS\Core\Utility\RootlineUtility;
 use \Psr\Http\Message\ResponseInterface;
 use \Psr\Http\Message\ServerRequestInterface;
 use \Psr\Http\Server\MiddlewareInterface;
 use \Psr\Http\Server\RequestHandlerInterface;
-use \TYPO3\CMS\Core\Http\JsonResponse;
 use \Vinou\ApiConnector\Session\Session;
 use \Vinou\ApiConnector\FileHandler\Pdf;
 use \Vinou\VinouConnector\Utility\Helper;
@@ -20,27 +25,26 @@ use \Vinou\VinouConnector\Utility\TypoScriptHelper;
  */
 class AjaxActions implements MiddlewareInterface {
 
-    protected $request = [];
-    protected $result = false;
+    protected $data = [];
     protected $settings = [];
     protected $errors = [];
     protected $api = null;
 
-    public function __construct() {
-
-        $this->request = array_merge($_POST, (array)json_decode(trim(file_get_contents('php://input')), true));
-
-        $this->api = Helper::initApi();
-        $this->settings = TypoScriptHelper::extractSettings('tx_vinouconnector_shop');
-
-    }
-
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface 
+     /**
+     * Check if the user must change the password and redirect to configured PID
+     *
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return RedirectResponse|ResponseInterface
+     */
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
         if (!isset($request->getQueryParams()['vinou-command'])) {
             return $response;
         }
+
+        $this->initialize($request);
 
         switch ($request->getQueryParams()['vinou-command']) {
             case 'cache-expertise':
@@ -48,22 +52,32 @@ class AjaxActions implements MiddlewareInterface {
                 break;
 
             default:
+                $this->data = array_merge($_POST, (array)json_decode(trim(file_get_contents('php://input')), true));
                 $this->regularAction();
                 break;
         }
         
     }
 
+    private function initialize($request) {
+        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+        header("Cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");
+
+        $this->settings = TypoScriptHelper::extractSettings('tx_vinouconnector_shop', $request);
+        $this->api = Helper::initApi();
+    }
+
     public function regularAction() {
 
-        if (empty($this->request) || !isset($this->request['action']))
+        if (empty($this->data) || !isset($this->data['action']))
             $this->sendResult(false, 'no action defined');
 
-        $action = $this->request['action'];
-        unset($this->request['action']);
+        $action = $this->data['action'];
+        unset($this->data['action']);
         switch ($action) {
             case 'init':
-                $this->sendResult($this->api->initBasket($this->request), 'basket could not be initialized');
+                $this->sendResult($this->api->initBasket($this->data), 'basket could not be initialized');
                 break;
 
             case 'get':
@@ -79,15 +93,15 @@ class AjaxActions implements MiddlewareInterface {
                 break;
 
             case 'addItem':
-                $this->sendResult($this->api->addItemToBasket($this->request), 'item could not be added');
+                $this->sendResult($this->api->addItemToBasket($this->data), 'item could not be added');
                 break;
 
             case 'editItem':
-                $this->sendResult($this->api->editItemInBasket($this->request), 'item could not be updated');
+                $this->sendResult($this->api->editItemInBasket($this->data), 'item could not be updated');
                 break;
 
             case 'deleteItem':
-                $this->sendResult($this->api->deleteItemFromBasket($this->request['id']), 'item could not be deleted');
+                $this->sendResult($this->api->deleteItemFromBasket($this->data['id']), 'item could not be deleted');
                 break;
 
             case 'findPackage':
@@ -95,7 +109,7 @@ class AjaxActions implements MiddlewareInterface {
                 break;
 
             case 'findCampaign':
-                $result = $this->api->findCampaign($this->request);
+                $result = $this->api->findCampaign($this->data);
                 $campaign = Session::getValue('campaign');
                 if ($this->result && $campaign && $this->result['uuid'] == $campaign['uuid'])
                     $this->sendResult(false, 'campaign already activated');
@@ -104,7 +118,7 @@ class AjaxActions implements MiddlewareInterface {
                 break;
 
             case 'loadCampaign':
-                $result = $this->api->findCampaign($this->request);
+                $result = $this->api->findCampaign($this->data);
                 if ($result) {
                     Session::setValue('campaign', $result);
                     $this->sendResult($result);
@@ -167,10 +181,10 @@ class AjaxActions implements MiddlewareInterface {
             Render::sendJSON([
                 'info' => 'error',
                 'errors' => $this->errors,
-                'request' => $this->request
+                'request' => $this->data
             ], 'error');
         else if ($result['info'] == 'error')
-            Render::sendJSON(array_merge($result, ['request' => $this->request]), 'error');
+            Render::sendJSON(array_merge($result, ['request' => $this->data]), 'error');
         else
             Render::sendJSON($result);
 

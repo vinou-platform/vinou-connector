@@ -13,7 +13,7 @@ class ImplodeViewHelper extends AbstractViewHelper {
     ) {
 
     	$glue = $arguments['glue'] ?? ', ';
-		return explode($glue, $arguments['items']);
+		return implode($glue, $arguments['items']);
     }
 
 
