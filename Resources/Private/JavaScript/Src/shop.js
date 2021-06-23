@@ -28,7 +28,11 @@ var vinouShop = {
 		gross: 0,
 		valid: false
 	},
-	config: false,
+	config: {
+		basket: {
+			messageType: 'toast'
+		}
+	},
 	quantity: 0,
 	timeout: null,
 	checkBasketTimeout: null,
@@ -419,7 +423,7 @@ var vinouShop = {
 		};
 		request.callback = callback;
 		data.action = action;
-		request.open("POST", "/?vinou-command", true);
+		request.open('POST', '/?vinou-command', true);
 		request.setRequestHeader("Content-type", "application/json");
 		request.send(JSON.stringify(data));
 	},
