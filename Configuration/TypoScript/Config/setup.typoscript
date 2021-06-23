@@ -433,7 +433,7 @@ page.headerData {
 	999.value (
 <script type="text/javascript">
 var xhr = new XMLHttpRequest();
-xhr.open("POST", '/?eID=vinouActions', true);
+xhr.open("POST", '/?vinou-command', true);
 xhr.setRequestHeader("Content-Type", "application/json");
 xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {

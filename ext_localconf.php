@@ -32,16 +32,6 @@
 
 	}
 
-	/**
-	 * eID to cache expertises
-	 */
-	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['cacheExpertise'] = 'EXT:'.$extKey.'/Classes/Eid/CacheExpertise.php';
-
-	/**
-	 * eID to manage ajax actions
-	 */
-	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['vinouActions'] = 'EXT:'.$extKey.'/Classes/Eid/AjaxActions.php';
-
 
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Vinou\\VinouConnector\\Command\\CacheExpertiseTask'] = array(
 		'extension' => $extKey,

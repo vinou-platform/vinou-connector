@@ -2,6 +2,10 @@
 namespace Vinou\VinouConnector\Utility;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Extbase\Object\ObjectManager;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 
 
 /**
@@ -11,18 +15,18 @@ class TypoScriptHelper {
 
 	public static function extractSettings($pluginKey) {
 
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\Extbase\\Object\\ObjectManager');
-        $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
-        $extbaseFrameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $configurationManager = $objectManager->get(ConfigurationManager::class);
+        $fullTS = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
-        if (!array_key_exists($pluginKey . '.', $extbaseFrameworkConfiguration['plugin.']))
+        if (!array_key_exists($pluginKey . '.', $fullTS['plugin.']))
             return false;
 
-        if (!array_key_exists('settings.', $extbaseFrameworkConfiguration['plugin.'][$pluginKey . '.']))
+        if (!array_key_exists('settings.', $fullTS['plugin.'][$pluginKey . '.']))
             return false;
 
 
-        return self::removeTSSuffix($extbaseFrameworkConfiguration['plugin.'][$pluginKey . '.']['settings.']);
+        return self::removeTSSuffix($fullTS['plugin.'][$pluginKey . '.']['settings.']);
 
     }
 

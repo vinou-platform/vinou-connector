@@ -419,7 +419,7 @@ var vinouShop = {
 		};
 		request.callback = callback;
 		data.action = action;
-		request.open("POST", "/?eID=vinouActions", true);
+		request.open("POST", "/?vinou-command", true);
 		request.setRequestHeader("Content-type", "application/json");
 		request.send(JSON.stringify(data));
 	},

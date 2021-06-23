@@ -12,18 +12,8 @@ var vinouJsFiles = [
 ];
 
 
-gulp.task('concat', ['minify'], function () {
-	return gulp.src(vinouJsFiles)
-		.pipe(optimisejs())
-	    .pipe(concat('vinou.min.js'))
-		.pipe(gulp.dest('../../Public/Scripts'))
-		.on('error', function (error) {
-			console.error('' + error);
-		});
-});
-
-gulp.task('minify', function () {
-	return gulp.src('./Src/*.js')
+gulp.task('minify', (done) => {
+	gulp.src('./Src/*.js')
 		.pipe(stripDebug())
 		.pipe(optimisejs())
 		.pipe(terser().on('error', gulpUtil.log))
@@ -34,12 +24,29 @@ gulp.task('minify', function () {
 		.on('error', function (error) {
 			console.error('' + error);
 		});
+
+	done();
 });
+
+gulp.task('concat', gulp.series('minify', (done) => {
+	gulp.src(vinouJsFiles)
+		.pipe(optimisejs())
+	    .pipe(concat('vinou.min.js'))
+		.pipe(gulp.dest('../../Public/Scripts'))
+		.on('error', function (error) {
+			console.error('' + error);
+		});
+
+	done();
+}));
+
+
 
 gulp.task('watch', function() {
 	gulp.watch(watchDirs, ['concat']);
 });
 
-gulp.task('default', ['concat'], function () {
-	gulp.watch(watchDirs, ['concat']);
-});
+gulp.task('default', gulp.series('concat', (done) => {
+	gulp.watch(watchDirs, gulp.series('concat'));
+	done();
+}));
