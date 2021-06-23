@@ -374,6 +374,14 @@
 				<source>Direct Debit</source>
 				<target>Abbuchung</target>
 			</trans-unit>
+			<trans-unit id="payment.card">
+				<source>Credit Card</source>
+				<target>Kreditkarte</target>
+			</trans-unit>
+			<trans-unit id="payment.debit">
+				<source>Direct Debit</source>
+				<target>SEPA-Lastschrift</target>
+			</trans-unit>
 
 			<trans-unit id="mail.createorder.subject">
 				<source>Your order</source>

@@ -8,9 +8,13 @@ use \TYPO3\CMS\Extbase\Object\ObjectManager;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use \TYPO3\CMS\Fluid\View\StandaloneView;
+use \TYPO3\CMS\Core\Mail\MailMessage;
 use \Vinou\ApiConnector\Session\Session;
 use \Vinou\VinouConnector\Utility\Helper;
 use \Vinou\VinouConnector\Utility\Shop;
+
+
 
 class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -712,7 +716,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		$customer = $this->api->getCustomer();
 		$fflimit = $customer['settings']['freightfreelimit'] ?? false;
-		$applyfflimit = floatval($summary['gross']) >= floatval($fflimit);
+		$applyfflimit = $fflimit > 0 ? floatval($summary['gross']) >= floatval($fflimit) : false;
 
 		$package = [
 			'item_type' => 'package',
@@ -840,20 +844,20 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	*/
 	protected function sendTemplateEmail(array $recipient, array $sender, $subject, $templateName, array $variables = array(), array $attachement = array()) {
 
-		$extPath = 'typo3conf/ext/vinou_connector/Resources/Private/';
+		$fluid = $this->objectManager->get(StandaloneView::class);
 
-		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-		$emailView->setLayoutRootPaths([PATH_site . $extPath . 'Layouts/Email/']);
-		$emailView->setTemplateRootPaths([PATH_site . $extPath . 'Templates/Email/']);
-		$emailView->setTemplate($templateName . '.html');
+		$fluid->setLayoutRootPaths([Helper::getPrivateResourcePath() . 'Layouts/Email/']);
+		$fluid->setTemplateRootPaths([Helper::getPrivateResourcePath() . 'Templates/Email/']);
 
-		$variables['title'] = $subject;
-		$variables['customer'] = $this->api->getCustomer();
-		$emailView->assignMultiple($variables);
-		$emailHtmlBody = $emailView->render();
+		$fluid->setFormat('html');
+		$fluid->setTemplate($templateName . '.html');
+		$fluid->assignMultiple([
+			'title' => $subject,
+			'customer' => $this->api->getCustomer()
+		]);
 
-		$message = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
-		$message->addPart($emailHtmlBody, 'text/html');
+		$message = $this->objectManager->get(MailMessage::class);
+		$message->html($fluid->render());
 		$message->setTo($recipient)
 				->setFrom($sender)
 				->setSubject('=?utf-8?B?'. base64_encode($subject) .'?=');
@@ -861,7 +865,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if (count($attachement) > 0) {
 			foreach ($attachement as $file) {
 				if ($file != '')
-					$message->attach(\Swift_Attachment::fromPath($file));
+					$message->attachFromPath(GeneralUtility::getFileAbsFileName($file));
 			}
 		}
 

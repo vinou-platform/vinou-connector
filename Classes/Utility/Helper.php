@@ -14,6 +14,7 @@ use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
 class Helper {
 
 	protected static $extKey = 'vinou_connector';
+	protected static $privatePath = 'Resources/Private/';
 	protected static $llPath = 'Resources/Private/Language/';
 	protected static $cacheDir = 'typo3temp/vinou';
 	protected static $imagesCacheDir = 'vinou/cache/images';
@@ -34,6 +35,10 @@ class Helper {
 
 	public static function getLLPath() {
 		return ExtensionManagementUtility::extPath(self::$extKey) . self::$llPath;
+	}
+
+	public static function getPrivateResourcePath() {
+		return ExtensionManagementUtility::extPath(self::$extKey) . self::$privatePath;
 	}
 
 	public static function getImageCacheDir($absolute = true) {
