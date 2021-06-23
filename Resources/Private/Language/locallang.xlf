@@ -529,6 +529,15 @@
 			<trans-unit id="flexform.shop.mode.topseller">
 				<source>Show topseller</source>
 			</trans-unit>
+			<trans-unit id="flexform.shop.mode.initPayment">
+				<source>Initialize Payment</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.mode.finishPayment">
+				<source>Finish Payment</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.mode.cancelPayment">
+				<source>Cancel Payment</source>
+			</trans-unit>
 			<trans-unit id="flexform.shop.clusters">
 				<source>Filter options</source>
 			</trans-unit>
@@ -594,6 +603,15 @@
 			</trans-unit>
 			<trans-unit id="flexform.shop.cancelPaypalPid">
 				<source>Page to cancel order after paypal</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.initPaymentPid">
+				<source>Page to initialize payment</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.finishPaymentPid">
+				<source>Page to finish payment</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.cancelPaymentPid">
+				<source>Page to cancel paypal</source>
 			</trans-unit>
 			<trans-unit id="flexform.shop.template">
 				<source>Layout</source>

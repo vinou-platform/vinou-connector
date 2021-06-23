@@ -1,0 +1,55 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+
+<f:section name="main">
+
+	<f:if condition="{stripe}">
+		<f:then>
+			<script src="https://js.stripe.com/v3/"></script>
+
+			<h1 class="page-title">Bezahlvorgang gestartet</h1>
+			<p>Du solltest in den nächsten 5 Sekunden zu unserem Zahlungsanbieter weiter geleitet werden. Wenn dies nicht passiert klicke bitte hier<br><br><a id="checkout-button" class="button key">Jetzt bezahlen</a></p>
+
+			<script type="application/javascript">
+				var checkoutButton = document.getElementById('checkout-button');
+				var timeout = null;
+				var accountId = '{stripe.accountId}';
+				var stripe = Stripe('{stripe.publishableKey}', {
+					stripeAccount: accountId
+				});
+				var sessionId = '{stripe.sessionId}';
+
+				var triggerRedirectToCheckout = function() {
+					if (timeout)
+						clearTimeout(timeout);
+
+					stripe.redirectToCheckout({
+						sessionId: sessionId
+					}).then(function (result) {});
+				};
+
+				checkoutButton.addEventListener('click', function(event) {
+					event.preventDefault();
+					triggerRedirectToCheckout();
+					return false;
+				});
+
+				var timeout = setTimeout(triggerRedirectToCheckout(), 5000);
+
+			</script>
+		</f:then>
+		<f:else>
+			<h1 class="page-title">Oops, da ist was schiefgelaufen</h1>
+			<p class="inline-message" data-type="error">
+				<span class="title">Übertragung fehlgeschlagen</span>
+				<span class="description">Bei Deiner Bestellung ist ein Fehler aufgetreten. Bitte setze Dich mit uns in Verbindung.</span>
+			</p>
+		</f:else>
+	</f:if>
+
+</f:section>
+
+</html>
