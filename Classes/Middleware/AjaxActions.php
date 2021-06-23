@@ -1,11 +1,15 @@
 <?php
-namespace Vinou\VinouConnector\Eid;
+namespace Vinou\VinouConnector\Middleware;
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
-use \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use \TYPO3\CMS\Frontend\Utility\EidUtility;
+use \Psr\Http\Message\ResponseInterface;
+use \Psr\Http\Message\ServerRequestInterface;
+use \Psr\Http\Server\MiddlewareInterface;
+use \Psr\Http\Server\RequestHandlerInterface;
+use \TYPO3\CMS\Core\Http\JsonResponse;
 use \Vinou\ApiConnector\Session\Session;
+use \Vinou\ApiConnector\FileHandler\Pdf;
 use \Vinou\VinouConnector\Utility\Helper;
 use \Vinou\VinouConnector\Utility\Render;
 use \Vinou\VinouConnector\Utility\Shop;
@@ -14,7 +18,7 @@ use \Vinou\VinouConnector\Utility\TypoScriptHelper;
 /**
  * This class could called with AJAX via eID
  */
-class AjaxActions {
+class AjaxActions implements MiddlewareInterface {
 
     protected $request = [];
     protected $result = false;
@@ -25,14 +29,32 @@ class AjaxActions {
     public function __construct() {
 
         $this->request = array_merge($_POST, (array)json_decode(trim(file_get_contents('php://input')), true));
-        $this->initTYPO3Frontend();
 
         $this->api = Helper::initApi();
         $this->settings = TypoScriptHelper::extractSettings('tx_vinouconnector_shop');
 
     }
 
-    public function run() {
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface 
+    {
+        $response = $handler->handle($request);
+        if (!isset($request->getQueryParams()['vinou-command'])) {
+            return $response;
+        }
+
+        switch ($request->getQueryParams()['vinou-command']) {
+            case 'cache-expertise':
+                $this->cacheExpertise($request->getQueryParams()['wineID']);
+                break;
+
+            default:
+                $this->regularAction();
+                break;
+        }
+        
+    }
+
+    public function regularAction() {
 
         if (empty($this->request) || !isset($this->request['action']))
             $this->sendResult(false, 'no action defined');
@@ -107,22 +129,29 @@ class AjaxActions {
 
     }
 
-    private function initTYPO3Frontend() {
-        $userObj = EidUtility::initFeUser();
-        $pid = (GeneralUtility::_GET('id') ? GeneralUtility::_GET('id') : 1);
-        $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            $TYPO3_CONF_VARS,
-            $pid,
-            0,
-            true
-        );
-        $GLOBALS['TSFE']->connectToDB();
-        $GLOBALS['TSFE']->fe_user = $userObj;
-        $GLOBALS['TSFE']->id = $pid;
-        $GLOBALS['TSFE']->determineId();
-        $GLOBALS['TSFE']->initTemplate();
-        $GLOBALS['TSFE']->getConfigArray();
+    private function cacheExpertise($wineID) {
+
+        if ($wineID); {
+            $wine = $this->api->getWine(GeneralUtility::_GET('wineID'));
+
+            if (Helper::getExtConfValue('cacheExpertise') == 1) {
+                $cachePDFProcess = Pdf::storeApiPDF(
+                    $wine['expertisePdf'],
+                    $wine['chstamp'],
+                    Helper::getPdfCacheDir(),
+                    $wine['id'].'-',
+                    true
+                );
+                $redirectURL = '/' . Helper::getPdfCacheDir(false) . $cachePDFProcess['fileName'];
+            }
+
+            else
+                $redirectURL = 'https://api.vinou.de' . $wine['expertisePdf'];
+
+            header('Location: '.$redirectURL);
+        }
+
+        exit;
     }
 
     private function sendResult($result, $errorMessage = null) {
@@ -148,10 +177,3 @@ class AjaxActions {
         exit();
     }
 }
-
-//error_reporting(E_ALL);
-error_reporting(E_ALL & ~E_NOTICE);
-ini_set("display_errors", 1);
-
-$eid = GeneralUtility::makeInstance(AjaxActions::class);
-echo $eid->run();
