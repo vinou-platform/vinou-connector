@@ -1,0 +1,33 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vin="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+
+<f:section name="main">
+
+	<f:if condition="{result}">
+		<f:then>
+			<f:switch expression="{result}">
+				<f:case value="processing">
+					<h1 class="page-title">Vielen Dank</h1>
+					<p>Wir haben Deine Bestellung mit der <strong>Nummer {addedOrder.number}</strong> erhalten. Eine Bestätigung findest Du in deinem Mail-Postfach. <strong>Deine Bezahlung befindet sich noch in der Abwicklung.</strong> Sobald die Zahlung vollständig bei uns eingetroffen ist, versenden wir Deinen Wein.</p>
+				</f:case>
+				<f:case default="TRUE">
+					<h1 class="page-title">Vielen Dank</h1>
+					<p>Wir haben Deine Bestellung mit der <strong>Nummer {addedOrder.number} und Deine Bezahlung</strong> erhalten. Eine Bestätigung findest Du in deinem Mail-Postfach</p>
+				</f:case>
+			</f:switch>
+		</f:then>
+		<f:else>
+			<h1 class="page-title">Oops, da ist was schiefgelaufen</h1>
+			<p class="inline-message" data-type="error">
+				<span class="title">Übertragung fehlgeschlagen</span>
+				<span class="description">Bei Deiner Bestellung ist ein Fehler aufgetreten. Bitte setze Dich mit uns in Verbindung.</span>
+			</p>
+		</f:else>
+	</f:if>
+
+</f:section>
+
+</html>
