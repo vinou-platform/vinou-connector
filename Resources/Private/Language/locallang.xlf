@@ -724,6 +724,25 @@
 			</trans-unit>
 			<trans-unit id="flexform.merchants.templateLayout">
 				<source>Template</source>
+			</trans-unit>
+
+			<trans-unit id="flexform.client.general">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="flexform.client.mode">
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="flexform.client.mode.login">
+				<source>Login</source>
+			</trans-unit>
+			<trans-unit id="flexform.client.mode.register">
+				<source>Register</source>
+			</trans-unit>
+			<trans-unit id="flexform.client.mode.profile">
+				<source>Profile</source>
+			</trans-unit>
+			<trans-unit id="flexform.client.mode.orders">
+				<source>Orders</source>
 			</trans-unit>			
 
 
