@@ -1,9 +1,11 @@
+var t3vinprefix = '.tx-vinou ';
+
 var vinouShop = {
 
-	addForms: 'form.add-item-form',
-	updateForms: 'form.edit-item-form',
-	deleteItemButtons: 'a.delete-basket-item',
-	quantityEditInputs: 'form.basket-edit-form input[name="quantity"]',
+	addForms: t3vinprefix + 'form.add-item-form',
+	updateForms: t3vinprefix + 'form.edit-item-form',
+	deleteItemButtons: t3vinprefix + 'a.delete-basket-item',
+	quantityEditInputs: t3vinprefix + 'form.basket-edit-form input[name="quantity"]',
 	card: document.querySelector('.basket-status'),
 	campaign: {
 		hashInput: document.querySelector('input#campaign-code'),
@@ -466,7 +468,7 @@ var vinouShop = {
 			}
 		}
 
-		var incButtons = document.querySelectorAll('button.inc');
+		var incButtons = document.querySelectorAll(t3vinprefix + 'button.inc');
 		for (var i = 0; i < incButtons.length; i++) {
 			incButtons[i].addEventListener('click',function(event) {
 				event.preventDefault();
@@ -480,7 +482,7 @@ var vinouShop = {
 			});
 		}
 
-		var decButtons = document.querySelectorAll('button.dec');
+		var decButtons = document.querySelectorAll(t3vinprefix + 'button.dec');
 		for (var i = 0; i < decButtons.length; i++) {
 			decButtons[i].addEventListener('click',function(event) {
 				event.preventDefault();
@@ -578,7 +580,7 @@ var vinouShop = {
 		}
 
 
-		var forms = document.querySelectorAll('form');
+		var forms = document.querySelectorAll(t3vinprefix + 'form');
 		for (var i = 0; i < forms.length; i++) {
 			if (forms[i].addEventListener) {
 				forms[i].addEventListener("submit", (function(event) {
@@ -617,7 +619,7 @@ var vinouShop = {
 	collectBasketData: function() {
 		var ctrl = this;
 		ctrl.items = [];
-		var rows = document.querySelectorAll('.item-row');
+		var rows = document.querySelectorAll(t3vinprefix + '.item-row');
 		for (var i = 0; i < rows.length; i++) {
 			var row = rows[i];
 			if (row.id == 'campaign-row')
