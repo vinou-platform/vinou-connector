@@ -356,49 +356,49 @@
 								mr:'{f:translate(key:\'order.salutation.mr\')}',
 								mrs:'{f:translate(key:\'order.salutation.mrs\')}',
 								company:'{f:translate(key:\'order.salutation.company\')}'
-							}"/>
+							}" value="{f:if(condition: billing.gender, then: billing.gender, else: client.gender)}" />
 						</div>
 						<div class="formfield width-50-clear">
 							<label><f:translate key="order.firstname"/>{f:if(condition:required.billing.firstname,then:' {required.mandatorySign}')}:</label>
 							<f:form.textfield 
 								name="billing[firstname]"
 								required="{f:if(condition:required.billing.firstname,then:'TRUE',else:'FALSE')}"
-								value="{billing.firstname}"/>
+								value="{f:if(condition: billing.firstname, then: billing.firstname, else: client.first_name)}"/>
 						</div>
 						<div class="formfield width-50">
 							<label><f:translate key="order.lastname"/>{f:if(condition:required.billing.lastname,then:' {required.mandatorySign}')}:</label>
 							<f:form.textfield
 								name="billing[lastname]"
 								required="{f:if(condition:required.billing.lastname,then:'TRUE',else:'FALSE')}"
-								value="{billing.lastname}"/>
+								value="{f:if(condition: billing.lastname, then: billing.lastname, else: client.last_name)}"/>
 						</div>
 						<div class="formfield width-50-clear">
 							<label><f:translate key="order.company"/>{f:if(condition:required.billing.company,then:' {required.mandatorySign}')}:</label>
 							<f:form.textfield
 								name="billing[company]"
 								required="{f:if(condition:required.billing.company,then:'TRUE',else:'FALSE')}"
-								value="{billing.company}"/>
+								value="{f:if(condition: billing.company, then: billing.company, else: client.company)}"/>
 						</div>
 						<div class="formfield width-50">
 							<label><f:translate key="order.address"/>{f:if(condition:required.billing.address,then:' {required.mandatorySign}')}:</label>
 							<f:form.textfield
 								name="billing[address]"
 								required="{f:if(condition:required.billing.address,then:'TRUE',else:'FALSE')}"
-								value="{billing.address}"/>
+								value="{f:if(condition: billing.address, then: billing.address, else: client.address)}"/>
 						</div>
 						<div class="formfield width-50-clear">
 							<label><f:translate key="order.zip"/>{f:if(condition:required.billing.zip,then:' {required.mandatorySign}')}:</label>
 							<f:form.textfield
 								name="billing[zip]"
 								required="{f:if(condition:required.billing.zip,then:'TRUE',else:'FALSE')}"
-								value="{billing.zip}"/>
+								value="{f:if(condition: billing.zip, then: billing.zip, else: client.zip)}"/>
 						</div>
 						<div class="formfield width-50">
 							<label><f:translate key="order.city"/>{f:if(condition:required.billing.city,then:' {required.mandatorySign}')}:</label>
 							<f:form.textfield
 								name="billing[city]"
 								required="{f:if(condition:required.billing.city,then:'TRUE',else:'FALSE')}"
-								value="{billing.city}"/>
+								value="{f:if(condition: billing.city, then: billing.city, else: client.city)}"/>
 						</div>
 						<div class="formfield width-50-clear">
 							<label><f:translate key="order.country"/>{f:if(condition:required.billing.country,then:' {required.mandatorySign}')}:</label>
@@ -413,21 +413,21 @@
 								netherlands:'{f:translate(key:\'order.country.netherlands\')}',
 								norway:'{f:translate(key:\'order.country.norway\')}',
 								sweden:'{f:translate(key:\'order.country.sweden\')}'
-							}" />
+							}" value="{f:if(condition: billing.country, then: billing.country, else: client.countrycode)}" />
 						</div>
 						<div class="formfield width-50">
 							<label><f:translate key="order.email"/>{f:if(condition:required.billing.email,then:' {required.mandatorySign}')}:</label>
 							<f:form.textfield
 								name="billing[email]"
 								required="{f:if(condition:required.billing.email,then:'TRUE',else:'FALSE')}"
-								value="{billing.email}"/>
+								value="{f:if(condition: billing.email, then: billing.email, else: client.mail)}"/>
 						</div>
 						<div class="formfield width-50-clear">
 							<label><f:translate key="order.phone"/>{f:if(condition:required.billing.phone,then:' {required.mandatorySign}')}:</label>
 							<f:form.textfield
 								name="billing[phone]"
 								required="{f:if(condition:required.billing.phone,then:'TRUE',else:'FALSE')}"
-								value="{billing.phone}"/>
+								value="{f:if(condition: billing.phone, then: billing.phone, else: client.phone)}"/>
 						</div>
 						<div class="formfield width-50-clear">
 							<f:if condition="{delivery}">

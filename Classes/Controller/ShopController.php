@@ -50,6 +50,7 @@ class ShopController extends ActionController {
 
 	protected $sender = [];
 	protected $admin = [];
+	protected $client = null;
 
 	protected $detailPid;
 	protected $backPid;
@@ -89,6 +90,9 @@ class ShopController extends ActionController {
 		];
 
 		$this->getPaymentMethods();
+		$this->client = $this->api->getClient();
+
+		$this->view->assign('client', $this->client);
 	}
 
 	public function listAction() {
@@ -476,13 +480,19 @@ class ShopController extends ActionController {
 				$order['delivery'][$label] = $delivery[$label];
 		}
 
-		$check = $this->api->checkClientMail($order['billing']);
-        if ($check) {
-            $order['client_id'] = $check;
+		if ($this->client && array_key_exists('id', $this->client)) {
+			$order['client_id'] = $this->client['id'];
             $order['billing_type'] = 'address';
-        } else {
-            unset($order['billing_type']);
-        }
+		}
+		else {
+			$check = $this->api->checkClientMail($order['billing']);
+			if ($check) {
+	            $order['client_id'] = $check;
+	            $order['billing_type'] = 'address';
+	        } else {
+	            unset($order['billing_type']);
+	        }
+	    }
 
 		if ($paymentMethod == 'paypal') {
 
