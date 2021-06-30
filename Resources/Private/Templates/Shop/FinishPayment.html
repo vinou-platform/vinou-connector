@@ -13,10 +13,10 @@
 					<h1 class="page-title">Vielen Dank</h1>
 					<p>Wir haben Deine Bestellung mit der <strong>Nummer {addedOrder.number}</strong> erhalten. Eine Bestätigung findest Du in deinem Mail-Postfach. <strong>Deine Bezahlung befindet sich noch in der Abwicklung.</strong> Sobald die Zahlung vollständig bei uns eingetroffen ist, versenden wir Deinen Wein.</p>
 				</f:case>
-				<f:case default="TRUE">
+				<f:defaultCase>
 					<h1 class="page-title">Vielen Dank</h1>
 					<p>Wir haben Deine Bestellung mit der <strong>Nummer {addedOrder.number} und Deine Bezahlung</strong> erhalten. Eine Bestätigung findest Du in deinem Mail-Postfach</p>
-				</f:case>
+				</f:defaultCase>
 			</f:switch>
 		</f:then>
 		<f:else>
