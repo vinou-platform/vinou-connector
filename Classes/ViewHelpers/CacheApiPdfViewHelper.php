@@ -15,8 +15,13 @@ class CacheApiPdfViewHelper extends AbstractViewHelper {
         RenderingContextInterface $renderingContext
     ) {
 
-        $cachePDFProcess = Pdf::storeApiPDF($arguments['pdf'], $arguments['tstamp'], Helper::getPdfCacheDir(), $arguments['id'].'-');
-        return Helper::getPdfCacheDir(false) . $cachePDFProcess['fileName'];
+        if (strlen($arguments['pdf']) > 0) {
+
+            $cachePDFProcess = Pdf::storeApiPDF($arguments['pdf'], $arguments['tstamp'], Helper::getPdfCacheDir(), $arguments['id'].'-');
+            return Helper::getPdfCacheDir(false) . $cachePDFProcess['fileName'];
+        }
+
+        return $arguments['pdf'];
 
     }
 
