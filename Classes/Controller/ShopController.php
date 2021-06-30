@@ -697,18 +697,20 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			'bottles' => 0
 		];
 
-		foreach ($items as $item) {
+		if (is_iterable($items)) {
+			foreach ($items as $item) {
 
-			if ($item['item_type'] == 'bundle'){
-                $summary['quantity'] += $item['quantity'] * $item['item']['package_quantity'];
-                $summary['bottles'] += $item['quantity'] * $item['item']['package_quantity'];
+				if ($item['item_type'] == 'bundle'){
+	                $summary['quantity'] += $item['quantity'] * $item['item']['package_quantity'];
+	                $summary['bottles'] += $item['quantity'] * $item['item']['package_quantity'];
+				}
+	            else {
+	                $summary['quantity'] += $item['quantity'];
+	            	$summary['bottles'] += $item['quantity'];
+	            }
+
+				$summary['gross'] += ($item['quantity'] * $item['item']['gross']);
 			}
-            else {
-                $summary['quantity'] += $item['quantity'];
-            	$summary['bottles'] += $item['quantity'];
-            }
-
-			$summary['gross'] += ($item['quantity'] * $item['item']['gross']);
 		}
 
 		// load and append package
