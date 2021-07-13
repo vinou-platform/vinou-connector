@@ -24,7 +24,7 @@ class ClientController extends ActionController {
 	 * persistence manager
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
-	 * @inject
+	 * @TYPO3\CMS\Extbase\Annotation\Inject
 	 */
 	protected $persistenceManager;
 

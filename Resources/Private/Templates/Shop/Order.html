@@ -8,7 +8,7 @@
 	<div class="product-order">
 		<f:switch expression="{mode}">
 			<f:case value="delivery">
-				<f:flashMessages class="code_message" />
+				<f:flashMessages />
 				<f:form
 					action="order"
 					name="field"
@@ -302,7 +302,7 @@
 						</tbody>
 					</table>
 				</div>
-				<f:flashMessages class="code_message" />
+				<f:flashMessages />
 				<f:form
 					action="order"
 					name="field"
@@ -342,7 +342,7 @@
 				</f:form>
 			</f:case>
 			<f:defaultCase>
-				<f:flashMessages class="code_message" />
+				<f:flashMessages />
 				<f:form
 					action="order"
 					name="field"
