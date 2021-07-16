@@ -90,6 +90,10 @@ plugin.tx_vinouconnector_wines {
 				maxHeight = 600
 			}
 		}
+		defaults {
+			quantity = {$plugin.tx_vinou.settings.defaults.quantity}
+			maxItemQuantity = {$plugin.tx_vinou.settings.defaults.maxItemQuantity}
+		}
 	}
 
 	persistence {
@@ -271,6 +275,13 @@ plugin.tx_vinouconnector_shop {
 		}
 		basket {
 			minBasketSize = 1
+		}
+		useStockDistribution = {$plugin.tx_vinou.settings.useStockDistribution}
+		closedShop = {$plugin.tx_vinou.settings.closedShop}
+		defaults {
+			quantity = {$plugin.tx_vinou.settings.defaults.quantity}
+			bundleQuantity = {$plugin.tx_vinou.settings.defaults.bundleQuantity}
+			maxItemQuantity = {$plugin.tx_vinou.settings.defaults.maxItemQuantity}
 		}
 	}
 }

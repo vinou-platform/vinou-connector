@@ -18,6 +18,13 @@ plugin.tx_vinou {
 		mail {
 			gdprcontact = datenschutz@domain.de
 		}
+		useStockDistribution = 0
+		closedShop = 0
+		defaults {
+			quantity = 6
+			bundleQuantity = 1
+			maxItemQuantity = 60
+		}
 	}
 }
 
