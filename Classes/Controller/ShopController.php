@@ -164,6 +164,9 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			return $a['topseller'] < $b['topseller'];
 		});
 
+		$customer = $this->api->getCustomer();
+
+		$this->view->assign('customer',$customer);
 		$this->view->assign('settings',$this->settings);
 		$this->view->assign('items',$items);
 
