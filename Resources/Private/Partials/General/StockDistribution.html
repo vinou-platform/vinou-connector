@@ -1,0 +1,15 @@
+<f:if condition="{settings.useStockDistribution}">
+	<div id="availability">
+		<f:if condition="{stockDistribution.quantity} < 1">
+			<f:then>
+				<span class="status" data-color="red"></span><strong>nicht verfügbar</strong>
+			</f:then>
+			<f:else if="{stockDistribution.quantity} < 13">
+				<span class="status" data-color="yellow"></span><strong>nur noch wenig auf Lager</strong>
+			</f:else>
+			<f:else>
+				<span class="status" data-color="green"></span>auf Lager
+			</f:else>
+		</f:if>
+	</div>
+</f:if>
