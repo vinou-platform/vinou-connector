@@ -2,16 +2,20 @@
 ["{$plugin.tx_vinou.settings.javascript.toasts}" == "1"]
 page.includeCSS.toasts = EXT:vinou_connector/Resources/Public/Styles/toasts.css
 page.includeJSFooter.toasts = EXT:vinou_connector/Resources/Public/Scripts/toast.min.js
+[END]
 
-["{$plugin.tx_vinou.settings.javascript.toasts}" == "1"] && [applicationContext = Development]
-page.includeJSFooter.toasts = EXT:vinou_connector/Resources/Private/JavaScript/Src/toast.js
+["{$plugin.tx_vinou.settings.javascript.toasts}" == "1" and applicationContext == "Development"]
+page.includeJSFooter.toasts = EXT:vinou_connector/Resources/Public/Scripts/toast.js
+[END]
 
 ["{$plugin.tx_vinou.settings.javascript.dialogs}" == "1"]
 page.includeCSS.dialogs = EXT:vinou_connector/Resources/Public/Styles/dialogs.css
 page.includeJSFooter.dialogs = EXT:vinou_connector/Resources/Public/Scripts/dialog.min.js
+[END]
 
-["{$plugin.tx_vinou.settings.javascript.dialogs}" == "1"] && [applicationContext = Development]
-page.includeJSFooter.dialogs = EXT:vinou_connector/Resources/Private/JavaScript/Src/dialog.js
+["{$plugin.tx_vinou.settings.javascript.dialogs}" == "1" and applicationContext == "Development"]
+page.includeJSFooter.dialogs = EXT:vinou_connector/Resources/Public/Scripts/dialog.js
+[END]
 
 # add Vinou-JS (Shop,Enquiry,List) if it was turned on in the constants
 ["{$plugin.tx_vinou.settings.javascript.vinou}" == "1"]
@@ -20,13 +24,15 @@ page.includeJSFooter {
 	shop = EXT:vinou_connector/Resources/Public/Scripts/shop.min.js
 	list = EXT:vinou_connector/Resources/Public/Scripts/list.min.js
 }
+[END]
 
-["{$plugin.tx_vinou.settings.javascript.vinou}" == "1"] && [applicationContext = Development]
+["{$plugin.tx_vinou.settings.javascript.vinou}" == "1" and applicationContext == "Development"]
 page.includeJSFooter {
 	listjs = EXT:vinou_connector/Vendor/listjs/list.js
-	shop = EXT:vinou_connector/Resources/Private/JavaScript/Src/shop.js
-	list = EXT:vinou_connector/Resources/Private/JavaScript/Src/list.js
+	shop = EXT:vinou_connector/Resources/Public/Scripts/shop.js
+	list = EXT:vinou_connector/Resources/Public/Scripts/list.js
 }
+[END]
 
 # add only shop javascript if it was turned on in the constants
 ["{$plugin.tx_vinou.settings.javascript.shop}" == "1"]
@@ -34,14 +40,16 @@ page.includeJSFooter {
 	listjs = EXT:vinou_connector/Vendor/listjs/list.js
 	shop = EXT:vinou_connector/Resources/Public/Scripts/shop.min.js
 }
+[END]
 
-["{$plugin.tx_vinou.settings.javascript.shop}" == "1"] && [applicationContext = Development]
-page.includeJSFooter.shop = EXT:vinou_connector/Resources/Private/JavaScript/Src/shop.js
+["{$plugin.tx_vinou.settings.javascript.shop}" == "1" and applicationContext == "Development"]
+page.includeJSFooter.shop = EXT:vinou_connector/Resources/Public/Scripts/shop.js
+[END]
 
 # add only list javascript if it was turned on in the constants
 ["{$plugin.tx_vinou.settings.javascript.list}" == "1"]
 page.includeJSFooter.list = EXT:vinou_connector/Resources/Public/Scripts/list.min.js
-[end]
+[END]
 
 plugin.tx_vinouconnector_wines {
 	view {
