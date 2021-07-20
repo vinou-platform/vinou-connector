@@ -8,13 +8,14 @@ var rename = require('gulp-rename');
 var concat = require('gulp-concat');
 var watchDirs = ['Src/**/*'];
 var vinouJsFiles = [
-	'../../Public/Scripts/shop.min.js',
-	'../../Public/Scripts/list.min.js'
+	'./Src/shop.js',
+	'./Src/list.js'
 ];
 
 
 gulp.task('minify', function() {
 	return gulp.src('./Src/*.js')
+		.pipe(gulp.dest('../../Public/Scripts'))
 		.pipe(stripDebug())
 		.pipe(optimisejs())
 		.pipe(terser().on('error', gulpUtil.log))
@@ -28,12 +29,15 @@ gulp.task('minify', function() {
 });
 
 gulp.task('concat', function() {
-	return gulp.src([
-			'../../Public/Scripts/shop.min.js',
-			'../../Public/Scripts/list.min.js'
-		])
+	return gulp.src(vinouJsFiles)
+	    .pipe(concat('vinou.js'))
+		.pipe(gulp.dest('../../Public/Scripts'))
+		.pipe(stripDebug())
 		.pipe(optimisejs())
-	    .pipe(concat('vinou.min.js'))
+		.pipe(terser().on('error', gulpUtil.log))
+	    .pipe(rename({
+            suffix: '.min'
+        }))
 		.pipe(gulp.dest('../../Public/Scripts'))
 		.on('error', function (error) {
 			console.error('' + error);
