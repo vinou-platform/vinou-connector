@@ -374,6 +374,10 @@
 				<source>Direct Debit</source>
 				<target>Abbuchung</target>
 			</trans-unit>
+			<trans-unit id="payment.bill">
+				<source>Bill</source>
+				<target>Rechnung</target>
+			</trans-unit>
 			<trans-unit id="payment.card">
 				<source>Credit Card</source>
 				<target>Kreditkarte</target>

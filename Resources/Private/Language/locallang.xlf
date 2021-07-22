@@ -283,6 +283,9 @@
 			<trans-unit id="payment.debiting">
 				<source>Direct Debit</source>
 			</trans-unit>
+			<trans-unit id="payment.bill">
+				<source>Bill</source>
+			</trans-unit>
 			<trans-unit id="payment.card">
 				<source>Credit Card</source>
 			</trans-unit>
