@@ -321,6 +321,18 @@ var vinouShop = {
 
 	updateBasketSum: function() {
 		var ctrl = this;
+		var basketStatus = document.querySelector('.basket-status');
+		if(basketStatus){
+			basketStatus.setAttribute('data-count', ctrl.sum.quantity);
+			if(ctrl.sum.quantity) {
+				basketStatus.classList.add('filled');
+				basketStatus.classList.remove('empty');
+			} else {
+				basketStatus.classList.add('empty');
+				basketStatus.classList.remove('filled');
+			}
+		}
+
 		document.querySelector('.basket-status .juwel').innerHTML = ctrl.sum.quantity;
 		ctrl.quantity = ctrl.sum.quantity;
 		ctrl.card.setAttribute('data-status','updated');
