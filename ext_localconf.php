@@ -14,6 +14,7 @@
 		'Bundles' => 'list, detail',
 		'Shop' => 'list, basket, order, finish, finishPaypal, cancelPaypal, initPayment, finishPayment, cancelPayment',
 		'Office' => 'register',
+		'Suppliers' => 'list, detail',
 		'Wineries' => 'list, detail',
 		'Merchants' => 'list, detail',
 		'Client' => 'login, lostPassword, resetPassword, activate, profile, orders, orderDetails'

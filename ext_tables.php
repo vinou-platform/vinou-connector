@@ -19,6 +19,7 @@
 		'Bundles',
 		'Shop',
 		'Office',
+		'Suppliers',
 		'Wineries',
 		'Merchants',
 		'Client'

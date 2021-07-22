@@ -33,6 +33,12 @@
 			<trans-unit id="be.office.description">
 				<source>Show special plugins for Vinou-Office for example registration form.</source>
 			</trans-unit>
+			<trans-unit id="be.suppliers.title">
+				<source>Suppliers (Vinou)</source>
+			</trans-unit>
+			<trans-unit id="be.suppliers.description">
+				<source>Display suppliers from Vinou as list or detail (including wineries and merchants)</source>
+			</trans-unit>
 			<trans-unit id="be.wineries.title">
 				<source>Wineries (Vinou)</source>
 			</trans-unit>
@@ -665,6 +671,37 @@
 			</trans-unit>
 			<trans-unit id="flexform.office.errorPID">
 				<source>Error Page (if empty use plugin page)</source>
+			</trans-unit>
+
+			<trans-unit id="flexform.suppliers.general">
+				<source>Settings</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.mode">
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.mode.list">
+				<source>List all suppliers</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.mode.detail">
+				<source>Show supplier details</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.itemsPerRow">
+				<source>Items in one Row</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.detailPid">
+				<source>Supplier detail page</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.backPid">
+				<source>Back to page</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.template">
+				<source>Layout</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.template.default">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.templateLayout">
+				<source>Template</source>
 			</trans-unit>
 
 			<trans-unit id="flexform.wineries.general">

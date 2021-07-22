@@ -43,6 +43,14 @@
 				<source>Show special plugins for Vinou-Office for example registration form.</source>
 				<target>Plugins um spezielle Vinou-Office direkt verfügbar zu machen, z.B. Registrierungsformular</target>
 			</trans-unit>
+			<trans-unit id="be.suppliers.title">
+				<source>Suppliers (Vinou)</source>
+				<target>Lieferanten (Vinou)</target>
+			</trans-unit>
+			<trans-unit id="be.suppliers.description">
+				<source>Display suppliers from Vinou as list or detail (including wineries and merchants)</source>
+				<target>Zeigt die Lieferanten aus Vinou als Liste oder Detailansicht (beinhaltet Weingüter und Händler</target>
+			</trans-unit>
 			<trans-unit id="be.wineries.title">
 				<source>Wineries (Vinou)</source>
 				<target>Weingüter (Vinou)</target>
@@ -880,6 +888,47 @@
 			<trans-unit id="flexform.office.errorPID">
 				<source>Error Page (if empty use plugin page)</source>
 				<target>Fehler-Seite (wenn leer Plugin-Seite)</target>
+			</trans-unit>
+
+			<trans-unit id="flexform.suppliers.general">
+				<source>Settings</source>
+				<target>Einstellungen</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.mode">
+				<source>Mode</source>
+				<target>Modus</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.mode.list">
+				<source>List all suppliers</source>
+				<target>Listenansicht</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.mode.detail">
+				<source>Show supplier details</source>
+				<target>Weingutdetails</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.itemsPerRow">
+				<source>Items in one row</source>
+				<target>Anzahl Lieferanten in einer Zeile</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.detailPid">
+				<source>Suppliers detail page</source>
+				<target>Detailseite</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.backPid">
+				<source>Back to page</source>
+				<target>Zurück zu Seite</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.template">
+				<source>Layout</source>
+				<target>Layout</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.template.default">
+				<source>Default</source>
+				<target>Standard</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.templateLayout">
+				<source>Template</source>
+				<target>Vorlage wählen</target>
 			</trans-unit>
 
 			<trans-unit id="flexform.wineries.general">

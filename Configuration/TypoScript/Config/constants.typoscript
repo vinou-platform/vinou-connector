@@ -93,6 +93,19 @@ plugin.tx_vinouconnector_office {
 	}
 }
 
+plugin.tx_vinouconnector_suppliers {
+	view {
+		# cat=tx_vinouconnector_suppliers/file; type=string; label= Path to template root (FE)
+		templateRootPath = EXT:vinou_connector/Resources/Private/Templates/
+
+		# cat=tx_vinouconnector_suppliers/file; type=string; label= Path to template partials (FE)
+		partialRootPath = EXT:vinou_connector/Resources/Private/Partials/
+
+		# cat=tx_vinouconnector_suppliers/file; type=string; label= Path to template layouts (FE)
+		layoutRootPath = EXT:vinou_connector/Resources/Private/Layouts/
+	}
+}
+
 plugin.tx_vinouconnector_wineries {
 	view {
 		# cat=tx_vinouconnector_wineries/file; type=string; label= Path to template root (FE)

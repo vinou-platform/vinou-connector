@@ -47,6 +47,15 @@ mod.wizards.newContentElement.wizardItems {
                     list_type = vinouconnector_office
                 }
             }
+            suppliers {
+                iconIdentifier = extension-vinouconnector-suppliers
+                title = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.suppliers.title
+                description = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.suppliers.description
+                tt_content_defValues {
+                    CType = list
+                    list_type = vinouconnector_suppliers
+                }
+            }
             wineries {
                 iconIdentifier = extension-vinouconnector-wineries
                 title = LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:be.wineries.title
@@ -75,6 +84,6 @@ mod.wizards.newContentElement.wizardItems {
                 }
             }
         }
-    	show := addToList(wines,products,bundles,shop,office,wineries,merchants,client)
+    	show := addToList(wines,products,bundles,shop,office,suppliers,wineries,merchants,client)
 	}
 }
