@@ -1,0 +1,31 @@
+<div class="content-box event-supplier" data-color="lightgrey">
+
+    <h3>{supplier.company}</h3>
+    <p>
+        {supplier.address}<br>
+        {supplier.zip} {supplier.city}<br>
+        <f:if condition="{supplier.mail}">
+            <i class="fa fa-envelope"></i>&nbsp;<f:link.email email="{supplier.mail}">{supplier.mail}</f:link.email><br>
+        </f:if>
+        <f:if condition="{supplier.phone}">
+            <i class="fa fa-phone"></i>&nbsp;<a href="tel:{supplier.phone}">{supplier.phone}</a>
+        </f:if>
+    </p>
+    <div class="event-controls">
+        <f:if condition="{supplier.address} && {supplier.zip} && {supplier.city}">
+            <a class="flat-button" href="https://www.google.com/maps?f=d&daddr={supplier.company},+{supplier.address},+{supplier.zip},+{supplier.city}&dirflg=d" target="_blank"><i class="fa fa-map-marker-alt" aria-hidden="true"></i> Zur Station</a>
+        </f:if>
+        <f:if condition="{settings.detailPid}">
+            <f:then>
+                <f:switch expression="{type}">
+                    <f:case value="winery">
+                        <f:link.action extensionName="vinouconnector" pluginName="wineries" controller="Wineries" action="detail" arguments="{winery : supplier.id}" pageUid="{settings.detailPid}" class="flat-button">Mehr erfahren <i class="fa fa-info-circle" aria-hidden="true"></i></f:link.action>
+                    </f:case>
+                    <f:case value="merchant">
+                        <f:link.action extensionName="vinouconnector" pluginName="merchants" controller="Merchants" action="detail" arguments="{merchant : supplier.id}" pageUid="{settings.detailPid}" class="flat-button">Mehr erfahren <i class="fa fa-info-circle" aria-hidden="true"></i></f:link.action>
+                    </f:case>
+                </f:switch>
+            </f:then>
+        </f:if>
+    </div>
+</div>

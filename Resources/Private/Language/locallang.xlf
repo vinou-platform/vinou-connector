@@ -688,6 +688,21 @@
 			<trans-unit id="flexform.suppliers.itemsPerRow">
 				<source>Items in one Row</source>
 			</trans-unit>
+			<trans-unit id="flexform.suppliers.sortBy">
+				<source>Sort Property</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.sortBy.empty">
+				<source>-- Please Choose --</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.sortDirection">
+				<source>Sort Direction</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.sortDirection.asc">
+				<source>Ascending</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.sortDirection.desc">
+				<source>Descending</source>
+			</trans-unit>
 			<trans-unit id="flexform.suppliers.detailPid">
 				<source>Supplier detail page</source>
 			</trans-unit>

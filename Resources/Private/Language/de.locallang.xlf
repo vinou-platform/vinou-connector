@@ -910,6 +910,26 @@
 				<source>Items in one row</source>
 				<target>Anzahl Lieferanten in einer Zeile</target>
 			</trans-unit>
+			<trans-unit id="flexform.suppliers.sortBy">
+				<source>Sort Property</source>
+				<target>Sortiert nach</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.sortBy.empty">
+				<source>-- Please Choose --</source>
+				<target>-- Bitte wählen --</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.sortDirection">
+				<source>Sort Direction</source>
+				<target>Sortierrichtung</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.sortDirection.asc">
+				<source>Ascending</source>
+				<target>Aufsteigend</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.sortDirection.desc">
+				<source>Descending</source>
+				<target>Absteigend</target>
+			</trans-unit>
 			<trans-unit id="flexform.suppliers.detailPid">
 				<source>Suppliers detail page</source>
 				<target>Detailseite</target>

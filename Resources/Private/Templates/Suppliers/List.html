@@ -5,14 +5,27 @@
 <f:layout name="Default" />
 
 <f:section name="main">
+
+	<f:switch expression="{settings.itemsPerRow}">
+		<f:case value="3">
+			<f:variable name="itemGridClasses" value="medium-6 large-4" />
+		</f:case>
+		<f:case value="2">
+			<f:variable name="itemGridClasses" value="medium-6 large-6" />
+		</f:case>
+		<f:defaultCase>
+			<f:variable name="itemGridClasses" value="medium-6 large-4" />
+		</f:defaultCase>
+	</f:switch>
+
 	<f:switch expression="{settings.templateLayout}">
 		<f:defaultCase>
-			<div class="vinou-suppliers-list regular" data-count="{f:if(condition:'{settings.itemsPerRow}',then:'{settings.itemsPerRow}',else:'5')}">
-				<ul>
-					<f:for each="{suppliers}" as="winery">
-						<li>{supplier.company}</li>
-					</f:for>
-				</ul>
+			<div class="grid-x grid-margin-x grid-margin-y">
+				<f:for each="{suppliers}" as="supplier">
+					<div class="cell {itemGridClasses}">
+						<f:render partial="Suppliers/ListItem" arguments="{supplier: supplier, type: supplier.type, settings: settings}"/>
+					</div>
+				</f:for>
 			</div>
 		</f:defaultCase>
 	</f:switch>
