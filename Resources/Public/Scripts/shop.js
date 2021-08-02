@@ -171,8 +171,13 @@ var vinouShop = {
 					overlay.setAttribute('data-status','visible');
 					var inputs = overlay.querySelectorAll('input');
 					for (var i = 0; i < inputs.length; i++) {
-						if (response.data[inputs[i].name])
+						if (response.data[inputs[i].name]){
 							inputs[i].value = response.data[inputs[i].name];
+
+							if(inputs[i].name == 'quantity')
+								ctrl.refreshQuantityOverlay(inputs[i]);
+
+						}
 					}
 				}
 			}
@@ -216,7 +221,7 @@ var vinouShop = {
 			if (row) {
 
 				var valueLabel = row.querySelector('.quantity-overlay');
-				if (valueLabel) 
+				if (valueLabel)
 					valueLabel.innerHTML = data.quantity;
 
 				var price = data.quantity * parseFloat(data.gross);
@@ -449,6 +454,15 @@ var vinouShop = {
 		request.send(JSON.stringify(data));
 	},
 
+	/*
+	 * set quantity in overlay field if exists
+	 */
+	refreshQuantityOverlay: function(field) {
+		var ctrl = this;
+		var valueLabel = field.closest('form').querySelector('.quantity-overlay');
+		if(valueLabel) valueLabel.innerHTML = parseInt(field.value);
+		},
+
 	submitAddForm: function(form) {
 		console.log(form);
 		var ctrl = this;
@@ -491,6 +505,12 @@ var vinouShop = {
 				event.preventDefault();
 				ctrl.submitAddForm(this.closest('form'));
 			});
+
+			var quantityField = addForms[i].querySelector('[name="quantity"]');
+			quantityField.addEventListener('change', function(event) {
+				ctrl.refreshQuantityOverlay(this);
+			});
+
 		}
 
 		var updateForms = document.querySelectorAll(ctrl.updateForms);
@@ -514,6 +534,11 @@ var vinouShop = {
 				ctrl.tempquantity = this.value;
 			});
 
+			quantityField.addEventListener('change', function(event) {
+				ctrl.refreshQuantityOverlay(this);
+				ctrl.setUpdateTimeout(this);
+			});
+
 			quantityField.addEventListener('blur', function(event) {
 				ctrl.setUpdateTimeout(this);
 			});
@@ -529,10 +554,9 @@ var vinouShop = {
 				event.preventDefault();
 				var form = this.form;
 				var input = form.querySelector('[name="quantity"]');
-				var valueLabel = form.querySelector('.quantity-overlay');
 				var submit = form.querySelector('[type="submit"]');
 				var current = parseInt(input.value);
-				
+
 				if(this.getAttribute('class').indexOf('inc') > -1) {
 					var max = input.getAttribute('max') ? parseInt(input.getAttribute('max')) : 99;
 					console.debug('current: ' + current);
@@ -540,8 +564,8 @@ var vinouShop = {
 		 			if (current < max) {
 		 				ctrl.tempquantity = current;
 		 				input.value = current + 1;
-		 			} 
-		 			else 
+		 			}
+		 			else
 		 				input.value = max;
 				}
 				if(this.getAttribute('class').indexOf('dec') > -1){
@@ -549,11 +573,12 @@ var vinouShop = {
 					if (current > min) {
 						ctrl.tempquantity = current;
 						input.value = current - 1;
-					} 
-					else 
+					}
+					else
 						input.value = min;
 				}
-				if (valueLabel) valueLabel.innerHTML = input.value;
+
+				ctrl.refreshQuantityOverlay(input);
 
 				if (form.getAttribute('class').indexOf('edit-item-form') > -1 && !submit){
 					ctrl.setUpdateTimeout(input);

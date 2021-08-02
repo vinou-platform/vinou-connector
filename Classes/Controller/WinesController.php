@@ -12,11 +12,15 @@ use \Vinou\VinouConnector\Utility\Helper;
 class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+   * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+   */
+  protected $configurationManager;
 
+	/**
+	 * @var Api Api Endpoint.
+	 */
 	protected $api;
+
 	protected $absLocalDir = '';
 	protected $translations;
 
@@ -71,10 +75,10 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 							$groups[$groupIndex][$index] = $wine;
 						}
 					}
-				} 
+				}
 				else
 					$wines = $this->api->getWinesByCategory($postData);
-					
+
 				$this->view->assign('category',$this->api->getCategory($this->settings['category']));
 				break;
 

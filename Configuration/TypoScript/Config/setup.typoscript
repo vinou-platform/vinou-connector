@@ -260,7 +260,7 @@ plugin.tx_vinouconnector_shop {
 			adminName = Admin
 			adminEmail = admin@domain.com
 			attachements {
-				generalBusinessTerms = 
+				generalBusinessTerms =
 				cancellationPolicy =
 			}
 		}
@@ -354,6 +354,11 @@ plugin.tx_vinouconnector_suppliers {
 				maxWidth = 200
 				maxHeight = 600
 			}
+		}
+		defaults {
+			quantity = {$plugin.tx_vinou.settings.defaults.quantity}
+			bundleQuantity = {$plugin.tx_vinou.settings.defaults.bundleQuantity}
+			maxItemQuantity = {$plugin.tx_vinou.settings.defaults.maxItemQuantity}
 		}
 	}
 }

@@ -672,7 +672,6 @@
 			<trans-unit id="flexform.office.errorPID">
 				<source>Error Page (if empty use plugin page)</source>
 			</trans-unit>
-
 			<trans-unit id="flexform.suppliers.general">
 				<source>Settings</source>
 			</trans-unit>
@@ -706,8 +705,29 @@
 			<trans-unit id="flexform.suppliers.detailPid">
 				<source>Supplier detail page</source>
 			</trans-unit>
+			<trans-unit id="flexform.suppliers.merchantPid">
+				<source>Merchant detail page</source>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.wineryPid">
+				<source>Winery detail page</source>
+			</trans-unit>
 			<trans-unit id="flexform.suppliers.backPid">
 				<source>Back to page</source>
+			</trans-unit>
+			<trans-unit id="detail.merchant.linkTitle">
+				<source>Merchant Details</source>
+			</trans-unit>
+			<trans-unit id="detail.winery.linkTitle">
+				<source>Winery Details</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.winePid">
+				<source>Wine detail page</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.productPid">
+				<source>Product detail page</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.bundlePid">
+				<source>Bundle detail page</source>
 			</trans-unit>
 			<trans-unit id="flexform.suppliers.template">
 				<source>Layout</source>
@@ -798,7 +818,7 @@
 			</trans-unit>
 			<trans-unit id="flexform.client.mode.orders">
 				<source>Orders</source>
-			</trans-unit>			
+			</trans-unit>
 
 
 			<trans-unit id="message.error.title">
@@ -958,7 +978,7 @@
 			<trans-unit id="tasks.cacheimages.field.bccreceiver">
 				<source>bccreceiver</source>
 			</trans-unit>
-			
+
 		</body>
 	</file>
 </xliff>

@@ -3,15 +3,19 @@ namespace Vinou\VinouConnector\Controller;
 
 use \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use \TYPO3\CMS\Extbase\Utility\DebuggerUtility as Debug;
+use Vinou\ApiConnector\Api;
 use \Vinou\VinouConnector\Utility\Helper;
 
 class SuppliersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+   * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+   */
+  protected $configurationManager;
 
+	/**
+	 * @var Api Api Endpoint.
+	 */
 	protected $api;
 
 	protected $detailPid;
@@ -88,9 +92,6 @@ class SuppliersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 				$requestVar = $this->request->getArgument($name);
 				if(in_array($requestVar,$values)) {
 					$this->settings[$name] = $requestVar;
-					// echo "setSession:";
-					// echo 'suppliersList'.ucfirst($name);
-					// die;
 					$GLOBALS['TSFE']->fe_user->setKey('ses', 'suppliersList'.ucfirst($name), $this->settings[$name]);
 				}
 			}
@@ -114,6 +115,7 @@ class SuppliersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 		$this->view->assign('suppliers', $suppliers);
 	}
 
+
 	/**
 	 * action detail
 	 *
@@ -125,25 +127,27 @@ class SuppliersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 		if (!$this->request->hasArgument('type'))
 			return;
 
-		$identifier = null;
+		$supplierId = null;
 		if ($this->request->hasArgument('id'))
-			$identifier = $this->request->getArgument('id');
+			$supplierId = $this->request->getArgument('id');
 		if ($this->request->hasArgument('path_segment'))
-			$identifier = $this->request->getArgument('path_segment');
-		if (is_null($identifier))
+			$supplierId = $this->request->getArgument('path_segment');
+		if (is_null($supplierId))
 			return;
 
 		switch ($this->request->getArgument('type')) {
 			case 'merchant':
-				$supplier = $this->api->getMerchant($identifier);
+				$supplier = $this->api->getMerchant($supplierId);
 				break;
 
 			default:
-				$supplier = $this->api->getWinery($identifier);
+				$supplier = $this->api->getWinery($supplierId);
 				break;
 		}
 
 		$this->view->assign('supplier', $supplier);
+		$this->view->assign('type', $this->request->getArgument('type'));
+
 		if ($supplier['files'] && count($supplier['files']) > 0) {
 			$this->view->assign('images', array_filter($supplier['files'], function($file) {
 			    return $file['type'] == 'image';
@@ -153,6 +157,72 @@ class SuppliersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 			    return $file['type'] != 'image';
 			}));
 		}
+
+		$items = [];
+
+		$postData = [
+			'filter' => [
+				'winery_id' => $supplier['id'],
+				'shop' => 1
+			],
+			'orderBy' => 'sorting ASC',
+		];
+		$data = $this->api->getWinesAll($postData);
+		$wines = isset($data['wines']) ? $data['wines'] : $data['data'];
+		if($wines)
+			foreach ($wines as &$wine) {
+				$wine['object_type'] = 'wine';
+				$items[] = $wine;
+			}
+
+		// $products = $this->api->getProductsAll($postData);
+		// if($products)
+		// 	foreach ($products as &$product) {
+		// 		$product['object_type'] = 'product';
+		// 		array_push($items, $product);
+		// 	}
+
+		// $bundles = $this->api->getBundlesAll($postData);
+		// if($bundles)
+		// 	foreach ($bundles['data'] as &$bundle) {
+		// 		$bundle['object_type'] = 'bundle';
+		// 		array_push($items, $bundle);
+		// 	}
+
+		$sortProperty = 'sorting';
+		$sortDirection = 'ASC';
+
+		usort($items, function($a, $b) use ($sortProperty, $sortDirection) {
+			if (strcmp($sortDirection, 'ASC') == 0)
+				return $a[$sortProperty] > $b[$sortProperty];
+			else
+				return $a[$sortProperty] < $b[$sortProperty];
+		});
+
+		$this->view->assign('items',$items);
+
+
+		$textIdentifier = null;
+		if ($this->request->hasArgument('identifier'))
+			$textIdentifier = $this->request->getArgument('identifier');
+
+		$textIdentifiers = ['conditionsofservice','legalnotice','privacypolicy','revocation','legalnotice','shippingpolicy'];
+
+		$legalTexts = [];
+		$texts = $this->api->getTextsAll(['winery_id' => $supplier['id']]);
+		foreach( $texts as $text) {
+			if(in_array($text['identifier'], $textIdentifiers)) {
+				$text['active'] = false;
+
+				if($text['identifier'] == $textIdentifier) {
+					$text['active'] = true;
+					$this->view->assign('text',$text);
+				}
+				$legalTexts[$text['identifier']] = $text;
+			}
+		}
+		$this->view->assign('legalTexts',$legalTexts);
+
 	}
 
 }

@@ -8,10 +8,13 @@ use \Vinou\VinouConnector\Utility\Helper;
 class ProductsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+   * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+   */
+  protected $configurationManager;
 
+	/**
+	 * @var Api Api Endpoint.
+	 */
 	protected $api;
 
 	protected $detailPid;

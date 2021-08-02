@@ -29,18 +29,23 @@ class ClientController extends ActionController {
 	protected $persistenceManager;
 
 	/**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+   * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+   */
+  protected $configurationManager;
 
 	/**
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
-     */
-    protected $uriBuilder;
+   * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+   */
+  protected $uriBuilder;
 
-    protected $client;
+  protected $client;
 	protected $extKey;
+
+	/**
+	 * @var Api Api Endpoint.
+	 */
 	protected $api;
+
 	protected $authService;
 	protected $sender;
 	protected $admin;
@@ -66,7 +71,7 @@ class ClientController extends ActionController {
 		if ($internal) {
 			$this->client = $this->api->getClient();
 			if (!$this->client)
-				$this->redirectToPid($this->settings['pages']['loginPid']); 
+				$this->redirectToPid($this->settings['pages']['loginPid']);
 
 		}
 	}
@@ -227,9 +232,9 @@ class ClientController extends ActionController {
 		$this->initialize(true);
 		if (!$this->request->hasArgument('order'))
 			$this->redirect(
-				'orders', 
+				'orders',
 				'Client'
-			); 
+			);
 
 		$this->view->assign('order', $this->api->getOrder([
 			'uuid' => $this->request->getArgument('order')
@@ -455,10 +460,10 @@ class ClientController extends ActionController {
 
 	private function redirectToPid($pid = null) {
 		if (is_null($pid) || $pid <= 1)
-			return false; 
+			return false;
 
 		$this->redirect(
-			null, 
+			null,
 			null,
 			null,
 			null,

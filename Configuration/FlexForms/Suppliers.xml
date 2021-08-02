@@ -114,6 +114,46 @@
                             </config>
                         </TCEforms>
                     </settings.detailPid>
+										<settings.merchantPid>
+                        <TCEforms>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Suppliers->list;Suppliers->detail;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Suppliers->topseller;</numIndex>
+                                </OR>
+                            </displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.suppliers.merchantPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.merchantPid>
+										<settings.wineryPid>
+                        <TCEforms>
+                            <displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:switchableControllerActions:=:Suppliers->list;Suppliers->detail;</numIndex>
+                                    <numIndex index="1">FIELD:switchableControllerActions:=:Suppliers->topseller;</numIndex>
+                                </OR>
+                            </displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.suppliers.wineryPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.wineryPid>
                     <settings.backPid>
                         <TCEforms>
                             <displayCond>FIELD:switchableControllerActions:=:Suppliers->detail;Suppliers->list;</displayCond>
@@ -129,6 +169,51 @@
                             </config>
                         </TCEforms>
                     </settings.backPid>
+										<settings.winePid>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Suppliers->detail;Suppliers->list;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.suppliers.winePid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.winePid>
+                    <settings.productPid>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Suppliers->detail;Suppliers->list;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.suppliers.productPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.productPid>
+                    <settings.bundlePid>
+                        <TCEforms>
+                            <displayCond>FIELD:switchableControllerActions:=:Suppliers->detail;Suppliers->list;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.suppliers.bundlePid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.bundlePid>
                 </el>
             </ROOT>
         </sDEF>

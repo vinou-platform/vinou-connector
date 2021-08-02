@@ -11,11 +11,15 @@ use \Vinou\VinouConnector\Utility\Helper;
 class OfficeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+   * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+   */
+  protected $configurationManager;
 
-	protected $api = null;
+	/**
+	 * @var Api Api Endpoint.
+	 */
+	protected $api;
+
 	protected $registrationDir = 'vinou/registrations';
 
 	protected $detailPid;

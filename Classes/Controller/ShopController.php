@@ -25,10 +25,13 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected $objectManager;
 
 	/**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
+   * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+   */
+  protected $configurationManager;
 
+	/**
+	 * @var Api Api Endpoint.
+	 */
 	protected $api;
 
 	protected $settings = [];
@@ -850,7 +853,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected function sendTemplateEmail(array $recipient, array $sender, $subject, $templateName, array $variables = array(), array $attachement = array()) {
 
 		$variables['title'] = $subject;
-		$variables['customer'] = $this->api->getCustomer();		
+		$variables['customer'] = $this->api->getCustomer();
 
 		$fluid = $this->objectManager->get(StandaloneView::class);
 		$fluid->setLayoutRootPaths([Helper::getPrivateResourcePath() . 'Layouts/Email/']);

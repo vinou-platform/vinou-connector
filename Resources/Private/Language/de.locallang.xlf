@@ -904,7 +904,7 @@
 			</trans-unit>
 			<trans-unit id="flexform.suppliers.mode.detail">
 				<source>Show supplier details</source>
-				<target>Weingutdetails</target>
+				<target>Lieferantendetails</target>
 			</trans-unit>
 			<trans-unit id="flexform.suppliers.itemsPerRow">
 				<source>Items in one row</source>
@@ -934,9 +934,29 @@
 				<source>Suppliers detail page</source>
 				<target>Detailseite</target>
 			</trans-unit>
+			<trans-unit id="flexform.suppliers.merchantPid">
+				<source>Merchant detail page</source>
+				<target>Detailseite des Händlers</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.wineryPid">
+				<source>Winery detail page</source>
+				<target>Detailseite des Weinguts</target>
+			</trans-unit>
 			<trans-unit id="flexform.suppliers.backPid">
 				<source>Back to page</source>
 				<target>Zurück zu Seite</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.winePid">
+				<source>Wine detail page</source>
+				<target>Wein-Detailseite</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.productPid">
+				<source>Product detail page</source>
+				<target>Produkt-Detailseite</target>
+			</trans-unit>
+			<trans-unit id="flexform.suppliers.bundlePid">
+				<source>Bundle detail page</source>
+				<target>Weinpaket-Detailseite</target>
 			</trans-unit>
 			<trans-unit id="flexform.suppliers.template">
 				<source>Layout</source>
@@ -950,7 +970,14 @@
 				<source>Template</source>
 				<target>Vorlage wählen</target>
 			</trans-unit>
-
+			<trans-unit id="detail.merchant.linkTitle">
+				<source>Merchant Details</source>
+				<target>Händler Details</target>
+			</trans-unit>
+			<trans-unit id="detail.winery.linkTitle">
+				<source>Winery Details</source>
+				<target>Weingut Details</target>
+			</trans-unit>
 			<trans-unit id="flexform.wineries.general">
 				<source>Settings</source>
 				<target>Einstellungen</target>

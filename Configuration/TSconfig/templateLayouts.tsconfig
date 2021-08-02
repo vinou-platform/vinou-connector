@@ -1,4 +1,6 @@
 vinou.templateLayouts {
     listSlider = Flaschen-Slider
+
+		#obsolete not used anymore
     listFilter = Filter
 }
