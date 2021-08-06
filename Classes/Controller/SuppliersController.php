@@ -79,22 +79,35 @@ class SuppliersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContro
 				}
 		}
 
+
+		$resetFilter = false;
+		if($this->request->hasArgument('reset'))
+			if($this->request->getArgument('reset'))
+				$resetFilter = true;
+
 		$filters = [
 			'sortBy' => ['company','city','type','zip'],
 			'sortDirection' => ['ASC','DESC']
 		];
+		if($resetFilter) {
+			foreach($filters as $name => $values){
+				$GLOBALS['TSFE']->fe_user->setAndSaveSessionData('suppliersList'.ucfirst($name), null);
+			}
+		} else {
 
-		foreach($filters as $name => $values){
-			$sessionVar = $GLOBALS['TSFE']->fe_user->getKey('ses', 'suppliersList'.ucfirst($name));
-			if(in_array($sessionVar,$values)) $this->settings[$name] = $sessionVar;
+			foreach($filters as $name => $values){
+				$sessionVar = $GLOBALS['TSFE']->fe_user->getKey('ses', 'suppliersList'.ucfirst($name));
+				if(in_array($sessionVar,$values)) $this->settings[$name] = $sessionVar;
 
-			if ($this->request->hasArgument($name)) {
-				$requestVar = $this->request->getArgument($name);
-				if(in_array($requestVar,$values)) {
-					$this->settings[$name] = $requestVar;
-					$GLOBALS['TSFE']->fe_user->setKey('ses', 'suppliersList'.ucfirst($name), $this->settings[$name]);
+				if ($this->request->hasArgument($name)) {
+					$requestVar = $this->request->getArgument($name);
+					if(in_array($requestVar,$values)) {
+						$this->settings[$name] = $requestVar;
+						$GLOBALS['TSFE']->fe_user->setKey('ses', 'suppliersList'.ucfirst($name), $this->settings[$name]);
+					}
 				}
 			}
+
 		}
 
 		$this->view->assign('settings', $this->settings);
