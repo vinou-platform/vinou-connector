@@ -11,7 +11,7 @@
 		'Wines' => 'list, detail',
 		'Products' => 'list, detail',
 		'Bundles' => 'list, detail',
-		'Shop' => 'list, basket, order, finish, topseller',
+		'Shop' => 'list, basket, order, finish, topseller, initPayment, finishPayment, cancelPayment',
 		'Office' => 'register',
 		'Wineries' => 'list, detail',
 		'Merchants' => 'list, detail',

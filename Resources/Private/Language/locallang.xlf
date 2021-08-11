@@ -283,6 +283,15 @@
 			<trans-unit id="payment.debiting">
 				<source>Direct Debit</source>
 			</trans-unit>
+			<trans-unit id="payment.bill">
+				<source>Bill</source>
+			</trans-unit>
+			<trans-unit id="payment.card">
+				<source>Credit Card</source>
+			</trans-unit>
+			<trans-unit id="payment.debit">
+				<source>Direct Debit</source>
+			</trans-unit>
 
 			<trans-unit id="mail.createorder.subject">
 				<source>Your order</source>
@@ -526,6 +535,15 @@
 			<trans-unit id="flexform.shop.mode.topseller">
 				<source>Show topseller</source>
 			</trans-unit>
+			<trans-unit id="flexform.shop.mode.initPayment">
+				<source>Initialize Payment</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.mode.finishPayment">
+				<source>Finish Payment</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.mode.cancelPayment">
+				<source>Cancel Payment</source>
+			</trans-unit>
 			<trans-unit id="flexform.shop.clusters">
 				<source>Filter options</source>
 			</trans-unit>
@@ -591,6 +609,15 @@
 			</trans-unit>
 			<trans-unit id="flexform.shop.cancelPaypalPid">
 				<source>Page to cancel order after paypal</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.initPaymentPid">
+				<source>Page to initialize payment</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.finishPaymentPid">
+				<source>Page to finish payment</source>
+			</trans-unit>
+			<trans-unit id="flexform.shop.cancelPaymentPid">
+				<source>Page to cancel paypal</source>
 			</trans-unit>
 			<trans-unit id="flexform.shop.template">
 				<source>Layout</source>
@@ -696,7 +723,7 @@
 			</trans-unit>
 			<trans-unit id="flexform.merchants.templateLayout">
 				<source>Template</source>
-			</trans-unit>			
+			</trans-unit>
 
 
 			<trans-unit id="message.error.title">
@@ -856,7 +883,7 @@
 			<trans-unit id="tasks.cacheimages.field.bccreceiver">
 				<source>bccreceiver</source>
 			</trans-unit>
-			
+
 		</body>
 	</file>
 </xliff>

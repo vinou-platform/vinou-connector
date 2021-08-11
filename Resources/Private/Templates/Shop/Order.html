@@ -26,7 +26,7 @@
 						</div>
 						<div class="formfield width-50-clear">
 							<label><f:translate key="order.firstname"/>{f:if(condition:required.delivery.firstname,then:' {required.mandatorySign}')}:</label>
-							<f:form.textfield 
+							<f:form.textfield
 								name="delivery[firstname]"
 								required="{f:if(condition:required.delivery.firstname,then:'TRUE',else:'FALSE')}"
 								value="{delivery.firstname}"/>
@@ -99,7 +99,7 @@
 						<div class="formfield">
 							<f:for each="{payment}" as="method" key="label">
 								<div class="radioItem">
-									<f:if condition="{method.selected}">	
+									<f:if condition="{method.selected}">
 										<f:then>
 											<f:form.radio name="paymentMethod" value="{label}" id="payment_{label}" checked="TRUE"/>
 											<label for="payment_{label}">
@@ -136,35 +136,35 @@
 					<fieldset>
 						<div class="formfield width-50-clear">
 							<label><f:translate key="order.account.owner"/>:</label>
-							<f:form.textfield 
+							<f:form.textfield
 								name="account[owner]"
 								required="TRUE"
 								value="{account.owner}"/>
 						</div>
 						<div class="formfield width-50-clear">
 							<label><f:translate key="order.account.iban"/>:</label>
-							<f:form.textfield 
+							<f:form.textfield
 								name="account[iban]"
 								required="TRUE"
 								value="{account.iban}"/>
 						</div>
 						<div class="formfield width-50-clear">
 							<label><f:translate key="order.account.bic"/>:</label>
-							<f:form.textfield 
+							<f:form.textfield
 								name="account[bic]"
 								required="TRUE"
 								value="{account.bic}"/>
 						</div>
 						<div class="formfield width-50-clear">
 							<label><f:translate key="order.account.swift"/>:</label>
-							<f:form.textfield 
+							<f:form.textfield
 								name="account[swift]"
 								required="FALSE"
 								value="{account.swift}"/>
 						</div>
 						<div class="formfield width-50-clear">
 							<label><f:translate key="order.account.bank"/>:</label>
-							<f:form.textfield 
+							<f:form.textfield
 								name="account[bank]"
 								required="TRUE"
 								value="{account.bank}"/>
@@ -360,7 +360,7 @@
 						</div>
 						<div class="formfield width-50-clear">
 							<label><f:translate key="order.firstname"/>{f:if(condition:required.billing.firstname,then:' {required.mandatorySign}')}:</label>
-							<f:form.textfield 
+							<f:form.textfield
 								name="billing[firstname]"
 								required="{f:if(condition:required.billing.firstname,then:'TRUE',else:'FALSE')}"
 								value="{f:if(condition: billing.firstname, then: billing.firstname, else: client.first_name)}"/>

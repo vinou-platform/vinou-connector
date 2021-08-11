@@ -46,6 +46,18 @@
                                         <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.mode.topseller</numIndex>
                                         <numIndex index="1">Shop->topseller;</numIndex>
                                     </numIndex>
+                                    <numIndex index="7">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.mode.initPayment</numIndex>
+                                        <numIndex index="1">Shop->initPayment;</numIndex>
+                                    </numIndex>
+                                    <numIndex index="8">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.mode.finishPayment</numIndex>
+                                        <numIndex index="1">Shop->finishPayment;</numIndex>
+                                    </numIndex>
+                                    <numIndex index="9">
+                                        <numIndex index="0">LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.mode.cancelPayment</numIndex>
+                                        <numIndex index="1">Shop->cancelPayment;</numIndex>
+                                    </numIndex>
                                 </items>
                             </config>
                         </TCEforms>
@@ -379,6 +391,51 @@
                             </config>
                         </TCEforms>
                     </settings.cancelPaypalPid>
+                    <settings.initPaymentPid>
+                        <TCEforms>
+                            <displayCond>FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.initPaymentPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.initPaymentPid>
+                    <settings.finishPaymentPid>
+                        <TCEforms>
+                            <displayCond>FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.finishPaymentPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.finishPaymentPid>
+                    <settings.cancelPaymentPid>
+                        <TCEforms>
+                            <displayCond>FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</displayCond>
+                            <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.cancelPaymentPid</label>
+                            <config>
+                                <type>group</type>
+                                <internal_type>db</internal_type>
+                                <allowed>pages</allowed>
+                                <size>1</size>
+                                <maxitems>1</maxitems>
+                                <minitems>0</minitems>
+                                <show_thumbs>1</show_thumbs>
+                            </config>
+                        </TCEforms>
+                    </settings.cancelPaymentPid>
                 </el>
             </ROOT>
         </pages>

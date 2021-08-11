@@ -374,6 +374,18 @@
 				<source>Direct Debit</source>
 				<target>Abbuchung</target>
 			</trans-unit>
+			<trans-unit id="payment.bill">
+				<source>Bill</source>
+				<target>Rechnung</target>
+			</trans-unit>
+			<trans-unit id="payment.card">
+				<source>Credit Card</source>
+				<target>Kreditkarte</target>
+			</trans-unit>
+			<trans-unit id="payment.debit">
+				<source>Direct Debit</source>
+				<target>SEPA-Lastschrift</target>
+			</trans-unit>
 
 			<trans-unit id="mail.createorder.subject">
 				<source>Your order</source>
@@ -696,6 +708,18 @@
 				<source>Show topseller</source>
 				<target>Topseller-Liste</target>
 			</trans-unit>
+			<trans-unit id="flexform.shop.mode.initPayment">
+				<source>Initialize Payment</source>
+				<target>Bezahlvorgang starten</target>
+			</trans-unit>
+			<trans-unit id="flexform.shop.mode.finishPayment">
+				<source>Finish Payment</source>
+				<target>Bezahlvorgang abschließen</target>
+			</trans-unit>
+			<trans-unit id="flexform.shop.mode.cancelPayment">
+				<source>Cancel Payment</source>
+				<target>Bezahlvorgang abbrechen</target>
+			</trans-unit>
 			<trans-unit id="flexform.shop.pages">
 				<source>Pages</source>
 				<target>Seiten</target>
@@ -783,6 +807,18 @@
 			<trans-unit id="flexform.shop.cancelPaypalPid">
 				<source>Page to cancel order after paypal</source>
 				<target>Seite für Paypal-Abbruch</target>
+			</trans-unit>
+			<trans-unit id="flexform.shop.initPaymentPid">
+				<source>Page to initialize payment</source>
+				<target>Seite um den Bezahlvorgang zu initieren</target>
+			</trans-unit>
+			<trans-unit id="flexform.shop.finishPaymentPid">
+				<source>Page to finish payment</source>
+				<target>Seite um den Bezahlvorgang abzuschließen</target>
+			</trans-unit>
+			<trans-unit id="flexform.shop.cancelPaymentPid">
+				<source>Page to cancel paypal</source>
+				<target>Seite um den Bezahlvorgang abzubrechen</target>
 			</trans-unit>
 			<trans-unit id="flexform.shop.template">
 				<source>Layout</source>

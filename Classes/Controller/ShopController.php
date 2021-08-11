@@ -313,7 +313,7 @@ class ShopController extends ActionController {
 
 			foreach ($items as $item) {
 				if ($item['item_type'] == 'package')
-					$this->view->assign('package', $package);
+					$this->view->assign('package', $package); // TODO prüfen, hier müsste $item zurückgegeben werden
 			}
 
 			$this->view->assign('validation', $validation);
@@ -518,6 +518,33 @@ class ShopController extends ActionController {
 
 		}
 
+		if (in_array($paymentMethod, ['card', 'debit'])) {
+
+			if (!isset($this->settings['finishPaymentPid']))
+				$this->Alert('error','nofinishPaymentPid',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+
+			$order['return_url'] = $this->uriBuilder
+				->reset()
+				->setTargetPageUid($this->settings['finishPaymentPid'])
+				->setCreateAbsoluteUri(TRUE)
+				->setNoCache(TRUE)
+				->build();
+
+			if (!isset($this->settings['cancelPaymentPid']))
+				$this->Alert('error','nocancelPaymentPid',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+
+			$order['cancel_url'] = $this->uriBuilder
+				->reset()
+				->setTargetPageUid($this->settings['cancelPaymentPid'])
+				->setCreateAbsoluteUri(TRUE)
+				->setNoCache(TRUE)
+				->build();
+
+				echo "Payment stripe detected!!!";
+
+		}
+
+
 		file_put_contents(Helper::getOrderCacheDir() . '/order-'. time() . '.json', json_encode($order));
 
 		// addOrder will do the redirect if paypal was set
@@ -552,12 +579,20 @@ class ShopController extends ActionController {
 				$mailContent
 			);
 
-			$this->clearAllSessionData();
-
-			$this->redirect(NULL, NULL, NULL, [], $this->finishPid);
+			$this->initPayment();
 		}
 
 		return true;
+	}
+
+	public function initPayment() {
+		$stripe = Session::getValue('stripe');
+
+		if ($stripe && array_key_exists('sessionId', $stripe) && array_key_exists('publishableKey', $stripe))
+			$this->redirect(NULL, NULL, NULL, [], $this->settings['initPaymentPid']);
+
+		$this->clearAllSessionData();
+		$this->redirect(NULL, NULL, NULL, [], $this->finishPid);
 	}
 
 	public function finishPaypalAction() {
@@ -620,6 +655,30 @@ class ShopController extends ActionController {
 		}
 
 		$this->view->assign('error', $error);
+	}
+
+	public function initPaymentAction() {
+		$this->initialize();
+		$this->view->assign('settings', $this->settings);
+
+		$stripe = Session::getValue('stripe');
+		$this->view->assign('stripe', $stripe);
+	}
+
+	public function finishPaymentAction() {
+		$this->initialize();
+		$this->view->assign('settings', $this->settings);
+		$this->view->assign('result', $this->api->finishPayment(GeneralUtility::_GET()));
+		$this->view->assign('addedOrder', $this->api->getSessionOrder());
+		$this->clearAllSessionData();
+	}
+
+	public function cancelPaymentAction() {
+		$this->initialize();
+		$this->view->assign('settings', $this->settings);
+		$this->view->assign('result', $this->api->cancelPayment(GeneralUtility::_GET()));
+		$this->view->assign('addedOrder', $this->api->getSessionOrder());
+		$this->clearAllSessionData();
 	}
 
 	private function getRequiredFields() {
