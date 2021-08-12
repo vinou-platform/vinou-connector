@@ -521,7 +521,7 @@ class ShopController extends ActionController {
 		if (in_array($paymentMethod, ['card', 'debit'])) {
 
 			if (!isset($this->settings['finishPaymentPid']))
-				$this->Alert('error','nofinishPaymentPid',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$this->Alert('error','nofinishPaymentPid',FlashMessage::ERROR);
 
 			$order['return_url'] = $this->uriBuilder
 				->reset()
@@ -531,7 +531,7 @@ class ShopController extends ActionController {
 				->build();
 
 			if (!isset($this->settings['cancelPaymentPid']))
-				$this->Alert('error','nocancelPaymentPid',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$this->Alert('error','nocancelPaymentPid',FlashMessage::ERROR);
 
 			$order['cancel_url'] = $this->uriBuilder
 				->reset()
@@ -539,8 +539,6 @@ class ShopController extends ActionController {
 				->setCreateAbsoluteUri(TRUE)
 				->setNoCache(TRUE)
 				->build();
-
-				echo "Payment stripe detected!!!";
 
 		}
 
