@@ -56,7 +56,7 @@ class AjaxActions implements MiddlewareInterface {
                 $this->regularAction();
                 break;
         }
-        
+
     }
 
     private function initialize($request) {

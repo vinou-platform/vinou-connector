@@ -293,7 +293,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if ($this->request->hasArgument('removecampaign') && $this->request->getArgument('removecampaign') == 1)
 			Session::deleteValue('campaign');
 
-		$basket = $this->detectOrCreateBasket();
+		$basket = $this->detectOrCreateBasket(); // Liefert den Basket zurück
 		$this->view->assign('basket',$basket);
 
 		if (isset($basket['basketItems']) && count($basket['basketItems']) > 0) {
@@ -305,7 +305,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 			foreach ($items as $item) {
 				if ($item['item_type'] == 'package')
-					$this->view->assign('package', $package);
+					$this->view->assign('package', $package);  // TODO prüfen, hier müsste $item zurückgegeben werden
 			}
 
 			$this->view->assign('validation', $validation);

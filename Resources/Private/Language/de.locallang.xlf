@@ -394,10 +394,6 @@
 				<source>Direct Debit</source>
 				<target>SEPA-Lastschrift</target>
 			</trans-unit>
-			<trans-unit id="payment.stripe">
-				<source>Stripe</source>
-				<target>Stripe</target>
-			</trans-unit>
 
 			<trans-unit id="mail.createorder.subject">
 				<source>Your order</source>
