@@ -288,6 +288,9 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @return void
 	 */
 	public function basketAction() {
+
+
+
 		$this->initialize();
 
 		if ($this->request->hasArgument('removecampaign') && $this->request->getArgument('removecampaign') == 1)
@@ -295,27 +298,67 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		$basket = $this->detectOrCreateBasket(); // Liefert den Basket zurück
 		$this->view->assign('basket',$basket);
+// var_dump($basket);
+// 		die;
+// checkoutPrepare(basket_uuid)
+// $result => zurück: items
 
-		if (isset($basket['basketItems']) && count($basket['basketItems']) > 0) {
-			$items = $basket['basketItems'];
-			$this->view->assign('items', $items);
+// // {
+// // 	"data": {
+// // 		"items": [
+// // 			{
+// // 				...
+// // 			},
+// // 			{
+// // 				...
+// // 			},
+// // 		]
+// // 	}
+// // }
 
-			$summary = $this->calculateSum($items);
-			$validation = Shop::quantityIsAllowed($summary['bottles'], $this->settings['basket'], true);
+// item_type (package / items)
 
-			foreach ($items as $item) {
+		$checkout = $this->api->prepareCheckout($basket['uuid']);
+
+		if($checkout !== false ){
+
+			$this->view->assign('summary', [
+				"net" => $checkout["net"],
+				"tax" => $checkout["tax"],
+				"gross" => $checkout["gross"]
+
+			]);
+
+			$items = $checkout['items'];
+
+			$bottles = 0;
+			$positions = [];
+			$packages = [];
+
+			foreach ($items as $item){
 				if ($item['item_type'] == 'package')
-					$this->view->assign('package', $package);  // TODO prüfen, hier müsste $item zurückgegeben werden
+					$packages[] = $item;
+				else
+				$positions[] = $item;
+
+				if ($item['item_type'] == 'bundle')
+					$bottles += $item['quantity'] * $item['item']['package_quantity'];
+				else
+					$bottles += $item['quantity'];
 			}
 
+			$this->view->assign('items', $positions);
+			$this->view->assign('packages', $packages);
+
+			//$summary = $this->calculateSum($items);
+			$validation = Shop::quantityIsAllowed($bottles, $this->settings['basket'], true);
 			$this->view->assign('validation', $validation);
-			$this->view->assign('summary', $summary);
 		}
 
-		$packagings = $this->api->getAllPackages();
-		$this->view->assign('packagings', $packagings);
+		// $packagings = $this->api->getAllPackages();
+		// $this->view->assign('packagings', $packagings);
 		$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
-		$this->view->assign('customer', $this->api->getCustomer());
+		$this->view->assign('customer', $this->api->getCustomer()); // TODO check if needed
 		$this->view->assign('settings', $this->settings);
 	}
 
@@ -699,7 +742,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			'net' => 0,
 			'tax' => 0,
 			'gross' => 0,
-			'quantity' => 0,
+			'quantity' => 0,//noch gebraucht
 			'bottles' => 0
 		];
 
