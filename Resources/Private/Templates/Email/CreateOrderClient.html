@@ -3,7 +3,7 @@
 
 <f:section name="mailcontent">
 	<h3>Vielen Dank!</h3>
-	<p>Wir haben ihre Bestellung wie folgt erhalten.<br><br></p>
+	<p>Wir haben Ihre Bestellung wie folgt erhalten.<br><br></p>
 
 	<table border="0" cellspacing="0" cellpadding="10" style="border: 1px solid #999999; border-collapse: collapse; width: 100%">
 		<tr>
@@ -41,48 +41,48 @@
 		<tr>
 			<td style="border: 1px solid #999999;"><b>Artikel</b></td>
 			<td style="border: 1px solid #999999;"><b>Nummer</b></td>
-			<td style="border: 1px solid #999999;"><b>Stückzahl</b></td>
-			<td style="border: 1px solid #999999;"><b>Preis</b></td>
+			<td style="border: 1px solid #999999;text-align: center;"><b>Stückzahl</b></td>
+			<td style="border: 1px solid #999999;text-align: right;"><b>Preis</b></td>
 		</tr>
 		<f:for each="{order.positions}" as="item">
 			<tr>
 				<td style="border: 1px solid #999999;"><f:if condition="{item.item.vintage}">{item.item.vintage} </f:if>{item.item.name}</td>
 				<td style="border: 1px solid #999999;">{item.item.articlenumber}</td>
-				<td style="border: 1px solid #999999;">{item.quantity}</td>
-				<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{vin:priceCalc(price:item.item.gross,quantity:item.quantity)}</f:format.currency></td>
+				<td style="border: 1px solid #999999;text-align: center;">{item.quantity}</td>
+				<td style="border: 1px solid #999999;text-align: right;"><f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2">{vin:priceCalc(price:item.item.gross,quantity:item.quantity)}</f:format.currency>&nbsp;€</td>
 			</tr>
 		</f:for>
 		<f:if condition="{order.package}">
 			<tr>
 				<td colspan="3" style="border: 1px solid #999999;">Versand und Verpackung</td>
-				<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.package.gross}</f:format.currency></td>
+				<td style="border: 1px solid #999999;text-align: right;"><f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2">{order.package.gross}</f:format.currency>&nbsp;€</td>
 			</tr>
 		</f:if>
 		<f:for each="{order.rebates}" as="rebate">
 			<tr>
 				<td colspan="3" style="border: 1px solid #999999;">{rebate.name}</td>
-				<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{rebate.gross}</f:format.currency></td>
+				<td style="border: 1px solid #999999;text-align: right;"><f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2">{rebate.gross}</f:format.currency>&nbsp;€</td>
 			</tr>
 		</f:for>
 		<f:for each="{order.campaigns}" as="campaign">
 			<tr>
 				<td colspan="3" style="border: 1px solid #999999;">Rabatt-Aktion: {campaign.item.name} ({campaign.item.hash})<br>{campaign.item.description}</td>
-				<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{campaign.gross}</f:format.currency></td>
+				<td style="border: 1px solid #999999;text-align: right;"><f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2">{campaign.gross}</f:format.currency>&nbsp;€</td>
 			</tr>
 		</f:for>
 		<tr>
 			<td colspan="3" style="border: 1px solid #999999;"><b>Gesamtsumme (Netto)</b></td>
-			<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.net}</f:format.currency></td>
+			<td style="border: 1px solid #999999;text-align: right;"><f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2">{order.net}</f:format.currency>&nbsp;€</td>
 		</tr>
 		<tr>
 			<td colspan="3" style="border: 1px solid #999999;"><b>MwSt.</b></td>
-			<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.tax}</f:format.currency></td>
+			<td style="border: 1px solid #999999;text-align: right;"><f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2">{order.tax}</f:format.currency>&nbsp;€</td>
 		</tr>
 		<tr>
 			<td colspan="3" style="border: 1px solid #999999;"><b>Gesamtsumme (Brutto)</b></td>
-			<td style="border: 1px solid #999999;"><f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{order.gross}</f:format.currency></td>
+			<td style="border: 1px solid #999999;text-align: right;"><f:format.currency decimalSeparator="," thousandsSeparator="." decimals="2">{order.gross}</f:format.currency>&nbsp;€</td>
 		</tr>
 	</table>
 	<p>Ihre Bestellung wird schnellstmöglich bearbeitet.</p>
-	
+
 </f:section>

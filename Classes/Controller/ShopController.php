@@ -563,7 +563,7 @@ class ShopController extends ActionController {
 			$this->sendTemplateEmail(
 				$recipient,
 				$this->sender,
-				LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$addedOrder['number'],
+				LocalizationUtility::translate('mail.createorder.subject',$this->extKey).': '.$addedOrder['number'],
 				'CreateOrderClient',
 				$mailContent,
 				$this->settings['mail']['attachements']
@@ -572,7 +572,7 @@ class ShopController extends ActionController {
 			$this->sendTemplateEmail(
 				$this->admin,
 				$this->sender,
-				LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$addedOrder['number'],
+				LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).': '.$addedOrder['number'],
 				'CreateOrderAdmin',
 				$mailContent
 			);
