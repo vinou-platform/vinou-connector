@@ -360,6 +360,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
 		$this->view->assign('customer', $this->api->getCustomer()); // TODO check if needed
 		$this->view->assign('settings', $this->settings);
+		$this->view->assign('checkout', $checkout);
 	}
 
 	/**
