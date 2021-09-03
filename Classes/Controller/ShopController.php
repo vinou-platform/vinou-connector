@@ -37,6 +37,10 @@ class ShopController extends ActionController {
 	 */
 	protected $configurationManager;
 
+	/**
+	 * object
+	 * @var \Vinou\ApiConnector\Api
+	 */
 	protected $api;
 	protected $extKey;
 
@@ -543,44 +547,59 @@ class ShopController extends ActionController {
 		}
 
 
+		// add in_progress flag to optimize payment automations
+		// $temporaryPaymentMethods = ['card', 'debit', 'paypal'];
+		// if (in_array($paymentMethod, $temporaryPaymentMethods))
+		// 	$order['in_progress'] = 1;
+
 		file_put_contents(Helper::getOrderCacheDir() . '/order-'. time() . '.json', json_encode($order));
 
 		// addOrder will do the redirect if paypal was set
 		$addedOrder = $this->api->addOrder($order);
-
 		if ($addedOrder) {
 
 			Session::setValue('order_uuid', $addedOrder['uuid']);
 
-			$recipient = [
-				$billing['email'] => $billing['firstname'] . " " . $billing['lastname']
-			];
-
-			$mailContent = [
-				'order' => $this->api->getOrder($addedOrder['id'])
-			];
-
-			$this->sendTemplateEmail(
-				$recipient,
-				$this->sender,
-				LocalizationUtility::translate('mail.createorder.subject',$this->extKey).': '.$addedOrder['number'],
-				'CreateOrderClient',
-				$mailContent,
-				$this->settings['mail']['attachements']
-			);
-
-			$this->sendTemplateEmail(
-				$this->admin,
-				$this->sender,
-				LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).': '.$addedOrder['number'],
-				'CreateOrderAdmin',
-				$mailContent
-			);
+			if(!$addedOrder['in_progress'])
+				$this->sendOrderEmails();
 
 			$this->initPayment();
 		}
 
 		return true;
+	}
+
+	private function sendOrderEmails($order = NULL){
+		if(!$order)
+			$order = $this->api->getSessionOrder();
+
+		$recipient = [
+			$order['client']['mail'] => $order['client']['first_name'] . " " . $order['client']['last_name']
+		];
+
+		$mailContent = [
+			'order' => $order
+		];
+
+		$this->sendTemplateEmail(
+			$recipient,
+			$this->sender,
+			LocalizationUtility::translate('mail.createorder.subject',$this->extKey).': '.$order['number'],
+			'CreateOrderClient',
+			$mailContent,
+			$this->settings['mail']['attachements']
+		);
+
+		$this->sendTemplateEmail(
+			$this->admin,
+			$this->sender,
+			LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).': '.$order['number'],
+			'CreateOrderAdmin',
+			$mailContent
+		);
+
+		// TODO: in_progress auf 0 setzen #548
+
 	}
 
 	public function initPayment() {
@@ -607,31 +626,7 @@ class ShopController extends ActionController {
 		if (!$paypalresult) {
 			$error = true;
 		} else {
-			$recipient = [
-				$order['client']['mail'] => $order['client']['first_name'] . " " . $order['client']['last_name']
-			];
-
-			$mailContent = [
-				'order' => $order
-			];
-
-			$this->sendTemplateEmail(
-				$recipient,
-				$this->sender,
-				LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$order['number'],
-				'CreateOrderClient',
-				$mailContent,
-				$this->settings['mail']['attachements']
-			);
-
-			$this->sendTemplateEmail(
-				$this->admin,
-				$this->sender,
-				LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$order['number'],
-				'CreateOrderAdmin',
-				$mailContent
-			);
-
+			$this->sendOrderEmails($order);
 			$this->clearAllSessionData();
 		}
 
@@ -667,7 +662,11 @@ class ShopController extends ActionController {
 		$this->initialize();
 		$this->view->assign('settings', $this->settings);
 		$this->view->assign('result', $this->api->finishPayment(GeneralUtility::_GET()));
-		$this->view->assign('addedOrder', $this->api->getSessionOrder());
+		$order = $this->api->getSessionOrder();
+		$this->view->assign('order', $order);
+		// @deprecated
+		$this->view->assign('addedOrder', $order);
+		$this->sendOrderEmails($order);
 		$this->clearAllSessionData();
 	}
 
