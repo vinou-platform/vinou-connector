@@ -97,6 +97,14 @@ class ShopController extends ActionController {
 		$this->client = $this->api->getClient();
 
 		$this->view->assign('client', $this->client);
+
+		// check for open stripe payment
+		$stripe = Session::getValue('stripe');
+		if ($stripe && array_key_exists('sessionId', $stripe) && array_key_exists('publishableKey', $stripe)){
+			$this->view->assign('openStripePayment', $stripe);
+			$this->view->assign('openOrder', $this->api->getSessionOrder());
+		}
+
 	}
 
 	public function listAction() {
@@ -817,6 +825,7 @@ class ShopController extends ActionController {
 		Session::deleteValue('account');
 		Session::deleteValue('campaign');
 		Session::deleteValue('note');
+		Session::deleteValue('stripe');
 	}
 
 	/**
