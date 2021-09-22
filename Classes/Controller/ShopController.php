@@ -551,6 +551,7 @@ class ShopController extends ActionController {
 
 		file_put_contents(Helper::getOrderCacheDir() . '/order-'. time() . '.json', json_encode($order));
 
+		// addOrder will do the redirect if paypal was set
 		$addedOrder = $this->api->addOrder($order);
 		if ($addedOrder) {
 
