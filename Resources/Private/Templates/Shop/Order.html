@@ -1,6 +1,9 @@
 <f:layout name="Default" />
 
 <f:section name="main">
+
+	<f:comment><f:render partial="Shop/Messages" arguments="{_all}"/></f:comment>
+
 	<div class="product-order">
 		<f:switch expression="{mode}">
 			<f:case value="delivery">
