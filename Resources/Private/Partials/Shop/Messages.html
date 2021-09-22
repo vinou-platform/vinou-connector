@@ -1,0 +1,14 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:v="Vinou\VinouConnector\ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+
+		<f:if condition="{openStripePayment}">
+			<div style="padding-bottom: 6em">
+				<p class="inline-message" data-type="error">
+					<span class="title">Offene Zahlung gefunden</span>
+					<span class="description">Die Zahlung deiner letzten Bestellung über <f:format.currency currencySign="€" decimalSeparator="," thousandsSeparator="." separateCurrency="true" decimals="2">{openOrder.gross}</f:format.currency> wurde noch nicht abgeschlossen.  <f:comment><f:link.page pageUid="96">Bestellung jetzt abschliessen.</f:link.page></f:comment></span>
+				</p>
+			</div>
+		</f:if>
+
+</html>

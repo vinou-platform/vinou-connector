@@ -37,6 +37,10 @@ class ShopController extends ActionController {
 	 */
 	protected $configurationManager;
 
+	/**
+	 * object
+	 * @var \Vinou\ApiConnector\Api
+	 */
 	protected $api;
 	protected $extKey;
 
@@ -93,6 +97,14 @@ class ShopController extends ActionController {
 		$this->client = $this->api->getClient();
 
 		$this->view->assign('client', $this->client);
+
+		// check for open stripe payment
+		$stripe = Session::getValue('stripe');
+		if ($stripe && array_key_exists('sessionId', $stripe) && array_key_exists('publishableKey', $stripe)){
+			$this->view->assign('openStripePayment', $stripe);
+			$this->view->assign('openOrder', $this->api->getSessionOrder());
+		}
+
 	}
 
 	public function listAction() {
@@ -494,6 +506,9 @@ class ShopController extends ActionController {
 	        }
 	    }
 
+		// remove previous open stripe payments from session
+		Session::deleteValue('stripe');
+
 		if ($paymentMethod == 'paypal') {
 
 			if (!isset($this->settings['finishPaypalPid']))
@@ -542,45 +557,54 @@ class ShopController extends ActionController {
 
 		}
 
-
 		file_put_contents(Helper::getOrderCacheDir() . '/order-'. time() . '.json', json_encode($order));
 
 		// addOrder will do the redirect if paypal was set
 		$addedOrder = $this->api->addOrder($order);
-
 		if ($addedOrder) {
 
 			Session::setValue('order_uuid', $addedOrder['uuid']);
 
-			$recipient = [
-				$billing['email'] => $billing['firstname'] . " " . $billing['lastname']
-			];
-
-			$mailContent = [
-				'order' => $this->api->getOrder($addedOrder['id'])
-			];
-
-			$this->sendTemplateEmail(
-				$recipient,
-				$this->sender,
-				LocalizationUtility::translate('mail.createorder.subject',$this->extKey).': '.$addedOrder['number'],
-				'CreateOrderClient',
-				$mailContent,
-				$this->settings['mail']['attachements']
-			);
-
-			$this->sendTemplateEmail(
-				$this->admin,
-				$this->sender,
-				LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).': '.$addedOrder['number'],
-				'CreateOrderAdmin',
-				$mailContent
-			);
+			$temporaryPaymentMethods = ['card', 'debit', 'paypal'];
+			if (!in_array($paymentMethod, $temporaryPaymentMethods)) {
+				$this->sendOrderEmails();
+			}
 
 			$this->initPayment();
 		}
 
 		return true;
+	}
+
+	private function sendOrderEmails($order = NULL){
+		if (!$order)
+			$order = $this->api->getSessionOrder();
+
+		$recipient = [
+			$order['client']['mail'] => $order['client']['first_name'] . " " . $order['client']['last_name']
+		];
+
+		$mailContent = [
+			'order' => $order
+		];
+
+		$this->sendTemplateEmail(
+			$recipient,
+			$this->sender,
+			LocalizationUtility::translate('mail.createorder.subject',$this->extKey).': '.$order['number'],
+			'CreateOrderClient',
+			$mailContent,
+			$this->settings['mail']['attachements']
+		);
+
+		$this->sendTemplateEmail(
+			$this->admin,
+			$this->sender,
+			LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).': '.$order['number'],
+			'CreateOrderAdmin',
+			$mailContent
+		);
+
 	}
 
 	public function initPayment() {
@@ -607,31 +631,7 @@ class ShopController extends ActionController {
 		if (!$paypalresult) {
 			$error = true;
 		} else {
-			$recipient = [
-				$order['client']['mail'] => $order['client']['first_name'] . " " . $order['client']['last_name']
-			];
-
-			$mailContent = [
-				'order' => $order
-			];
-
-			$this->sendTemplateEmail(
-				$recipient,
-				$this->sender,
-				LocalizationUtility::translate('mail.createorder.subject',$this->extKey).':'.$order['number'],
-				'CreateOrderClient',
-				$mailContent,
-				$this->settings['mail']['attachements']
-			);
-
-			$this->sendTemplateEmail(
-				$this->admin,
-				$this->sender,
-				LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).':'.$order['number'],
-				'CreateOrderAdmin',
-				$mailContent
-			);
-
+			$this->sendOrderEmails($order);
 			$this->clearAllSessionData();
 		}
 
@@ -666,9 +666,17 @@ class ShopController extends ActionController {
 	public function finishPaymentAction() {
 		$this->initialize();
 		$this->view->assign('settings', $this->settings);
-		$this->view->assign('result', $this->api->finishPayment(GeneralUtility::_GET()));
-		$this->view->assign('addedOrder', $this->api->getSessionOrder());
+
+		$result = $this->api->finishPayment(GeneralUtility::_GET());
+		$this->view->assign('result', $result);
+		$order = $this->api->getSessionOrder();
+		$this->view->assign('order', $order);
+		if($result) $this->sendOrderEmails($order);
 		$this->clearAllSessionData();
+
+		// @deprecated
+		$this->view->assign('addedOrder', $order);
+
 	}
 
 	public function cancelPaymentAction() {
@@ -817,6 +825,7 @@ class ShopController extends ActionController {
 		Session::deleteValue('account');
 		Session::deleteValue('campaign');
 		Session::deleteValue('note');
+		Session::deleteValue('stripe');
 	}
 
 	/**
