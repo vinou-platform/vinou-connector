@@ -498,6 +498,9 @@ class ShopController extends ActionController {
 	        }
 	    }
 
+		// remove previous open stripe payments from session
+		Session::deleteValue('stripe');
+
 		if ($paymentMethod == 'paypal') {
 
 			if (!isset($this->settings['finishPaypalPid']))
@@ -546,22 +549,17 @@ class ShopController extends ActionController {
 
 		}
 
-
-		// add in_progress flag to optimize payment automations
-		// $temporaryPaymentMethods = ['card', 'debit', 'paypal'];
-		// if (in_array($paymentMethod, $temporaryPaymentMethods))
-		// 	$order['in_progress'] = 1;
-
 		file_put_contents(Helper::getOrderCacheDir() . '/order-'. time() . '.json', json_encode($order));
 
-		// addOrder will do the redirect if paypal was set
 		$addedOrder = $this->api->addOrder($order);
 		if ($addedOrder) {
 
 			Session::setValue('order_uuid', $addedOrder['uuid']);
 
-			if(!$addedOrder['in_progress'])
+			$temporaryPaymentMethods = ['card', 'debit', 'paypal'];
+			if (!in_array($paymentMethod, $temporaryPaymentMethods)) {
 				$this->sendOrderEmails();
+			}
 
 			$this->initPayment();
 		}
@@ -570,7 +568,7 @@ class ShopController extends ActionController {
 	}
 
 	private function sendOrderEmails($order = NULL){
-		if(!$order)
+		if (!$order)
 			$order = $this->api->getSessionOrder();
 
 		$recipient = [
@@ -597,8 +595,6 @@ class ShopController extends ActionController {
 			'CreateOrderAdmin',
 			$mailContent
 		);
-
-		// TODO: in_progress auf 0 setzen #548
 
 	}
 
@@ -661,13 +657,17 @@ class ShopController extends ActionController {
 	public function finishPaymentAction() {
 		$this->initialize();
 		$this->view->assign('settings', $this->settings);
-		$this->view->assign('result', $this->api->finishPayment(GeneralUtility::_GET()));
+
+		$result = $this->api->finishPayment(GeneralUtility::_GET());
+		$this->view->assign('result', $result);
 		$order = $this->api->getSessionOrder();
 		$this->view->assign('order', $order);
+		if($result) $this->sendOrderEmails($order);
+		$this->clearAllSessionData();
+
 		// @deprecated
 		$this->view->assign('addedOrder', $order);
-		$this->sendOrderEmails($order);
-		$this->clearAllSessionData();
+
 	}
 
 	public function cancelPaymentAction() {
