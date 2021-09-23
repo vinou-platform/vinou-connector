@@ -11,11 +11,11 @@
 			<f:switch expression="{result}">
 				<f:case value="processing">
 					<h1 class="page-title">Vielen Dank</h1>
-					<p>Wir haben Deine Bestellung mit der <strong>Nummer {addedOrder.number}</strong> erhalten. Eine Bestätigung findest Du in deinem Mail-Postfach. <strong>Deine Bezahlung befindet sich noch in der Abwicklung.</strong> Sobald die Zahlung vollständig bei uns eingetroffen ist, versenden wir Deinen Wein.</p>
+					<p>Wir haben Deine Bestellung mit der <strong>Nummer {order.number}</strong> erhalten. Eine Bestätigung findest Du in deinem Mail-Postfach. <strong>Deine Bezahlung befindet sich noch in der Abwicklung.</strong> Sobald die Zahlung vollständig bei uns eingetroffen ist, versenden wir Deinen Wein.</p>
 				</f:case>
 				<f:defaultCase>
 					<h1 class="page-title">Vielen Dank</h1>
-					<p>Wir haben Deine Bestellung mit der <strong>Nummer {addedOrder.number} und Deine Bezahlung</strong> erhalten. Eine Bestätigung findest Du in deinem Mail-Postfach</p>
+					<p>Wir haben Deine Bestellung mit der <strong>Nummer {order.number} und Deine Bezahlung</strong> erhalten. Eine Bestätigung findest Du in deinem Mail-Postfach</p>
 				</f:defaultCase>
 			</f:switch>
 		</f:then>
