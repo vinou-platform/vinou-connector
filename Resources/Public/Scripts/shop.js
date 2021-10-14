@@ -86,6 +86,7 @@ var vinouShop = {
 	},
 
 	initBasket: function() {
+
 		var ctrl = this;
 		campaignRow = document.getElementById('campaign-row')
 		if (campaignRow && campaignRow.getAttribute('data-hash'))
@@ -258,7 +259,6 @@ var vinouShop = {
 	},
 
 	updateBasketCount: function(){
-		console.debug('updateBasketCount');
 		var ctrl = this;
 		ctrl.card.setAttribute('data-status','normal');
 		ctrl.sum.net = 0;
@@ -379,7 +379,7 @@ var vinouShop = {
 	setBasketError: function(error) {
 		var ctrl = this;
 		var container = document.getElementById('basket-errors');
-		var controls = document.querySelector('.basket-controls');
+		var controls = document.querySelector(t3vinprefix + '.basket-controls');
 		if (container) {
 			container.innerHTML = '';
 			var status = 'visible';
