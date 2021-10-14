@@ -44,6 +44,7 @@ page.includeJSFooter {
 
 ["{$plugin.tx_vinou.settings.javascript.shop}" == "1" and applicationContext == "Development"]
 page.includeJSFooter.shop = EXT:vinou_connector/Resources/Public/Scripts/shop.js
+page.includeJSFooter.shopMarketplace = EXT:vinou_connector/Resources/Public/Scripts/shopMarketplace.js
 [END]
 
 # add only list javascript if it was turned on in the constants
