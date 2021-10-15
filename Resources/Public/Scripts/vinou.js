@@ -990,10 +990,7 @@ var vinouShopMarketplace = {
 				var max = input.getAttribute('data-max') ? parseInt(input.getAttribute('data-max')) : 99;
 
 				event.preventDefault();
-				// var form = this.form;
-				// console.log(form);
-				// var input = form.querySelector('[name="quantity"]');
-				// var submit = form.querySelector('[type="submit"]');
+
 				var current = parseInt(input.value);
 
 				if(this.getAttribute('class').indexOf('inc') > -1) {
@@ -1024,8 +1021,16 @@ var vinouShopMarketplace = {
 				event.preventDefault();
 				console.debug('delete');
 				var basketRow = this.closest('.basket-row');
+				var supplierId = basketRow.getAttribute('data-supplier-id');
 				//TO-Do: Prüfen ob die versandkosten des weinguts noch gelöscht werden müssen wenn kein anderer artikel des weinguts da ist
 				basketRow.parentNode.removeChild(basketRow);
+				var remainingBasketRows = document.querySelectorAll(t3vinprefixMarketplace + '.basket-row[data-supplier-id="'+ supplierId +'"]');
+				if (remainingBasketRows.length == 0) {
+					supplierBasketRows = document.querySelectorAll(t3vinprefixMarketplace + 'div[data-supplier-id="'+ supplierId +'"]');
+					for (var i = 0; i < supplierBasketRows.length; i++) {
+						supplierBasketRows[i].parentNode.removeChild(supplierBasketRows[i]);
+					}
+				}
 				ctrl.setBasketValidation(false);
 				return false;
 			}));
