@@ -298,163 +298,87 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @return void
 	 */
 	public function basketAction() {
-
-		$this->view->assign('request',$this->request->getArguments());
-
-
 		$this->initialize();
 
-		if ($this->request->hasArgument('basketAction')) {
-			switch ($this->request->getArgument('basketAction')) {
-				case 'refreshBasket':
-						// $basketUuid = $this->getBasket();
-						$items = [];
-						if($this->request->hasArgument('items'))
-							$items = array_values(array_filter($this->request->getArgument('items'), function($item) {
-								return $item['quantity'];
-							}));
+		switch ($this->settings['shopMode']) {
+			case 'marketplace':
 
-						$items = array_map(function($item){
-							$item['item_id'] = (int)$item['item_id'];
-							$item['quantity'] = (int)$item['quantity'];
-							return $item;
-						}, $items);
+				$this->view->assign('request',$this->request->getArguments());
 
-						$res = $this->api->editBasket($items);
+				if ($this->request->hasArgument('basketAction')) {
+					switch ($this->request->getArgument('basketAction')) {
+						case 'refreshBasket':
+								$items = [];
+								if($this->request->hasArgument('items'))
+									$items = array_values(array_filter($this->request->getArgument('items'), function($item) {
+										return $item['quantity'];
+									}));
 
-						// var_dump($items);
-						// var_dump($res);
-						// die;
-						$this->redirect('basket');
-					break;
-				case 'goToCheckout':
-					//refresh
-					$uriBuilder = $this->uriBuilder;
-					$uri = $uriBuilder
-						->setTargetPageUid($this->orderPid)
-						->build();
-					$this->redirectToUri($uri, 0, 404);
-						// echo $this->settings['orderPid'];
-					break;
-			}
+								$items = array_map(function($item){
+									$item['item_id'] = (int)$item['item_id'];
+									$item['quantity'] = (int)$item['quantity'];
+									return $item;
+								}, $items);
+
+								$res = $this->api->editBasket($items);
+
+								// var_dump($items);
+								// var_dump($res);
+								// die;
+								$this->redirect('basket');
+							break;
+						case 'goToCheckout':
+							//refresh
+							$uriBuilder = $this->uriBuilder;
+							$uri = $uriBuilder
+								->setTargetPageUid($this->orderPid)
+								->build();
+							$this->redirectToUri($uri, 0, 404);
+								// echo $this->settings['orderPid'];
+							break;
+					}
+				}
+
+				$basket = $this->getBasketPrepareCheckout();
+				$this->view->assignMultiple($basket);
+
+				$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
+				$this->view->assign('settings', $this->settings);
+
+			break;
+			default:
+
+				if ($this->request->hasArgument('removecampaign') && $this->request->getArgument('removecampaign') == 1)
+					Session::deleteValue('campaign');
+
+				$basket = $this->detectOrCreateBasket(); // Liefert den Basket zurück
+				$this->view->assign('basket',$basket);
+
+				if (isset($basket['basketItems']) && count($basket['basketItems']) > 0) {
+					$items = $basket['basketItems'];
+					$this->view->assign('items', $items);
+
+					$summary = $this->calculateSum($items);
+					$validation = Shop::quantityIsAllowed($summary['bottles'], $this->settings['basket'], true);
+
+					foreach ($items as $item) {
+						if ($item['item_type'] == 'package')
+							$this->view->assign('package', $package);  // TODO prüfen, hier müsste $item zurückgegeben werden
+					}
+
+					$this->view->assign('validation', $validation);
+					$this->view->assign('summary', $summary);
+				}
+
+				$packagings = $this->api->getAllPackages();
+				$this->view->assign('packagings', $packagings);
+				$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
+				$this->view->assign('customer', $this->api->getCustomer());
+				$this->view->assign('settings', $this->settings);
+			break;
 		}
 
-		if ($this->request->hasArgument('removecampaign') && $this->request->getArgument('removecampaign') == 1)
-			Session::deleteValue('campaign');
 
-// // entweder
-// 		$basket = $this->detectOrCreateBasket(); // Liefert den Basket zurück
-// 		$this->view->assign('basketOhnePreparecheckout',$basket); //nicht benötigt / wird im template nicht genutzt
-
-// 		if (isset($basket['basketItems']) && count($basket['basketItems']) > 0) {
-// 			$items = $basket['basketItems'];
-// 			$this->view->assign('items', $items);
-
-// 			$summary = $this->calculateSum($items);
-// 			$validation = Shop::quantityIsAllowed($summary['bottles'], $this->settings['basket'], true);
-
-// 			// foreach ($items as $item) {
-// 			// 	if ($item['item_type'] == 'package')
-// 			// 		$this->view->assign('package', $package);  // TODO prüfen, hier müsste $item zurückgegeben werden
-// 			// }
-
-// 			$this->view->assign('validation', $validation);
-// 			$this->view->assign('summary', $summary);
-// 		}
-
-// 		$packagings = $this->api->getAllPackages();
-// 		$this->view->assign('packagings', $packagings);
-// 		$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
-// 		$this->view->assign('customer', $this->api->getCustomer());//benötigt?
-// 		$this->view->assign('settings', $this->settings);
-
-// oder
-$basketPrepareCheckout = $this->detectOrCreateBasket(true);
-$this->view->assignMultiple($basketPrepareCheckout);
-		// $basketPrepareCheckout = $this->detectOrCreateBasket(true); // Liefert den Basket zurück
-		// $this->view->assign('basketPrepareCheckoutPreparecheckout',$basketPrepareCheckout); //nicht benötigt / wird im template nicht genutzt
-		// $this->view->assign('items', $basketPrepareCheckout['items']);
-		// $this->view->assign('validation', $basketPrepareCheckout['validation']);
-		// $this->view->assign('summary', $basketPrepareCheckout['summary']);
-		$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
-		$this->view->assign('settings', $this->settings);
-		// $this->view->assign('validation', 'invalid'); // set to invalid to test
-
-
-		return;
-		// erste änderungen hinfällig!!
-		$this->initialize();
-
-		if ($this->request->hasArgument('removecampaign') && $this->request->getArgument('removecampaign') == 1)
-			Session::deleteValue('campaign');
-
-// To-Do: check older shops still need
-// 		$basket = $this->detectOrCreateBasket(); // Liefert den Basket zurück
-// 		$this->view->assign('basket',$basket);
-
-// // var_dump($basket);
-// 		die;
-// checkoutPrepare(basket_uuid)
-// $result => zurück: items
-
-// // {
-// // 	"data": {
-// // 		"items": [
-// // 			{
-// // 				...
-// // 			},
-// // 			{
-// // 				...
-// // 			},
-// // 		]
-// // 	}
-// // }
-
-// item_type (package / items)
-
-		$checkout = $this->api->prepareCheckout($this->getBasket());
-
-		if($checkout !== false ){
-
-			$this->view->assign('summary', [
-				"net" => $checkout["net"],
-				"tax" => $checkout["tax"],
-				"gross" => $checkout["gross"]
-
-			]);
-
-			$items = $checkout['items'];
-
-			$bottles = 0;
-			$positions = [];
-			$packages = [];
-
-			foreach ($items as $item){
-				if ($item['item_type'] == 'package')
-					$packages[] = $item;
-				else
-				$positions[] = $item;
-
-				if ($item['item_type'] == 'bundle')
-					$bottles += $item['quantity'] * $item['item']['package_quantity'];
-				else
-					$bottles += $item['quantity'];
-			}
-
-			$this->view->assign('items', $positions);
-			$this->view->assign('packages', $packages);
-
-			//$summary = $this->calculateSum($items);
-			$validation = Shop::quantityIsAllowed($bottles, $this->settings['basket'], true);
-			$this->view->assign('validation', $validation);
-		}
-
-		// $packagings = $this->api->getAllPackages();
-		// $this->view->assign('packagings', $packagings);
-		$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
-		// $this->view->assign('customer', $this->api->getCustomer()); // TODO check if needed
-		$this->view->assign('settings', $this->settings);
-		$this->view->assign('checkout', $checkout);
 	}
 
 	/**
@@ -807,31 +731,19 @@ $this->view->assignMultiple($basketPrepareCheckout);
 		return $required;
 	}
 
-	private function getBasket() {
+	private function detectOrCreateBasket() {
+
 		$basketUuid = Session::getValue('basket');
 		if (!$basketUuid && isset($_COOKIE['basket'])) {
 			$basketUuid = $_COOKIE['basket'];
 		}
-		return $basketUuid;
+
+		return $basketUuid ? $this->api->getBasket($basketUuid) : false;
 	}
 
-	private function detectOrCreateBasket($usePrepareCheckout = false) {
+	private function getBasketPrepareCheckout() {
 
-		$basketUuid = $this->getBasket();
-
-		if (!$basketUuid)
-			return false;
-
-		if ($usePrepareCheckout) {
-			return $this->getBasketPrepareCheckout($basketUuid);
-		}
-
-		return $this->api->getBasket($basketUuid);
-	}
-
-	private function getBasketPrepareCheckout($basketUuid) {
-
-		$checkout = $this->api->prepareCheckout($basketUuid);
+		$checkout = $this->api->prepareCheckout(['items.item.prices',	'items.item.winery']);
 		// var_dump($checkout);die;
 		$res = [];
 		if($checkout !== false ){

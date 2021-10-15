@@ -269,6 +269,8 @@ plugin.tx_vinouconnector_shop {
 			methods = prepaid,paypal,debiting,bill
 			default = prepaid
 		}
+		shopMode = outdated
+		# shopMode = marketplace
 		mandatorySign = *
 		minBasketSize = 1
 		# packageSteps = 6,12,18,24,30
