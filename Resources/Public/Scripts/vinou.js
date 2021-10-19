@@ -378,7 +378,7 @@ var vinouShop = {
 
 	setBasketError: function(error) {
 		var ctrl = this;
-		var container = document.getElementById('basket-errors');
+		var container = document.getElementById(t3vinprefix + 'basket-errors');
 		var controls = document.querySelector(t3vinprefix + '.basket-controls');
 		if (container) {
 			container.innerHTML = '';

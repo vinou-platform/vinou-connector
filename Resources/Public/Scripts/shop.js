@@ -378,7 +378,7 @@ var vinouShop = {
 
 	setBasketError: function(error) {
 		var ctrl = this;
-		var container = document.getElementById('basket-errors');
+		var container = document.getElementById(t3vinprefix + 'basket-errors');
 		var controls = document.querySelector(t3vinprefix + '.basket-controls');
 		if (container) {
 			container.innerHTML = '';
@@ -597,9 +597,9 @@ var vinouShop = {
 				return false;
 			}));
 		}
-
 		var delCheck = document.querySelector('#deliveryAdress');
 		if (delCheck) {
+
 			delCheck.addEventListener('change',(function(){
 				var delForm = document.querySelector('#delivery-fieldset');
 				delForm.setAttribute('data-visible',this.checked ? 1 : 0);
