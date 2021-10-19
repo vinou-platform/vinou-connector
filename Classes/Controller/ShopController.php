@@ -90,12 +90,12 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->view->assign('openStripePayment', $stripe);
 			$this->view->assign('openOrder', $this->api->getSessionOrder());
 		}
+
+		$this->view->assign('shopMode',$this->settings['shopMode']);
 	}
 
 	public function listAction() {
 		$this->initialize();
-
-
 
 		$objectTypes = explode(',',$this->settings['showTypes']);
 		$items = [];
@@ -300,6 +300,12 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function basketAction() {
 		$this->initialize();
 
+
+		// Session::deleteValue('basket');
+
+		// test checkout process from session
+		// $this->sendMarketplaceOrderEmails();
+
 		switch ($this->settings['shopMode']) {
 			case 'marketplace':
 
@@ -320,30 +326,22 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 									return $item;
 								}, $items);
 
-								$res = $this->api->editBasket($items);
+								$this->api->editBasket($items);
 
-								// var_dump($items);
-								// var_dump($res);
-								// die;
 								$this->redirect('basket');
 							break;
 						case 'goToCheckout':
-							//refresh
 							$uriBuilder = $this->uriBuilder;
 							$uri = $uriBuilder
 								->setTargetPageUid($this->orderPid)
 								->build();
 							$this->redirectToUri($uri, 0, 404);
-								// echo $this->settings['orderPid'];
-							break;
+						break;
 					}
 				}
 
 				$basket = $this->getBasketPrepareCheckout();
 				$this->view->assignMultiple($basket);
-
-				$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
-				$this->view->assign('settings', $this->settings);
 
 			break;
 			default:
@@ -361,10 +359,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					$summary = $this->calculateSum($items);
 					$validation = Shop::quantityIsAllowed($summary['bottles'], $this->settings['basket'], true);
 
-					foreach ($items as $item) {
-						if ($item['item_type'] == 'package')
-							$this->view->assign('package', $package);  // TODO prüfen, hier müsste $item zurückgegeben werden
-					}
+					// foreach ($items as $item) {
+					// 	if ($item['item_type'] == 'package')
+					// 		$this->view->assign('package', $package);  // TODO prüfen, hier müsste $item zurückgegeben werden
+					// }
 
 					$this->view->assign('validation', $validation);
 					$this->view->assign('summary', $summary);
@@ -374,9 +372,11 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$this->view->assign('packagings', $packagings);
 				$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
 				$this->view->assign('customer', $this->api->getCustomer());
-				$this->view->assign('settings', $this->settings);
 			break;
 		}
+
+		$this->view->assign('currentPid',$GLOBALS['TSFE']->id);
+		$this->view->assign('settings', $this->settings);
 
 
 	}
@@ -393,30 +393,45 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->view->assign('required', $this->getRequiredFields());
 		$this->view->assign('settings', $this->settings);
 
-		/* get basket data */
-		$basket = $this->detectOrCreateBasket();
+		switch ($this->settings['shopMode']) {
+			case 'marketplace':
+				$basket = $this->getBasketPrepareCheckout();
+				$this->view->assignMultiple($basket);
+				if(empty($basket) || $basket['validation'] != 'valid')
+					$this->redirect('basket', NULL, NULL, [], $this->basketPid);
 
-		/* goto basket view if no basket could be detected */
-		if (is_null($basket))
-			$this->redirect('basket', NULL, NULL, [], $this->basketPid);
+				if ($basket['validation'] != 'valid')
+					$this->redirect('basket', NULL, NULL, [], $this->basketPid);
 
-		$this->view->assign('basket', $basket);
+			break;
+			default:
 
-		/* detect for package and calculate summary*/
-		$items = $basket['basketItems'];
+				/* get basket data */
+				$basket = $this->detectOrCreateBasket();
 
+				/* goto basket view if no basket could be detected */
+				if (is_null($basket))
+					$this->redirect('basket', NULL, NULL, [], $this->basketPid);
 
-		$summary = $this->calculateSum($items);
+				$this->view->assign('basket', $basket);
 
-		$basketSettings = $this->settings['basket'];
-		if (isset($basketSettings['minBasketSize']) && $summary['bottles'] < $basketSettings['minBasketSize'])
-			$this->redirect(NULL, NULL, NULL, [], $this->basketPid);
+				/* detect for package and calculate summary*/
+				$items = $basket['basketItems'];
+				$summary = $this->calculateSum($items);
 
-		if (isset($basketSettings['packageSteps']) && !in_array($summary['bottles'], explode(',',$basketSettings['packageSteps'])))
-			$this->redirect(NULL, NULL, NULL, [], $this->basketPid);
+				$basketSettings = $this->settings['basket'];
+				if (isset($basketSettings['minBasketSize']) && $summary['bottles'] < $basketSettings['minBasketSize'])
+					$this->redirect(NULL, NULL, NULL, [], $this->basketPid);
 
-		$this->view->assign('summary', $summary);
-		$this->view->assign('items', $items);
+				if (isset($basketSettings['packageSteps']) && !in_array($summary['bottles'], explode(',',$basketSettings['packageSteps'])))
+					$this->redirect(NULL, NULL, NULL, [], $this->basketPid);
+
+				$this->view->assign('summary', $summary);
+				$this->view->assign('items', $items);
+
+			break;
+		}
+
 
 		/* get billing information */
 		$billing = $this->storeAndGetArgument('billing');
@@ -460,22 +475,47 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					$mode = 'account';
 				break;
 			case 'submit':
+
+
+
+
 				if ($this->request->getArgument('conditionsOfPurchase') !== 'yes') {
 					$this->Alert('error','noCop', FlashMessage::ERROR);
 				} else if ($this->request->getArgument('gdpr') !== 'yes') {
 					$this->Alert('error','noGdpr', FlashMessage::ERROR);
 				} else {
 					//$this->Alert('error','noConnection', FlashMessage::ERROR);
-					$this->sendOrderByBasket(
-						$basket,
-						$items,
-						$summary,
-						$billing,
-						$delivery,
-						$paymentMethod,
-						$account,
-						$note
-					);
+
+					// To-Do: check for processCheckout
+
+					switch ($this->settings['shopMode']) {
+						case 'marketplace':
+
+							$this->sendMarketplaceOrder(
+								$billing,
+								$delivery,
+								$paymentMethod,
+								$note
+							);
+
+						break;
+						default:
+
+							$this->sendOrderByBasket(
+								$basket,
+								$items,
+								$summary,
+								$billing,
+								$delivery,
+								$paymentMethod,
+								$account,
+								$note
+							);
+
+						break;
+					}
+
+
 				}
 				break;
 			default:
@@ -612,6 +652,125 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		return true;
 	}
 
+	private function sendMarketplaceOrder($billing, $delivery, $paymentMethod, $note) {
+
+		$order = [
+			'source' => 'shop',
+			'payment_type' => $paymentMethod,
+			'basket_uuid' => Session::getValue('basket'),
+			'billing_type' => 'client',
+			'billing' => [
+				'first_name' => $billing['firstname'],
+				'last_name' => $billing['lastname'],
+				'address' => $billing['address'],
+				'zip' => $billing['zip'],
+				'city' => $billing['city'],
+				'mail' => $billing['email'],
+			],
+			'delivery_type' => 'address',
+			'delivery' => [
+				'first_name' => $delivery['firstname'],
+				'last_name' => $delivery['lastname'],
+				'address' => $delivery['address'],
+				'zip' => $delivery['zip'],
+				'city' => $delivery['city'],
+			],
+			'invoice_type' => isset($this->settings['checkout']['invoice_type']) ? $this->settings['checkout']['invoice_type'] : 'gross',
+            'payment_period' => isset($this->settings['checkout']['payment_period']) ? (int)$this->settings['checkout']['payment_period'] : 14,
+			'remark' => $note
+		];
+
+		$additionalBilling = ['gender', 'company', 'countrycode', 'phone'];
+		foreach ($additionalBilling as $label) {
+			if (isset($billing[$label]))
+				$order['billing'][$label] = $billing[$label];
+		}
+
+		$additionalDelivery = ['gender', 'company', 'countrycode'];
+		foreach ($additionalDelivery as $label) {
+			if (isset($delivery[$label]))
+				$order['delivery'][$label] = $delivery[$label];
+		}
+
+		//wenn im office eine rechnungsadresse hinterlegt wurde akk sie hier geändert werden
+		$clientId = $this->api->checkClientMail($order['billing']);
+		if ($clientId) {
+				$order['client_id'] = $clientId;
+				$order['billing_type'] = 'address';
+		}
+
+		// remove previous open stripe payments from session
+		Session::deleteValue('stripe');
+
+		if ($paymentMethod == 'paypal') {
+
+			if (!isset($this->settings['finishPaypalPid']))
+				$this->Alert('error','nofinishPaypalPid', FlashMessage::ERROR);
+
+			$order['return_url'] = $this->uriBuilder
+				->reset()
+				->setTargetPageUid($this->settings['finishPaypalPid'])
+				->setCreateAbsoluteUri(TRUE)
+				->setNoCache(TRUE)
+				->build();
+
+			if (!isset($this->settings['cancelPaypalPid']))
+				$this->Alert('error','nocancelPaypalPid', FlashMessage::ERROR);
+
+			$order['cancel_url'] = $this->uriBuilder
+				->reset()
+				->setTargetPageUid($this->settings['cancelPaypalPid'])
+				->setCreateAbsoluteUri(TRUE)
+				->setNoCache(TRUE)
+				->build();
+
+		}
+
+		if (in_array($paymentMethod, ['card', 'debit'])) {
+
+			if (!isset($this->settings['finishPaymentPid']))
+				$this->Alert('error','nofinishPaymentPid',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+
+			$order['return_url'] = $this->uriBuilder
+				->reset()
+				->setTargetPageUid($this->settings['finishPaymentPid'])
+				->setCreateAbsoluteUri(TRUE)
+				->setNoCache(TRUE)
+				->build();
+
+			if (!isset($this->settings['cancelPaymentPid']))
+				$this->Alert('error','nocancelPaymentPid',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+
+			$order['cancel_url'] = $this->uriBuilder
+				->reset()
+				->setTargetPageUid($this->settings['cancelPaymentPid'])
+				->setCreateAbsoluteUri(TRUE)
+				->setNoCache(TRUE)
+				->build();
+
+		}
+
+		file_put_contents(Helper::getOrderCacheDir() . '/order-'. time() . '.json', json_encode($order));
+		// addOrder will do the redirect if paypal was set
+		// $checkout = $this->api->checkoutProceed($order);
+		$checkout = $this->api->checkout($order, null, false);
+
+		if ($checkout) {
+
+			Session::setValue('order_uuid', $checkout['uuid']);
+			Session::setValue('checkout_id', $checkout['id']);
+
+			$temporaryPaymentMethods = ['card', 'debit', 'paypal'];
+			if (!in_array($paymentMethod, $temporaryPaymentMethods)) {
+				$this->sendMarketplaceOrderEmails();
+			}
+			$this->initPayment();
+		}
+
+		return true;
+	}
+
+
 	private function sendOrderEmails($order = NULL){
 		if (!$order)
 			$order = $this->api->getSessionOrder();
@@ -637,6 +796,42 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->admin,
 			$this->sender,
 			LocalizationUtility::translate('mail.createnotification.subject',$this->extKey).': '.$order['number'],
+			'CreateOrderAdmin',
+			$mailContent
+		);
+
+	}
+
+	private function sendMarketplaceOrderEmails($checkout = NULL){
+		if (!$checkout)
+			$checkout = $this->api->getSessionCheckout();
+			var_dump($checkout);
+		foreach ($checkout['orders'] as $order) {
+			echo $order['id'];
+			// var_dump($this->api->getOrder($order['id']));
+		}
+		die;
+		$recipient = [
+			$order['client']['mail'] => $order['client']['first_name'] . ' ' . $order['client']['last_name']
+		];
+
+		$mailContent = [
+			'order' => $order
+		];
+
+		$this->sendTemplateEmail(
+			$recipient,
+			$this->sender,
+			LocalizationUtility::translate('mail.createorder.subject',$this->extKey) . ': ' . $order['number'],
+			'CreateOrderClient',
+			$mailContent,
+			$this->settings['mail']['attachements']
+		);
+
+		$this->sendTemplateEmail(
+			$this->admin,
+			$this->sender,
+			LocalizationUtility::translate('mail.createnotification.subject',$this->extKey) . ': ' . $order['number'],
 			'CreateOrderAdmin',
 			$mailContent
 		);
@@ -705,9 +900,11 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->view->assign('settings', $this->settings);
 
 		$result = $this->api->finishPayment(GeneralUtility::_GET());
+		// $order = $result['data']['order']
 		$this->view->assign('result', $result);
 		$order = $this->api->getSessionOrder();
 		$this->view->assign('order', $order);
+
 		if($result) $this->sendOrderEmails($order);
 		$this->clearAllSessionData();
 
@@ -742,9 +939,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	private function getBasketPrepareCheckout() {
-
-		$checkout = $this->api->prepareCheckout(['items.item.prices',	'items.item.winery']);
-		// var_dump($checkout);die;
+		$checkout = $this->api->checkout(['basket_uuid' => Session::getValue('basket')], ['items.item.prices', 'items.item.allergenIds', 'items.item.grapetypeId'], true);//,	'items.item.winery'
 		$res = [];
 		if($checkout !== false ){
 
@@ -757,28 +952,50 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 			$items = $checkout['items'];
 
-			$bottles = 0;
-			$positions = [];
-			$packages = [];
-//group by winery id !!
+			$itemsBySupplier = [];
 			foreach ($items as $item){
-				if ($item['item_type'] == 'package')
-					$packages[] = $item;
-				else
-				$positions[] = $item;
+				$supplierId = $item['winery_id'];
+				if (!$itemsBySupplier[$supplierId])
+					$itemsBySupplier[$supplierId] = [
+						'items' => [],
+						'packages' => [],
+						'packages' => [],
+						'rebates' => [],
+						'bottles' => 0
+					];
 
-				if ($item['item_type'] == 'bundle')
-					$bottles += $item['quantity'] * $item['item']['package_quantity'];
-				else
-					$bottles += $item['quantity'];
+				switch ($item['item_type']) {
+					case 'bundle':
+						// $bottles += $item['quantity'] * $item['item']['package_quantity'];
+						$itemsBySupplier[$supplierId]['bottles'] += $item['quantity'] * $item['item']['package_quantity'];
+						$itemsBySupplier[$supplierId]['items'][] = $item;
+					break;
+					case 'rebate':
+						$itemsBySupplier[$supplierId]['rebates'][] = $item;
+					break;
+					case 'package':
+						$itemsBySupplier[$supplierId]['packages'][] = $item;
+					break;
+					default:
+						// $bottles += $item['quantity'];
+						$itemsBySupplier[$supplierId]['bottles'] += $item['quantity'];
+						$itemsBySupplier[$supplierId]['items'][] = $item;
+					break;
+				}
+			}
+			foreach ($itemsBySupplier as $supplierId => $items) {
+				$items['bottles'];
+				$validation = Shop::quantityIsAllowed($items['bottles'], $this->settings['basket'], true);
+				$itemsBySupplier[$supplierId]['validation'] = $validation;
+				if ($validation != 'valid')
+					$res['validation'] = $validation;
+				elseif (!$res['validation'])
+					$res['validation'] = $validation;
+
 			}
 
-			$res['items'] = $positions;
-			$res['packages'] = $packages;
+			$res['itemsBySupplier'] = $itemsBySupplier;
 
-			//$summary = $this->calculateSum($items);
-			$validation = Shop::quantityIsAllowed($bottles, $this->settings['basket'], true);
-			$res['validation'] = $validation;
 		}
 		return $res;
 	}

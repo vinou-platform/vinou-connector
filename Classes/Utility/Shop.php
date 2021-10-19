@@ -21,7 +21,6 @@ class Shop {
     }
 
     public static function quantityIsAllowed($quantity, $settings, $retString = false) {
-
         if (array_key_exists('minBasketSize', $settings) && $quantity < $settings['minBasketSize'])
             return $retString ? 'minBasketSize' : false;
 
