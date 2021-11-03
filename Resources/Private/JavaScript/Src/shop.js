@@ -293,7 +293,8 @@ var vinouShop = {
 						if (packageRow) {
 							packagePrice = packageRow.querySelector('.package-price');
 							packageRow.setAttribute('data-id', response.id);
-							packagePrice.innerHTML = packageGross;
+							if (packagePrice)
+								packagePrice.innerHTML = packageGross;
 						}
 
 						ctrl.updateBasketSum();
