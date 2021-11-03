@@ -52,6 +52,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected $orderPid;
 	protected $finishPid;
 
+	protected $emailDelivery = true;
+
 
 	public function initialize() {
 
@@ -92,6 +94,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		}
 
 		$this->view->assign('shopMode',$this->settings['shopMode']);
+
+		// Check if email delivery through the site builder is disabled. E-mails are sent via the API.
+		$this->emailDelivery = !(array_key_exists('emailDelivery', $this->settings) && !$this->settings['emailDelivery']);
+
 	}
 
 	public function listAction() {
@@ -772,6 +778,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 
 	private function sendOrderEmails($order = NULL){
+
+		if (!$this->emailDelivery)
+			return true;
+
 		if (!$order)
 			$order = $this->api->getSessionOrder();
 

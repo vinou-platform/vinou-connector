@@ -311,7 +311,8 @@ var vinouShop = {
 						if (packageRow) {
 							packagePrice = packageRow.querySelector('.package-price');
 							packageRow.setAttribute('data-id', response.id);
-							packagePrice.innerHTML = packageGross;
+							if (packagePrice)
+								packagePrice.innerHTML = packageGross;
 						}
 
 						ctrl.updateBasketSum();
@@ -597,9 +598,9 @@ var vinouShop = {
 				return false;
 			}));
 		}
+
 		var delCheck = document.querySelector('#deliveryAdress');
 		if (delCheck) {
-
 			delCheck.addEventListener('change',(function(){
 				var delForm = document.querySelector('#delivery-fieldset');
 				delForm.setAttribute('data-visible',this.checked ? 1 : 0);
