@@ -62,6 +62,8 @@ class ShopController extends ActionController {
 	protected $orderPid;
 	protected $finishPid;
 
+	protected $emailDelivery = true;
+
 
 	public function initialize() {
 
@@ -104,6 +106,10 @@ class ShopController extends ActionController {
 			$this->view->assign('openStripePayment', $stripe);
 			$this->view->assign('openOrder', $this->api->getSessionOrder());
 		}
+
+		// Check if email delivery through the site builder is disabled. E-mails are sent via the API.
+		$this->emailDelivery = !(array_key_exists('emailDelivery', $this->settings) && !$this->settings['emailDelivery']);
+
 
 	}
 
@@ -577,6 +583,10 @@ class ShopController extends ActionController {
 	}
 
 	private function sendOrderEmails($order = NULL){
+
+		if (!$this->emailDelivery)
+		 	return true;
+
 		if (!$order)
 			$order = $this->api->getSessionOrder();
 

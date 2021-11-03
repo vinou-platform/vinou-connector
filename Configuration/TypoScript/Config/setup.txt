@@ -249,7 +249,7 @@ plugin.tx_vinouconnector_shop {
 			adminName = Admin
 			adminEmail = admin@domain.com
 			attachements {
-				generalBusinessTerms = 
+				generalBusinessTerms =
 				cancellationPolicy =
 			}
 		}
@@ -273,6 +273,7 @@ plugin.tx_vinouconnector_shop {
 		basket {
 			minBasketSize = 1
 		}
+		emailDelivery = 1
 	}
 }
 
