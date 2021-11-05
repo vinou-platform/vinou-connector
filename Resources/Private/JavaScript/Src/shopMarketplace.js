@@ -21,6 +21,25 @@ var vinouShopMarketplace = {
 		if (!document.querySelector(t3vinprefixMarketplace))
 			return false;
 
+		var quantitySelects = document.querySelectorAll(t3vinprefixMarketplace + '[name="quantity"]');
+		for (var i = 0; i < quantitySelects.length; i++) {
+			quantitySelects[i].addEventListener('change',function(event) {
+
+				var basketRow = this.closest('.basket-row');
+				var itemId = basketRow.getAttribute('data-item-id');
+				var input = basketRow.querySelector('input[data-item-id="'+itemId+'"]');
+				input.value = this.value;
+
+				var valueLabel = basketRow.querySelector('.quantity-overlay');
+				if(valueLabel)
+					valueLabel.innerHTML = parseInt(this.value);
+
+				ctrl.setBasketValidation(false);
+
+			});
+
+		}
+
 		var quantityChangeButtons = document.querySelectorAll(t3vinprefixMarketplace + 'button.inc,' + t3vinprefixMarketplace + 'button.dec');
 		for (var i = 0; i < quantityChangeButtons.length; i++) {
 			quantityChangeButtons[i].addEventListener('click',function(event) {
@@ -50,7 +69,8 @@ var vinouShopMarketplace = {
 						input.value = min;
 				}
 
-				if(valueLabel) valueLabel.innerHTML = parseInt(input.value);
+				if(valueLabel)
+					valueLabel.innerHTML = parseInt(input.value);
 
 				ctrl.setBasketValidation(false);
 

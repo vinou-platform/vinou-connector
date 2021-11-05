@@ -306,7 +306,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function basketAction() {
 		$this->initialize();
 
-
 		// Session::deleteValue('basket');
 
 		// test checkout process from session
@@ -766,10 +765,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			Session::setValue('order_uuid', $checkout['uuid']);
 			Session::setValue('checkout_id', $checkout['id']);
 
-			$temporaryPaymentMethods = ['card', 'debit', 'paypal'];
-			if (!in_array($paymentMethod, $temporaryPaymentMethods)) {
-				$this->sendMarketplaceOrderEmails();
-			}
+			// $temporaryPaymentMethods = ['card', 'debit', 'paypal'];
+			// if (!in_array($paymentMethod, $temporaryPaymentMethods)) {
+			// 	$this->sendMarketplaceOrderEmails();
+			// }
 			$this->initPayment();
 		}
 
@@ -812,46 +811,46 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 	}
 
-	private function sendMarketplaceOrderEmails($checkout = NULL){
-		if (!$checkout)
-			$checkout = $this->api->getSessionCheckout();
-		// var_dump($checkout);
-		// To-Do: mit Eric besprechen ob die benötigten angaben über extra routen geholt werden müssen oder im API Connector direkt per include in der getSessionCheckout() gesetzt geholt werden
-		// Funktionalitäten für das Bestücken und Generieren der E-Mails fehlen noch
+	// private function sendMarketplaceOrderEmails($checkout = NULL){
+	// 	if (!$checkout)
+	// 		$checkout = $this->api->getSessionCheckout();
+	// 	// var_dump($checkout);
+	// 	// To-Do: mit Eric besprechen ob die benötigten angaben über extra routen geholt werden müssen oder im API Connector direkt per include in der getSessionCheckout() gesetzt geholt werden
+	// 	// Funktionalitäten für das Bestücken und Generieren der E-Mails fehlen noch
 
-		foreach ($checkout['orders'] as $order) {
-			echo $order['id'];
-			// var_dump($this->api->getOrder($order['id']));
-		}
+	// 	foreach ($checkout['orders'] as $order) {
+	// 		echo $order['id'];
+	// 		// var_dump($this->api->getOrder($order['id']));
+	// 	}
 
-		return true;
-		die;
-		$recipient = [
-			$order['client']['mail'] => $order['client']['first_name'] . ' ' . $order['client']['last_name']
-		];
+	// 	return true;
+	// 	die;
+	// 	$recipient = [
+	// 		$order['client']['mail'] => $order['client']['first_name'] . ' ' . $order['client']['last_name']
+	// 	];
 
-		$mailContent = [
-			'order' => $order
-		];
+	// 	$mailContent = [
+	// 		'order' => $order
+	// 	];
 
-		$this->sendTemplateEmail(
-			$recipient,
-			$this->sender,
-			LocalizationUtility::translate('mail.createorder.subject',$this->extKey) . ': ' . $order['number'],
-			'CreateOrderClient',
-			$mailContent,
-			$this->settings['mail']['attachements']
-		);
+	// 	$this->sendTemplateEmail(
+	// 		$recipient,
+	// 		$this->sender,
+	// 		LocalizationUtility::translate('mail.createorder.subject',$this->extKey) . ': ' . $order['number'],
+	// 		'CreateOrderClient',
+	// 		$mailContent,
+	// 		$this->settings['mail']['attachements']
+	// 	);
 
-		$this->sendTemplateEmail(
-			$this->admin,
-			$this->sender,
-			LocalizationUtility::translate('mail.createnotification.subject',$this->extKey) . ': ' . $order['number'],
-			'CreateOrderAdmin',
-			$mailContent
-		);
+	// 	$this->sendTemplateEmail(
+	// 		$this->admin,
+	// 		$this->sender,
+	// 		LocalizationUtility::translate('mail.createnotification.subject',$this->extKey) . ': ' . $order['number'],
+	// 		'CreateOrderAdmin',
+	// 		$mailContent
+	// 	);
 
-	}
+	// }
 
 	public function initPayment() {
 
