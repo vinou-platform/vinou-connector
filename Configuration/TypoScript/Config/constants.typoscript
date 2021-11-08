@@ -6,6 +6,7 @@ plugin.tx_vinou {
 			vinou = 1
 			list = 0
 			shop = 0
+			marketplace = 0
 		}
 		pages {
 			loginPid = 1
