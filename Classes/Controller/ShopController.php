@@ -953,7 +953,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	private function getBasketPrepareCheckout() {
-		$checkout = $this->api->checkout(['basket_uuid' => Session::getValue('basket')], ['items.item.prices', 'items.item.allergenIds', 'items.item.grapetypeId'], true);//,	'items.item.winery'
+		$checkout = $this->api->checkout(['basket_uuid' => Session::getValue('basket')], ['items.item.prices', 'items.item.allergenIds', 'items.item.grapetypeId', 'items.item.winery'], true);
 		$res = [];
 		if($checkout !== false ){
 
@@ -975,7 +975,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 						'packages' => [],
 						'packages' => [],
 						'rebates' => [],
-						'bottles' => 0
+						'bottles' => 0,
+						'path_segment' => $item['path_segment']
 					];
 
 				switch ($item['item_type']) {
