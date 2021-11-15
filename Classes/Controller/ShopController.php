@@ -760,6 +760,49 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		// $checkout = $this->api->checkoutProceed($order);
 		$checkout = $this->api->checkout($order, null, false);
 
+		/*
+		stripe single winery payment:
+		/var/www/html/www/web/typo3conf/ext/vinou_connector/Classes/Controller/ShopController.php:767:
+		array (size=11)
+			'customers_id' => int 954
+			'cruser_id' => int 623
+			'client_id' => int 54792
+			'basket_id' => int 7286768
+			'crstamp' => string '2021-11-09 14:59:33' (length=19)
+			'taxrates' =>
+				array (size=2)
+					7 =>
+						array (size=3)
+							'net' => string '60.39' (length=5)
+							'tax' => string '4.23' (length=4)
+							'gross' => string '64.62' (length=5)
+					19 =>
+						array (size=3)
+							'net' => string '5.04' (length=4)
+							'tax' => string '0.96' (length=4)
+							'gross' => string '6.00' (length=4)
+			'net' => string '65.43' (length=5)
+			'tax' => string '5.19' (length=4)
+			'gross' => string '70.62' (length=5)
+			'id' => int 15
+			'payment' =>
+				array (size=15)
+					'order_id' => int 46245
+					'gross' => string '70.62' (length=5)
+					'return_url' => string 'https://yummytours.frog/marktplatz/bezahlung-abschliessen?no_cache=1&checkout_id=15&payment_uuid=40bab4cb-0459-58f1-a4a9-adf2452d2a33&pid=40bab4cb-0459-58f1-a4a9-adf2452d2a33' (length=174)
+					'cancel_url' => string 'https://yummytours.frog/marktplatz/bezahlung-abbrechen?no_cache=1&checkout_id=15&payment_uuid=40bab4cb-0459-58f1-a4a9-adf2452d2a33&pid=40bab4cb-0459-58f1-a4a9-adf2452d2a33' (length=171)
+					'customers_id' => int 289
+					'status' => string 'created' (length=7)
+					'uuid' => string '40bab4cb-0459-58f1-a4a9-adf2452d2a33' (length=36)
+					'cruser_id' => int 623
+					'type' => string 'card' (length=4)
+					'externalid' => string 'pi_3JtvnRQXEDxoa6dN0J8m0CrT' (length=27)
+					'session_id' => string 'cs_test_a1CTGoJdvE1M52ECm3HYYhG5SXW0jk9Xbz2WSdeU203UykwFTcRVWuhWVq' (length=66)
+					'account_id' => string 'acct_1Jf240QXEDxoa6dN' (length=21)
+					'bookingstamp' => null
+					'id' => int 21788
+					'details' => null
+		*/
 		if ($checkout) {
 
 			Session::setValue('order_uuid', $checkout['uuid']);
@@ -914,12 +957,26 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->view->assign('settings', $this->settings);
 
 		$result = $this->api->finishPayment(GeneralUtility::_GET());
+
+		//debug
+		$this->view->assign('getvars', GeneralUtility::_GET());
+		$this->view->assign('stripe', Session::getValue('stripe'));
+		$this->view->assign('order_uuid', Session::getValue('order_uuid'));
+		$this->view->assign('checkout_id', Session::getValue('checkout_id'));
+		$this->view->assign('checkout', Session::getValue('checkout'));
+		$this->view->assign('checkout_process_result', Session::getValue('checkout_process_result'));
+		$this->view->assign('payments_execute_result', Session::getValue('payments_execute_result'));
+		$this->view->assign('stripeResult', Session::getValue('stripeResult'));
+		//debug ende
+
 		// $order = $result['data']['order']
 		$this->view->assign('result', $result);
 		$order = $this->api->getSessionOrder();
 		$this->view->assign('order', $order);
 
-		if($result) $this->sendOrderEmails($order);
+		if($result)
+			$this->sendOrderEmails($order);
+
 		$this->clearAllSessionData();
 
 		// @deprecated
