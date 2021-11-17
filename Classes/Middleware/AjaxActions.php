@@ -95,6 +95,17 @@ class AjaxActions implements MiddlewareInterface {
             case 'addItem':
                 $this->sendResult($this->api->addItemToBasket($this->data), 'item could not be added');
                 break;
+						case 'getBasketSummary':
+							$this->sendResult(['summary' => $this->api->getBasketSummary()], 'no basket summary found');
+							break;
+            case 'addItemWithInit':
+
+								$result = $this->api->initBasket($this->data);
+								if (!$result)
+									$this->sendResult(false, 'basket could not be initialized');
+
+                $this->sendResult($this->api->addItemToBasket($this->data), 'item could not be added');
+                break;
 
             case 'editItem':
                 $this->sendResult($this->api->editItemInBasket($this->data), 'item could not be updated');
@@ -158,9 +169,8 @@ class AjaxActions implements MiddlewareInterface {
                 );
                 $redirectURL = '/' . Helper::getPdfCacheDir(false) . $cachePDFProcess['fileName'];
             }
-
-            else
-                $redirectURL = 'https://api.vinou.de' . $wine['expertisePdf'];
+						else
+                $redirectURL = 'https://api.vinou.de' . $wine['expertisePdf']; // TODO Use \Vinou\ApiConnector\Tools\Helper::getApiUrl()
 
             header('Location: '.$redirectURL);
         }

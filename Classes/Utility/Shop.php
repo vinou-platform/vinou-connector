@@ -13,7 +13,7 @@ class Shop {
             foreach ($card as $item) {
                 if ($item['item_type'] == 'bundle')
                     $quantity = $quantity + $item['quantity'] * $item['item']['package_quantity'];
-                else
+                elseif ($item['item_type'] == 'wine' || $item['item_type'] == 'product')
                     $quantity = $quantity + $item['quantity'];
             }
         }

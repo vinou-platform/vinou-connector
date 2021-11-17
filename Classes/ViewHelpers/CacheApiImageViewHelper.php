@@ -19,7 +19,7 @@ class CacheApiImageViewHelper extends AbstractViewHelper {
             $cacheImageProcess = Images::storeApiImage($arguments['image'], $arguments['tstamp'] ?? null, Helper::getImageCacheDir());
             return Helper::getImageCacheDir(false) . $cacheImageProcess['fileName'];
         }
-        
+
         return $arguments['image'];
 
 

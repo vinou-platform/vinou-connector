@@ -93,7 +93,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->view->assign('openOrder', $this->api->getSessionOrder());
 		}
 
-		$this->view->assign('shopMode',$this->settings['shopMode']);
+		$this->view->assign('apiUrl',\Vinou\ApiConnector\Tools\Helper::getApiUrl());
 
 		// Check if email delivery through the site builder is disabled. E-mails are sent via the API.
 		$this->emailDelivery = !(array_key_exists('emailDelivery', $this->settings) && !$this->settings['emailDelivery']);
@@ -332,6 +332,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 								}, $items);
 
 								$this->api->editBasket($items);
+								// var_dump($result['data']['basketItems']);die;
 
 								$this->redirect('basket');
 							break;
@@ -347,6 +348,9 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 				$basket = $this->getBasketPrepareCheckout();
 				$this->view->assignMultiple($basket);
+
+				//debug
+				$this->view->assign("basket",$basket);
 
 			break;
 			default:
@@ -1011,13 +1015,14 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 	private function getBasketPrepareCheckout() {
 		$checkout = $this->api->checkout(['basket_uuid' => Session::getValue('basket')], ['items.item.prices', 'items.item.allergenIds', 'items.item.grapetypeId', 'items.item.winery'], true);
-		$res = [];
+		$res = ['summary' => ['quantity' => 0]];
 		if($checkout !== false ){
 
 			$res['summary'] = [
-				"net" => $checkout["net"],
-				"tax" => $checkout["tax"],
-				"gross" => $checkout["gross"]
+				'net' => $checkout['net'],
+				'tax' => $checkout['tax'],
+				'gross' => $checkout['gross'],
+				'quantity' => array_sum(array_map(function($item) {	return $item['item_type'] == 'wine' ? $item['quantity'] : ($item['item_type'] == 'bundle' ? $item['quantity'] * $item['item']['package_quantity'] : 0); }, $checkout['items']))
 
 			];
 
@@ -1055,6 +1060,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					break;
 				}
 			}
+
 			foreach ($itemsBySupplier as $supplierId => $items) {
 				$items['bottles'];
 				$validation = Shop::quantityIsAllowed($items['bottles'], $this->settings['basket'], true);
@@ -1065,7 +1071,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					$res['validation'] = $validation;
 
 			}
-
 			$res['itemsBySupplier'] = $itemsBySupplier;
 
 		}
