@@ -5,7 +5,6 @@
 <f:layout name="Default" />
 
 <f:section name="main">
-
 	<f:if condition="{stripe}">
 		<f:then>
 			<script src="https://js.stripe.com/v3/"></script>
@@ -13,13 +12,12 @@
 			<h1 class="page-title">Bezahlvorgang gestartet</h1>
 			<p>Du solltest in den nächsten 5 Sekunden zu unserem Zahlungsanbieter weiter geleitet werden. Wenn dies nicht passiert klicke bitte hier<br><br><a id="checkout-button" class="button key">Jetzt bezahlen</a></p>
 
+
 			<script type="application/javascript">
 				var checkoutButton = document.getElementById('checkout-button');
 				var timeout = null;
 				var accountId = '{stripe.accountId}';
-				var stripe = Stripe('{stripe.publishableKey}', {
-					stripeAccount: accountId
-				});
+				var stripe = Stripe('{stripe.publishableKey}', accountId ? {stripeAccount: accountId} : {});
 				var sessionId = '{stripe.sessionId}';
 
 				var triggerRedirectToCheckout = function() {
@@ -37,7 +35,7 @@
 					return false;
 				});
 
-				var timeout = setTimeout(triggerRedirectToCheckout(), 5000);
+				var timeout = setTimeout(triggerRedirectToCheckout(), 15000);
 
 			</script>
 		</f:then>

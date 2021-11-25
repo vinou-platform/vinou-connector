@@ -13,7 +13,7 @@ class Shop {
             foreach ($card as $item) {
                 if ($item['item_type'] == 'bundle')
                     $quantity = $quantity + $item['quantity'] * $item['item']['package_quantity'];
-                else
+                elseif ($item['item_type'] == 'wine' || $item['item_type'] == 'product')
                     $quantity = $quantity + $item['quantity'];
             }
         }
@@ -21,7 +21,6 @@ class Shop {
     }
 
     public static function quantityIsAllowed($quantity, $settings, $retString = false) {
-
         if (array_key_exists('minBasketSize', $settings) && $quantity < $settings['minBasketSize'])
             return $retString ? 'minBasketSize' : false;
 

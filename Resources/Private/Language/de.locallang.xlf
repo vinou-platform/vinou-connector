@@ -813,12 +813,12 @@
 				<target>Seite nach Payment</target>
 			</trans-unit>
 			<trans-unit id="flexform.shop.finishPaypalPid">
-				<source>Page to finish paypal payment</source>
-				<target>Seite für Paypal-Abschluss</target>
+				<source>Page to finish paypal payment (Marketplace Mode: no longer needed / use finish payment)</source>
+				<target>Seite für Paypal-Abschluss (Marketplace Modus: nicht mehr benötigt / nutze Bezahlvorgang abschließen)</target>
 			</trans-unit>
 			<trans-unit id="flexform.shop.cancelPaypalPid">
-				<source>Page to cancel order after paypal</source>
-				<target>Seite für Paypal-Abbruch</target>
+				<source>Page to cancel order after paypal (Marketplace Mode: no longer needed / use cancel payment)</source>
+				<target>Seite für Paypal-Abbruch (Marketplace Modus: nicht mehr benötigt / nutze Bezahlvorgang abbrechen)</target>
 			</trans-unit>
 			<trans-unit id="flexform.shop.initPaymentPid">
 				<source>Page to initialize payment</source>

@@ -46,6 +46,8 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$this->settings['currentPage'] = $GLOBALS['TSFE']->id;
 		$this->settings['cacheExpertise'] = Helper::getExtConfValue('cacheExpertise');
 
+		$this->view->assign('apiUrl',\Vinou\ApiConnector\Tools\Helper::getApiUrl());
+
 	}
 
 	/**

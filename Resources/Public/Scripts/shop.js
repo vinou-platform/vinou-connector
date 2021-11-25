@@ -86,6 +86,7 @@ var vinouShop = {
 	},
 
 	initBasket: function() {
+
 		var ctrl = this;
 		campaignRow = document.getElementById('campaign-row')
 		if (campaignRow && campaignRow.getAttribute('data-hash'))
@@ -258,7 +259,6 @@ var vinouShop = {
 	},
 
 	updateBasketCount: function(){
-		console.debug('updateBasketCount');
 		var ctrl = this;
 		ctrl.card.setAttribute('data-status','normal');
 		ctrl.sum.net = 0;
@@ -379,8 +379,8 @@ var vinouShop = {
 
 	setBasketError: function(error) {
 		var ctrl = this;
-		var container = document.getElementById('basket-errors');
-		var controls = document.querySelector('.basket-controls');
+		var container = document.getElementById(t3vinprefix + 'basket-errors');
+		var controls = document.querySelector(t3vinprefix + '.basket-controls');
 		if (container) {
 			container.innerHTML = '';
 			var status = 'visible';
@@ -750,7 +750,16 @@ var vinouShop = {
 						ctrl.campaign.addButton.setAttribute('data-status', 'enabled');
 
 					else {
-						var error = typeof response.errors[0] != 'undefined' ? response.errors[0] : response.data;
+
+						if (response.errors != undefined)
+							var error = typeof response.errors[0] != undefined ? response.errors[0] : response.data;
+						else {
+							if (response.data != 'undefined')
+								var error = response.data;
+							else
+								var error = '';
+						}
+
 						switch (error) {
 							case 'ERROR_MIN_QUANTITY_NOT_REACHED':
 								var errorText = 'Mindeststückzahl für den Rabatt-Code nicht erreicht!';

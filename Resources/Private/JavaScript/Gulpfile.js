@@ -9,6 +9,7 @@ var concat = require('gulp-concat');
 var watchDirs = ['Src/**/*'];
 var vinouJsFiles = [
 	'./Src/shop.js',
+	'./Src/shopMarketplace.js',
 	'./Src/list.js'
 ];
 
@@ -49,5 +50,3 @@ gulp.task('watch', function() {
 });
 
 gulp.task('default', gulp.series('concat', 'minify', 'watch'));
-
-
