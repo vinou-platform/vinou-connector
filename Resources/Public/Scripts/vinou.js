@@ -750,7 +750,16 @@ var vinouShop = {
 						ctrl.campaign.addButton.setAttribute('data-status', 'enabled');
 
 					else {
-						var error = typeof response.errors[0] != 'undefined' ? response.errors[0] : response.data;
+
+						if (response.errors != undefined)
+							var error = typeof response.errors[0] != undefined ? response.errors[0] : response.data;
+						else {
+							if (response.data != 'undefined')
+								var error = response.data;
+							else
+								var error = '';
+						}
+
 						switch (error) {
 							case 'ERROR_MIN_QUANTITY_NOT_REACHED':
 								var errorText = 'Mindeststückzahl für den Rabatt-Code nicht erreicht!';
@@ -1639,12 +1648,12 @@ var vinouShop = {
 		for (var i = 0; i < quantitySelects.length; i++) {
 			quantitySelects[i].addEventListener('change',function(event) {
 
-				var basketRow = this.closest('.basket-row');
-				var itemId = basketRow.getAttribute('data-item-id');
-				var input = basketRow.querySelector('input[data-item-id="'+itemId+'"]');
+				var articleRow = this.closest('.article-row');
+				var itemId = articleRow.getAttribute('data-item-id');
+				var input = articleRow.querySelector('input[data-item-id="'+itemId+'"]');
 				input.value = this.value;
 
-				var valueLabel = basketRow.querySelector('.quantity-overlay');
+				var valueLabel = articleRow.querySelector('.quantity-overlay');
 				if(valueLabel)
 					valueLabel.innerHTML = parseInt(this.value);
 
@@ -1658,11 +1667,12 @@ var vinouShop = {
 		for (var i = 0; i < quantityChangeButtons.length; i++) {
 			quantityChangeButtons[i].addEventListener('click',function(event) {
 
-				var basketRow = this.closest('.basket-row');
-				var itemId = basketRow.getAttribute('data-item-id');
-				var input = basketRow.querySelector('input[data-item-id="'+itemId+'"]');
-				var valueLabel = basketRow.querySelector('.quantity-overlay');
-				var min = 0;
+				var articleRow = this.closest('.article-row');
+				var itemId = articleRow.getAttribute('data-item-id');
+				var input = articleRow.querySelector('input[data-item-id="'+itemId+'"]');
+				var select = articleRow.querySelector('select[name="quantity"]');
+				var valueLabel = articleRow.querySelector('.quantity-overlay');
+				var min = input.getAttribute('data-min') ? parseInt(input.getAttribute('data-min')) : 0;
 				var max = input.getAttribute('data-max') ? parseInt(input.getAttribute('data-max')) : 99;
 
 				event.preventDefault();
@@ -1682,7 +1692,7 @@ var vinouShop = {
 					else
 						input.value = min;
 				}
-
+				select.value = input.value;
 				if(valueLabel)
 					valueLabel.innerHTML = parseInt(input.value);
 
@@ -1696,12 +1706,12 @@ var vinouShop = {
 		for (var i = 0; i < deleteButtons.length; i++) {
 			deleteButtons[i].addEventListener("click", (function(event) {
 				event.preventDefault();
-				var basketRow = this.closest('.basket-row');
-				var supplierId = basketRow.getAttribute('data-supplier-id');
+				var articleRow = this.closest('.article-row');
+				var supplierId = articleRow.getAttribute('data-supplier-id');
 				//TO-Do: Prüfen ob die versandkosten des weinguts noch gelöscht werden müssen wenn kein anderer artikel des weinguts da ist
-				basketRow.parentNode.removeChild(basketRow);
-				var remainingBasketRows = document.querySelectorAll(t3vinprefix + '.basket-row[data-supplier-id="'+ supplierId +'"]');
-				if (remainingBasketRows.length == 0)
+				articleRow.parentNode.removeChild(articleRow);
+				var remainingarticleRows = document.querySelectorAll(t3vinprefix + '.article-row[data-supplier-id="'+ supplierId +'"]');
+				if (remainingarticleRows.length == 0)
 					document.querySelector('.basket-order-item[data-supplier-id="'+ supplierId +'"]').remove();
 				ctrl.setBasketValidation(false);
 				return false;

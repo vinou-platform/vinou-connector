@@ -750,7 +750,16 @@ var vinouShop = {
 						ctrl.campaign.addButton.setAttribute('data-status', 'enabled');
 
 					else {
-						var error = typeof response.errors[0] != 'undefined' ? response.errors[0] : response.data;
+
+						if (response.errors != undefined)
+							var error = typeof response.errors[0] != undefined ? response.errors[0] : response.data;
+						else {
+							if (response.data != 'undefined')
+								var error = response.data;
+							else
+								var error = '';
+						}
+
 						switch (error) {
 							case 'ERROR_MIN_QUANTITY_NOT_REACHED':
 								var errorText = 'Mindeststückzahl für den Rabatt-Code nicht erreicht!';
