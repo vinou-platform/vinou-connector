@@ -67,9 +67,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		);
 		isset($this->settings['detailPid']) ? $this->detailPid = $this->settings['detailPid'] : $this->detailPid = NULL;
 		isset($this->settings['backPid']) ? $this->backPid = $this->settings['backPid'] : $this->backPid = NULL;
-		if ($this->request->hasArgument('backPid')) {
+
+		if ($this->request->hasArgument('backPid'))
 			$this->backPid = $this->request->getArgument('backPid');
-		}
+
 		isset($this->settings['basketPid']) ? $this->basketPid = $this->settings['basketPid'] : $this->basketPid = NULL;
 		isset($this->settings['orderPid']) ? $this->orderPid = $this->settings['orderPid'] : $this->orderPid = $GLOBALS['TSFE']->id;
 		isset($this->settings['finishPid']) ? $this->finishPid = $this->settings['finishPid'] : $this->finishPid = $GLOBALS['TSFE']->id;
@@ -86,6 +87,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		$this->getPaymentMethods();
 
+		//TODO check if needed
 		// check for open stripe payment
 		$stripe = Session::getValue('stripe');
 		if ($stripe && array_key_exists('sessionId', $stripe) && array_key_exists('publishableKey', $stripe)){
@@ -95,8 +97,12 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		$this->view->assign('apiUrl',\Vinou\ApiConnector\Tools\Helper::getApiUrl());
 
-		// Check if email delivery through the site builder is disabled. E-mails are sent via the API.
+		// Check if mail delivery through the vinou connector is disabled. mails are sent via the API.
 		$this->emailDelivery = !(array_key_exists('emailDelivery', $this->settings) && !$this->settings['emailDelivery']);
+
+		//switch off email delivery in marketplace mode
+		if (isset($this->settings['shopMode']) && $this->settings['shopMode'] == 'marketplace')
+			$this->emailDelivery = 0;
 
 	}
 
@@ -306,11 +312,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function basketAction() {
 		$this->initialize();
 
-		// Session::deleteValue('basket');
-
-		// test checkout process from session
-		// $this->sendMarketplaceOrderEmails();
-
 		switch ($this->settings['shopMode']) {
 			case 'marketplace':
 
@@ -348,9 +349,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 				$basket = $this->getBasketPrepareCheckout();
 				$this->view->assignMultiple($basket);
-
-				//debug
-				$this->view->assign("basket",$basket);
 
 			break;
 			default:
@@ -596,12 +594,12 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		if ($paymentMethod == 'paypal') {
 
-			if (!isset($this->settings['finishPaypalPid']))
-				$this->Alert('error','nofinishPaypalPid', FlashMessage::ERROR);
+			if (!isset($this->settings['finishPaypalPid']) && !isset($this->settings['finishPaymentPid']))
+				$this->Alert('error','finishPaymentPid', FlashMessage::ERROR);
 
 			$order['return_url'] = $this->uriBuilder
 				->reset()
-				->setTargetPageUid($this->settings['finishPaypalPid'])
+				->setTargetPageUid($this->settings['finishPaypalPid'] ? $this->settings['finishPaypalPid'] : $this->settings['finishPaymentPid'])
 				->setCreateAbsoluteUri(TRUE)
 				->setNoCache(TRUE)
 				->build();
@@ -645,11 +643,10 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		file_put_contents(Helper::getOrderCacheDir() . '/order-'. time() . '.json', json_encode($order));
 
 		// addOrder will do the redirect if paypal was set
+
 		$addedOrder = $this->api->addOrder($order);
 
 		if ($addedOrder) {
-
-			Session::setValue('order_uuid', $addedOrder['uuid']);
 
 			$temporaryPaymentMethods = ['card', 'debit', 'paypal'];
 			if (!in_array($paymentMethod, $temporaryPaymentMethods)) {
@@ -713,28 +710,26 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		if ($paymentMethod == 'paypal') {
 
-			if (!isset($this->settings['finishPaypalPid']))
-				$this->Alert('error','nofinishPaypalPid', FlashMessage::ERROR);
+			if (!isset($this->settings['finishPaypalPid']) && !isset($this->settings['finishPaymentPid']))
+				$this->Alert('error','finishPaymentPid', FlashMessage::ERROR);
 
 			$order['return_url'] = $this->uriBuilder
 				->reset()
-				->setTargetPageUid($this->settings['finishPaypalPid'])
+				->setTargetPageUid($this->settings['finishPaypalPid'] ? $this->settings['finishPaypalPid'] : $this->settings['finishPaymentPid'])
 				->setCreateAbsoluteUri(TRUE)
 				->setNoCache(TRUE)
 				->build();
-
-			if (!isset($this->settings['cancelPaypalPid']))
+			if (!isset($this->settings['cancelPaypalPid']) && !isset($this->settings['cancelPaymentPid']))
 				$this->Alert('error','nocancelPaypalPid', FlashMessage::ERROR);
-
+				var_dump($this->settings);
 			$order['cancel_url'] = $this->uriBuilder
 				->reset()
-				->setTargetPageUid($this->settings['cancelPaypalPid'])
+				->setTargetPageUid($this->settings['cancelPaypalPid'] ? $this->settings['cancelPaypalPid'] : $this->settings['cancelPaymentPid'])
 				->setCreateAbsoluteUri(TRUE)
 				->setNoCache(TRUE)
 				->build();
 
 		}
-
 		if (in_array($paymentMethod, ['card', 'debit'])) {
 
 			if (!isset($this->settings['finishPaymentPid']))
@@ -758,66 +753,13 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				->build();
 
 		}
-
 		file_put_contents(Helper::getOrderCacheDir() . '/order-'. time() . '.json', json_encode($order));
 		// addOrder will do the redirect if paypal was set
 		// $checkout = $this->api->checkoutProceed($order);
 		$checkout = $this->api->checkout($order, null, false);
 
-		/*
-		stripe single winery payment:
-		/var/www/html/www/web/typo3conf/ext/vinou_connector/Classes/Controller/ShopController.php:767:
-		array (size=11)
-			'customers_id' => int 954
-			'cruser_id' => int 623
-			'client_id' => int 54792
-			'basket_id' => int 7286768
-			'crstamp' => string '2021-11-09 14:59:33' (length=19)
-			'taxrates' =>
-				array (size=2)
-					7 =>
-						array (size=3)
-							'net' => string '60.39' (length=5)
-							'tax' => string '4.23' (length=4)
-							'gross' => string '64.62' (length=5)
-					19 =>
-						array (size=3)
-							'net' => string '5.04' (length=4)
-							'tax' => string '0.96' (length=4)
-							'gross' => string '6.00' (length=4)
-			'net' => string '65.43' (length=5)
-			'tax' => string '5.19' (length=4)
-			'gross' => string '70.62' (length=5)
-			'id' => int 15
-			'payment' =>
-				array (size=15)
-					'order_id' => int 46245
-					'gross' => string '70.62' (length=5)
-					'return_url' => string 'https://yummytours.frog/marktplatz/bezahlung-abschliessen?no_cache=1&checkout_id=15&payment_uuid=40bab4cb-0459-58f1-a4a9-adf2452d2a33&pid=40bab4cb-0459-58f1-a4a9-adf2452d2a33' (length=174)
-					'cancel_url' => string 'https://yummytours.frog/marktplatz/bezahlung-abbrechen?no_cache=1&checkout_id=15&payment_uuid=40bab4cb-0459-58f1-a4a9-adf2452d2a33&pid=40bab4cb-0459-58f1-a4a9-adf2452d2a33' (length=171)
-					'customers_id' => int 289
-					'status' => string 'created' (length=7)
-					'uuid' => string '40bab4cb-0459-58f1-a4a9-adf2452d2a33' (length=36)
-					'cruser_id' => int 623
-					'type' => string 'card' (length=4)
-					'externalid' => string 'pi_3JtvnRQXEDxoa6dN0J8m0CrT' (length=27)
-					'session_id' => string 'cs_test_a1CTGoJdvE1M52ECm3HYYhG5SXW0jk9Xbz2WSdeU203UykwFTcRVWuhWVq' (length=66)
-					'account_id' => string 'acct_1Jf240QXEDxoa6dN' (length=21)
-					'bookingstamp' => null
-					'id' => int 21788
-					'details' => null
-		*/
-		if ($checkout) {
-
-			Session::setValue('order_uuid', $checkout['uuid']);
-			Session::setValue('checkout_id', $checkout['id']);
-
-			// $temporaryPaymentMethods = ['card', 'debit', 'paypal'];
-			// if (!in_array($paymentMethod, $temporaryPaymentMethods)) {
-			// 	$this->sendMarketplaceOrderEmails();
-			// }
+		if ($checkout)
 			$this->initPayment();
-		}
 
 		return true;
 	}
@@ -858,47 +800,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 	}
 
-	// private function sendMarketplaceOrderEmails($checkout = NULL){
-	// 	if (!$checkout)
-	// 		$checkout = $this->api->getSessionCheckout();
-	// 	// var_dump($checkout);
-	// 	// To-Do: mit Eric besprechen ob die benötigten angaben über extra routen geholt werden müssen oder im API Connector direkt per include in der getSessionCheckout() gesetzt geholt werden
-	// 	// Funktionalitäten für das Bestücken und Generieren der E-Mails fehlen noch
-
-	// 	foreach ($checkout['orders'] as $order) {
-	// 		echo $order['id'];
-	// 		// var_dump($this->api->getOrder($order['id']));
-	// 	}
-
-	// 	return true;
-	// 	die;
-	// 	$recipient = [
-	// 		$order['client']['mail'] => $order['client']['first_name'] . ' ' . $order['client']['last_name']
-	// 	];
-
-	// 	$mailContent = [
-	// 		'order' => $order
-	// 	];
-
-	// 	$this->sendTemplateEmail(
-	// 		$recipient,
-	// 		$this->sender,
-	// 		LocalizationUtility::translate('mail.createorder.subject',$this->extKey) . ': ' . $order['number'],
-	// 		'CreateOrderClient',
-	// 		$mailContent,
-	// 		$this->settings['mail']['attachements']
-	// 	);
-
-	// 	$this->sendTemplateEmail(
-	// 		$this->admin,
-	// 		$this->sender,
-	// 		LocalizationUtility::translate('mail.createnotification.subject',$this->extKey) . ': ' . $order['number'],
-	// 		'CreateOrderAdmin',
-	// 		$mailContent
-	// 	);
-
-	// }
-
 	public function initPayment() {
 
 		$stripe = Session::getValue('stripe');
@@ -906,28 +807,36 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if ($stripe && array_key_exists('sessionId', $stripe) && array_key_exists('publishableKey', $stripe))
 			$this->redirect(NULL, NULL, NULL, [], $this->settings['initPaymentPid']);
 
-		$this->clearAllSessionData();
 		$this->redirect(NULL, NULL, NULL, [], $this->finishPid);
+
 	}
 
 	public function finishPaypalAction() {
 		$this->initialize();
-		$error = false;
 
-		$this->view->assign('settings', $this->settings);
-		$order = $this->api->getSessionOrder();
-		$this->view->assign('order', $order);
+		// $payment = $this->api->finishPaypalPayment(GeneralUtility::_GET());
+		$payment = $this->api->finishPayment(GeneralUtility::_GET());
+		$this->view->assign('payment', $payment);
 
-		$paypalresult = $this->api->finishPaypalPayment(GeneralUtility::_GET());
-		$this->view->assign('paypalresult', $paypalresult);
+		if ($payment) {
+			// to use details in template e.g. order.number
+			$order = Session::getValue('order');
+			$this->view->assign('order', $order);
+			$this->sendOrderEmails();
 
-		if (!$paypalresult) {
-			$error = true;
-		} else {
-			$this->sendOrderEmails($order);
+			// if (!isset($this->settings['finishPaypalPid']) && !isset($this->settings['finishPaymentPid']))
+			// 	$this->redirect(NULL, NULL, NULL, [], $this->finishPid);
+
+			if (isset($this->settings['finishPid']))
+				$this->redirect(NULL, NULL, NULL, [], $this->finishPid);
+
 			$this->clearAllSessionData();
+			$error = false; // @deprecated
 		}
+		else
+			$error = true; // @deprecated
 
+		// @deprecated
 		$this->view->assign('error', $error);
 	}
 
@@ -950,41 +859,44 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 	public function initPaymentAction() {
 		$this->initialize();
-		$this->view->assign('settings', $this->settings);
 
 		$stripe = Session::getValue('stripe');
+		if ($this->settings['shopMode'] == 'marketplace')
+			unset($stripe['accountId']);
 		$this->view->assign('stripe', $stripe);
 	}
 
 	public function finishPaymentAction() {
 		$this->initialize();
-		$this->view->assign('settings', $this->settings);
 
-		$result = $this->api->finishPayment(GeneralUtility::_GET());
+		$payment = $this->api->finishPayment(GeneralUtility::_GET());
+		$this->view->assign('payment', $payment);
 
-		//debug
-		$this->view->assign('getvars', GeneralUtility::_GET());
-		$this->view->assign('stripe', Session::getValue('stripe'));
-		$this->view->assign('order_uuid', Session::getValue('order_uuid'));
-		$this->view->assign('checkout_id', Session::getValue('checkout_id'));
-		$this->view->assign('checkout', Session::getValue('checkout'));
-		$this->view->assign('checkout_process_result', Session::getValue('checkout_process_result'));
-		$this->view->assign('payments_execute_result', Session::getValue('payments_execute_result'));
-		$this->view->assign('stripeResult', Session::getValue('stripeResult'));
-		//debug ende
+		if ($payment) {
+			// to use details in template e.g. order.number
+			$this->view->assign('order', Session::getValue('order'));
+			// @deprecated
+			$this->view->assign('result', $payment['status'] == 'pending' ? 'processing' : $payment['status']);
+			$this->sendOrderEmails();
 
-		// $order = $result['data']['order']
-		$this->view->assign('result', $result);
-		$order = $this->api->getSessionOrder();
-		$this->view->assign('order', $order);
+			// if (!isset($this->settings['finishPaypalPid']) && !isset($this->settings['finishPaymentPid']))
+			// 	$this->redirect(NULL, NULL, NULL, [], $this->finishPid);
 
-		if($result)
-			$this->sendOrderEmails($order);
 
-		$this->clearAllSessionData();
+			//TODO Redirect zu finishAction ... in diesem Template wird die erfolgsmeldung des shops ausgegeben.
+			//settings mit redirect to finish ...
 
-		// @deprecated
-		$this->view->assign('addedOrder', $order);
+			if (isset($this->settings['finishPid']))
+				$this->redirect(NULL, NULL, NULL, [], $this->finishPid);
+
+			// @deprecated
+			$this->view->assign('addedOrder', Session::getValue('order'));
+
+			$this->clearAllSessionData();
+
+		}
+
+
 	}
 
 	public function cancelPaymentAction() {
@@ -1202,6 +1114,13 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		Session::deleteValue('campaign');
 		Session::deleteValue('note');
 		Session::deleteValue('stripe');
+		Session::deleteValue('order');
+		Session::deleteValue('basket');
+		Session::deleteValue('card');
+		Session::deleteValue('order_id');
+		Session::deleteValue('order_uuid');
+		Session::deleteValue('checkout_id');
+		Session::deleteValue('payment');
 	}
 
 	/**
@@ -1212,11 +1131,15 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function finishAction() {
 		$this->initialize();
 
-		// ToDo add ne finish action
-		$this->view->assign('action', 'finish');
 		$this->view->assign('paymentMethod', Session::getValue('paymentMethod'));
+		if (Session::getValue('checkout_id') || Session::getValue('order_id')){
+			Session::deleteValue('paymentMethod');
+			$this->clearAllSessionData();
+		}
+
+		// @deprecated
+		$this->view->assign('action', 'finish');
 		$this->view->assign('customer', $this->api->getCustomer());
-		$this->view->assign('order', $this->api->getSessionOrder());
 
 	}
 

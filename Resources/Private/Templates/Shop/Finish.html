@@ -5,22 +5,61 @@
 <f:layout name="Default" />
 
 <f:section name="main">
+
+	<f:comment>
+		<!--
+			Bei Stripe / Paypal Zahlungen gibt es ein payment bei welches für nähere Informationen zur Bestellung genutzt werden kann
+			z.B.
+			{payment.info} => success
+			{payment.data.status} => payed / pending (bei SEPA)
+		-->
+	</f:comment>
+
 	<f:flashMessages />
-	<h3>Bestellung abgeschlossen</h3>
-	<f:switch expression="{paymentMethod}">
-		<f:case value="paypal">
-			<p>Wir haben Ihre Paypal Zahlung erhalten. Sie erhalten Ihre Ware in Kürze.</p>
-		</f:case>
-		<f:case value="debiting">
-			<p>Wir haben Ihre Bestellung erhalten. Nach der Abbuchhung erhalten sie eine separate Kaufbestätigung und die Ware in Kürze.</p>
-		</f:case>
-		<f:case value="bill">
-			<p>Wir haben Ihre Bestellung erhalten. Wir werden Ihnen die Waren inklusive Rechnung schnellstmöglich zusenden.</p>
-		</f:case>
-		<f:defaultCase>
-			<p>Vielen Dank für Ihre Bestellung. Sie erhalten schnellstmöglich weitere Informationen zur Zahlung und Zusendung.</p>
-		</f:defaultCase>
-	</f:switch>
+	<f:if condition="{paymentMethod}">
+		<f:then>
+			<h3>Vielen Dank für Ihre Bestellung</h3>
+			<f:switch expression="{paymentMethod}">
+				<f:case value="debiting">
+					<p>Nach der Abbuchhung erhalten sie eine separate Kaufbestätigung und die Ware in Kürze.</p>
+				</f:case>
+				<f:case value="bill">
+					<p>Wir werden Ihnen die Waren inklusive Rechnung schnellstmöglich zusenden.</p>
+				</f:case>
+				<f:case value="prepaid">
+					<f:comment><!-- Kauf per Vorkasse --></f:comment>
+					<p>Sie erhalten schnellstmöglich weitere Informationen zur Zahlung und Zusendung.</p>
+				</f:case>
+				<f:case value="invoice">
+					<f:comment><!-- Kauf auf Rechnung --></f:comment>
+					<p>Sie erhalten schnellstmöglich weitere Informationen zur Zahlung und Zusendung.</p>
+				</f:case>
+				<f:case value="card">
+					<f:comment><!-- Stripe Kreditkartenzahlung --></f:comment>
+					<p>Ihre Zahlung per Kreditkarte haben wir erhalten. Sie erhalten Ihre Ware in Kürze.</p>
+				</f:case>
+				<f:case value="debit">
+					<f:comment><!-- Stripe Sepa Zahlung (Lastschrift) --></f:comment>
+					<p>Ihre Zahlung per SEPA-Lastschrift haben wir erhalten. Sie erhalten Ihre Ware in Kürze.</p>
+				</f:case>
+				<f:case value="paypal">
+					<f:comment><!-- Paypal Zahlung --></f:comment>
+					<p>Ihre Zahlung per Paypal haben wir erhalten. Sie erhalten Ihre Ware in Kürze.</p>
+				</f:case>
+				<f:defaultCase>
+					<p>Sie erhalten schnellstmöglich weitere Informationen zur Zahlung und Zusendung.</p>
+				</f:defaultCase>
+			</f:switch>
+		</f:then>
+		<f:else>
+			<h1 class="page-title">Oops, da ist was schiefgelaufen</h1>
+			<p class="inline-message" data-type="error">
+				<span class="title">Bestellung fehlgeschlagen</span>
+				<span class="description">Bei deiner Bestellung ist ein Fehler aufgetreten, oder Sie wurde bereits abgeschlossen. Bitte setze Dich mit uns in Verbindung.</span>
+			</p>
+		</f:else>
+	</f:if>
+
 </f:section>
 
 </html>

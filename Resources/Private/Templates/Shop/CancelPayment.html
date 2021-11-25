@@ -6,11 +6,10 @@
 
 <f:section name="main">
 
-
 	<f:if condition="{result}">
 		<f:then>
 			<h1 class="page-title">Bestellung abgebrochen</h1>
-			<p>Du hast Deine Bestellung im Zahlungsablauf abgebrochen, die Bestellung mit <strong>Nummer {addedOrder.number}</strong> wurde bei uns storniert. Schau trotzdem wieder bei uns vorbei.</p>
+			<p>Du hast Deine Bestellung im Zahlungsablauf abgebrochen, die Bestellung <f:if condition="{addedOrder.number}">mit <strong>Nummer {addedOrder.number}</strong></f:if> wurde bei uns storniert. Schau trotzdem wieder bei uns vorbei.</p>
 		</f:then>
 		<f:else>
 			<h1 class="page-title">Oops, da ist was schiefgelaufen</h1>

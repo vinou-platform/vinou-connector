@@ -341,7 +341,13 @@
                     </settings.orderPid>
                     <settings.finishPid>
                         <TCEforms>
-                            <displayCond>FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</displayCond>
+														<displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+                                    <numIndex index="1">FIELD:sDEF.switchableControllerActions:=:Shop->finishPayment;</numIndex>
+                                    <numIndex index="2">FIELD:sDEF.switchableControllerActions:=:Shop->finishPaypal;</numIndex>
+                                </OR>
+                            </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.finishPid</label>
                             <config>
                                 <type>group</type>
@@ -411,7 +417,12 @@
                     </settings.initPaymentPid>
                     <settings.finishPaymentPid>
                         <TCEforms>
-                            <displayCond>FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</displayCond>
+														<displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+																		<numIndex index="1">FIELD:sDEF.switchableControllerActions:=:Shop->finish;Shop->list;Shop->basket;Shop->order;</numIndex>
+                                </OR>
+                            </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.finishPaymentPid</label>
                             <config>
                                 <type>group</type>
@@ -426,7 +437,12 @@
                     </settings.finishPaymentPid>
                     <settings.cancelPaymentPid>
                         <TCEforms>
-                            <displayCond>FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</displayCond>
+														<displayCond>
+                                <OR>
+                                    <numIndex index="0">FIELD:sDEF.switchableControllerActions:=:Shop->order;Shop->finish;Shop->list;Shop->basket;</numIndex>
+																		<numIndex index="1">FIELD:sDEF.switchableControllerActions:=:Shop->finish;Shop->list;Shop->basket;Shop->order;</numIndex>
+                                </OR>
+                            </displayCond>
                             <label>LLL:EXT:vinou_connector/Resources/Private/Language/locallang.xlf:flexform.shop.cancelPaymentPid</label>
                             <config>
                                 <type>group</type>
