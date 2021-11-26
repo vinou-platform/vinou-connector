@@ -9,6 +9,7 @@ var vinouShop = {
 		hashInput: document.querySelector('input#campaign-code'),
 		check: null,
 		addButton: document.querySelector('a#add-campaign'),
+		addButtonHint: document.querySelector('#add-campaign-hint'),
 		removeButton: document.querySelector('a#remove-campaign'),
 		discount: false,
 		data: false
@@ -681,9 +682,11 @@ var vinouShop = {
 					if (loader)
 						loader.setAttribute('data-status', 'hidden');
 
-					if (this.status == 200 && response.info == 'success')
+					if (this.status == 200 && response.info == 'success'){
 						ctrl.campaign.addButton.setAttribute('data-status', 'enabled');
-
+						if (ctrl.campaign.addButtonHint)
+							ctrl.campaign.addButtonHint.setAttribute('data-status', 'enabled');
+					}
 					else {
 
 						if (response.errors != undefined)
@@ -707,8 +710,16 @@ var vinouShop = {
 
 						toast.show('Fehler!', errorText);
 						ctrl.campaign.addButton.setAttribute('data-status', 'disabled');
+						if (ctrl.campaign.addButtonHint)
+							ctrl.campaign.addButtonHint.setAttribute('data-status', 'disabled');
 					}
 				});
+			}
+			else {
+				ctrl.campaign.addButton.setAttribute('data-status', 'disabled');
+				if (ctrl.campaign.addButtonHint)
+					ctrl.campaign.addButtonHint.setAttribute('data-status', 'disabled');
+				ctrl.temphash = '';
 			}
 		}, 750);
 	},
