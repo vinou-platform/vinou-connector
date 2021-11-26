@@ -622,23 +622,23 @@ var vinouShop = {
 	// 		}));
 	// 	}
 
-	// 	var delCheck = document.querySelector('#deliveryAdress');
-	// 	if (delCheck) {
-	// 		delCheck.addEventListener('change',(function(){
-	// 			var delForm = document.querySelector('#delivery-fieldset');
-	// 			delForm.setAttribute('data-visible',this.checked ? 1 : 0);
-	// 			var requiredFields = document.querySelectorAll('#delivery-fieldset [data-required="1"]');
-	// 			if (this.checked) {
-	// 				requiredFields.forEach((function(item){
-	// 					item.setAttribute('required','required');
-	// 				}));
-	// 			} else {
-	// 				requiredFields.forEach((function(item){
-	// 					item.removeAttribute('required');
-	// 				}));
-	// 			}
-	// 		}));
-	// 	}
+		var delCheck = document.querySelector('#deliveryAdress');
+		if (delCheck) {
+			delCheck.addEventListener('change',(function(){
+				var delForm = document.querySelector('#delivery-fieldset');
+				delForm.setAttribute('data-visible',this.checked ? 1 : 0);
+				var requiredFields = document.querySelectorAll('#delivery-fieldset [data-required="1"]');
+				if (this.checked) {
+					requiredFields.forEach((function(item){
+						item.setAttribute('required','required');
+					}));
+				} else {
+					requiredFields.forEach((function(item){
+						item.removeAttribute('required');
+					}));
+				}
+			}));
+		}
 
 	// 	if (ctrl.campaign.hashInput) {
 	// 		ctrl.campaign.hashInput.addEventListener('input', function(event) {
