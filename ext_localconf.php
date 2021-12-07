@@ -49,12 +49,6 @@
 	);
 
 
-	// Exclude params from cHash
-	if (!in_array('tx_vinouconnector_suppliers[path_segment]', $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'])) {
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'][] = 'tx_vinouconnector_suppliers[id]';
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'][] = 'tx_vinouconnector_suppliers[type]';
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'][] = 'tx_vinouconnector_suppliers[path_segment]';
-		$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'][] = 'tx_vinouconnector_suppliers[identifier]';
-	}
+
 
 ?>
