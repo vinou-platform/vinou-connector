@@ -9,7 +9,6 @@ var concat = require('gulp-concat');
 var watchDirs = ['Src/**/*'];
 var vinouJsFiles = [
 	'./Src/shop.js',
-	'./Src/shopMarketplace.js',
 	'./Src/list.js'
 ];
 

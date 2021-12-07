@@ -46,19 +46,6 @@ page.includeJSFooter {
 page.includeJSFooter.shop = EXT:vinou_connector/Resources/Public/Scripts/shop.js
 [END]
 
-["{$plugin.tx_vinou.settings.javascript.marketplace}"]
-# overwrite with marketplace functionality
-page.includeJSFooter.shop = EXT:vinou_connector/Resources/Public/Scripts/shopMarketplace.min.js
-#page.includeJSFooter.marketplace = EXT:vinou_connector/Resources/Public/Scripts/shopMarketplace.min.js
-[END]
-
-["{$plugin.tx_vinou.settings.javascript.marketplace}" == "1" and applicationContext == "Development"]
-# overwrite with marketplace functionality
-page.includeJSFooter.shop = EXT:vinou_connector/Resources/Public/Scripts/shopMarketplace.js
-#page.includeJSFooter.marketplace = EXT:vinou_connector/Resources/Public/Scripts/shopMarketplace.js
-
-[END]
-
 # add only list javascript if it was turned on in the constants
 ["{$plugin.tx_vinou.settings.javascript.list}" == "1"]
 page.includeJSFooter.list = EXT:vinou_connector/Resources/Public/Scripts/list.min.js
@@ -506,7 +493,7 @@ plugin.tx_vinouconnector_client {
 module.tx_vinouconnector_client < plugin.tx_vinouconnector_client
 
 # ToDo Check if needed in marketplace mode
-["{$plugin.tx_vinou.settings.javascript.marketplace}" == "0"]
+["{$plugin.tx_vinou.settings.javascript.shop}" == "1"]
 page.headerData {
 	999 = TEXT
 	999.value (
