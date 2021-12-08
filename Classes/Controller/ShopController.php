@@ -721,7 +721,7 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				->build();
 			if (!isset($this->settings['cancelPaypalPid']) && !isset($this->settings['cancelPaymentPid']))
 				$this->Alert('error','nocancelPaypalPid', FlashMessage::ERROR);
-				var_dump($this->settings);
+
 			$order['cancel_url'] = $this->uriBuilder
 				->reset()
 				->setTargetPageUid($this->settings['cancelPaypalPid'] ? $this->settings['cancelPaypalPid'] : $this->settings['cancelPaymentPid'])
