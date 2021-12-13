@@ -883,11 +883,14 @@ class ShopController extends ActionController {
 	*/
 	protected function sendTemplateEmail(array $recipient, array $sender, $subject, $templateName, array $variables = array(), array $attachement = array()) {
 
-		$extPath = 'typo3conf/ext/vinou_connector/Resources/Private/';
+		$templateRootPaths = $this->view->getTemplatePaths();
 
 		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
-		$emailView->setLayoutRootPaths([PATH_site . $extPath . 'Layouts/Email/']);
-		$emailView->setTemplateRootPaths([PATH_site . $extPath . 'Templates/Email/']);
+
+		$emailView->setLayoutRootPaths( array_map(function($value) { return $value . 'Email/'; }, $templateRootPaths->getLayoutRootPaths()) );
+		$emailView->setTemplateRootPaths( array_map(function($value) { return $value . 'Email/'; }, $templateRootPaths->getTemplateRootPaths()) );
+		$emailView->setPartialRootPaths( $templateRootPaths->getPartialRootPaths() );
+
 		$emailView->setTemplate($templateName . '.html');
 
 		$variables['title'] = $subject;
