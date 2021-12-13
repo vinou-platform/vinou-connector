@@ -122,6 +122,8 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			if (!is_null($clusters))
 				$postData['cluster'] = $clusters;
 
+
+
 			if ((int)$this->settings['category'] > 0) {
 				$data = $this->api->getCategoryWines((int)$this->settings['category'], $postData);
 				$wines = isset($data['data']) ? $data['data'] : false;
@@ -1175,9 +1177,14 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$variables['title'] = $subject;
 		$variables['customer'] = $this->api->getCustomer();
 
+		$templateRootPaths = $this->view->getTemplatePaths();
+
 		$fluid = $this->objectManager->get(StandaloneView::class);
-		$fluid->setLayoutRootPaths([Helper::getPrivateResourcePath() . 'Layouts/Email/']);
-		$fluid->setTemplateRootPaths([Helper::getPrivateResourcePath() . 'Templates/Email/']);
+
+		$fluid->setLayoutRootPaths( array_map(function($value) { return $value.'Email/'; }, $templateRootPaths->getLayoutRootPaths()) );
+		$fluid->setTemplateRootPaths( array_map(function($value) { return $value.'Email/'; }, $templateRootPaths->getTemplateRootPaths()) );
+		$fluid->setPartialRootPaths( $templateRootPaths->getPartialRootPaths() );
+
 		$fluid->setFormat('html');
 		$fluid->setTemplate($templateName . '.html');
 		$fluid->assignMultiple($variables);
