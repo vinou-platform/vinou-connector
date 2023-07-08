@@ -735,6 +735,10 @@ class ShopController extends ActionController {
 			'bottles' => 0
 		];
 
+		// breakout if no items are given
+		if (!is_iterable($items))
+			return $summary;
+
 		foreach ($items as $item) {
 
 			if ($item['item_type'] == 'bundle'){
