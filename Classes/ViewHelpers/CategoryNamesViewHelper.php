@@ -9,11 +9,15 @@ class CategoryNamesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractV
      */
 	public function render($categories) {
 
-		$names = [];
-		foreach ($categories as $key => $category) {
-			array_push($names,$category['name']);
-		}
+		if (is_iterable($categories)) {
+			$names = [];
+			foreach ($categories as $key => $category) {
+				array_push($names,$category['name']);
+			}
 
-        return implode(', ',$names);
+	        return implode(', ',$names);
+	   	}
+
+	   	return null;
 	}
 }
