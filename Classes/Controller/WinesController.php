@@ -111,6 +111,7 @@ class WinesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			$identifier = $this->request->getArgument('path_segment');
 
 		$this->view->assign('wine', $this->api->getWine($identifier));
+		$this->view->assign('facts', $this->api->getFacts($identifier));
 
 		$this->view->assign('backPid', $this->backPid);
 		$this->view->assign('settings', $this->settings);
