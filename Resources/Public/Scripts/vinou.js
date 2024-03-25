@@ -265,6 +265,7 @@ var vinouShop = {
 		ctrl.sum.tax = 0;
 		ctrl.sum.gross = 0;
 		ctrl.sum.quantity = 0;
+		ctrl.sum.visibleQuantity = 0;
 		ctrl.basketAction('get',{},(function(){
 			if (this.status == 200) {
 				response = JSON.parse(this.responseText);
@@ -277,6 +278,7 @@ var vinouShop = {
 						if (item.item.package_quantity && parseInt(item.item.package_quantity) > 0)
 							multiplier = item.item.package_quantity;
 
+						ctrl.sum.visibleQuantity += parseInt(item.quantity);
 						ctrl.sum.quantity += parseInt(item.quantity) * parseInt(multiplier);
 
 						if (item.item.prices && item.item.prices[0]) {
@@ -338,7 +340,7 @@ var vinouShop = {
 			}
 		}
 
-		document.querySelector('.basket-status .juwel').innerHTML = ctrl.sum.quantity;
+		document.querySelector('.basket-status .juwel').innerHTML = ctrl.sum.visibleQuantity;
 		ctrl.quantity = ctrl.sum.quantity;
 		ctrl.card.setAttribute('data-status','updated');
 
