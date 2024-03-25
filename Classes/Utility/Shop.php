@@ -11,10 +11,12 @@ class Shop {
         $quantity = 0;
         if (is_iterable($card)) {
             foreach ($card as $item) {
-                if ($item['item_type'] == 'bundle')
-                    $quantity = $quantity + $item['quantity'] * $item['item']['package_quantity'];
-                elseif ($item['item_type'] == 'wine' || $item['item_type'] == 'product')
-                    $quantity = $quantity + $item['quantity'];
+
+				$multiplier = 1;
+				if (isset($item['item']['package_quantity']) && $item['item']['package_quantity'] > 0)
+					$multiplier = $item['item']['package_quantity'];
+
+				$quantity = $quantity + ($item['quantity'] * $multiplier);
             }
         }
         return $quantity;

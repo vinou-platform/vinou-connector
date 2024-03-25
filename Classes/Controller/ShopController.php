@@ -936,7 +936,12 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				'net' => $checkout['net'],
 				'tax' => $checkout['tax'],
 				'gross' => $checkout['gross'],
-				'quantity' => array_sum(array_map(function($item) {	return $item['item_type'] == 'wine' ? $item['quantity'] : ($item['item_type'] == 'bundle' ? $item['quantity'] * $item['item']['package_quantity'] : 0); }, $checkout['items']))
+				'quantity' => array_sum(array_map(function($item) {
+					$multiplier = 1;
+					if (isset($item['item']['package_quantity']) && $item['item']['package_quantity'] > 0)
+						$multiplier = $item['item']['package_quantity'];
+					return in_array($item['item_type'], ['wine', 'bundle', 'product']) ? $item['quantity'] * $multiplier : 0;
+				}, $checkout['items']))
 
 			];
 
@@ -956,11 +961,6 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					];
 
 				switch ($item['item_type']) {
-					case 'bundle':
-						// $bottles += $item['quantity'] * $item['item']['package_quantity'];
-						$itemsBySupplier[$supplierId]['bottles'] += $item['quantity'] * $item['item']['package_quantity'];
-						$itemsBySupplier[$supplierId]['items'][] = $item;
-					break;
 					case 'rebate':
 						$itemsBySupplier[$supplierId]['rebates'][] = $item;
 					break;
@@ -968,8 +968,11 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 						$itemsBySupplier[$supplierId]['packages'][] = $item;
 					break;
 					default:
-						// $bottles += $item['quantity'];
-						$itemsBySupplier[$supplierId]['bottles'] += $item['quantity'];
+						$multiplier = 1;
+						if (isset($item['item']['package_quantity']) && $item['item']['package_quantity'] > 0)
+							$multiplier = $item['item']['package_quantity'];
+
+						$itemsBySupplier[$supplierId]['bottles'] += $item['quantity'] * $multiplier;
 						$itemsBySupplier[$supplierId]['items'][] = $item;
 					break;
 				}
@@ -1016,14 +1019,12 @@ class ShopController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if (is_iterable($items)) {
 			foreach ($items as $item) {
 
-				if ($item['item_type'] == 'bundle'){
-	                $summary['quantity'] += $item['quantity'] * $item['item']['package_quantity'];
-	                $summary['bottles'] += $item['quantity'] * $item['item']['package_quantity'];
-				}
-	            else {
-	                $summary['quantity'] += $item['quantity'];
-	            	$summary['bottles'] += $item['quantity'];
-	            }
+				$multiplier = 1;
+				if (isset($item['item']['package_quantity']) && $item['item']['package_quantity'] > 0)
+					$multiplier = $item['item']['package_quantity'];
+
+				$summary['quantity'] += $item['quantity'] * $multiplier;
+				$summary['bottles'] += $item['quantity'] * $multiplier;
 
 				$summary['gross'] += ($item['quantity'] * $item['item']['gross']);
 			}
