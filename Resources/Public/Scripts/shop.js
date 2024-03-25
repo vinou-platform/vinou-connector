@@ -273,12 +273,11 @@ var vinouShop = {
 				if (response.basketItems) {
 					response.basketItems.forEach((function(item){
 
-						if (item.item_type == 'bundle' && parseInt(item.item.package_quantity) > 0) {
-							ctrl.sum.quantity += parseInt(item.quantity) * parseInt(item.item.package_quantity);
-						}
-						else
-							ctrl.sum.quantity += item.quantity;
+						var multiplier = 1;
+						if (item.item.package_quantity && parseInt(item.item.package_quantity) > 0)
+							multiplier = item.item.package_quantity;
 
+						ctrl.sum.quantity += parseInt(item.quantity) * parseInt(multiplier);
 
 						if (item.item.prices && item.item.prices[0]) {
 							ctrl.sum.tax += item.quantity * item.item.prices[0].tax;
